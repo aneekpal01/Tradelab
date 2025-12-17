@@ -156,12 +156,19 @@ section {
   padding: 35px 25px 25px;
   margin-top: 30px;
 }
+/* STEP 3 HIGHLIGHT */
+.step-three {
+  border: 1px solid #ff4d4d;
+  box-shadow: 0 0 25px rgba(255, 77, 77, 0.25);
+  position: relative;
+  padding: 35px 25px 25px;
+}
 
-.step-two-badge {
+.step-three-badge {
   position: absolute;
   top: -12px;
   left: 20px;
-  background: #00d4ff;
+  background: #ff4d4d;
   color: #000;
   font-size: 11px;
   font-weight: 700;
@@ -169,4 +176,6 @@ section {
   border-radius: 20px;
   letter-spacing: 0.5px;
 }
+
+
 
