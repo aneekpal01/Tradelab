@@ -172,6 +172,13 @@ section {
 .video-box {
   margin-bottom: 25px;
 }
+/* STEP 3A HIGHLIGHT */
+.step-three {
+  border: 1px solid #ff4d4d;
+  box-shadow: 0 0 25px rgba(255, 77, 77, 0.25);
+  position: relative;
+  padding: 35px 25px 25px;
+}
 
 
 
