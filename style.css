@@ -180,6 +180,24 @@ section {
   position: relative;
   padding: 35px 25px 25px;
 }
+/* STEP 3A BADGE FIX */
+.step-three {
+  position: relative;
+}
+
+.step-three-badge {
+  position: absolute;
+  top: -14px;
+  left: 20px;
+  background: #ff4d4d;
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  z-index: 10; /* 🔥 THIS IS IMPORTANT */
+}
 
 
 
