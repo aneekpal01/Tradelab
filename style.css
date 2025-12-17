@@ -163,6 +163,15 @@ section {
   position: relative;
   padding: 35px 25px 25px;
 }
+/* SPACING FIX FOR STEPS */
+
+.learning-card {
+  margin-bottom: 50px;
+}
+
+.video-box {
+  margin-bottom: 25px;
+}
 
 
 
