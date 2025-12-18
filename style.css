@@ -332,27 +332,47 @@ section {
   padding: 35px 25px 25px;
   margin-top: 30px; 
 }
-/* ADVANCED CONCEPTS GLOWING SEPARATOR */
-.advanced-separator {
-  text-align: center;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  margin: 50px auto; /* Isse upar aur neeche acchi spacing milegi */
-  color: #fff; /* Text ka rang safed (white) */
-  text-shadow: 
-    0 0 10px #00ffa5, /* Pehla halka glow */
-    0 0 20px #00ffa5, /* Doosra medium glow */
-    0 0 30px #00ffa5; /* Teesra strong glow */
-  /* Animation for subtle pulsing glow (Agar aapko halka jhilmilata hua effect chahiye) */
-  animation: glow 1.5s ease-in-out infinite alternate;
+/* CONTAINER for Spacing */
+.advanced-separator-container {
+    text-align: center;
+    margin: 60px auto; /* Achi spacing */
 }
 
-@keyframes glow {
-  from {
-    text-shadow: 0 0 10px #00ffa5, 0 0 20px #00ffa5, 0 0 30px #00ffa5;
-  }
-  to {
-    text-shadow: 0 0 15px #00ffa5, 0 0 25px #00ffa5, 0 0 40px #00ffa5;
-  }
+/* THE GLOWING BOX */
+.advanced-separator-content {
+    /* Text Styling */
+    display: inline-block; /* Taaki span par width aur padding kaam kare */
+    padding: 12px 30px; /* Padding taaki text ke charon taraf space ho */
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #ffffff; /* Text color white */
+    border-radius: 10px;
+
+    /* Gradient Border/Glow Effect (Similar to the book highlight) */
+    background: linear-gradient(
+        90deg,
+        rgba(255, 77, 77, 0.15), /* Red Tint */
+        rgba(0, 255, 165, 0.15) /* Green Tint */
+    );
+    
+    /* Dual Color Border (Red and Purple/Green) */
+    border: 1px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to right, #ff4d4d, #9c00ff); /* Red to Purple Border */
+
+    /* Strong Shadow/Glow */
+    box-shadow: 
+        0 0 15px rgba(255, 77, 77, 0.45), /* Red glow */
+        0 0 30px rgba(156, 0, 255, 0.25); /* Purple glow */
+    
+    transition: all 0.3s ease;
+}
+
+/* Optional: Subtle Hover Effect */
+.advanced-separator-content:hover {
+    box-shadow: 
+        0 0 20px rgba(255, 77, 77, 0.7), 
+        0 0 40px rgba(156, 0, 255, 0.4);
+    transform: scale(1.02);
 }
