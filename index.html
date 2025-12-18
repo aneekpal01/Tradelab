@@ -497,6 +497,34 @@
   <footer class="footer">
     <p>© 2025 TradeLab — Educational purposes only.</p>
   </footer>
+<script>
+  let players = [];
+
+  function onYouTubeIframeAPIReady() {
+    const iframes = document.querySelectorAll('iframe[src*="youtube.com/embed"]');
+
+    iframes.forEach((iframe) => {
+      const player = new YT.Player(iframe, {
+        events: {
+          onStateChange: (event) => {
+            if (event.data === YT.PlayerState.PLAYING) {
+              players.forEach(p => {
+                if (p !== event.target) {
+                  p.pauseVideo();
+                }
+              });
+            }
+          }
+        }
+      });
+      players.push(player);
+    });
+  }
+
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.body.appendChild(tag);
+</script>
 
 </body>
 </html>
