@@ -332,3 +332,27 @@ section {
   padding: 35px 25px 25px;
   margin-top: 30px; 
 }
+/* ADVANCED CONCEPTS GLOWING SEPARATOR */
+.advanced-separator {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin: 50px auto; /* Isse upar aur neeche acchi spacing milegi */
+  color: #fff; /* Text ka rang safed (white) */
+  text-shadow: 
+    0 0 10px #00ffa5, /* Pehla halka glow */
+    0 0 20px #00ffa5, /* Doosra medium glow */
+    0 0 30px #00ffa5; /* Teesra strong glow */
+  /* Animation for subtle pulsing glow (Agar aapko halka jhilmilata hua effect chahiye) */
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #00ffa5, 0 0 20px #00ffa5, 0 0 30px #00ffa5;
+  }
+  to {
+    text-shadow: 0 0 15px #00ffa5, 0 0 25px #00ffa5, 0 0 40px #00ffa5;
+  }
+}
