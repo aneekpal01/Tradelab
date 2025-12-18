@@ -308,3 +308,11 @@ section {
   border-radius: 4px;
   pointer-events: none;
 }
+/* STEP 3A - ADVANCED HIGHLIGHT */
+.step-three-a {
+  border: 1px solid #ff4d4d;
+  box-shadow: 0 0 25px rgba(255, 77, 77, 0.25);
+  position: relative;
+  padding: 35px 25px 25px;
+  margin-top: 50px;
+}
