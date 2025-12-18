@@ -113,14 +113,32 @@ section {
   .hero h1 {
     font-size: 36px;
   }
-  }
-/* VIDEO EMBED */
+}
+
+/* ===== VIDEO CARD STYLING & FIXES ===== */
+
+/* Video Card Container */
+.video-card {
+  position: relative;
+  background: #0f141b;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease;
+  margin-bottom: 25px; /* Consolidated from multiple places */
+}
+
+.video-card:hover {
+  transform: scale(1.02);
+}
+
+/* Video Box: FORCED 16:9 ASPECT RATIO */
 .video-box {
   width: 100%;
   aspect-ratio: 16 / 9;
-  margin-bottom: 15px;
-  border-radius: 8px;
+  border-radius: 14px;
   overflow: hidden;
+  background: #000;
 }
 
 .video-box iframe {
@@ -128,88 +146,53 @@ section {
   height: 100%;
   border: none;
 }
-/* STEP 1 HIGHLIGHT */
-.step-one {
-  border: 1px solid #00ff9c;
-  box-shadow: 0 0 25px rgba(0, 255, 156, 0.25);
-  position: relative;
-  padding: 35px 25px 25px; /* FIX OVERLAP */
+
+/* LEVEL TAG */
+.level-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 20px;
+  z-index: 2;
 }
 
+.level-tag.beginner {
+  background: #00ff9c;
+  color: #000;
+}
 
+/* VIDEO DURATION */
+.duration {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 3px 6px;
+  font-size: 11px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* Removed: .play-overlay (as per prior request) */
+/* Removed: .level-tag.advanced (no 'advanced' usage found in HTML) */
+/* Removed: all .yt-fake-box / YT UI code (unnecessary experiment) */
+
+/* ===== LEARNING STEP STYLING ===== */
+
+.learning-card {
+  margin-bottom: 50px;
+  position: relative; /* Ensure badge position works */
+  padding: 35px 25px 25px; /* Standard padding for all cards */
+}
+
+/* Standard Step Badge */
 .step-badge {
   position: absolute;
   top: -12px;
   left: 20px;
-  background: #00ff9c;
-  color: #000;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-}
-/* STEP 2 HIGHLIGHT */
-.step-two {
-  border: 1px solid #00d4ff;
-  box-shadow: 0 0 25px rgba(0, 212, 255, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
-}
-/* STEP 3 HIGHLIGHT */
-.step-three {
-  border: 1px solid #ff4d4d;
-  box-shadow: 0 0 25px rgba(255, 77, 77, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-}
-/* SPACING FIX FOR STEPS */
-
-.learning-card {
-  margin-bottom: 50px;
-}
-
-.video-box {
-  margin-bottom: 25px;
-}
-/* STEP 3A HIGHLIGHT */
-.step-three {
-  border: 1px solid #ff4d4d;
-  box-shadow: 0 0 25px rgba(255, 77, 77, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-}
-/* STEP 3A BADGE FIX */
-.step-three {
-  position: relative;
-}
-
-.step-three-badge {
-  position: absolute;
-  top: -14px;
-  left: 20px;
-  background: #ff4d4d;
-  color: #000;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-  z-index: 10; /* 🔥 THIS IS IMPORTANT */
-}
-.step-three {
-  border: 1px solid #ff4d4d;
-  box-shadow: 0 0 25px rgba(255, 77, 77, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-}
-
-.step-three .step-badge {
-  position: absolute;
-  top: -12px;
-  left: 20px;
-  background: #ff4d4d;
   color: #000;
   font-size: 11px;
   font-weight: 700;
@@ -217,52 +200,72 @@ section {
   border-radius: 20px;
   letter-spacing: 0.5px;
   z-index: 10;
+}
+
+/* STEP 1 HIGHLIGHT */
+.step-one {
+  border: 1px solid #00ff9c;
+  box-shadow: 0 0 25px rgba(0, 255, 156, 0.25);
+}
+
+.step-one .step-badge {
+  background: #00ff9c;
+}
+
+/* STEP 2 HIGHLIGHT */
+.step-two {
+  border: 1px solid #00d4ff;
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.25);
+  margin-top: 30px;
+}
+
+.step-two .step-badge {
+  background: #00d4ff;
+}
+
+/* STEP 3 HIGHLIGHT */
+.step-three {
+  border: 1px solid #ff4d4d;
+  box-shadow: 0 0 25px rgba(255, 77, 77, 0.25);
+  margin-top: 30px; /* Added spacing for consistency */
+}
+
+.step-three .step-badge,
+.step-three-badge { /* Kept step-three-badge for 3A */
+  background: #ff4d4d;
 }
 
 /* STEP 4 HIGHLIGHT */
 .step-four {
   border: 1px solid #ffb700;
   box-shadow: 0 0 25px rgba(255, 183, 0, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
   margin-top: 30px;
 }
 
 .step-four .step-badge {
-  position: absolute;
-  top: -12px;
-  left: 20px;
   background: #ffb700;
-  color: #000;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-  z-index: 10;
 }
 
 /* STEP 5 HIGHLIGHT */
 .step-five {
   border: 1px solid #9c00ff;
   box-shadow: 0 0 25px rgba(156, 0, 255, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
   margin-top: 30px;
 }
 
 .step-five .step-badge {
-  position: absolute;
-  top: -12px;
-  left: 20px;
   background: #9c00ff;
-  color: #000;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-  z-index: 10;
+}
+
+/* STEP 6 HIGHLIGHT (Consolidated) */
+.step-six {
+  border: 1px solid #00ffa5;
+  box-shadow: 0 0 25px rgba(0, 255, 165, 0.25);
+  margin-top: 30px;
+}
+
+.step-six .step-badge {
+  background: #00ffa5;
 }
 
 /* BOOK HIGHLIGHT - TRADING PSYCHOLOGY */
@@ -283,206 +286,9 @@ section {
   font-weight: 600;
 }
 
-/* Optional subtle pulse glow */
 .book-highlight:hover {
   box-shadow:
     0 0 18px rgba(156, 0, 255, 0.7),
     0 0 35px rgba(0, 255, 156, 0.4);
   transition: 0.3s ease;
-}
-/* STEP 6 HIGHLIGHT */
-.step-six {
-  border: 1px solid #00ffa5;
-  box-shadow: 0 0 25px rgba(0, 255, 165, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
-}
-
-.step-six .step-badge {
-  position: absolute;
-  top: -12px;
-  left: 20px;
-  background: #00ffa5;
-  color: #000;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-  z-index: 10;
-}
-/* STEP 6 HIGHLIGHT */
-.step-six {
-  border: 1px solid #00ffa5;
-  box-shadow: 0 0 25px rgba(0, 255, 165, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
-}
-
-.step-six .step-badge {
-  position: absolute;
-  top: -12px;
-  left: 20px;
-  background: #00ffa5;
-  color: #000;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-  z-index: 10;
-}
-/* YOUTUBE STYLE VIDEO CARD */
-.video-card {
-  position: relative;
-  background: #0f141b;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 0 30px rgba(0,0,0,0.6);
-  transition: transform 0.3s ease;
-}
-
-.video-card:hover {
-  transform: scale(1.02);
-}
-
-/* PLAY ICON */
-.play-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 64px;
-  color: #fff;
-  background: rgba(0,0,0,0.35);
-  pointer-events: none;
-}
-
-/* LEVEL TAG */
-.level-tag {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  padding: 4px 10px;
-  font-size: 11px;
-  font-weight: 700;
-  border-radius: 20px;
-  z-index: 2;
-}
-
-.level-tag.beginner {
-  background: #00ff9c;
-  color: #000;
-}
-
-.level-tag.advanced {
-  background: #ff4d4d;
-  color: #000;
-}
-
-/* VIDEO DURATION */
-.duration {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: rgba(0,0,0,0.7);
-  padding: 3px 6px;
-  font-size: 11px;
-  border-radius: 4px;
-  z-index: 2;
-}
-
-.video-box {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #000;
-}
-
-.video-box iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-/* ===== YOUTUBE FAKE UI ===== */
-.yt-fake-box {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #000;
-}
-
-.yt-fake-box iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-.yt-top {
-  position: absolute;
-  top: 10px;
-  left: 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  z-index: 3;
-  background: rgba(0,0,0,0.55);
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 12px;
-}
-
-.yt-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-.red { background:#ff5f56; }
-.yellow { background:#ffbd2e; }
-.green { background:#27c93f; }
-
-.yt-title {
-  margin-left: 6px;
-  color: #fff;
-  opacity: 0.9;
-}
-
-.yt-play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 80px;
-  height: 80px;
-  background: rgba(0,0,0,0.55);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-}
-.yt-play::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 54%;
-  transform: translate(-50%, -50%);
-  border-left: 24px solid white;
-  border-top: 14px solid transparent;
-  border-bottom: 14px solid transparent;
-}
-
-.yt-time {
-  position: absolute;
-  right: 12px;
-  bottom: 10px;
-  background: rgba(0,0,0,0.65);
-  padding: 4px 8px;
-  font-size: 12px;
-  border-radius: 6px;
-  z-index: 3;
 }
