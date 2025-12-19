@@ -441,3 +441,16 @@ section {
   background: #ff00ff;
   color: #000;
 }
+/* STEP 7B - TRAILING STOP-LOSS HIGHLIGHT */
+.step-seven-b {
+  border: 1px solid #ffa500; /* orange */
+  box-shadow: 0 0 25px rgba(255, 165, 0, 0.25);
+  position: relative;
+  padding: 35px 25px 25px;
+  margin-top: 30px;
+}
+
+.step-seven-b .step-badge {
+  background: #ffa500;
+  color: #000;
+}
