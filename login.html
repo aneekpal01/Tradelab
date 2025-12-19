@@ -23,7 +23,8 @@
             align-items: center;
             padding: 20px;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         .bg-grid {
@@ -92,6 +93,7 @@
             position: relative;
             z-index: 1;
             animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            margin: 20px auto;
         }
 
         @keyframes slideIn {
@@ -461,19 +463,30 @@
         }
 
         @media (max-width: 968px) {
+            body {
+                align-items: flex-start;
+                padding: 20px 15px;
+            }
             .login-wrapper {
                 flex-direction: column;
+                margin: 0 auto;
             }
             .login-left {
                 border-right: none;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-                padding: 40px;
+                padding: 30px 25px;
             }
             .login-right {
-                padding: 40px;
+                padding: 30px 25px;
             }
             .features-list {
-                margin-top: 30px;
+                margin-top: 25px;
+            }
+            .logo-3d {
+                font-size: 40px;
+            }
+            .form-title {
+                font-size: 26px;
             }
         }
     </style>
