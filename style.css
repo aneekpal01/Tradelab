@@ -535,16 +535,17 @@ section {
   background: #ff1744;
   color: #000;
 }
-/* STEP 5A2 - SUPPLY & DEMAND MASTERCLASS */
-.step-five-a2 {
-  border: 1px solid #00ff9c; /* same green as STEP 5 */
-  box-shadow: 0 0 25px rgba(0, 255, 156, 0.25);
+
+/* STEP 5A2 -  Supply and Demand Masterclass (Beginner to Pro) */
+.step-five-a1 {
+  border: 1px solid #00bcd4;
+  box-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
   position: relative;
   padding: 35px 25px 25px;
   margin-top: 30px;
 }
 
-.step-five-a2 .step-badge {
-  background: #00ff9c;
+.step-five-a1 .step-badge {
+  background: #00bcd4;
   color: #000;
 }
