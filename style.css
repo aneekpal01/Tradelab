@@ -522,3 +522,16 @@ section {
   background: #00bfa6;
   color: #000;
 }
+/* STEP 9 - BACKTESTING (MOST IMPORTANT) */
+.step-nine {
+  border: 1px solid #ff1744; /* strong red for importance */
+  box-shadow: 0 0 25px rgba(255, 23, 68, 0.25);
+  position: relative;
+  padding: 35px 25px 25px;
+  margin-top: 40px;
+}
+
+.step-nine .step-badge {
+  background: #ff1744;
+  color: #000;
+}
