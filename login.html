@@ -674,6 +674,17 @@
     window.location.href = "index.html"; // main website
   }
 </script>
+<script>
+  function loginUser(event) {
+    event.preventDefault();
+
+    // fake login success
+    localStorage.setItem("isLoggedIn", "true");
+
+    // redirect to main website
+    window.location.href = "index.html";
+  }
+</script>
 
     
 </body>
