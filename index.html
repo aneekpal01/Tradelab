@@ -22,6 +22,8 @@
       <li><a href="#market">Market</a></li>
       <li><a href="#community">Community</a></li>
       <li><a href="login.html">Login</a></li>
+      <li><a href="#" onclick="logoutUser()">Logout</a></li>
+
     </ul>
   </nav>
 
@@ -691,6 +693,14 @@
       });
     }
   </script>
+<script>
+  function logoutUser() {
+    localStorage.removeItem("isLoggedIn");
+    window.location.href = "login.html";
+  }
+</script>
+</body>
+</html>
 
 </body>
 </html>
