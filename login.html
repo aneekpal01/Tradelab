@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up | TradeLab</title>
+    <title>Create a TradeLab account</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,187 +15,222 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #0a0e27;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f1729 0%, #1a1f35 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             padding: 40px 20px;
             position: relative;
             overflow-x: hidden;
             overflow-y: auto;
         }
 
-        .bg-grid {
+        body::before {
+            content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 255, 200, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 200, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(0, 255, 200, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(0, 132, 255, 0.06) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
             pointer-events: none;
-            z-index: 0;
         }
 
-        .gradient-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.12;
-            pointer-events: none;
-            z-index: 0;
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 30px); }
         }
 
-        .orb-1 {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, #00ffc8, transparent);
-            top: -200px;
-            right: -200px;
-        }
-
-        .orb-2 {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, #0084ff, transparent);
-            bottom: -150px;
-            left: -150px;
-        }
-
-        .signup-container {
-            background: rgba(15, 20, 40, 0.8);
-            backdrop-filter: blur(30px);
-            border-radius: 24px;
-            padding: 50px 40px;
-            max-width: 480px;
+        .container {
+            background: rgba(20, 25, 40, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 60px 50px;
             width: 100%;
+            max-width: 520px;
             box-shadow: 
-                0 30px 90px rgba(0, 0, 0, 0.5),
+                0 30px 80px rgba(0, 0, 0, 0.5),
                 inset 0 1px 0 rgba(255, 255, 255, 0.05),
                 0 0 0 1px rgba(255, 255, 255, 0.03);
             position: relative;
             z-index: 1;
-            animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: slideUp 0.6s ease;
+            margin: 20px auto;
         }
 
-        @keyframes slideIn {
+        @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(30px) scale(0.95);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+                transform: translateY(0);
             }
         }
 
         .logo-section {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             position: relative;
         }
 
-        .logo-container {
-            display: inline-block;
+        .logo-image {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
             position: relative;
+            z-index: 2;
         }
 
-        .particle-ring {
+        .logo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(0, 255, 200, 0.3));
+        }
+
+        .particle-container {
             position: absolute;
-            top: 50%;
+            top: 40px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 180px;
-            height: 180px;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
             pointer-events: none;
         }
 
         .orbit-particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 5px;
+            height: 5px;
             background: linear-gradient(135deg, #00ffc8, #00d4ff);
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0, 255, 200, 0.8);
+            box-shadow: 0 0 12px rgba(0, 255, 200, 0.8);
         }
 
-        .orbit-particle:nth-child(1) { animation: orbit1 6s linear infinite; }
-        .orbit-particle:nth-child(2) { animation: orbit2 8s linear infinite; }
-        .orbit-particle:nth-child(3) { animation: orbit3 7s linear infinite; }
+        .orbit-particle:nth-child(1) {
+            animation: orbit1 8s linear infinite;
+        }
+        .orbit-particle:nth-child(2) {
+            animation: orbit2 10s linear infinite;
+        }
+        .orbit-particle:nth-child(3) {
+            animation: orbit3 12s linear infinite;
+        }
+        .orbit-particle:nth-child(4) {
+            animation: orbit4 9s linear infinite;
+        }
 
         @keyframes orbit1 {
-            0% { transform: rotate(0deg) translateX(80px) rotate(0deg); opacity: 0.3; }
+            0% { transform: rotate(0deg) translateX(90px) rotate(0deg); opacity: 0.3; }
             50% { opacity: 1; }
-            100% { transform: rotate(360deg) translateX(80px) rotate(-360deg); opacity: 0.3; }
+            100% { transform: rotate(360deg) translateX(90px) rotate(-360deg); opacity: 0.3; }
         }
 
         @keyframes orbit2 {
-            0% { transform: rotate(120deg) translateX(70px) rotate(-120deg); opacity: 0.4; }
+            0% { transform: rotate(90deg) translateX(80px) rotate(-90deg); opacity: 0.4; }
             50% { opacity: 1; }
-            100% { transform: rotate(480deg) translateX(70px) rotate(-480deg); opacity: 0.4; }
+            100% { transform: rotate(450deg) translateX(80px) rotate(-450deg); opacity: 0.4; }
         }
 
         @keyframes orbit3 {
-            0% { transform: rotate(240deg) translateX(75px) rotate(-240deg); opacity: 0.5; }
+            0% { transform: rotate(180deg) translateX(85px) rotate(-180deg); opacity: 0.5; }
             50% { opacity: 1; }
-            100% { transform: rotate(600deg) translateX(75px) rotate(-600deg); opacity: 0.5; }
+            100% { transform: rotate(540deg) translateX(85px) rotate(-540deg); opacity: 0.5; }
+        }
+
+        @keyframes orbit4 {
+            0% { transform: rotate(270deg) translateX(95px) rotate(-270deg); opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { transform: rotate(630deg) translateX(95px) rotate(-630deg); opacity: 0.3; }
+        }
+
+        .logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(0, 255, 200, 0.2), transparent);
+            filter: blur(40px);
+            pointer-events: none;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
         }
 
         .logo {
-            font-size: 38px;
-            font-weight: 900;
+            font-size: 42px;
+            font-weight: 800;
             background: linear-gradient(135deg, #00ffc8 0%, #00d4ff 50%, #0084ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             letter-spacing: -1px;
-            margin-bottom: 12px;
-            animation: logoGlow 3s ease-in-out infinite;
+            margin-bottom: 8px;
             position: relative;
+            display: inline-block;
+            animation: logoGlow 3s ease-in-out infinite, logoFloat 4s ease-in-out infinite;
         }
 
         @keyframes logoGlow {
-            0%, 100% { filter: drop-shadow(0 0 8px rgba(0, 255, 200, 0.4)); }
-            50% { filter: drop-shadow(0 0 20px rgba(0, 255, 200, 0.8)); }
+            0%, 100% { 
+                filter: drop-shadow(0 0 10px rgba(0, 255, 200, 0.5)) drop-shadow(0 0 20px rgba(0, 255, 200, 0.3));
+            }
+            50% { 
+                filter: drop-shadow(0 0 20px rgba(0, 255, 200, 0.9)) drop-shadow(0 0 40px rgba(0, 255, 200, 0.6)) drop-shadow(0 0 60px rgba(0, 132, 255, 0.4));
+            }
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
         }
 
         .page-title {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 700;
-            color: #fff;
-            margin-bottom: 8px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
             letter-spacing: -0.5px;
         }
 
         .page-subtitle {
-            font-size: 15px;
+            font-size: 16px;
             color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            margin-bottom: 40px;
             font-weight: 400;
-            margin-bottom: 35px;
         }
 
-        .social-buttons {
+        .auth-buttons {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
             margin-bottom: 32px;
         }
 
-        .social-btn {
+        .auth-btn {
             width: 100%;
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
+            color: #ffffff;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -203,21 +238,21 @@
             font-family: 'Inter', sans-serif;
         }
 
-        .social-btn:hover {
+        .auth-btn:hover {
             background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .social-btn svg {
-            flex-shrink: 0;
+        .auth-btn:active {
+            transform: translateY(0);
         }
 
         .divider {
             text-align: center;
-            margin: 32px 0;
             position: relative;
+            margin: 32px 0;
         }
 
         .divider::before {
@@ -231,72 +266,121 @@
         }
 
         .divider span {
-            background: rgba(15, 20, 40, 0.9);
+            background: rgba(20, 25, 40, 0.9);
             padding: 0 16px;
-            color: rgba(255, 255, 255, 0.35);
-            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
             position: relative;
             z-index: 1;
             text-transform: uppercase;
-            letter-spacing: 1px;
             font-weight: 600;
+            letter-spacing: 1px;
         }
 
-        .email-btn {
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
             width: 100%;
-            padding: 14px;
+            padding: 14px 16px;
             background: rgba(255, 255, 255, 0.04);
             border: 1.5px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
-            color: rgba(255, 255, 255, 0.85);
             font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
+            color: #ffffff;
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 24px;
             font-family: 'Inter', sans-serif;
         }
 
-        .email-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.15);
+        .form-input:focus {
+            outline: none;
+            border-color: #00ffc8;
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 0 4px rgba(0, 255, 200, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .password-hint {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 6px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #00ffc8 0%, #00d4ff 100%);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f1729;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            margin-top: 8px;
+            box-shadow: 0 4px 20px rgba(0, 255, 200, 0.3);
+        }
+
+        .submit-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 255, 200, 0.5);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .sso-btn {
             width: 100%;
-            padding: 14px;
+            padding: 14px 20px;
             background: transparent;
             border: 1.5px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 32px;
+            margin-top: 16px;
             font-family: 'Inter', sans-serif;
         }
 
         .sso-btn:hover {
             background: rgba(255, 255, 255, 0.03);
-            border-color: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
         .terms {
             text-align: center;
             font-size: 13px;
             color: rgba(255, 255, 255, 0.4);
+            margin-top: 40px;
             line-height: 1.6;
-            margin-top: 32px;
         }
 
         .terms a {
@@ -308,168 +392,377 @@
 
         .terms a:hover {
             color: #00ffff;
-            text-shadow: 0 0 10px rgba(0, 255, 200, 0.4);
+            text-shadow: 0 0 10px rgba(0, 255, 200, 0.5);
         }
 
-        .login-link {
+        .switch-auth {
             text-align: center;
-            margin-top: 24px;
+            font-size: 15px;
             color: rgba(255, 255, 255, 0.5);
-            font-size: 14px;
+            margin-top: 28px;
             font-weight: 500;
         }
 
-        .login-link a {
+        .switch-auth a {
             color: #00ffc8;
             text-decoration: none;
             font-weight: 700;
             transition: all 0.3s;
         }
 
-        .login-link a:hover {
+        .switch-auth a:hover {
             color: #00ffff;
-            text-shadow: 0 0 10px rgba(0, 255, 200, 0.4);
+            text-shadow: 0 0 10px rgba(0, 255, 200, 0.5);
+        }
+
+        .message {
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+            border: 1.5px solid;
+        }
+
+        .message.success {
+            background: rgba(0, 255, 200, 0.1);
+            color: #00ffc8;
+            border-color: rgba(0, 255, 200, 0.3);
+        }
+
+        .message.error {
+            background: rgba(255, 100, 100, 0.1);
+            color: #ff6464;
+            border-color: rgba(255, 100, 100, 0.3);
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 32px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px;
+            border-radius: 12px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .auth-tab.active {
+            background: rgba(0, 255, 200, 0.12);
+            color: #00ffc8;
+        }
+
+        .auth-tab:hover:not(.active) {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
         }
 
         @media (max-width: 568px) {
-            .signup-container {
-                padding: 40px 30px;
-            }
-            .logo {
-                font-size: 32px;
+            .container {
+                padding: 50px 35px;
             }
             .page-title {
-                font-size: 24px;
+                font-size: 26px;
+            }
+            .logo {
+                font-size: 36px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="bg-grid"></div>
-    <div class="gradient-orb orb-1"></div>
-    <div class="gradient-orb orb-2"></div>
-    
-    <div class="signup-container">
+    <div class="container">
         <div class="logo-section">
-            <div class="logo-container">
-                <div class="particle-ring">
-                    <div class="orbit-particle"></div>
-                    <div class="orbit-particle"></div>
-                    <div class="orbit-particle"></div>
-                </div>
-                <img src="images/logo.png" alt="Trade Lab Logo" class="logo-img">
-
+            <div class="logo-glow"></div>
+            <div class="logo-image">
+                <img src="images/logo.png" alt="TradeLab Logo">
             </div>
+            <div class="particle-container">
+                <div class="orbit-particle"></div>
+                <div class="orbit-particle"></div>
+                <div class="orbit-particle"></div>
+                <div class="orbit-particle"></div>
+            </div>
+            <div class="logo">TradeLab</div>
         </div>
 
         <h1 class="page-title">Create a TradeLab account</h1>
         <p class="page-subtitle">Start your trading education journey today</p>
 
-        <div class="social-buttons">
-            <button class="social-btn" id="googleBtn">
-                <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
-                    <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
-                    <path d="M9.003 18c2.43 0 4.467-.806 5.956-2.184l-2.909-2.258c-.806.54-1.836.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18z" fill="#34A853"/>
-                    <path d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707 0-.593.102-1.17.282-1.709V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.335z" fill="#FBBC05"/>
-                    <path d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.426 0 9.003 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71z" fill="#EA4335"/>
-                </svg>
-                Continue with Google
-            </button>
-
-            <button class="social-btn" id="githubBtn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                </svg>
-                Continue with GitHub
-            </button>
-
-            <button class="social-btn" id="xBtn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-                Continue with X
-            </button>
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchTab('signup')">Sign Up</button>
+            <button class="auth-tab" onclick="switchTab('login')">Log in</button>
         </div>
 
-        <div class="divider">
-            <span>or</span>
-        </div>
+        <div id="message" class="message"></div>
 
-        <button class="email-btn" id="emailBtn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-            </svg>
-            Email & password
-        </button>
+        <!-- SIGNUP FORM -->
+        <form id="signupForm" class="auth-form active">
+            <div class="auth-buttons">
+                <button type="button" class="auth-btn" id="googleSignupBtn">
+                    <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
+                        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+                        <path d="M9.003 18c2.43 0 4.467-.806 5.956-2.184l-2.909-2.258c-.806.54-1.836.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18z" fill="#34A853"/>
+                        <path d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707 0-.593.102-1.17.282-1.709V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.335z" fill="#FBBC05"/>
+                        <path d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.426 0 9.003 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71z" fill="#EA4335"/>
+                    </svg>
+                    Continue with Google
+                </button>
 
-        <button class="sso-btn" id="ssoBtn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                <polyline points="10 17 15 12 10 7"></polyline>
-                <line x1="15" y1="12" x2="3" y2="12"></line>
-            </svg>
-            Single sign-on (SSO)
-        </button>
+                <button type="button" class="auth-btn" id="githubSignupBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    Continue with GitHub
+                </button>
+
+                <button type="button" class="auth-btn" id="xSignupBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    Continue with X
+                </button>
+            </div>
+
+            <div class="divider"><span>OR</span></div>
+
+            <div class="form-group">
+                <label class="form-label" for="signupEmail">Email address</label>
+                <input type="email" id="signupEmail" class="form-input" placeholder="name@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" class="form-input" placeholder="Create a password" required minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+                <p class="password-hint">Must be 8+ characters with 1 uppercase, 1 lowercase, and 1 number</p>
+            </div>
+
+            <button type="submit" class="submit-btn" id="signupBtn">Create Account</button>
+
+            <button type="button" class="sso-btn" id="ssoSignupBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                Single sign-on (SSO)
+            </button>
+        </form>
+
+        <!-- LOGIN FORM -->
+        <form id="loginForm" class="auth-form">
+            <div class="auth-buttons">
+                <button type="button" class="auth-btn" id="googleLoginBtn">
+                    <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
+                        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+                        <path d="M9.003 18c2.43 0 4.467-.806 5.956-2.184l-2.909-2.258c-.806.54-1.836.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18z" fill="#34A853"/>
+                        <path d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707 0-.593.102-1.17.282-1.709V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.335z" fill="#FBBC05"/>
+                        <path d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.426 0 9.003 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71z" fill="#EA4335"/>
+                    </svg>
+                    Continue with Google
+                </button>
+
+                <button type="button" class="auth-btn" id="githubLoginBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    Continue with GitHub
+                </button>
+
+                <button type="button" class="auth-btn" id="xLoginBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    Continue with X
+                </button>
+            </div>
+
+            <div class="divider"><span>OR</span></div>
+
+            <div class="form-group">
+                <label class="form-label" for="loginEmail">Email address</label>
+                <input type="email" id="loginEmail" class="form-input" placeholder="name@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="submit-btn" id="loginBtn">Sign In</button>
+
+            <button type="button" class="sso-btn" id="ssoLoginBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                Single sign-on (SSO)
+            </button>
+        </form>
 
         <div class="terms">
             By continuing, you agree to TradeLab's<br>
-            <a href="#" id="termsLink">Terms of Service</a> and <a href="#" id="privacyLink">Privacy Policy</a>
+            <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
         </div>
 
-        <div class="login-link">
-            Already have an account? <a href="#" id="loginLink">Log in</a>
+        <div class="switch-auth">
+            Already have an account? <a href="#" id="switchLink" onclick="switchTab('login'); return false;">Log in</a>
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
     <script>
-        // Login functionality
-        function loginUser(event) {
-            event.preventDefault();
-            // Save login status in browser
-            localStorage.setItem("isLoggedIn", "true");
-            // Redirect to main website
-            window.location.href = "index.html";
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB-iGxDeWqQXMWPQzj1IyAZO9ApaD_WsLo",
+            authDomain: "tradelab-36d73.firebaseapp.com",
+            projectId: "tradelab-36d73",
+            storageBucket: "tradelab-36d73.firebasestorage.app",
+            messagingSenderId: "29426653428",
+            appId: "1:29426653428:web:c6bce7c3d70ecd5be4bf51"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.auth-tab');
+            const forms = document.querySelectorAll('.auth-form');
+            const switchLink = document.getElementById('switchLink');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            forms.forEach(f => f.classList.remove('active'));
+            
+            if (tab === 'signup') {
+                tabs[0].classList.add('active');
+                document.getElementById('signupForm').classList.add('active');
+                switchLink.textContent = 'Log in';
+                switchLink.onclick = () => { switchTab('login'); return false; };
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+                switchLink.textContent = 'Sign up';
+                switchLink.onclick = () => { switchTab('signup'); return false; };
+            }
+            
+            hideMessage();
         }
 
-        document.getElementById('googleBtn').addEventListener('click', function() {
-            console.log('Google OAuth initiated');
-            loginUser(event);
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            
+            if (type === 'error') {
+                setTimeout(() => messageDiv.style.display = 'none', 5000);
+            }
+        }
+
+        function hideMessage() {
+            document.getElementById('message').style.display = 'none';
+        }
+
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+        ['googleSignupBtn', 'googleLoginBtn'].forEach(id => {
+            document.getElementById(id).addEventListener('click', async () => {
+                try {
+                    await auth.signInWithPopup(googleProvider);
+                    showMessage('✓ Success! Redirecting...', 'success');
+                    setTimeout(() => window.location.href = 'index.html', 1500);
+                } catch (error) {
+                    showMessage('⚠ Google sign-in failed. Please try again.', 'error');
+                }
+            });
         });
 
-        document.getElementById('githubBtn').addEventListener('click', function() {
-            console.log('GitHub OAuth initiated');
-            loginUser(event);
+        ['githubSignupBtn', 'githubLoginBtn', 'xSignupBtn', 'xLoginBtn'].forEach(id => {
+            document.getElementById(id).addEventListener('click', () => {
+                showMessage('⚠ This authentication method is not yet configured.', 'error');
+            });
         });
 
-        document.getElementById('xBtn').addEventListener('click', function() {
-            console.log('X OAuth initiated');
-            loginUser(event);
+        ['ssoSignupBtn', 'ssoLoginBtn'].forEach(id => {
+            document.getElementById(id).addEventListener('click', () => {
+                showMessage('⚠ SSO is available for enterprise accounts only.', 'error');
+            });
         });
 
-        document.getElementById('emailBtn').addEventListener('click', function() {
-            console.log('Email signup form');
-            loginUser(event);
-        });
-
-        document.getElementById('ssoBtn').addEventListener('click', function() {
-            console.log('SSO login');
-            loginUser(event);
-        });
-
-        document.getElementById('loginLink').addEventListener('click', function(e) {
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            window.location.href = 'login.html';
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const btn = document.getElementById('signupBtn');
+            
+            const passwordPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+            if (!passwordPattern.test(password)) {
+                showMessage('⚠ Password must be 8+ characters with 1 uppercase, 1 lowercase, and 1 number', 'error');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = 'Creating account...';
+            
+            try {
+                await auth.createUserWithEmailAndPassword(email, password);
+                showMessage('✓ Account created! Redirecting...', 'success');
+                setTimeout(() => window.location.href = 'index.html', 1500);
+            } catch (error) {
+                let errorMsg = 'Signup failed. Please try again.';
+                if (error.code === 'auth/email-already-in-use') errorMsg = 'This email is already registered.';
+                else if (error.code === 'auth/invalid-email') errorMsg = 'Invalid email address.';
+                showMessage('⚠ ' + errorMsg, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
+            }
         });
 
-        document.getElementById('termsLink').addEventListener('click', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            console.log('Terms of Service');
-        });
-
-        document.getElementById('privacyLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Privacy Policy');
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            
+            btn.disabled = true;
+            btn.textContent = 'Signing in...';
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showMessage('✓ Login successful! Redirecting...', 'success');
+                setTimeout(() => window.location.href = 'index.html', 1500);
+            } catch (error) {
+                let errorMsg = 'Login failed. Please try again.';
+                if (error.code === 'auth/user-not-found') errorMsg = 'No account found with this email.';
+                else if (error.code === 'auth/wrong-password') errorMsg = 'Incorrect password.';
+                showMessage('⚠ ' + errorMsg, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Sign In';
+            }
         });
     </script>
 </body>
