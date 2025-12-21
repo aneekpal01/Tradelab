@@ -562,3 +562,8 @@ section {
   background: #ff9100;
   color: #000;
 }
+.logo-img {
+  width: 140px;
+  margin: 10px auto 20px;
+  display: block;
+}
