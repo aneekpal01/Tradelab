@@ -5,13 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TradeLab | Free Trading Education</title>
   <link rel="stylesheet" href="style.css"/>
-  <script>
-  if (localStorage.getItem("isLoggedIn") !== "true") {
-    window.location.href = "login.html";
-  }
-</script>
-
-</head>
+  </head>
 <body>
 
   <nav class="navbar">
@@ -23,9 +17,12 @@
       
       <li><a href="#market">Market</a></li>
       <li><a href="#community">Community</a></li>
-      <li><a href="login.html">Login</a></li>
-      <li><a href="#" onclick="logoutUser()">Logout</a></li>
 
+      <li id="loginItem"><a href="login.html">Login</a></li>
+      
+      <li id="userItem" style="display: none; color: #00ffc8; font-weight: 600; font-size: 14px; padding-top: 10px;"></li>
+
+      <li id="logoutItem" style="display: none;"><a href="#" onclick="logoutUser()">Logout</a></li>
     </ul>
   </nav>
 
@@ -50,7 +47,7 @@
   <span class="step-badge">STEP 1 · START HERE</span>
 
   <h3>Trading Roadmap (0 → Advanced)</h3>
-   
+    
   <div class="video-card"> 
 
     <span class="level-tag beginner">BEGINNER</span>
@@ -58,7 +55,7 @@
 
     <div class="video-box">
       <iframe
-        src="https://www.youtube.com/embed/hqXoZtC2sEU?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3"
+        src="https://www.youtube.com/embed/hqXoZtC2sEU?autoplay=0&mute=0&controls=1&rel=0&modestbranding=1&playsinline=1"
         allowfullscreen>
       </iframe>
     </div>
@@ -70,7 +67,7 @@
     Watch this first before learning anything else.
   </p>
 </div>
-   
+    
 <div class="learning-card step-two">
   <span class="step-badge step-two-badge">STEP 2 · CANDLESTICKS</span>
 
@@ -357,7 +354,7 @@
     beginner to advanced level.
   </p>
 </div>
-   
+    
 <div class="learning-card step-five-b1">
   <span class="step-badge">STEP 5B1 · SMART MONEY CONCEPT (SMC)</span>
 
@@ -405,7 +402,7 @@
 
  <div class="video-card">
 
- 
+  
   <span class="duration">8:51</span>
 
   <div class="video-box">
@@ -425,7 +422,7 @@
   </p>
 </div>
 
-   
+    
 <div class="learning-card step-six">
   <span class="step-badge">STEP 6A · EMA / MOVING AVERAGE</span>
 
@@ -559,3 +556,63 @@
     Scale Out to protect profits.
   </p>
 </div>
+</section>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+<script>
+  // 1. Firebase Configuration
+  const firebaseConfig = {
+      apiKey: "AIzaSyB-iGxDeWqQXMWPQzj1IyAZO9ApaD_WsLo",
+      authDomain: "tradelab-36d73.firebaseapp.com",
+      projectId: "tradelab-36d73",
+      storageBucket: "tradelab-36d73.firebasestorage.app",
+      messagingSenderId: "29426653428",
+      appId: "1:29426653428:web:c6bce7c3d70ecd5be4bf51"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  // 2. Control Navigation Elements
+  const loginItem = document.getElementById('loginItem');
+  const logoutItem = document.getElementById('logoutItem');
+  const userItem = document.getElementById('userItem');
+
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      // User is Logged In
+      console.log("Logged in as:", user.email);
+      
+      loginItem.style.display = 'none';   // Hide Login
+      logoutItem.style.display = 'block'; // Show Logout
+      userItem.style.display = 'block';   // Show Username
+      userItem.textContent = "Hi, " + user.email.split('@')[0]; // Show name from email
+    } else {
+      // User is Logged Out
+      console.log("No user logged in.");
+      
+      loginItem.style.display = 'block';  // Show Login
+      logoutItem.style.display = 'none';  // Hide Logout
+      userItem.style.display = 'none';    // Hide Username
+      
+      // OPTIONAL: If you want to force login, uncomment the line below:
+      // window.location.href = "login.html";
+    }
+  });
+
+  // 3. Logout Function
+  function logoutUser() {
+    auth.signOut().then(() => {
+      alert("Logged out successfully");
+      window.location.reload(); // Refresh page to update UI
+    }).catch((error) => {
+      console.error("Error logging out:", error);
+    });
+  }
+</script>
+
+</body>
+</html>
