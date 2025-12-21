@@ -558,12 +558,13 @@ section {
   margin-top: 40px;
 }
 
-.step-ten .step-badge {
-  background: #ff9100;
-  color: #000;
-}
 .logo-img {
-  width: 140px;
-  margin: 10px auto 20px;
+  width: 120px;
+  height: auto;
   display: block;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
 }
+
+
