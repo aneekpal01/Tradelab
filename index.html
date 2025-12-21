@@ -5,23 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TradeLab | Free Trading Education</title>
   <link rel="stylesheet" href="style.css"/>
-  </head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      opacity: 0; /* Shuru mein page invisible rahega */
+      transition: opacity 0.5s ease;
+    }
+  </style>
+</head>
 <body>
 
   <nav class="navbar">
     <div class="logo">TradeLab</div>
     <ul class="nav-links">
       <li><a href="#learn">Learning Vault</a></li>
-      
       <li><a href="backtest.html" style="color: #58a6ff;">Backtesting Lab</a></li>
-      
       <li><a href="#market">Market</a></li>
       <li><a href="#community">Community</a></li>
 
       <li id="loginItem"><a href="login.html">Login</a></li>
-      
       <li id="userItem" style="display: none; color: #00ffc8; font-weight: 600; font-size: 14px; padding-top: 10px;"></li>
-
       <li id="logoutItem" style="display: none;"><a href="#" onclick="logoutUser()">Logout</a></li>
     </ul>
   </nav>
@@ -36,583 +41,324 @@
   </section>
 
   <section id="learn" class="learning">
-  <h2>Learning Vault</h2>
-  <p class="section-intro">
-    Structured, free trading education — built for clarity, not hype.
-  </p>
+    <h2>Learning Vault</h2>
+    <p class="section-intro">
+      Structured, free trading education — built for clarity, not hype.
+    </p>
+
+    <div class="learning-grid">
+      <div class="learning-card step-one">
+        <span class="step-badge">STEP 1 · START HERE</span>
+        <h3>Trading Roadmap (0 → Advanced)</h3>
+        <div class="video-card"> 
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">33:13</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/hqXoZtC2sEU?autoplay=0&mute=0&controls=1&rel=0" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Complete beginner-to-advanced trading roadmap. Watch this first before learning anything else.</p>
+      </div>
+      
+      <div class="learning-card step-two">
+        <span class="step-badge step-two-badge">STEP 2 · CANDLESTICKS</span>
+        <h3>Learn Candlestick Patterns</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">13:30</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/AOz1YPOKvEs" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn candlestick basics, important patterns, and the psychology behind price movement.</p>
+      </div>
+
+      <div class="learning-card step-two">
+        <span class="step-badge step-two-badge">STEP 2A · MARKET STRUCTURE</span>
+        <h3>Basics of Market Structure</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">20:45</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/sZAE_lqdeno" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Understand market structure: higher high, higher low, trend shifts, BOS, and structure-based thinking.</p>
+      </div>
+
+      <div class="learning-card step-two">
+        <span class="step-badge step-two-badge">STEP 2B · TRENDLINES</span>
+        <h3>Learn Trendlines (Correct Way)</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">45:25</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/Y8efWZ2M1y8" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how to draw valid trendlines, common mistakes, and trend confirmation.</p>
+      </div>
+
+      <div class="learning-card step-three">
+        <span class="step-badge step-three-badge">STEP 3 · SUPPORT & RESISTANCE</span>
+        <h3>Support & Resistance (Core Concept)</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">41:26</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/nuVv0ZWUfs4" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how institutions mark support & resistance, role-reversal, and supply–demand zones.</p>
+      </div>
+
+      <div class="learning-card step-three">
+        <span class="step-three-badge">STEP 3A · ADVANCED</span>
+        <h3>Support & Resistance (Advanced)</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">17:30</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/nujw5BabrWk" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Advanced support & resistance concepts including zone marking and fake breakouts.</p>
+      </div>
+
+      <div class="learning-card step-three">
+        <span class="step-badge">STEP 3B · ENTRY & STOP-LOSS</span>
+        <h3>Entry & Stop-Loss Techniques</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">7:25</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/txXUUeMDos8" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn proper entry timing and stop-loss placement to protect capital.</p>
+      </div>
+
+      <div class="learning-card step-four">
+        <span class="step-badge">STEP 4 · RISK MANAGEMENT</span>
+        <h3>Risk Management Fundamentals</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">12:38</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/VzMlFZbWA0Y" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn position sizing, risk per trade, stop-loss logic, and how professionals protect capital.</p>
+      </div>
+
+      <div class="learning-card step-five">
+        <span class="step-badge">STEP 5 · TRADING PSYCHOLOGY</span>
+        <h3>Recommended Book for Trading Psychology</h3>
+        <p>
+          <span class="book-highlight">📘 <strong>Trading in the Zone — Mark Douglas</strong></span><br>
+          A classic on mindset, belief systems, and probability thinking. 
+          <a href="https://www.amazon.in/dp/0735201447" target="_blank" style="color: #00d4ff; text-decoration: underline;">Get the book here</a>
+        </p>
+        <h3>Psychology Video</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">13:49</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/RzElN0uHsns" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Understand mental frameworks, trader mindset, emotions, and discipline.</p>
+      </div>
 
-  <div class="learning-grid">
-
- <div class="learning-card step-one">
-  <span class="step-badge">STEP 1 · START HERE</span>
-
-  <h3>Trading Roadmap (0 → Advanced)</h3>
-    
-  <div class="video-card"> 
-
-    <span class="level-tag beginner">BEGINNER</span>
-    <span class="duration">33:13</span>
-
-    <div class="video-box">
-      <iframe
-        src="https://www.youtube.com/embed/hqXoZtC2sEU?autoplay=0&mute=0&controls=1&rel=0&modestbranding=1&playsinline=1"
-        allowfullscreen>
-      </iframe>
-    </div>
-
-  </div>
-
-  <p>
-    Complete beginner-to-advanced trading roadmap.
-    Watch this first before learning anything else.
-  </p>
-</div>
-    
-<div class="learning-card step-two">
-  <span class="step-badge step-two-badge">STEP 2 · CANDLESTICKS</span>
-
-  <h3>Learn Candlestick Patterns</h3>
-
- <div class="video-card">
-
-  <span class="level-tag beginner">BEGINNER</span>
-  <span class="duration">13:30</span>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/AOz1YPOKvEs"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-
-</div>
-
-
-  <p>
-    Learn candlestick basics, important patterns,
-    and the psychology behind price movement.
-  </p>
-</div>
-
-<div class="learning-card step-two">
-  <span class="step-badge step-two-badge">STEP 2A · MARKET STRUCTURE</span>
-
-  <h3>Basics of Market Structure</h3>
-
- <div class="video-card">
-
-  <span class="level-tag beginner">BEGINNER</span>
-  <span class="duration">20:45</span>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/sZAE_lqdeno"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-
-</div>
-
-
-  <p>
-    Understand market structure: higher high, higher low,
-    trend shifts, BOS, and structure-based thinking.
-  </p>
-</div>
-<div class="learning-card step-two">
-  <span class="step-badge step-two-badge">STEP 2B · TRENDLINES</span>
-
-  <h3>Learn Trendlines (Correct Way)</h3>
-
- <div class="video-card">
-
-  <span class="level-tag beginner">BEGINNER</span>
-  <span class="duration">45:25</span>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/Y8efWZ2M1y8"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-
-</div>
-
-
-  <p>
-    Learn how to draw valid trendlines, common mistakes,
-    support–resistance via trendlines, and trend confirmation.
-  </p>
-</div>
-<div class="learning-card step-three">
-  <span class="step-badge step-three-badge">STEP 3 · SUPPORT & RESISTANCE</span>
-
-  <h3>Support & Resistance (Core Concept)</h3>
-
- <div class="video-card">
-
-  <span class="level-tag beginner">BEGINNER</span>
-  <span class="duration">41:26</span>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/nuVv0ZWUfs4"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-
-</div>
-
-
-  <p>
-    Learn how institutions mark support & resistance,
-    role-reversal, supply–demand zones,
-    and why most traders draw levels wrong.
-  </p>
-</div>
-    
-<div class="learning-card step-three">
-  <span class="step-three-badge">STEP 3A · ADVANCED</span>
-
-  <h3>Support & Resistance (Advanced)</h3>
-
- <div class="video-card">
-
-  <span class="level-tag beginner">BEGINNER</span>
-  <span class="duration">17:30</span>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/nujw5BabrWk"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-
-</div>
-
-
-  <p>
-    Advanced support & resistance concepts including zone marking,
-    role reversal, fake breakouts, and high-probability levels.
-  </p>
-</div>
-    
-<div class="learning-card step-three">
-  <span class="step-badge">STEP 3B · ENTRY & STOP-LOSS</span>
-
-  <h3>Entry & Stop-Loss Techniques</h3>
-
- <div class="video-card">
-
-  <span class="level-tag beginner">BEGINNER</span>
-  <span class="duration">7:25</span>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/txXUUeMDos8"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-
-</div>
-
-  <p>
-  Learn proper entry timing and stop-loss placement
-  to protect capital and improve consistency.
-</p>
-</div>
-
-<div class="learning-card step-four">
-  <span class="step-badge">STEP 4 · RISK MANAGEMENT</span>
-
-  <h3>Risk Management Fundamentals</h3>
-
- <div class="video-card">
-
-  <span class="level-tag beginner">BEGINNER</span>
-  <span class="duration">12:38</span>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/VzMlFZbWA0Y"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-
-</div>
-
-
-  <p>
-    Learn position sizing, risk per trade, stop-loss logic,
-    and how professionals protect capital while scaling.
-  </p>
-</div>
-
-<div class="learning-card step-five">
-  <span class="step-badge">STEP 5 · TRADING PSYCHOLOGY</span>
-
-  <h3>Recommended Book for Trading Psychology</h3>
-  <p>
-    <span class="book-highlight">
-  📘 <strong>Trading in the Zone — Mark Douglas</strong>
-</span>
- <br>
-    A classic on mindset, belief systems, and probability thinking. 
-    <a href="https://www.amazon.in/dp/0735201447" target="_blank" style="color: #00d4ff; text-decoration: underline;">
-      Get the book here
-    </a>
-  </p>
-
-  <h3>Psychology Video</h3>
- <div class="video-card">
-
-  <span class="level-tag beginner">BEGINNER</span>
-  <span class="duration">13:49</span>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/RzElN0uHsns"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-
-</div>
-
-
-  <p>
-    Understand mental frameworks, trader mindset, emotions, discipline,
-    probability thinking, and how professionals stay consistent.
-  </p>
-</div>
       <div class="advanced-separator-container">
-    <span class="advanced-separator-content">ADVANCE CONCEPTS</span>
-</div> 
-    <div class="learning-card step-five-a">
-  <span class="step-badge">STEP 5A · LIQUIDITY</span>
+        <span class="advanced-separator-content">ADVANCE CONCEPTS</span>
+      </div> 
 
-  <h3>Liquidity (How Big Players Move Price)</h3>
+      <div class="learning-card step-five-a">
+        <span class="step-badge">STEP 5A · LIQUIDITY</span>
+        <h3>Liquidity (How Big Players Move Price)</h3>
+        <div class="video-box">
+          <iframe src="https://www.youtube.com/embed/YUUefUXeZwI" allowfullscreen></iframe>
+          <span class="video-time">25:26</span>
+        </div>
+        <p>Understand liquidity concepts like stop hunts, liquidity pools, and inducement.</p>
+      </div>
 
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/YUUefUXeZwI"
-      allowfullscreen>
-    </iframe>
+      <div class="learning-card step-five-a1">
+        <span class="step-badge">STEP 5A1 · LIQUIDITY PRO</span>
+        <h3>Liquidity Pro (Advanced)</h3>
+        <div class="video-box">
+          <iframe src="https://www.youtube.com/embed/DAnXM7C16h0" allowfullscreen></iframe>
+          <span class="video-time">1:49:36</span>
+        </div>
+        <p>Deep dive into advanced liquidity concepts including engineered liquidity and multi-timeframe mapping.</p>
+      </div>
 
-    <span class="video-time">25:26</span>
-  </div>
+      <div class="learning-card step-five-a2">
+        <span class="step-badge">STEP 5A2 · SUPPLY & DEMAND</span>
+        <h3>Supply & Demand Masterclass</h3>
+        <div class="video-box">
+          <iframe src="https://www.youtube.com/embed/yaCM_cr5BXo" allowfullscreen></iframe>
+          <span class="video-time">40:02</span>
+        </div>
+        <p>Learn how supply and demand zones are formed and how to trade high-probability zones.</p>
+      </div>
 
-  <p>
-    Understand liquidity concepts like stop hunts, liquidity pools,
-    inducement, and why price moves before major reversals.
-  </p>
-</div>
-<div class="learning-card step-five-a1">
-  <span class="step-badge">STEP 5A1 · LIQUIDITY PRO</span>
+      <div class="learning-card step-five-b1">
+        <span class="step-badge">STEP 5B1 · SMART MONEY CONCEPT (SMC)</span>
+        <h3>Smart Money Concepts (SMC)</h3>
+        <div class="video-box">
+          <iframe src="https://www.youtube.com/embed/52m-dt1tDvw" allowfullscreen></iframe>
+          <span class="video-time">17:45</span>
+        </div>
+        <p>Learn core SMC concepts like BOS, CHoCH, order blocks, and inducement.</p>
+      </div>
 
-  <h3>Liquidity Pro (Advanced Liquidity Concepts)</h3>
+      <div class="learning-card step-five-b2">
+        <span class="step-badge">STEP 5B2 · SMC CONTINUATION</span>
+        <h3>Smart Money Concepts (Continuation)</h3>
+        <div class="video-box">
+          <iframe src="https://www.youtube.com/embed/K1BuYD5KhQ8" allowfullscreen></iframe>
+          <span class="video-time">17:53</span>
+        </div>
+        <p>Advanced continuation of SMC concepts including refinement and confirmation logic.</p>
+      </div>
 
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/DAnXM7C16h0"
-      allowfullscreen>
-    </iframe>
+      <div class="learning-card step-six">
+        <span class="step-badge">STEP 6 · RSI ADVANCED</span>
+        <h3>RSI Advanced Techniques</h3>
+        <div class="video-card">
+          <span class="duration">8:51</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/EtRcYFhLSSM" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Advanced concepts of RSI: divergence, confirmation, and multi-timeframe signals.</p>
+      </div>
 
-    <span class="video-time">1:49:36</span>
-  </div>
+      <div class="learning-card step-six">
+        <span class="step-badge">STEP 6A · EMA / MOVING AVERAGE</span>
+        <h3>EMA & Moving Average Techniques</h3>
+        <div class="video-card">
+          <span class="duration">9:08</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/k_kSCjdf8D0" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn the logic behind EMA and moving averages, trend confirmation, and crossovers.</p>
+      </div>
 
-  <p>
-    Deep dive into advanced liquidity concepts including engineered liquidity,
-    multi-timeframe liquidity mapping, and institutional manipulation models.
-  </p>
-</div>
+      <div class="learning-card step-seven-a">
+        <span class="step-badge">STEP 7A · PARTIAL BOOKING</span>
+        <h3>Partial Booking Techniques</h3>
+        <div class="video-box">
+          <iframe src="https://www.youtube.com/embed/PgRZw4omcC8" allowfullscreen></iframe>
+          <span class="video-time">18:02</span>
+        </div>
+        <p>Learn how to book partial profits at key levels while letting the rest of the position run.</p>
+      </div>
 
- <div class="learning-card step-five-a2">
-  <span class="step-badge">STEP 5A2 · SUPPLY & DEMAND</span>
+      <div class="learning-card step-seven-b">
+        <span class="step-badge">STEP 7B · TRAILING STOP-LOSS</span>
+        <h3>Trailing Stop-Loss (Protect Profits)</h3>
+        <div class="video-box">
+          <iframe src="https://www.youtube.com/embed/0kl47rZZ4SQ" allowfullscreen></iframe>
+          <span class="video-time">23:07</span>
+        </div>
+        <p>Learn how to trail stop-loss using structure to lock profits while letting winning trades run.</p>
+      </div>
 
-  <h3>Supply & Demand Masterclass (Beginner to Pro)</h3>
+      <div class="learning-card step-seven-c">
+        <span class="step-badge">STEP 7C · BREAKEVEN LOGIC</span>
+        <h3>Breakeven Logic (Protect Capital)</h3>
+        <div class="video-box">
+          <iframe src="https://www.youtube.com/embed/Khs1hwkIOiM" allowfullscreen></iframe>
+          <span class="video-time">6:57</span>
+        </div>
+        <p>Learn when and how to move stop-loss to breakeven without getting stopped out early.</p>
+      </div>
 
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/yaCM_cr5BXo?enablejsapi=1"
-      allowfullscreen>
-    </iframe>
+      <div class="learning-card step-seven-d">
+        <span class="step-badge">STEP 7D · SCALING IN & SCALING OUT</span>
+        <h3>Scaling In & Scaling Out (Position Management)</h3>
+        <p>Scaling In and Scaling Out are advanced trade management techniques used to maximize profits.</p>
+        <h4>What is Scaling In?</h4>
+        <p>Adding more position to a winning trade only when the market confirms your direction.</p>
+        <ul>
+          <li>Add only to winning trades</li>
+          <li>Never add to a losing trade</li>
+          <li>Add after confirmation (break & retest)</li>
+        </ul>
+        <h4>What is Scaling Out?</h4>
+        <p>Booking profit in parts instead of closing the entire trade at once.</p>
+        <h4>Simple Example</h4>
+        <p>A trade is entered at support. Price moves in your favor. A small position is added (Scaling In). Partial profits are booked at resistance (Scaling Out).</p>
+        <p><strong>Golden Rule:</strong> Scale In only on winning trades. Scale Out to protect profits.</p>
+      </div>
 
-    <span class="video-time">40:02</span>
-  </div>
+    </div>
+  </section>
 
-  <p>
-    Learn how supply and demand zones are formed, how institutions
-    create imbalance, and how to trade high-probability zones from
-    beginner to advanced level.
-  </p>
-</div>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+  <script>
+    // 1. Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyB-iGxDeWqQXMWPQzj1IyAZO9ApaD_WsLo",
+        authDomain: "tradelab-36d73.firebaseapp.com",
+        projectId: "tradelab-36d73",
+        storageBucket: "tradelab-36d73.firebasestorage.app",
+        messagingSenderId: "29426653428",
+        appId: "1:29426653428:web:c6bce7c3d70ecd5be4bf51"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Elements
+    const loginItem = document.getElementById('loginItem');
+    const logoutItem = document.getElementById('logoutItem');
+    const userItem = document.getElementById('userItem');
     
-<div class="learning-card step-five-b1">
-  <span class="step-badge">STEP 5B1 · SMART MONEY CONCEPT (SMC)</span>
+    // 2. MAIN SECURITY LOGIC (The Gatekeeper)
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // 🟢 User is Logged In
+        console.log("Access Granted:", user.email);
+        
+        // Website content dikhao (Fade in effect)
+        document.body.style.opacity = "1";
 
-  <h3>Smart Money Concepts (SMC)</h3>
+        // Navigation update karo
+        if(loginItem) loginItem.style.display = 'none';
+        if(logoutItem) logoutItem.style.display = 'block';
+        if(userItem) {
+          userItem.style.display = 'block';
+          // Email ka pehla hissa dikhao (Jaise: aneekpal01)
+          userItem.textContent = "Hi, " + user.email.split('@')[0];
+        }
 
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/52m-dt1tDvw"
-      allowfullscreen>
-    </iframe>
-
-    <span class="video-time">17:45</span>
-  </div>
-
-  <p>
-    Learn core SMC concepts like BOS, CHoCH, order blocks,
-    inducement, and institutional price delivery logic.
-  </p>
-</div>
-<div class="learning-card step-five-b2">
-  <span class="step-badge">STEP 5B2 · SMART MONEY CONCEPT (SMC)</span>
-
-  <h3>Smart Money Concepts (SMC) – Continuation</h3>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/K1BuYD5KhQ8"
-      allowfullscreen>
-    </iframe>
-
-    <span class="video-time">17:53</span>
-  </div>
-
-  <p>
-    Advanced continuation of SMC concepts including refinement,
-    confirmation logic, and real-market application examples.
-  </p>
-</div>
-
- 
-<div class="learning-card step-six">
-  <span class="step-badge">STEP 6 · RSI ADVANCED</span>
-
-  <h3>RSI Advanced Techniques</h3>
-
- <div class="video-card">
-
-  
-  <span class="duration">8:51</span>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/EtRcYFhLSSM"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-
-</div>
-
-
-  <p>
-    Advanced concepts of RSI: divergence, confirmation, multi-timeframe signals,
-    and how to use RSI with structure for better decisions.
-  </p>
-</div>
-
-    
-<div class="learning-card step-six">
-  <span class="step-badge">STEP 6A · EMA / MOVING AVERAGE</span>
-
-  <h3>EMA & Moving Average Techniques</h3>
-
-<div class="video-card">
-
-  
-  <span class="duration">9:08</span>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/k_kSCjdf8D0"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-
-</div>
-
-
-  <p>
-    Learn the logic behind EMA and moving averages,
-    trend confirmation, crossovers, and how to use them
-    with structure and momentum.
-  </p>
-</div>
-<div class="learning-card step-seven-a">
-  <span class="step-badge">STEP 7A · PARTIAL BOOKING</span>
-
-  <h3>Partial Booking Techniques</h3>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/PgRZw4omcC8"
-      allowfullscreen>
-    </iframe>
-
-    <span class="video-time">18:02</span>
-  </div>
-
-  <p>
-    Learn how to book partial profits at key levels while letting the rest of the 
-    position run — a must-know skill to protect gains and manage risk.
-  </p>
-</div>
-
-<div class="learning-card step-seven-b">
-  <span class="step-badge">STEP 7B · TRAILING STOP-LOSS</span>
-
-  <h3>Trailing Stop-Loss (Protect Profits)</h3>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/0kl47rZZ4SQ?enablejsapi=1"
-      allowfullscreen>
-    </iframe>
-
-    <span class="video-time">23:07</span>
-  </div>
-
-  <p>
-    Learn how to trail stop-loss using structure, swings, and indicators
-    to lock profits while letting winning trades run.
-  </p>
-</div>
-
-    <div class="learning-card step-seven-c">
-  <span class="step-badge">STEP 7C · BREAKEVEN LOGIC</span>
-
-  <h3>Breakeven Logic (Protect Capital)</h3>
-
-  <div class="video-box">
-    <iframe
-      src="https://www.youtube.com/embed/Khs1hwkIOiM?enablejsapi=1"
-      allowfullscreen>
-    </iframe>
-
-    <span class="video-time">6:57</span>
-  </div>
-
-  <p>
-    Learn when and how to move stop-loss to breakeven without getting
-    stopped out early, using structure and market context.
-  </p>
-</div>
-
-    <div class="learning-card step-seven-d">
-  <span class="step-badge">STEP 7D · SCALING IN & SCALING OUT</span>
-
-  <h3>Scaling In & Scaling Out (Position Management)</h3>
-
-  <p>
-    Scaling In and Scaling Out are advanced trade management techniques
-    used to maximize profits and reduce risk.
-  </p>
-
-  <h4>What is Scaling In?</h4>
-  <p>
-    Scaling In means adding more position to a winning trade.
-    You add only when the trade is already in profit and the market
-    confirms your direction.
-  </p>
-  <ul>
-    <li>Add only to winning trades</li>
-    <li>Never add to a losing trade</li>
-    <li>Add after confirmation (break & retest, structure shift)</li>
-  </ul>
-
-  <h4>What is Scaling Out?</h4>
-  <p>
-    Scaling Out means booking profit in parts instead of closing the
-    entire trade at once. This helps protect profits and control emotions.
-  </p>
-  <ul>
-    <li>Book partial profit at key levels</li>
-    <li>Reduce emotional pressure</li>
-    <li>Let remaining position run with trailing stop-loss</li>
-  </ul>
-
-  <h4>Simple Example</h4>
-  <p>
-    A trade is entered at support. Price moves in your favor and breaks
-    resistance. A small additional position is added (Scaling In).
-    Partial profits are booked at higher resistance levels (Scaling Out).
-  </p>
-
-  <p>
-    <strong>Golden Rule:</strong><br>
-    Scale In only on winning trades.<br>
-    Scale Out to protect profits.
-  </p>
-</div>
-</section>
-
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-
-<script>
-  // 1. Firebase Configuration
-  const firebaseConfig = {
-      apiKey: "AIzaSyB-iGxDeWqQXMWPQzj1IyAZO9ApaD_WsLo",
-      authDomain: "tradelab-36d73.firebaseapp.com",
-      projectId: "tradelab-36d73",
-      storageBucket: "tradelab-36d73.firebasestorage.app",
-      messagingSenderId: "29426653428",
-      appId: "1:29426653428:web:c6bce7c3d70ecd5be4bf51"
-  };
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-
-  // 2. Control Navigation Elements
-  const loginItem = document.getElementById('loginItem');
-  const logoutItem = document.getElementById('logoutItem');
-  const userItem = document.getElementById('userItem');
-
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      // User is Logged In
-      console.log("Logged in as:", user.email);
-      
-      loginItem.style.display = 'none';   // Hide Login
-      logoutItem.style.display = 'block'; // Show Logout
-      userItem.style.display = 'block';   // Show Username
-      userItem.textContent = "Hi, " + user.email.split('@')[0]; // Show name from email
-    } else {
-      // User is Logged Out
-      console.log("No user logged in.");
-      
-      loginItem.style.display = 'block';  // Show Login
-      logoutItem.style.display = 'none';  // Hide Logout
-      userItem.style.display = 'none';    // Hide Username
-      
-      // OPTIONAL: If you want to force login, uncomment the line below:
-      // window.location.href = "login.html";
-    }
-  });
-
-  // 3. Logout Function
-  function logoutUser() {
-    auth.signOut().then(() => {
-      alert("Logged out successfully");
-      window.location.reload(); // Refresh page to update UI
-    }).catch((error) => {
-      console.error("Error logging out:", error);
+      } else {
+        // 🔴 User is NOT Logged In
+        console.log("Access Denied. Redirecting...");
+        
+        // Turant Login Page par bhej do
+        window.location.href = "login.html";
+      }
     });
-  }
-</script>
+
+    // 3. Logout Function
+    function logoutUser() {
+      auth.signOut().then(() => {
+        // Signout hote hi 'onAuthStateChanged' trigger hoga 
+        // aur wo automatically login.html par bhej dega
+      }).catch((error) => {
+        console.error("Logout Error:", error);
+      });
+    }
+  </script>
 
 </body>
 </html>
