@@ -642,12 +642,18 @@
             authDomain: "tradelab-36d73.firebaseapp.com",
             projectId: "tradelab-36d73",
             storageBucket: "tradelab-36d73.firebasestorage.app",
-            messagingSenderId: "29426653428",
-            appId: "1:29426653428:web:c6bce7c3d70ecd5be4bf51"
+            messagingSenderId: "294266535428",
+            appId: "1:294266535428:web:c6bce7c3d70ecd5be4bf51"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+
+        // Initialize providers
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+        const githubProvider = new firebase.auth.GithubAuthProvider();
+        const twitterProvider = new firebase.auth.TwitterAuthProvider();
 
         function switchTab(tab) {
             const tabs = document.querySelectorAll('.auth-tab');
@@ -687,32 +693,58 @@
             document.getElementById('message').style.display = 'none';
         }
 
-        const googleProvider = new firebase.auth.GoogleAuthProvider();
-
-        ['googleSignupBtn', 'googleLoginBtn'].forEach(id => {
-            document.getElementById(id).addEventListener('click', async () => {
-                try {
-                    await auth.signInWithPopup(googleProvider);
-                    showMessage('✓ Success! Redirecting...', 'success');
-                    setTimeout(() => window.location.href = 'index.html', 1500);
-                } catch (error) {
-                    showMessage('⚠ Google sign-in failed. Please try again.', 'error');
+        // Generic function to handle social sign-in
+        async function handleSocialSignIn(provider, providerName) {
+            try {
+                const result = await auth.signInWithPopup(provider);
+                showMessage('✓ Success! Redirecting...', 'success');
+                console.log(`${providerName} user:`, result.user);
+                setTimeout(() => window.location.href = 'index.html', 1500);
+            } catch (error) {
+                console.error(`${providerName} error:`, error);
+                let errorMsg = `${providerName} sign-in failed.`;
+                
+                if (error.code === 'auth/popup-closed-by-user') {
+                    errorMsg = 'Sign-in popup was closed. Please try again.';
+                } else if (error.code === 'auth/account-exists-with-different-credential') {
+                    errorMsg = 'An account already exists with the same email. Try a different sign-in method.';
+                } else if (error.code === 'auth/cancelled-popup-request') {
+                    errorMsg = 'Sign-in cancelled. Please try again.';
                 }
-            });
-        });
+                
+                showMessage('⚠ ' + errorMsg, 'error');
+            }
+        }
 
-        ['githubSignupBtn', 'githubLoginBtn', 'xSignupBtn', 'xLoginBtn'].forEach(id => {
+        // Google Sign In
+        ['googleSignupBtn', 'googleLoginBtn'].forEach(id => {
             document.getElementById(id).addEventListener('click', () => {
-                showMessage('⚠ This authentication method is not yet configured.', 'error');
+                handleSocialSignIn(googleProvider, 'Google');
             });
         });
 
+        // GitHub Sign In
+        ['githubSignupBtn', 'githubLoginBtn'].forEach(id => {
+            document.getElementById(id).addEventListener('click', () => {
+                handleSocialSignIn(githubProvider, 'GitHub');
+            });
+        });
+
+        // X (Twitter) Sign In
+        ['xSignupBtn', 'xLoginBtn'].forEach(id => {
+            document.getElementById(id).addEventListener('click', () => {
+                handleSocialSignIn(twitterProvider, 'X');
+            });
+        });
+
+        // SSO buttons
         ['ssoSignupBtn', 'ssoLoginBtn'].forEach(id => {
             document.getElementById(id).addEventListener('click', () => {
                 showMessage('⚠ SSO is available for enterprise accounts only.', 'error');
             });
         });
 
+        // Email/Password Signup
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('signupEmail').value;
@@ -736,12 +768,14 @@
                 let errorMsg = 'Signup failed. Please try again.';
                 if (error.code === 'auth/email-already-in-use') errorMsg = 'This email is already registered.';
                 else if (error.code === 'auth/invalid-email') errorMsg = 'Invalid email address.';
+                else if (error.code === 'auth/weak-password') errorMsg = 'Password is too weak.';
                 showMessage('⚠ ' + errorMsg, 'error');
                 btn.disabled = false;
                 btn.textContent = 'Create Account';
             }
         });
 
+        // Email/Password Login
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -759,6 +793,7 @@
                 let errorMsg = 'Login failed. Please try again.';
                 if (error.code === 'auth/user-not-found') errorMsg = 'No account found with this email.';
                 else if (error.code === 'auth/wrong-password') errorMsg = 'Incorrect password.';
+                else if (error.code === 'auth/invalid-email') errorMsg = 'Invalid email address.';
                 showMessage('⚠ ' + errorMsg, 'error');
                 btn.disabled = false;
                 btn.textContent = 'Sign In';
