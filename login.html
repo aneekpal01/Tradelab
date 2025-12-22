@@ -80,10 +80,22 @@
         .divider span { background: rgba(20, 25, 40, 0.9); padding: 0 16px; color: rgba(255, 255, 255, 0.4); font-size: 14px; position: relative; z-index: 1; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
         .form-group { margin-bottom: 22px; }
         .form-label { display: block; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.8); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-input { width: 100%; padding: 14px 16px; background: rgba(255, 255, 255, 0.04); border: 1.5px solid rgba(255, 255, 255, 0.08); border-radius: 12px; font-size: 15px; color: #ffffff; transition: all 0.3s; font-family: 'Inter', sans-serif; }
+        
+        /* New Password Wrapper Styles */
+        .password-wrapper { position: relative; }
+        .password-toggle { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; color: rgba(255, 255, 255, 0.5); transition: color 0.3s; display: flex; align-items: center; }
+        .password-toggle:hover { color: #00ffc8; }
+        
+        .form-input { width: 100%; padding: 14px 16px; padding-right: 45px; /* Space for eye icon */ background: rgba(255, 255, 255, 0.04); border: 1.5px solid rgba(255, 255, 255, 0.08); border-radius: 12px; font-size: 15px; color: #ffffff; transition: all 0.3s; font-family: 'Inter', sans-serif; }
         .form-input:focus { outline: none; border-color: #00ffc8; background: rgba(255, 255, 255, 0.06); box-shadow: 0 0 0 4px rgba(0, 255, 200, 0.1); }
         .form-input::placeholder { color: rgba(255, 255, 255, 0.3); }
         .password-hint { font-size: 12px; color: rgba(255, 255, 255, 0.4); margin-top: 6px; }
+        
+        /* Forgot Password Link Style */
+        .forgot-password { text-align: right; margin-bottom: 24px; margin-top: -10px; }
+        .forgot-password a { color: rgba(255, 255, 255, 0.6); font-size: 13px; text-decoration: none; font-weight: 500; transition: all 0.3s; }
+        .forgot-password a:hover { color: #00ffc8; text-decoration: underline; }
+
         .submit-btn { width: 100%; padding: 16px 20px; background: linear-gradient(135deg, #00ffc8 0%, #00d4ff 100%); border: none; border-radius: 12px; font-size: 16px; font-weight: 700; color: #0f1729; cursor: pointer; transition: all 0.3s; font-family: 'Inter', sans-serif; margin-top: 8px; box-shadow: 0 4px 20px rgba(0, 255, 200, 0.3); }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 255, 200, 0.5); }
         .submit-btn:active { transform: translateY(0); }
@@ -167,7 +179,12 @@
 
             <div class="form-group">
                 <label class="form-label" for="signupPassword">Password</label>
-                <input type="password" id="signupPassword" class="form-input" placeholder="Create a password" required minlength="8">
+                <div class="password-wrapper">
+                    <input type="password" id="signupPassword" class="form-input" placeholder="Create a password" required minlength="8">
+                    <span class="password-toggle" title="Toggle Password Visibility">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </span>
+                </div>
                 <p class="password-hint">Must be 8+ characters with 1 uppercase, 1 lowercase, and 1 number</p>
             </div>
 
@@ -203,7 +220,16 @@
 
             <div class="form-group">
                 <label class="form-label" for="loginPassword">Password</label>
-                <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required>
+                <div class="password-wrapper">
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required>
+                    <span class="password-toggle" title="Toggle Password Visibility">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </span>
+                </div>
+            </div>
+
+            <div class="forgot-password">
+                <a href="#" id="forgotPasswordLink">Forgot Password?</a>
             </div>
 
             <button type="submit" class="submit-btn" id="loginBtn">Sign In</button>
@@ -223,8 +249,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
     <script>
-
-      // Firebase Configuration
+        // 1. Firebase Configuration (USING YOUR NEW KEY)
         var firebaseConfig = {
             apiKey: "AIzaSyADSKrrnamZj2_jkfueTXempsNOZlT_nCw",
             authDomain: "tradelab-36d73.firebaseapp.com",
@@ -303,7 +328,35 @@
             document.getElementById('message').style.display = 'none';
         }
 
-        // 3. Social Sign-In Logic
+        // 3. LOGIC FOR SHOW/HIDE PASSWORD (NEW)
+        document.querySelectorAll('.password-toggle').forEach(function(toggle) {
+            toggle.addEventListener('click', function() {
+                var input = this.previousElementSibling;
+                var type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                
+                // Icon Change (Simple Opacity toggle for now)
+                this.style.color = type === 'text' ? '#00ffc8' : 'rgba(255,255,255,0.5)';
+            });
+        });
+
+        // 4. LOGIC FOR FORGOT PASSWORD (NEW)
+        document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            var email = prompt("Please enter your email address to reset your password:");
+            
+            if (email) {
+                auth.sendPasswordResetEmail(email)
+                    .then(function() {
+                        showMessage('✓ Password reset email sent! Check your inbox.', 'success');
+                    })
+                    .catch(function(error) {
+                        showMessage('⚠ Error: ' + error.message, 'error');
+                    });
+            }
+        });
+
+        // 5. Social Sign-In Logic
         function handleSocialSignIn(provider, providerName) {
             console.log('Attempting ' + providerName + ' sign-in...');
             
@@ -318,14 +371,6 @@
                 .catch(function(error) {
                     console.error(providerName + ' error:', error);
                     var errorMsg = providerName + ' sign-in failed.';
-                    
-                    if (error.code === 'auth/popup-closed-by-user') {
-                        errorMsg = 'Sign-in popup was closed.';
-                    } else if (error.code === 'auth/account-exists-with-different-credential') {
-                        errorMsg = 'Email already used with different method.';
-                    } else if (error.code === 'auth/unauthorized-domain') {
-                        errorMsg = 'Domain not authorized in Firebase Console.';
-                    }
                     showMessage('⚠ ' + errorMsg, 'error');
                 });
         }
@@ -368,9 +413,7 @@
                     setTimeout(function() { window.location.href = 'index.html'; }, 1500);
                 })
                 .catch(function(error) {
-                    var errorMsg = error.message;
-                    if (error.code === 'auth/email-already-in-use') errorMsg = 'Email already registered.';
-                    showMessage('⚠ ' + errorMsg, 'error');
+                    showMessage('⚠ ' + error.message, 'error');
                     btn.disabled = false;
                     btn.textContent = 'Create Account';
                 });
@@ -392,11 +435,7 @@
                     setTimeout(function() { window.location.href = 'index.html'; }, 1500);
                 })
                 .catch(function(error) {
-                    var errorMsg = 'Login failed.';
-                    if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-                        errorMsg = 'Invalid email or password.';
-                    }
-                    showMessage('⚠ ' + errorMsg, 'error');
+                    showMessage('⚠ Login failed. Invalid email or password.', 'error');
                     btn.disabled = false;
                     btn.textContent = 'Sign In';
                 });
