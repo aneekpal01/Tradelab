@@ -1,1 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign-In Test v2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 20px;
+            text-align: center;
+            background: #1a1f35;
+            color: white;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            margin: 20px;
+            cursor: pointer;
+            background: #00ffc8;
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: bold;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            min-height: 100px;
+            text-align: left;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .error { color: #ff6464; }
+        .success { color: #00ffc8; }
+        .info { color: #00d4ff; }
+    </style>
+</head>
+<body>
+    <h1>🔥 Google Auth Test v2</h1>
+    <p>Testing Firebase Authentication</p>
+    
+    <button id="signInBtn" disabled>Loading Firebase...</button>
+    
+    <div id="status">
+        <div class="info">⏳ Loading Firebase SDK...</div>
+    </div>
 
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const statusDiv = document.getElementById('status');
+        const signInBtn = document.getElementById('signInBtn');
+        
+        function addStatus(message, type) {
+            const div = document.createElement('div');
+            div.className = type || 'info';
+            div.textContent = message;
+            statusDiv.appendChild(div);
+            console.log(message);
+        }
+
+        addStatus('✓ Firebase modules imported', 'success');
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB-iGxDeWqQXMWPOzj1IyAZO9ApaD_WsLo",
+            authDomain: "tradelab-36d73.firebaseapp.com",
+            projectId: "tradelab-36d73",
+            storageBucket: "tradelab-36d73.firebasestorage.app",
+            messagingSenderId: "294266535428",
+            appId: "1:294266535428:web:c6bce7c3d70ecd5be4bf51"
+        };
+
+        let app, auth, provider;
+        try {
+            app = initializeApp(firebaseConfig);
+            addStatus('✓ Firebase app initialized', 'success');
+            
+            auth = getAuth(app);
+            addStatus('✓ Firebase Auth initialized', 'success');
+            
+            provider = new GoogleAuthProvider();
+            addStatus('✓ Google Provider created', 'success');
+            
+            signInBtn.disabled = false;
+            signInBtn.textContent = 'Sign in with Google';
+            addStatus('✅ Ready! Click the button to sign in', 'success');
+            
+        } catch (error) {
+            addStatus('❌ ERROR: ' + error.message, 'error');
+            signInBtn.textContent = 'Error - Cannot Initialize';
+        }
+
+        signInBtn.addEventListener('click', async () => {
+            addStatus('🔄 Opening Google sign-in popup...', 'info');
+            signInBtn.disabled = true;
+            
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                
+                addStatus('', '');
+                addStatus('🎉 SUCCESS! Signed in!', 'success');
+                addStatus('📧 Email: ' + user.email, 'success');
+                addStatus('👤 Name: ' + user.displayName, 'success');
+                addStatus('🆔 UID: ' + user.uid, 'success');
+                
+                signInBtn.textContent = 'Signed In ✓';
+                
+                setTimeout(() => {
+                    addStatus('', '');
+                    addStatus('🔄 Redirecting to index.html...', 'info');
+                    window.location.href = 'index.html';
+                }, 2000);
+                
+            } catch (error) {
+                addStatus('', '');
+                addStatus('❌ Sign-in failed!', 'error');
+                addStatus('Error code: ' + error.code, 'error');
+                addStatus('Error message: ' + error.message, 'error');
+                
+                if (error.code === 'auth/popup-blocked') {
+                    addStatus('💡 Solution: Enable popups for this site', 'info');
+                } else if (error.code === 'auth/unauthorized-domain') {
+                    addStatus('💡 Solution: Add this domain to Firebase authorized domains', 'info');
+                } else if (error.code === 'auth/popup-closed-by-user') {
+                    addStatus('💡 You closed the popup. Try again!', 'info');
+                }
+                
+                signInBtn.disabled = false;
+                signInBtn.textContent = 'Try Again';
+            }
+        });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                addStatus('', '');
+                addStatus('👤 Already signed in as: ' + user.email, 'success');
+            }
+        });
+    </script>
+</body>
+</html>
