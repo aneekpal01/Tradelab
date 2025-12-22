@@ -510,8 +510,8 @@
         <p class="page-subtitle">Start your trading education journey today</p>
 
         <div class="auth-tabs">
-            <button class="auth-tab active" onclick="switchTab('signup')">Sign Up</button>
-            <button class="auth-tab" onclick="switchTab('login')">Log in</button>
+            <button class="auth-tab active" id="signupTab">Sign Up</button>
+            <button class="auth-tab" id="loginTab">Log in</button>
         </div>
 
         <div id="message" class="message"></div>
@@ -553,7 +553,7 @@
 
             <div class="form-group">
                 <label class="form-label" for="signupPassword">Password</label>
-                <input type="password" id="signupPassword" class="form-input" placeholder="Create a password" required minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+                <input type="password" id="signupPassword" class="form-input" placeholder="Create a password" required minlength="8">
                 <p class="password-hint">Must be 8+ characters with 1 uppercase, 1 lowercase, and 1 number</p>
             </div>
 
@@ -627,7 +627,7 @@
         </div>
 
         <div class="switch-auth">
-            Already have an account? <a href="#" id="switchLink" onclick="switchTab('login'); return false;">Log in</a>
+            <span id="switchText">Already have an account?</span> <a href="#" id="switchLink">Log in</a>
         </div>
     </div>
 
@@ -637,7 +637,7 @@
 
     <script>
         // Firebase Configuration
-        const firebaseConfig = {
+        var firebaseConfig = {
             apiKey: "AIzaSyB-iGxDeWqQXMWPQzj1IyAZO9ApaD_WsLo",
             authDomain: "tradelab-36d73.firebaseapp.com",
             projectId: "tradelab-36d73",
@@ -648,44 +648,66 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+        var auth = firebase.auth();
 
         // Initialize providers
-        const googleProvider = new firebase.auth.GoogleAuthProvider();
-        const githubProvider = new firebase.auth.GithubAuthProvider();
-        const twitterProvider = new firebase.auth.TwitterAuthProvider();
+        var googleProvider = new firebase.auth.GoogleAuthProvider();
+        var githubProvider = new firebase.auth.GithubAuthProvider();
+        var twitterProvider = new firebase.auth.TwitterAuthProvider();
+
+        // Tab switching
+        document.getElementById('signupTab').addEventListener('click', function() {
+            switchTab('signup');
+        });
+
+        document.getElementById('loginTab').addEventListener('click', function() {
+            switchTab('login');
+        });
+
+        document.getElementById('switchLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            var signupActive = document.getElementById('signupForm').classList.contains('active');
+            switchTab(signupActive ? 'login' : 'signup');
+        });
 
         function switchTab(tab) {
-            const tabs = document.querySelectorAll('.auth-tab');
-            const forms = document.querySelectorAll('.auth-form');
-            const switchLink = document.getElementById('switchLink');
+            var tabs = document.querySelectorAll('.auth-tab');
+            var forms = document.querySelectorAll('.auth-form');
+            var switchLink = document.getElementById('switchLink');
+            var switchText = document.getElementById('switchText');
             
-            tabs.forEach(t => t.classList.remove('active'));
-            forms.forEach(f => f.classList.remove('active'));
+            tabs.forEach(function(t) {
+                t.classList.remove('active');
+            });
+            forms.forEach(function(f) {
+                f.classList.remove('active');
+            });
             
             if (tab === 'signup') {
                 tabs[0].classList.add('active');
                 document.getElementById('signupForm').classList.add('active');
+                switchText.textContent = 'Already have an account?';
                 switchLink.textContent = 'Log in';
-                switchLink.onclick = () => { switchTab('login'); return false; };
             } else {
                 tabs[1].classList.add('active');
                 document.getElementById('loginForm').classList.add('active');
+                switchText.textContent = "Don't have an account?";
                 switchLink.textContent = 'Sign up';
-                switchLink.onclick = () => { switchTab('signup'); return false; };
             }
             
             hideMessage();
         }
 
         function showMessage(text, type) {
-            const messageDiv = document.getElementById('message');
+            var messageDiv = document.getElementById('message');
             messageDiv.textContent = text;
             messageDiv.className = 'message ' + type;
             messageDiv.style.display = 'block';
             
             if (type === 'error') {
-                setTimeout(() => messageDiv.style.display = 'none', 5000);
+                setTimeout(function() {
+                    messageDiv.style.display = 'none';
+                }, 5000);
             }
         }
 
@@ -694,64 +716,79 @@
         }
 
         // Generic function to handle social sign-in
-        async function handleSocialSignIn(provider, providerName) {
-            try {
-                const result = await auth.signInWithPopup(provider);
-                showMessage('✓ Success! Redirecting...', 'success');
-                console.log(`${providerName} user:`, result.user);
-                setTimeout(() => window.location.href = 'index.html', 1500);
-            } catch (error) {
-                console.error(`${providerName} error:`, error);
-                let errorMsg = `${providerName} sign-in failed.`;
-                
-                if (error.code === 'auth/popup-closed-by-user') {
-                    errorMsg = 'Sign-in popup was closed. Please try again.';
-                } else if (error.code === 'auth/account-exists-with-different-credential') {
-                    errorMsg = 'An account already exists with the same email. Try a different sign-in method.';
-                } else if (error.code === 'auth/cancelled-popup-request') {
-                    errorMsg = 'Sign-in cancelled. Please try again.';
-                }
-                
-                showMessage('⚠ ' + errorMsg, 'error');
-            }
+        function handleSocialSignIn(provider, providerName) {
+            console.log('Attempting ' + providerName + ' sign-in...');
+            
+            auth.signInWithPopup(provider)
+                .then(function(result) {
+                    showMessage('✓ Success! Redirecting...', 'success');
+                    console.log(providerName + ' user:', result.user);
+                    setTimeout(function() {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                })
+                .catch(function(error) {
+                    console.error(providerName + ' error:', error);
+                    var errorMsg = providerName + ' sign-in failed.';
+                    
+                    if (error.code === 'auth/popup-closed-by-user') {
+                        errorMsg = 'Sign-in popup was closed. Please try again.';
+                    } else if (error.code === 'auth/account-exists-with-different-credential') {
+                        errorMsg = 'An account already exists with the same email. Try a different sign-in method.';
+                    } else if (error.code === 'auth/cancelled-popup-request') {
+                        errorMsg = 'Sign-in cancelled. Please try again.';
+                    } else if (error.code === 'auth/unauthorized-domain') {
+                        errorMsg = 'This domain is not authorized. Please contact support.';
+                    }
+                    
+                    showMessage('⚠ ' + errorMsg, 'error');
+                });
         }
 
         // Google Sign In
-        ['googleSignupBtn', 'googleLoginBtn'].forEach(id => {
-            document.getElementById(id).addEventListener('click', () => {
-                handleSocialSignIn(googleProvider, 'Google');
-            });
+        document.getElementById('googleSignupBtn').addEventListener('click', function() {
+            handleSocialSignIn(googleProvider, 'Google');
+        });
+
+        document.getElementById('googleLoginBtn').addEventListener('click', function() {
+            handleSocialSignIn(googleProvider, 'Google');
         });
 
         // GitHub Sign In
-        ['githubSignupBtn', 'githubLoginBtn'].forEach(id => {
-            document.getElementById(id).addEventListener('click', () => {
-                handleSocialSignIn(githubProvider, 'GitHub');
-            });
+        document.getElementById('githubSignupBtn').addEventListener('click', function() {
+            handleSocialSignIn(githubProvider, 'GitHub');
+        });
+
+        document.getElementById('githubLoginBtn').addEventListener('click', function() {
+            handleSocialSignIn(githubProvider, 'GitHub');
         });
 
         // X (Twitter) Sign In
-        ['xSignupBtn', 'xLoginBtn'].forEach(id => {
-            document.getElementById(id).addEventListener('click', () => {
-                handleSocialSignIn(twitterProvider, 'X');
-            });
+        document.getElementById('xSignupBtn').addEventListener('click', function() {
+            handleSocialSignIn(twitterProvider, 'X');
+        });
+
+        document.getElementById('xLoginBtn').addEventListener('click', function() {
+            handleSocialSignIn(twitterProvider, 'X');
         });
 
         // SSO buttons
-        ['ssoSignupBtn', 'ssoLoginBtn'].forEach(id => {
-            document.getElementById(id).addEventListener('click', () => {
-                showMessage('⚠ SSO is available for enterprise accounts only.', 'error');
-            });
+        document.getElementById('ssoSignupBtn').addEventListener('click', function() {
+            showMessage('⚠ SSO is available for enterprise accounts only.', 'error');
+        });
+
+        document.getElementById('ssoLoginBtn').addEventListener('click', function() {
+            showMessage('⚠ SSO is available for enterprise accounts only.', 'error');
         });
 
         // Email/Password Signup
-        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const btn = document.getElementById('signupBtn');
+            var email = document.getElementById('signupEmail').value;
+            var password = document.getElementById('signupPassword').value;
+            var btn = document.getElementById('signupBtn');
             
-            const passwordPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+            var passwordPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
             if (!passwordPattern.test(password)) {
                 showMessage('⚠ Password must be 8+ characters with 1 uppercase, 1 lowercase, and 1 number', 'error');
                 return;
@@ -760,44 +797,58 @@
             btn.disabled = true;
             btn.textContent = 'Creating account...';
             
-            try {
-                await auth.createUserWithEmailAndPassword(email, password);
-                showMessage('✓ Account created! Redirecting...', 'success');
-                setTimeout(() => window.location.href = 'index.html', 1500);
-            } catch (error) {
-                let errorMsg = 'Signup failed. Please try again.';
-                if (error.code === 'auth/email-already-in-use') errorMsg = 'This email is already registered.';
-                else if (error.code === 'auth/invalid-email') errorMsg = 'Invalid email address.';
-                else if (error.code === 'auth/weak-password') errorMsg = 'Password is too weak.';
-                showMessage('⚠ ' + errorMsg, 'error');
-                btn.disabled = false;
-                btn.textContent = 'Create Account';
-            }
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(function() {
+                    showMessage('✓ Account created! Redirecting...', 'success');
+                    setTimeout(function() {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                })
+                .catch(function(error) {
+                    var errorMsg = 'Signup failed. Please try again.';
+                    if (error.code === 'auth/email-already-in-use') {
+                        errorMsg = 'This email is already registered.';
+                    } else if (error.code === 'auth/invalid-email') {
+                        errorMsg = 'Invalid email address.';
+                    } else if (error.code === 'auth/weak-password') {
+                        errorMsg = 'Password is too weak.';
+                    }
+                    showMessage('⚠ ' + errorMsg, 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'Create Account';
+                });
         });
 
         // Email/Password Login
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const btn = document.getElementById('loginBtn');
+            var email = document.getElementById('loginEmail').value;
+            var password = document.getElementById('loginPassword').value;
+            var btn = document.getElementById('loginBtn');
             
             btn.disabled = true;
             btn.textContent = 'Signing in...';
             
-            try {
-                await auth.signInWithEmailAndPassword(email, password);
-                showMessage('✓ Login successful! Redirecting...', 'success');
-                setTimeout(() => window.location.href = 'index.html', 1500);
-            } catch (error) {
-                let errorMsg = 'Login failed. Please try again.';
-                if (error.code === 'auth/user-not-found') errorMsg = 'No account found with this email.';
-                else if (error.code === 'auth/wrong-password') errorMsg = 'Incorrect password.';
-                else if (error.code === 'auth/invalid-email') errorMsg = 'Invalid email address.';
-                showMessage('⚠ ' + errorMsg, 'error');
-                btn.disabled = false;
-                btn.textContent = 'Sign In';
-            }
+            auth.signInWithEmailAndPassword(email, password)
+                .then(function() {
+                    showMessage('✓ Login successful! Redirecting...', 'success');
+                    setTimeout(function() {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                })
+                .catch(function(error) {
+                    var errorMsg = 'Login failed. Please try again.';
+                    if (error.code === 'auth/user-not-found') {
+                        errorMsg = 'No account found with this email.';
+                    } else if (error.code === 'auth/wrong-password') {
+                        errorMsg = 'Incorrect password.';
+                    } else if (error.code === 'auth/invalid-email') {
+                        errorMsg = 'Invalid email address.';
+                    }
+                    showMessage('⚠ ' + errorMsg, 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'Sign In';
+                });
         });
     </script>
 </body>
