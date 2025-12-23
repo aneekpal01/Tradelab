@@ -88,6 +88,7 @@ section {
   max-width: 600px;
   color: #b5b5b5;
   margin-top: 10px;
+  margin-bottom: 40px;
 }
 
 /* FOOTER */
@@ -99,8 +100,19 @@ section {
   color: #8f8f8f;
 }
 
-/* RESPONSIVE */
+/* ===== GRID LAYOUT FOR LEARNING CARDS ===== */
+.learning-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);  /* 2 columns */
+  gap: 30px;
+}
+
+/* Mobile pe 1 column */
 @media (max-width: 900px) {
+  .learning-grid {
+    grid-template-columns: 1fr;
+  }
+  
   .navbar {
     flex-direction: column;
     gap: 15px;
@@ -125,21 +137,22 @@ section {
   overflow: hidden;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
   transition: transform 0.3s ease;
-  margin-bottom: 25px; /* Consolidated from multiple places */
+  margin-bottom: 15px;
 }
 
 .video-card:hover {
   transform: scale(1.02);
 }
+
+/* Video Box: FORCED 16:9 ASPECT RATIO */
 .video-box {
+  position: relative;
   width: 100%;
-  max-width: 400px;  /* YouTube app jaisa compact size */
   aspect-ratio: 16 / 9;
   border-radius: 10px;
   overflow: hidden;
   background: #000;
 }
-
 
 .video-box iframe {
   width: 100%;
@@ -176,18 +189,27 @@ section {
   z-index: 2;
 }
 
-/* Removed: .play-overlay (as per prior request) */
-/* Removed: .level-tag.advanced (no 'advanced' usage found in HTML) */
-/* Removed: all .yt-fake-box / YT UI code (unnecessary experiment) */
+.video-time {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+}
 
-/* ===== LEARNING STEP STYLING ===== */
+/* ===== LEARNING CARD STYLING ===== */
 
 .learning-card {
-  margin-bottom: 50px;
   position: relative;
   padding: 35px 25px 25px;
-  max-width: 450px;  /* Card bhi video ke saath fit hoga */
+  border-radius: 12px;
 }
+
 /* Standard Step Badge */
 .step-badge {
   position: absolute;
@@ -216,7 +238,6 @@ section {
 .step-two {
   border: 1px solid #00d4ff;
   box-shadow: 0 0 25px rgba(0, 212, 255, 0.25);
-  margin-top: 30px;
 }
 
 .step-two .step-badge {
@@ -227,19 +248,31 @@ section {
 .step-three {
   border: 1px solid #ff4d4d;
   box-shadow: 0 0 25px rgba(255, 77, 77, 0.25);
-  margin-top: 30px; /* Added spacing for consistency */
 }
 
 .step-three .step-badge,
-.step-three-badge { /* Kept step-three-badge for 3A */
+.step-three-badge {
   background: #ff4d4d;
+}
+
+/* STEP 3A BADGE FIX */
+.step-three-badge {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  background: #ff4d4d;
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
 }
 
 /* STEP 4 HIGHLIGHT */
 .step-four {
   border: 1px solid #ffb700;
   box-shadow: 0 0 25px rgba(255, 183, 0, 0.25);
-  margin-top: 30px;
 }
 
 .step-four .step-badge {
@@ -250,18 +283,16 @@ section {
 .step-five {
   border: 1px solid #9c00ff;
   box-shadow: 0 0 25px rgba(156, 0, 255, 0.25);
-  margin-top: 30px;
 }
 
 .step-five .step-badge {
   background: #9c00ff;
 }
 
-/* STEP 6 HIGHLIGHT (Consolidated) */
+/* STEP 6 HIGHLIGHT */
 .step-six {
   border: 1px solid #00ffa5;
   box-shadow: 0 0 25px rgba(0, 255, 165, 0.25);
-  margin-top: 30px;
 }
 
 .step-six .step-badge {
@@ -292,175 +323,124 @@ section {
     0 0 35px rgba(0, 255, 156, 0.4);
   transition: 0.3s ease;
 }
-.video-box {
-  position: relative;
-}
 
-.video-time {
-  position: absolute;
-  bottom: 8px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 3px 6px;
-  border-radius: 4px;
-  pointer-events: none;
-}
-
-/* STEP 3A BADGE FIX */
-.step-three-badge {
-  position: absolute;
-  top: -12px;
-  left: 20px;
-  background: #ff4d4d;
-  color: #000;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-}
-/* STEP 3 HIGHLIGHT (Yeh styling Step 3A aur Step 3B dono par apply hoti hai) */
-.step-three {
-  /* Yeh border box ke charon taraf red line banati hai */
-  border: 1px solid #ff4d4d; 
-  /* Yeh box ke bahar red glowing shadow (chhaya) banati hai */
-  box-shadow: 0 0 25px rgba(255, 77, 77, 0.25); 
-  position: relative; 
-  padding: 35px 25px 25px;
-  margin-top: 30px; 
-}
-/* CONTAINER for Spacing */
+/* ADVANCED SEPARATOR */
 .advanced-separator-container {
-    text-align: center;
-    margin: 60px auto; /* Achi spacing */
+  grid-column: 1 / -1;  /* Full width across grid */
+  text-align: center;
+  margin: 40px auto;
 }
 
-/* THE GLOWING BOX */
 .advanced-separator-content {
-    /* Text Styling */
-    display: inline-block; /* Taaki span par width aur padding kaam kare */
-    padding: 12px 30px; /* Padding taaki text ke charon taraf space ho */
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: #ffffff; /* Text color white */
-    border-radius: 10px;
-
-    /* Gradient Border/Glow Effect (Similar to the book highlight) */
-    background: linear-gradient(
-        90deg,
-        rgba(255, 77, 77, 0.15), /* Red Tint */
-        rgba(0, 255, 165, 0.15) /* Green Tint */
-    );
-    
-    /* Dual Color Border (Red and Purple/Green) */
-    border: 1px solid;
-    border-image-slice: 1;
-    border-image-source: linear-gradient(to right, #ff4d4d, #9c00ff); /* Red to Purple Border */
-
-    /* Strong Shadow/Glow */
-    box-shadow: 
-        0 0 15px rgba(255, 77, 77, 0.45), /* Red glow */
-        0 0 30px rgba(156, 0, 255, 0.25); /* Purple glow */
-    
-    transition: all 0.3s ease;
+  display: inline-block;
+  padding: 12px 30px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ffffff;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 77, 77, 0.15),
+    rgba(0, 255, 165, 0.15)
+  );
+  border: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to right, #ff4d4d, #9c00ff);
+  box-shadow: 
+    0 0 15px rgba(255, 77, 77, 0.45),
+    0 0 30px rgba(156, 0, 255, 0.25);
+  transition: all 0.3s ease;
 }
 
-/* Optional: Subtle Hover Effect */
 .advanced-separator-content:hover {
-    box-shadow: 
-        0 0 20px rgba(255, 77, 77, 0.7), 
-        0 0 40px rgba(156, 0, 255, 0.4);
-    transform: scale(1.02);
-}
-/* STEP 7A - PARTIAL BOOKING HIGHLIGHT */
-.step-seven-a {
-  border: 1px solid #ffd700; /* golden color */
-  box-shadow: 0 0 25px rgba(255, 215, 0, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
+  box-shadow: 
+    0 0 20px rgba(255, 77, 77, 0.7),
+    0 0 40px rgba(156, 0, 255, 0.4);
+  transform: scale(1.02);
 }
 
-.step-seven-a .step-badge {
-  background: #ffd700;
-  color: #000;
-}
 /* STEP 5A - LIQUIDITY HIGHLIGHT */
 .step-five-a {
   border: 1px solid #00e5ff;
   box-shadow: 0 0 25px rgba(0, 229, 255, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 40px;
 }
 
 .step-five-a .step-badge {
   background: #00e5ff;
   color: #000;
 }
+
 /* STEP 5A1 - LIQUIDITY PRO HIGHLIGHT */
 .step-five-a1 {
   border: 1px solid #00bcd4;
   box-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
 }
 
 .step-five-a1 .step-badge {
   background: #00bcd4;
   color: #000;
 }
+
+/* STEP 5A2 - SUPPLY & DEMAND */
+.step-five-a2 {
+  border: 1px solid #00bcd4;
+  box-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
+}
+
+.step-five-a2 .step-badge {
+  background: #00bcd4;
+  color: #000;
+}
+
 /* STEP 5B1 - SMART MONEY CONCEPT (SMC) */
 .step-five-b1 {
   border: 1px solid #ff00ff;
   box-shadow: 0 0 25px rgba(255, 0, 255, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
 }
 
 .step-five-b1 .step-badge {
   background: #ff00ff;
   color: #000;
 }
+
 /* STEP 5B2 - SMART MONEY CONCEPT (SMC) */
 .step-five-b2 {
   border: 1px solid #ff00ff;
   box-shadow: 0 0 25px rgba(255, 0, 255, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
 }
 
 .step-five-b2 .step-badge {
   background: #ff00ff;
   color: #000;
 }
+
+/* STEP 7A - PARTIAL BOOKING HIGHLIGHT */
+.step-seven-a {
+  border: 1px solid #ffd700;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.25);
+}
+
+.step-seven-a .step-badge {
+  background: #ffd700;
+  color: #000;
+}
+
 /* STEP 7B - TRAILING STOP-LOSS HIGHLIGHT */
 .step-seven-b {
-  border: 1px solid #ffa500; /* orange */
+  border: 1px solid #ffa500;
   box-shadow: 0 0 25px rgba(255, 165, 0, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
 }
 
 .step-seven-b .step-badge {
   background: #ffa500;
   color: #000;
 }
-/* STEP 7C - BREAKEVEN LOGIC (SAME COLOR AS STEP 7A/B) */
+
+/* STEP 7C - BREAKEVEN LOGIC */
 .step-seven-c {
   border: 1px solid #ffa500;
   box-shadow: 0 0 25px rgba(255, 165, 0, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
 }
 
 .step-seven-c .step-badge {
@@ -468,13 +448,10 @@ section {
   color: #000;
 }
 
-/* STEP 7D - SCALING IN & SCALING OUT (SAME COLOR AS STEP 7 GROUP) */
+/* STEP 7D - SCALING IN & SCALING OUT */
 .step-seven-d {
   border: 1px solid #ffa500;
   box-shadow: 0 0 25px rgba(255, 165, 0, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
 }
 
 .step-seven-d .step-badge {
@@ -484,11 +461,8 @@ section {
 
 /* STEP 8 - MULTI-TIMEFRAME ANALYSIS */
 .step-eight {
-  border: 1px solid #00bfa6; /* teal */
+  border: 1px solid #00bfa6;
   box-shadow: 0 0 25px rgba(0, 191, 166, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 40px;
 }
 
 .step-eight .step-badge {
@@ -498,37 +472,30 @@ section {
 
 /* STEP 8A - TOP DOWN ANALYSIS */
 .step-eight-a {
-  border: 1px solid #00bfa6; /* same teal as STEP 8 */
+  border: 1px solid #00bfa6;
   box-shadow: 0 0 25px rgba(0, 191, 166, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
 }
 
 .step-eight-a .step-badge {
   background: #00bfa6;
   color: #000;
 }
+
 /* STEP 8B - AVOID FALSE BREAKOUTS */
 .step-eight-b {
-  border: 1px solid #00bfa6; /* same teal as STEP 8 */
+  border: 1px solid #00bfa6;
   box-shadow: 0 0 25px rgba(0, 191, 166, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
 }
 
 .step-eight-b .step-badge {
   background: #00bfa6;
   color: #000;
 }
-/* STEP 9 - BACKTESTING (MOST IMPORTANT) */
+
+/* STEP 9 - BACKTESTING */
 .step-nine {
-  border: 1px solid #ff1744; /* strong red for importance */
+  border: 1px solid #ff1744;
   box-shadow: 0 0 25px rgba(255, 23, 68, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 40px;
 }
 
 .step-nine .step-badge {
@@ -536,26 +503,15 @@ section {
   color: #000;
 }
 
-/* STEP 5A2 -  Supply and Demand Masterclass (Beginner to Pro) */
-.step-five-a1 {
-  border: 1px solid #00bcd4;
-  box-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 30px;
-}
-
-.step-five-a1 .step-badge {
-  background: #00bcd4;
-  color: #000;
-}
 /* STEP 10 - STRATEGY BUILDING */
 .step-ten {
-  border: 1px solid #ff9100; /* deep orange */
+  border: 1px solid #ff9100;
   box-shadow: 0 0 25px rgba(255, 145, 0, 0.25);
-  position: relative;
-  padding: 35px 25px 25px;
-  margin-top: 40px;
+}
+
+.step-ten .step-badge {
+  background: #ff9100;
+  color: #000;
 }
 
 .logo-img {
