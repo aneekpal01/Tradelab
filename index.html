@@ -17,6 +17,14 @@
 </head>
 <body>
 
+  <!-- Loading Animation -->
+  <div class="loader-wrapper" id="loader">
+    <div class="loader"></div>
+    <div class="loader-text">
+      <span>T</span><span>r</span><span>a</span><span>d</span><span>e</span><span>L</span><span>a</span><span>b</span>
+    </div>
+  </div>
+
   <nav class="navbar">
     <div class="logo">TradeLab</div>
     <ul class="nav-links">
@@ -35,6 +43,11 @@
   <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
     <span class="icon-moon">🌙</span>
     <span class="icon-sun">☀️</span>
+  </button>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to Top">
+    ↑
   </button>
 
   <section class="hero">
@@ -601,6 +614,46 @@
     document.addEventListener('DOMContentLoaded', () => {
       const cards = document.querySelectorAll('.learning-card');
       cards.forEach(card => observer.observe(card));
+    });
+  </script>
+
+  <!-- Sticky Navbar + Back to Top Script -->
+  <script>
+    const navbar = document.querySelector('.navbar');
+    const backToTopBtn = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+      // Sticky navbar effect
+      if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+
+      // Back to top button visibility
+      if (window.scrollY > 500) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
+
+    // Scroll to top function
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  </script>
+
+  <!-- Loading Animation Script -->
+  <script>
+    window.addEventListener('load', () => {
+      // Wait for everything to load, then hide loader
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+      }, 1500); // 1.5 second delay for effect
     });
   </script>
 
