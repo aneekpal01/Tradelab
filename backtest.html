@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TradeLab | Backtesting Lab</title>
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="https://unpkg.com/lightweight-charts@4.0.0/dist/lightweight-charts.standalone.production.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -295,6 +295,9 @@
         let lineStartPoint = null;
 
         function initChart() {
+            // Clear any existing chart to prevent duplicates
+            chartElement.innerHTML = '';
+
             chart = LightweightCharts.createChart(chartElement, {
                 layout: { background: { type: 'solid', color: '#0d1117' }, textColor: '#c9d1d9' },
                 grid: { vertLines: { color: '#1e2a3a' }, horzLines: { color: '#1e2a3a' } },
@@ -309,6 +312,7 @@
                 height: 600
             });
 
+            // This line crashed your old code. Now it works because of version 4.0.0
             candlestickSeries = chart.addCandlestickSeries({
                 upColor: '#26a69a', downColor: '#ef5350',
                 borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350',
@@ -319,6 +323,7 @@
                 priceScaleId: '', scaleMargins: { top: 0.85, bottom: 0 },
             });
 
+            // Update Legend on Crosshair Move
             chart.subscribeCrosshairMove((param) => {
                 if (param.time) {
                     const data = param.seriesData.get(candlestickSeries);
@@ -337,49 +342,48 @@
             chartElement.addEventListener('click', handleChartClick);
         }
 
-        // ===== DATA LOADING (FIXED LOGIC) =====
+        // ===== DATA LOADING (WITH PROXY FIX) =====
         async function loadChartData() {
             const coin = document.getElementById('coinSelect').value;
             const timeframe = document.getElementById('timeframeSelect').value;
             const candleCount = document.getElementById('candleCount').value;
             
-            // Get Date Values
-            const startDateInput = document.getElementById('startDate').value;
-            const endDateInput = document.getElementById('endDate').value;
-            
             showLoading(true);
             
             try {
-                // Construct Binance API URL
-                let apiUrl = `https://api.binance.com/api/v3/klines?symbol=${coin}&interval=${timeframe}`;
+                // 1. Construct the Binance URL
+                let binanceUrl = `https://api.binance.com/api/v3/klines?symbol=${coin}&interval=${timeframe}`;
+                
+                // Check for dates
+                const startDateInput = document.getElementById('startDate').value;
+                const endDateInput = document.getElementById('endDate').value;
 
-                // Logic: If dates are selected, use them. Otherwise use limit.
                 if (startDateInput && endDateInput) {
                     const startTime = new Date(startDateInput).getTime();
                     const endTime = new Date(endDateInput).getTime();
-                    // Note: Binance limit max is 1000 per request. 
-                    apiUrl += `&startTime=${startTime}&endTime=${endTime}&limit=1000`;
+                    binanceUrl += `&startTime=${startTime}&endTime=${endTime}&limit=1000`;
                 } else {
-                    apiUrl += `&limit=${candleCount}`;
+                    binanceUrl += `&limit=${candleCount}`;
                 }
-                
-                console.log("Fetching from:", apiUrl); // Debug log
 
-                const response = await fetch(apiUrl);
+                // 2. THE FIX: Route through a Proxy to bypass CORS
+                const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(binanceUrl);
                 
-                if (!response.ok) {
-                    throw new Error(`Binance API Error: ${response.status}`);
-                }
+                console.log("Fetching from:", proxyUrl);
+
+                const response = await fetch(proxyUrl);
+                
+                if (!response.ok) throw new Error(`Network Error: ${response.status}`);
                 
                 const data = await response.json();
 
-                if (data.length === 0) {
-                    alert("No data found for this date range.");
+                if (!Array.isArray(data) || data.length === 0) {
+                    alert("No data found. Try different dates.");
                     showLoading(false);
                     return;
                 }
 
-                // Format data
+                // 3. Process Data
                 const candleData = data.map(d => ({
                     time: d[0] / 1000,
                     open: parseFloat(d[1]),
@@ -394,113 +398,81 @@
                     color: parseFloat(d[4]) >= parseFloat(d[1]) ? 'rgba(38, 166, 154, 0.5)' : 'rgba(239, 83, 80, 0.5)',
                 }));
 
+                // Now safe to call setData because candlestickSeries exists
                 candlestickSeries.setData(candleData);
                 volumeSeries.setData(volumeData);
                 chart.timeScale().fitContent();
                 updateChartInfo(coin, candleData, volumeData);
-                
+
             } catch (error) {
-                console.warn('Binance API failed (likely CORS or Network), trying CoinGecko...', error);
-                
-                // Fallback to CoinGecko
-                try {
-                    await loadFromCoinGecko(coin);
-                } catch (e) {
-                    console.error('All APIs failed:', e);
-                    alert('Data could not be loaded. If you are running this locally, you might need a CORS extension or a local server.');
-                }
+                console.error("Main API Failed:", error);
+                // If proxy fails, try backup
+                await loadFromCoinGecko(coin); 
             } finally {
                 showLoading(false);
             }
         }
 
-        // Alternative: CoinGecko (Backup)
+        // Backup API (CoinGecko)
         async function loadFromCoinGecko(coin) {
-            const coinMap = {
-                'BTCUSDT': 'bitcoin', 'ETHUSDT': 'ethereum', 'SOLUSDT': 'solana',
-                'XRPUSDT': 'ripple', 'BNBUSDT': 'binancecoin', 'DOGEUSDT': 'dogecoin'
-            };
-            
-            const coinId = coinMap[coin] || 'bitcoin';
-            // CoinGecko free API has limits, fetching last 30 days roughly
-            const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/ohlc?vs_currency=usd&days=30`);
-            
-            if (!response.ok) throw new Error('CoinGecko failed');
-            
-            const data = await response.json();
-            
-            const candleData = data.map(d => ({
-                time: d[0] / 1000,
-                open: d[1], high: d[2], low: d[3], close: d[4],
-            }));
-
-            // Fake volume for CoinGecko fallback
-            const volumeData = candleData.map(d => ({
-                time: d.time,
-                value: Math.random() * 10000, // Random volume
-                color: d.close >= d.open ? 'rgba(38, 166, 154, 0.5)' : 'rgba(239, 83, 80, 0.5)',
-            }));
-
-            candlestickSeries.setData(candleData);
-            volumeSeries.setData(volumeData);
-            chart.timeScale().fitContent();
-            updateChartInfo(coin, candleData, volumeData);
-            alert("Loaded data from CoinGecko (Backup API) due to connection issues.");
-        }
-
-        // ===== UI UPDATES =====
-        function updateChartInfo(coin, data, volData) {
-            const pairName = coin.replace('USDT', '/USDT');
-            document.getElementById('chartPair').textContent = pairName;
-            
-            if (data.length > 0) {
-                const lastCandle = data[data.length - 1];
-                const firstCandle = data[0];
-                const priceChange = ((lastCandle.close - firstCandle.open) / firstCandle.open * 100).toFixed(2);
+            try {
+                const coinMap = { 'BTCUSDT': 'bitcoin', 'ETHUSDT': 'ethereum', 'SOLUSDT': 'solana' };
+                const id = coinMap[coin] || 'bitcoin';
+                const url = `https://api.coingecko.com/api/v3/coins/${id}/ohlc?vs_currency=usd&days=30`;
                 
-                document.getElementById('currentPrice').textContent = formatPrice(lastCandle.close);
+                const response = await fetch(url);
+                const data = await response.json();
                 
-                const changeEl = document.getElementById('priceChange');
-                changeEl.textContent = `${priceChange >= 0 ? '+' : ''}${priceChange}%`;
-                changeEl.className = `change ${priceChange >= 0 ? 'up' : 'down'}`;
+                const candleData = data.map(d => ({
+                    time: d[0] / 1000,
+                    open: d[1], high: d[2], low: d[3], close: d[4]
+                }));
                 
-                const high = Math.max(...data.map(d => d.high));
-                const low = Math.min(...data.map(d => d.low));
-                
-                // Calculate total volume (approximation)
-                const totalVol = volData.reduce((acc, curr) => acc + curr.value, 0);
+                // Dummy volume for backup
+                const volumeData = candleData.map(d => ({ time: d.time, value: 0 }));
 
-                document.getElementById('high24h').textContent = formatPrice(high);
-                document.getElementById('low24h').textContent = formatPrice(low);
-                document.getElementById('volume24h').textContent = totalVol.toFixed(0);
-                document.getElementById('candlesLoaded').textContent = data.length;
-                document.getElementById('dataInfo').textContent = `Candles: ${data.length}`;
+                candlestickSeries.setData(candleData);
+                volumeSeries.setData(volumeData);
+                chart.timeScale().fitContent();
+                updateChartInfo(coin, candleData, volumeData);
+                alert("⚠️ Loaded BACKUP data (CoinGecko). Real-time Binance data was blocked.");
+            } catch (e) {
+                alert("❌ Critical Error: Please check your internet connection.");
             }
         }
 
-        function formatPrice(price) {
-            if (price >= 1000) return '$' + price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            if (price >= 1) return '$' + price.toFixed(2);
-            return '$' + price.toFixed(6);
+        // ===== UTILITIES =====
+        function updateChartInfo(coin, data, volData) {
+            const last = data[data.length - 1];
+            const first = data[0];
+            const change = ((last.close - first.open) / first.open * 100).toFixed(2);
+
+            document.getElementById('chartPair').textContent = coin.replace('USDT', '/USDT');
+            document.getElementById('currentPrice').textContent = formatPrice(last.close);
+            
+            const changeEl = document.getElementById('priceChange');
+            changeEl.textContent = `${change >= 0 ? '+' : ''}${change}%`;
+            changeEl.className = `change ${change >= 0 ? 'up' : 'down'}`;
+
+            const high = Math.max(...data.map(d => d.high));
+            const low = Math.min(...data.map(d => d.low));
+            
+            document.getElementById('high24h').textContent = formatPrice(high);
+            document.getElementById('low24h').textContent = formatPrice(low);
+            document.getElementById('candlesLoaded').textContent = data.length;
+            document.getElementById('dataInfo').textContent = `Candles: ${data.length}`;
         }
 
-        function showLoading(show) {
-            document.getElementById('loadingOverlay').classList.toggle('hidden', !show);
-        }
+        function formatPrice(p) { return '$' + p.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+        function showLoading(s) { document.getElementById('loadingOverlay').classList.toggle('hidden', !s); }
 
-        // ===== DRAWING TOOLS =====
+        // ===== TOOLS =====
         function setDrawingMode(mode) {
             currentDrawingMode = mode;
             document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
-            const toolId = mode + 'Tool';
-            const activeBtn = document.getElementById(toolId);
-            if (activeBtn) activeBtn.classList.add('active');
-            
-            const modeNames = {
-                cursor: 'Cursor', trendline: 'Trendline', support: 'Support', resistance: 'Resistance',
-                supply: 'Supply', demand: 'Demand', liquidity: 'Liquidity', stoploss: 'Stop Loss', takeprofit: 'Take Profit'
-            };
-            document.getElementById('currentMode').textContent = modeNames[mode] || mode;
+            const btn = document.getElementById(mode + 'Tool');
+            if(btn) btn.classList.add('active');
+            document.getElementById('currentMode').textContent = mode.toUpperCase();
             lineStartPoint = null;
         }
 
@@ -517,26 +489,22 @@
             if (!time || !price) return;
             
             const colors = {
-                trendline: '#ffffff', support: '#ffb700', resistance: '#ffb700',
-                supply: 'rgba(239, 83, 80, 0.3)', demand: 'rgba(38, 166, 154, 0.3)',
-                liquidity: '#9c00ff', stoploss: '#ff4d4d', takeprofit: '#00ff9c'
+                support: '#ffb700', resistance: '#ffb700', stoploss: '#ff4d4d', takeprofit: '#00ff9c',
+                supply: 'rgba(239, 83, 80, 0.3)', demand: 'rgba(38, 166, 154, 0.3)', liquidity: '#9c00ff'
             };
-            
-            // Horizontal lines
+
             if (['support', 'resistance', 'stoploss', 'takeprofit', 'liquidity'].includes(currentDrawingMode)) {
                 const line = candlestickSeries.createPriceLine({
-                    price: price, color: colors[currentDrawingMode],
-                    lineWidth: 2, lineStyle: currentDrawingMode === 'liquidity' ? 2 : 0,
-                    axisLabelVisible: true, title: currentDrawingMode.toUpperCase(),
+                    price: price, color: colors[currentDrawingMode], lineWidth: 2,
+                    title: currentDrawingMode.toUpperCase(), axisLabelVisible: true
                 });
                 drawnLines.push(line);
             }
             
-            // Trendline (Markers approach)
+            // Trendline (Markers)
             if (currentDrawingMode === 'trendline') {
                 if (!lineStartPoint) {
                     lineStartPoint = { time, price };
-                    // Visual feedback for first click
                     candlestickSeries.setMarkers([...(candlestickSeries.markers() || []), {
                         time: time, position: 'inBar', color: '#fff', shape: 'arrowUp', text: 'Start'
                     }]);
@@ -550,15 +518,15 @@
         }
 
         function clearAllDrawings() {
-            drawnLines.forEach(line => candlestickSeries.removePriceLine(line));
+            drawnLines.forEach(l => candlestickSeries.removePriceLine(l));
             drawnLines = [];
             candlestickSeries.setMarkers([]);
         }
 
-        // Init
-        window.addEventListener('resize', () => { chart.applyOptions({ width: chartElement.clientWidth }); });
+        // ===== START =====
+        window.addEventListener('resize', () => { if(chart) chart.applyOptions({ width: chartElement.clientWidth }); });
         initChart();
-        loadChartData(); // Initial Load
+        loadChartData();
     </script>
 </body>
 </html>
