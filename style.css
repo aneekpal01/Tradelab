@@ -184,10 +184,10 @@ section {
 
 .learning-card {
   margin-bottom: 50px;
-  position: relative; /* Ensure badge position works */
-  padding: 35px 25px 25px; /* Standard padding for all cards */
+  position: relative;
+  padding: 35px 25px 25px;
+  max-width: 450px;  /* Card bhi video ke saath fit hoga */
 }
-
 /* Standard Step Badge */
 .step-badge {
   position: absolute;
