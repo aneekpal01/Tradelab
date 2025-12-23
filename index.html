@@ -45,7 +45,17 @@
     <p class="section-intro">
       Structured, free trading education — built for clarity, not hype.
     </p>
-
+<!-- Search & Filter Section -->
+<div class="search-filter-container">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="🔍 Search videos..." onkeyup="filterVideos()">
+  </div>
+  <div class="filter-buttons">
+    <button class="filter-btn active" onclick="filterByLevel('all')">All</button>
+    <button class="filter-btn" onclick="filterByLevel('beginner')">Beginner</button>
+    <button class="filter-btn" onclick="filterByLevel('advanced')">Advanced</button>
+  </div>
+</div>
     <div class="learning-grid">
       <div class="learning-card step-one">
         <span class="step-badge">STEP 1 · START HERE</span>
@@ -359,6 +369,44 @@
       });
     }
   </script>
+<script>
+function filterVideos() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  const cards = document.querySelectorAll('.learning-card');
+  
+  cards.forEach(card => {
+    const title = card.querySelector('h3').textContent.toLowerCase();
+    const desc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
+    
+    if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
 
+function filterByLevel(level) {
+  const cards = document.querySelectorAll('.learning-card');
+  const buttons = document.querySelectorAll('.filter-btn');
+  
+  buttons.forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  cards.forEach(card => {
+    const isAdvanced = card.closest('.step-five-a, .step-five-a1, .step-five-a2, .step-five-b1, .step-five-b2, .step-six, .step-seven-a, .step-seven-b, .step-seven-c, .step-seven-d');
+    
+    if (level === 'all') {
+      card.classList.remove('hidden');
+    } else if (level === 'beginner' && !isAdvanced) {
+      card.classList.remove('hidden');
+    } else if (level === 'advanced' && isAdvanced) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+</script>
 </body>
 </html>
