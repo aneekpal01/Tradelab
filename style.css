@@ -107,28 +107,121 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0b0f14 0%, #0d1a2d 50%, #0b0f14 100%);
+}
+
+/* Animated gradient overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(0, 255, 156, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(156, 0, 255, 0.05) 0%, transparent 50%);
+  animation: gradientPulse 8s ease-in-out infinite;
+  z-index: 0;
+}
+
+/* Trading chart pattern background */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(0, 255, 156, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 156, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: 0;
+}
+
+@keyframes gradientPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 .hero h1 {
-  font-size: 48px;
+  font-size: 52px;
   margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(90deg, #ffffff 0%, #00ff9c 50%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(0, 255, 156, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(0, 255, 156, 0.6));
+  }
 }
 
 .hero p {
   max-width: 640px;
-  font-size: 16px;
+  font-size: 17px;
   color: #bdbdbd;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
+  position: relative;
+  z-index: 1;
+  line-height: 1.8;
 }
 
 .btn {
   display: inline-block;
-  padding: 14px 30px;
-  background: #00ff9c;
+  padding: 16px 35px;
+  background: linear-gradient(90deg, #00ff9c 0%, #00d4ff 100%);
   color: #000;
   text-decoration: none;
-  font-weight: 600;
-  border-radius: 6px;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 8px;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 156, 0.4),
+    0 0 40px rgba(0, 255, 156, 0.2);
+  animation: btnPulse 2s ease-in-out infinite;
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 0 30px rgba(0, 255, 156, 0.6),
+    0 0 60px rgba(0, 255, 156, 0.4),
+    0 0 80px rgba(0, 212, 255, 0.3);
+}
+
+@keyframes btnPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(0, 255, 156, 0.4),
+      0 0 40px rgba(0, 255, 156, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 25px rgba(0, 255, 156, 0.5),
+      0 0 50px rgba(0, 255, 156, 0.3);
+  }
 }
 
 /* SECTIONS */
@@ -581,4 +674,3 @@ section {
   position: relative;
   z-index: 10;
 }
-
