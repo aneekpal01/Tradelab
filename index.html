@@ -10,7 +10,7 @@
   
   <style>
     body {
-      opacity: 0; /* Shuru mein page invisible rahega */
+      opacity: 0;
       transition: opacity 0.5s ease;
     }
   </style>
@@ -45,30 +45,33 @@
     <p class="section-intro">
       Structured, free trading education — built for clarity, not hype.
     </p>
-<!-- Se<!-- Progress Tracker Bar -->
-<div class="progress-tracker">
-  <div class="progress-info">
-    <span class="progress-text">Your Progress</span>
-    <span class="progress-count" id="progressCount">0/20 Completed</span>
-  </div>
-  <div class="progress-bar-container">
-    <div class="progress-bar-fill" id="progressBar"></div>
-  </div>
-</div>
+
+    <!-- Progress Tracker Bar -->
+    <div class="progress-tracker">
+      <div class="progress-info">
+        <span class="progress-text">Your Progress</span>
+        <span class="progress-count" id="progressCount">0/20 Completed</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+    </div>
     
-    
-  arch & Filter Section -->
-<div class="search-filter-container">
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="🔍 Search videos..." onkeyup="filterVideos()">
-  </div>
-  <div class="filter-buttons">
-    <button class="filter-btn active" onclick="filterByLevel('all')">All</button>
-    <button class="filter-btn" onclick="filterByLevel('beginner')">Beginner</button>
-    <button class="filter-btn" onclick="filterByLevel('advanced')">Advanced</button>
-  </div>
-</div>
+    <!-- Search & Filter Section -->
+    <div class="search-filter-container">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search videos..." onkeyup="filterVideos()">
+      </div>
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterByLevel('all')">All</button>
+        <button class="filter-btn" onclick="filterByLevel('beginner')">Beginner</button>
+        <button class="filter-btn" onclick="filterByLevel('advanced')">Advanced</button>
+      </div>
+    </div>
+
     <div class="learning-grid">
+      
+      <!-- VIDEO 1 -->
       <div class="learning-card step-one">
         <span class="step-badge">STEP 1 · START HERE</span>
         <h3>Trading Roadmap (0 → Advanced)</h3>
@@ -80,8 +83,12 @@
           </div>
         </div>
         <p>Complete beginner-to-advanced trading roadmap. Watch this first before learning anything else.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-1')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
       
+      <!-- VIDEO 2 -->
       <div class="learning-card step-two">
         <span class="step-badge step-two-badge">STEP 2 · CANDLESTICKS</span>
         <h3>Learn Candlestick Patterns</h3>
@@ -93,8 +100,12 @@
           </div>
         </div>
         <p>Learn candlestick basics, important patterns, and the psychology behind price movement.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-2')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 3 -->
       <div class="learning-card step-two">
         <span class="step-badge step-two-badge">STEP 2A · MARKET STRUCTURE</span>
         <h3>Basics of Market Structure</h3>
@@ -106,8 +117,12 @@
           </div>
         </div>
         <p>Understand market structure: higher high, higher low, trend shifts, BOS, and structure-based thinking.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-3')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 4 -->
       <div class="learning-card step-two">
         <span class="step-badge step-two-badge">STEP 2B · TRENDLINES</span>
         <h3>Learn Trendlines (Correct Way)</h3>
@@ -119,8 +134,12 @@
           </div>
         </div>
         <p>Learn how to draw valid trendlines, common mistakes, and trend confirmation.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-4')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 5 -->
       <div class="learning-card step-three">
         <span class="step-badge step-three-badge">STEP 3 · SUPPORT & RESISTANCE</span>
         <h3>Support & Resistance (Core Concept)</h3>
@@ -132,8 +151,12 @@
           </div>
         </div>
         <p>Learn how institutions mark support & resistance, role-reversal, and supply–demand zones.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-5')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 6 -->
       <div class="learning-card step-three">
         <span class="step-three-badge">STEP 3A · ADVANCED</span>
         <h3>Support & Resistance (Advanced)</h3>
@@ -145,8 +168,12 @@
           </div>
         </div>
         <p>Advanced support & resistance concepts including zone marking and fake breakouts.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-6')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 7 -->
       <div class="learning-card step-three">
         <span class="step-badge">STEP 3B · ENTRY & STOP-LOSS</span>
         <h3>Entry & Stop-Loss Techniques</h3>
@@ -158,8 +185,12 @@
           </div>
         </div>
         <p>Learn proper entry timing and stop-loss placement to protect capital.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-7')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 8 -->
       <div class="learning-card step-four">
         <span class="step-badge">STEP 4 · RISK MANAGEMENT</span>
         <h3>Risk Management Fundamentals</h3>
@@ -171,8 +202,12 @@
           </div>
         </div>
         <p>Learn position sizing, risk per trade, stop-loss logic, and how professionals protect capital.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-8')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 9 -->
       <div class="learning-card step-five">
         <span class="step-badge">STEP 5 · TRADING PSYCHOLOGY</span>
         <h3>Recommended Book for Trading Psychology</h3>
@@ -190,12 +225,17 @@
           </div>
         </div>
         <p>Understand mental frameworks, trader mindset, emotions, and discipline.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-9')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- ADVANCED SEPARATOR -->
       <div class="advanced-separator-container">
         <span class="advanced-separator-content">ADVANCE CONCEPTS</span>
       </div> 
 
+      <!-- VIDEO 10 -->
       <div class="learning-card step-five-a">
         <span class="step-badge">STEP 5A · LIQUIDITY</span>
         <h3>Liquidity (How Big Players Move Price)</h3>
@@ -204,8 +244,12 @@
           <span class="video-time">25:26</span>
         </div>
         <p>Understand liquidity concepts like stop hunts, liquidity pools, and inducement.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-10')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 11 -->
       <div class="learning-card step-five-a1">
         <span class="step-badge">STEP 5A1 · LIQUIDITY PRO</span>
         <h3>Liquidity Pro (Advanced)</h3>
@@ -214,8 +258,12 @@
           <span class="video-time">1:49:36</span>
         </div>
         <p>Deep dive into advanced liquidity concepts including engineered liquidity and multi-timeframe mapping.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-11')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 12 -->
       <div class="learning-card step-five-a2">
         <span class="step-badge">STEP 5A2 · SUPPLY & DEMAND</span>
         <h3>Supply & Demand Masterclass</h3>
@@ -224,8 +272,12 @@
           <span class="video-time">40:02</span>
         </div>
         <p>Learn how supply and demand zones are formed and how to trade high-probability zones.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-12')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 13 -->
       <div class="learning-card step-five-b1">
         <span class="step-badge">STEP 5B1 · SMART MONEY CONCEPT (SMC)</span>
         <h3>Smart Money Concepts (SMC)</h3>
@@ -234,8 +286,12 @@
           <span class="video-time">17:45</span>
         </div>
         <p>Learn core SMC concepts like BOS, CHoCH, order blocks, and inducement.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-13')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 14 -->
       <div class="learning-card step-five-b2">
         <span class="step-badge">STEP 5B2 · SMC CONTINUATION</span>
         <h3>Smart Money Concepts (Continuation)</h3>
@@ -244,8 +300,12 @@
           <span class="video-time">17:53</span>
         </div>
         <p>Advanced continuation of SMC concepts including refinement and confirmation logic.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-14')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 15 -->
       <div class="learning-card step-six">
         <span class="step-badge">STEP 6 · RSI ADVANCED</span>
         <h3>RSI Advanced Techniques</h3>
@@ -256,8 +316,12 @@
           </div>
         </div>
         <p>Advanced concepts of RSI: divergence, confirmation, and multi-timeframe signals.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-15')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 16 -->
       <div class="learning-card step-six">
         <span class="step-badge">STEP 6A · EMA / MOVING AVERAGE</span>
         <h3>EMA & Moving Average Techniques</h3>
@@ -268,8 +332,12 @@
           </div>
         </div>
         <p>Learn the logic behind EMA and moving averages, trend confirmation, and crossovers.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-16')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 17 -->
       <div class="learning-card step-seven-a">
         <span class="step-badge">STEP 7A · PARTIAL BOOKING</span>
         <h3>Partial Booking Techniques</h3>
@@ -278,8 +346,12 @@
           <span class="video-time">18:02</span>
         </div>
         <p>Learn how to book partial profits at key levels while letting the rest of the position run.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-17')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 18 -->
       <div class="learning-card step-seven-b">
         <span class="step-badge">STEP 7B · TRAILING STOP-LOSS</span>
         <h3>Trailing Stop-Loss (Protect Profits)</h3>
@@ -288,8 +360,12 @@
           <span class="video-time">23:07</span>
         </div>
         <p>Learn how to trail stop-loss using structure to lock profits while letting winning trades run.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-18')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 19 -->
       <div class="learning-card step-seven-c">
         <span class="step-badge">STEP 7C · BREAKEVEN LOGIC</span>
         <h3>Breakeven Logic (Protect Capital)</h3>
@@ -298,8 +374,12 @@
           <span class="video-time">6:57</span>
         </div>
         <p>Learn when and how to move stop-loss to breakeven without getting stopped out early.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-19')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
+      <!-- VIDEO 20 - Text Only Card -->
       <div class="learning-card step-seven-d">
         <span class="step-badge">STEP 7D · SCALING IN & SCALING OUT</span>
         <h3>Scaling In & Scaling Out (Position Management)</h3>
@@ -316,16 +396,20 @@
         <h4>Simple Example</h4>
         <p>A trade is entered at support. Price moves in your favor. A small position is added (Scaling In). Partial profits are booked at resistance (Scaling Out).</p>
         <p><strong>Golden Rule:</strong> Scale In only on winning trades. Scale Out to protect profits.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-20')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
       </div>
 
     </div>
   </section>
 
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
   <script>
-   // Firebase Configuration
+    // Firebase Configuration
     var firebaseConfig = {
         apiKey: "AIzaSyADSKrrnamZj2_jkfueTXempsNOZlT_nCw",
         authDomain: "tradelab-36d73.firebaseapp.com",
@@ -344,81 +428,137 @@
     const logoutItem = document.getElementById('logoutItem');
     const userItem = document.getElementById('userItem');
     
-    // 2. MAIN SECURITY LOGIC (The Gatekeeper)
+    // Auth State Change
     auth.onAuthStateChanged((user) => {
       if (user) {
-        // 🟢 User is Logged In
         console.log("Access Granted:", user.email);
-        
-        // Website content dikhao (Fade in effect)
         document.body.style.opacity = "1";
 
-        // Navigation update karo
         if(loginItem) loginItem.style.display = 'none';
         if(logoutItem) logoutItem.style.display = 'block';
         if(userItem) {
           userItem.style.display = 'block';
-          // Email ka pehla hissa dikhao (Jaise: aneekpal01)
           userItem.textContent = "Hi, " + user.email.split('@')[0];
         }
-
       } else {
-        // 🔴 User is NOT Logged In
         console.log("Access Denied. Redirecting...");
-        
-        // Turant Login Page par bhej do
         window.location.href = "login.html";
       }
     });
 
-    // 3. Logout Function
+    // Logout Function
     function logoutUser() {
       auth.signOut().then(() => {
-        // Signout hote hi 'onAuthStateChanged' trigger hoga 
-        // aur wo automatically login.html par bhej dega
       }).catch((error) => {
         console.error("Logout Error:", error);
       });
     }
   </script>
-<script>
-function filterVideos() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  const cards = document.querySelectorAll('.learning-card');
-  
-  cards.forEach(card => {
-    const title = card.querySelector('h3').textContent.toLowerCase();
-    const desc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
-    
-    if (title.includes(searchTerm) || desc.includes(searchTerm)) {
-      card.classList.remove('hidden');
-    } else {
-      card.classList.add('hidden');
-    }
-  });
-}
 
-function filterByLevel(level) {
-  const cards = document.querySelectorAll('.learning-card');
-  const buttons = document.querySelectorAll('.filter-btn');
-  
-  buttons.forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-  
-  cards.forEach(card => {
-    const isAdvanced = card.closest('.step-five-a, .step-five-a1, .step-five-a2, .step-five-b1, .step-five-b2, .step-six, .step-seven-a, .step-seven-b, .step-seven-c, .step-seven-d');
-    
-    if (level === 'all') {
-      card.classList.remove('hidden');
-    } else if (level === 'beginner' && !isAdvanced) {
-      card.classList.remove('hidden');
-    } else if (level === 'advanced' && isAdvanced) {
-      card.classList.remove('hidden');
-    } else {
-      card.classList.add('hidden');
+  <!-- Search & Filter Script -->
+  <script>
+    function filterVideos() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.learning-card');
+      
+      cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const desc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
+        
+        if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
     }
-  });
-}
-</script>
+
+    function filterByLevel(level) {
+      const cards = document.querySelectorAll('.learning-card');
+      const buttons = document.querySelectorAll('.filter-btn');
+      
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      cards.forEach(card => {
+        const isAdvanced = card.closest('.step-five-a, .step-five-a1, .step-five-a2, .step-five-b1, .step-five-b2, .step-six, .step-seven-a, .step-seven-b, .step-seven-c, .step-seven-d');
+        
+        if (level === 'all') {
+          card.classList.remove('hidden');
+        } else if (level === 'beginner' && !isAdvanced) {
+          card.classList.remove('hidden');
+        } else if (level === 'advanced' && isAdvanced) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+  </script>
+
+  <!-- Progress Tracker Script -->
+  <script>
+    // Automatic count - jab bhi video add karo, automatic update
+    const TOTAL_VIDEOS = document.querySelectorAll('.complete-btn').length;
+
+    // Load progress on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadProgress();
+    });
+
+    function toggleComplete(button, videoId) {
+      const card = button.closest('.learning-card');
+      let completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      
+      if (completedVideos.includes(videoId)) {
+        // Remove from completed
+        completedVideos = completedVideos.filter(id => id !== videoId);
+        button.classList.remove('completed');
+        button.innerHTML = '<span class="check-icon">✓</span> Mark Complete';
+        card.classList.remove('completed');
+      } else {
+        // Add to completed
+        completedVideos.push(videoId);
+        button.classList.add('completed');
+        button.innerHTML = '<span class="check-icon">✓</span> Completed!';
+        card.classList.add('completed');
+      }
+      
+      localStorage.setItem('completedVideos', JSON.stringify(completedVideos));
+      updateProgressBar();
+    }
+
+    function loadProgress() {
+      const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      
+      completedVideos.forEach(videoId => {
+        const button = document.querySelector(`[onclick*="${videoId}"]`);
+        if (button) {
+          const card = button.closest('.learning-card');
+          button.classList.add('completed');
+          button.innerHTML = '<span class="check-icon">✓</span> Completed!';
+          card.classList.add('completed');
+        }
+      });
+      
+      updateProgressBar();
+    }
+
+    function updateProgressBar() {
+      const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      const completed = completedVideos.length;
+      const percentage = (completed / TOTAL_VIDEOS) * 100;
+      
+      document.getElementById('progressBar').style.width = percentage + '%';
+      document.getElementById('progressCount').textContent = `${completed}/${TOTAL_VIDEOS} Completed`;
+    }
+
+    // Reset Progress (use in console if needed: resetProgress())
+    function resetProgress() {
+      localStorage.removeItem('completedVideos');
+      location.reload();
+    }
+  </script>
+
 </body>
 </html>
