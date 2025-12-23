@@ -103,12 +103,19 @@ section {
 /* ===== GRID LAYOUT FOR LEARNING CARDS ===== */
 .learning-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);  /* 2 columns */
-  gap: 30px;
+  grid-template-columns: repeat(3, 1fr);  /* 3 columns */
+  gap: 25px;
+}
+
+/* Tablet pe 2 columns */
+@media (max-width: 1200px) {
+  .learning-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Mobile pe 1 column */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .learning-grid {
     grid-template-columns: 1fr;
   }
@@ -522,5 +529,4 @@ section {
   position: relative;
   z-index: 10;
 }
-
 
