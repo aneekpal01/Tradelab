@@ -31,6 +31,12 @@
     </ul>
   </nav>
 
+  <!-- Dark/Light Mode Toggle Button -->
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+    <span class="icon-moon">🌙</span>
+    <span class="icon-sun">☀️</span>
+  </button>
+
   <section class="hero">
     <h1>Learn Trading the Right Way</h1>
     <p>
@@ -558,6 +564,44 @@
       localStorage.removeItem('completedVideos');
       location.reload();
     }
+  </script>
+
+  <!-- Theme Toggle Script -->
+  <script>
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+  </script>
+
+  <!-- Scroll Animation Script -->
+  <script>
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all learning cards
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.learning-card');
+      cards.forEach(card => observer.observe(card));
+    });
   </script>
 
 </body>
