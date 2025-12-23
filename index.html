@@ -13,11 +13,33 @@
       opacity: 0;
       transition: opacity 0.5s ease;
     }
+    /* Utility Class for Search Filter */
+    .hidden {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Loading Animation -->
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+    "symbols": [
+      { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
+      { "proName": "BITSTAMP:ETHUSD", "title": "Ethereum" },
+      { "proName": "BINANCE:SOLUSDT", "title": "Solana" },
+      { "proName": "FX_IDC:USDINR", "title": "USD/INR" },
+      { "proName": "NASDAQ:TSLA", "title": "Tesla" }
+    ],
+    "showSymbolLogo": true,
+    "colorTheme": "dark",
+    "isTransparent": false,
+    "displayMode": "adaptive",
+    "locale": "en"
+    }
+    </script>
+  </div>
   <div class="loader-wrapper" id="loader">
     <div class="loader"></div>
     <div class="loader-text">
@@ -28,7 +50,6 @@
   <nav class="navbar">
     <div class="logo">TradeLab</div>
     
-    <!-- Hamburger Menu Button -->
     <button class="hamburger" id="hamburger" onclick="toggleMenu()">
       <span class="bar"></span>
       <span class="bar"></span>
@@ -47,13 +68,11 @@
     </ul>
   </nav>
 
-  <!-- Dark/Light Mode Toggle Button -->
   <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
     <span class="icon-moon">🌙</span>
     <span class="icon-sun">☀️</span>
   </button>
 
-  <!-- Back to Top Button -->
   <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to Top">
     ↑
   </button>
@@ -73,7 +92,6 @@
       Structured, free trading education — built for clarity, not hype.
     </p>
 
-    <!-- Progress Tracker Bar -->
     <div class="progress-tracker">
       <div class="progress-info">
         <span class="progress-text">Your Progress</span>
@@ -84,7 +102,6 @@
       </div>
     </div>
     
-    <!-- Search & Filter Section -->
     <div class="search-filter-container">
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="🔍 Search videos..." onkeyup="filterVideos()">
@@ -98,7 +115,6 @@
 
     <div class="learning-grid">
       
-      <!-- VIDEO 1 -->
       <div class="learning-card step-one">
         <span class="step-badge">STEP 1 · START HERE</span>
         <h3>Trading Roadmap (0 → Advanced)</h3>
@@ -106,7 +122,7 @@
           <span class="level-tag beginner">BEGINNER</span>
           <span class="duration">33:13</span>
           <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/hqXoZtC2sEU?autoplay=0&mute=0&controls=1&rel=0" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/hqXoZtC2sEU?autoplay=0&mute=0&controls=1&rel=0" loading="lazy" allowfullscreen></iframe>
           </div>
         </div>
         <p>Complete beginner-to-advanced trading roadmap. Watch this first before learning anything else.</p>
@@ -115,7 +131,6 @@
         </button>
       </div>
       
-      <!-- VIDEO 2 -->
       <div class="learning-card step-two">
         <span class="step-badge step-two-badge">STEP 2 · CANDLESTICKS</span>
         <h3>Learn Candlestick Patterns</h3>
@@ -123,7 +138,7 @@
           <span class="level-tag beginner">BEGINNER</span>
           <span class="duration">13:30</span>
           <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/AOz1YPOKvEs" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/AOz1YPOKvEs" loading="lazy" allowfullscreen></iframe>
           </div>
         </div>
         <p>Learn candlestick basics, important patterns, and the psychology behind price movement.</p>
@@ -132,7 +147,6 @@
         </button>
       </div>
 
-      <!-- VIDEO 3 -->
       <div class="learning-card step-two">
         <span class="step-badge step-two-badge">STEP 2A · MARKET STRUCTURE</span>
         <h3>Basics of Market Structure</h3>
@@ -140,7 +154,7 @@
           <span class="level-tag beginner">BEGINNER</span>
           <span class="duration">20:45</span>
           <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/sZAE_lqdeno" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/sZAE_lqdeno" loading="lazy" allowfullscreen></iframe>
           </div>
         </div>
         <p>Understand market structure: higher high, higher low, trend shifts, BOS, and structure-based thinking.</p>
@@ -149,7 +163,6 @@
         </button>
       </div>
 
-      <!-- VIDEO 4 -->
       <div class="learning-card step-two">
         <span class="step-badge step-two-badge">STEP 2B · TRENDLINES</span>
         <h3>Learn Trendlines (Correct Way)</h3>
@@ -157,7 +170,7 @@
           <span class="level-tag beginner">BEGINNER</span>
           <span class="duration">45:25</span>
           <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/Y8efWZ2M1y8" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/Y8efWZ2M1y8" loading="lazy" allowfullscreen></iframe>
           </div>
         </div>
         <p>Learn how to draw valid trendlines, common mistakes, and trend confirmation.</p>
@@ -166,7 +179,6 @@
         </button>
       </div>
 
-      <!-- VIDEO 5 -->
       <div class="learning-card step-three">
         <span class="step-badge step-three-badge">STEP 3 · SUPPORT & RESISTANCE</span>
         <h3>Support & Resistance (Core Concept)</h3>
@@ -174,7 +186,7 @@
           <span class="level-tag beginner">BEGINNER</span>
           <span class="duration">41:26</span>
           <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/nuVv0ZWUfs4" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/nuVv0ZWUfs4" loading="lazy" allowfullscreen></iframe>
           </div>
         </div>
         <p>Learn how institutions mark support & resistance, role-reversal, and supply–demand zones.</p>
@@ -183,7 +195,6 @@
         </button>
       </div>
 
-      <!-- VIDEO 6 -->
       <div class="learning-card step-three">
         <span class="step-three-badge">STEP 3A · ADVANCED</span>
         <h3>Support & Resistance (Advanced)</h3>
@@ -191,7 +202,7 @@
           <span class="level-tag beginner">BEGINNER</span>
           <span class="duration">17:30</span>
           <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/nujw5BabrWk" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/nujw5BabrWk" loading="lazy" allowfullscreen></iframe>
           </div>
         </div>
         <p>Advanced support & resistance concepts including zone marking and fake breakouts.</p>
@@ -200,7 +211,6 @@
         </button>
       </div>
 
-      <!-- VIDEO 7 -->
       <div class="learning-card step-three">
         <span class="step-badge">STEP 3B · ENTRY & STOP-LOSS</span>
         <h3>Entry & Stop-Loss Techniques</h3>
@@ -208,7 +218,7 @@
           <span class="level-tag beginner">BEGINNER</span>
           <span class="duration">7:25</span>
           <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/txXUUeMDos8" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/txXUUeMDos8" loading="lazy" allowfullscreen></iframe>
           </div>
         </div>
         <p>Learn proper entry timing and stop-loss placement to protect capital.</p>
@@ -217,7 +227,6 @@
         </button>
       </div>
 
-      <!-- VIDEO 8 -->
       <div class="learning-card step-four">
         <span class="step-badge">STEP 4 · RISK MANAGEMENT</span>
         <h3>Risk Management Fundamentals</h3>
@@ -225,7 +234,7 @@
           <span class="level-tag beginner">BEGINNER</span>
           <span class="duration">12:38</span>
           <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/VzMlFZbWA0Y" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/VzMlFZbWA0Y" loading="lazy" allowfullscreen></iframe>
           </div>
         </div>
         <p>Learn position sizing, risk per trade, stop-loss logic, and how professionals protect capital.</p>
@@ -234,7 +243,6 @@
         </button>
       </div>
 
-      <!-- VIDEO 9 -->
       <div class="learning-card step-five">
         <span class="step-badge">STEP 5 · TRADING PSYCHOLOGY</span>
         <h3>Recommended Book for Trading Psychology</h3>
@@ -248,7 +256,7 @@
           <span class="level-tag beginner">BEGINNER</span>
           <span class="duration">13:49</span>
           <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/RzElN0uHsns" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/RzElN0uHsns" loading="lazy" allowfullscreen></iframe>
           </div>
         </div>
         <p>Understand mental frameworks, trader mindset, emotions, and discipline.</p>
@@ -257,17 +265,15 @@
         </button>
       </div>
 
-      <!-- ADVANCED SEPARATOR -->
       <div class="advanced-separator-container">
         <span class="advanced-separator-content">ADVANCE CONCEPTS</span>
       </div> 
 
-      <!-- VIDEO 10 -->
       <div class="learning-card step-five-a">
         <span class="step-badge">STEP 5A · LIQUIDITY</span>
         <h3>Liquidity (How Big Players Move Price)</h3>
         <div class="video-box">
-          <iframe src="https://www.youtube.com/embed/YUUefUXeZwI" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/YUUefUXeZwI" loading="lazy" allowfullscreen></iframe>
           <span class="video-time">25:26</span>
         </div>
         <p>Understand liquidity concepts like stop hunts, liquidity pools, and inducement.</p>
@@ -276,12 +282,11 @@
         </button>
       </div>
 
-      <!-- VIDEO 11 -->
       <div class="learning-card step-five-a1">
         <span class="step-badge">STEP 5A1 · LIQUIDITY PRO</span>
         <h3>Liquidity Pro (Advanced)</h3>
         <div class="video-box">
-          <iframe src="https://www.youtube.com/embed/DAnXM7C16h0" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/DAnXM7C16h0" loading="lazy" allowfullscreen></iframe>
           <span class="video-time">1:49:36</span>
         </div>
         <p>Deep dive into advanced liquidity concepts including engineered liquidity and multi-timeframe mapping.</p>
@@ -290,12 +295,11 @@
         </button>
       </div>
 
-      <!-- VIDEO 12 -->
       <div class="learning-card step-five-a2">
         <span class="step-badge">STEP 5A2 · SUPPLY & DEMAND</span>
         <h3>Supply & Demand Masterclass</h3>
         <div class="video-box">
-          <iframe src="https://www.youtube.com/embed/yaCM_cr5BXo" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/yaCM_cr5BXo" loading="lazy" allowfullscreen></iframe>
           <span class="video-time">40:02</span>
         </div>
         <p>Learn how supply and demand zones are formed and how to trade high-probability zones.</p>
@@ -304,12 +308,11 @@
         </button>
       </div>
 
-      <!-- VIDEO 13 -->
       <div class="learning-card step-five-b1">
         <span class="step-badge">STEP 5B1 · SMART MONEY CONCEPT (SMC)</span>
         <h3>Smart Money Concepts (SMC)</h3>
         <div class="video-box">
-          <iframe src="https://www.youtube.com/embed/52m-dt1tDvw" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/52m-dt1tDvw" loading="lazy" allowfullscreen></iframe>
           <span class="video-time">17:45</span>
         </div>
         <p>Learn core SMC concepts like BOS, CHoCH, order blocks, and inducement.</p>
@@ -318,12 +321,11 @@
         </button>
       </div>
 
-      <!-- VIDEO 14 -->
       <div class="learning-card step-five-b2">
         <span class="step-badge">STEP 5B2 · SMC CONTINUATION</span>
         <h3>Smart Money Concepts (Continuation)</h3>
         <div class="video-box">
-          <iframe src="https://www.youtube.com/embed/K1BuYD5KhQ8" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/K1BuYD5KhQ8" loading="lazy" allowfullscreen></iframe>
           <span class="video-time">17:53</span>
         </div>
         <p>Advanced continuation of SMC concepts including refinement and confirmation logic.</p>
@@ -332,14 +334,13 @@
         </button>
       </div>
 
-      <!-- VIDEO 15 -->
       <div class="learning-card step-six">
         <span class="step-badge">STEP 6 · RSI ADVANCED</span>
         <h3>RSI Advanced Techniques</h3>
         <div class="video-card">
           <span class="duration">8:51</span>
           <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/EtRcYFhLSSM" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/EtRcYFhLSSM" loading="lazy" allowfullscreen></iframe>
           </div>
         </div>
         <p>Advanced concepts of RSI: divergence, confirmation, and multi-timeframe signals.</p>
@@ -348,14 +349,13 @@
         </button>
       </div>
 
-      <!-- VIDEO 16 -->
       <div class="learning-card step-six">
         <span class="step-badge">STEP 6A · EMA / MOVING AVERAGE</span>
         <h3>EMA & Moving Average Techniques</h3>
         <div class="video-card">
           <span class="duration">9:08</span>
           <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/k_kSCjdf8D0" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/k_kSCjdf8D0" loading="lazy" allowfullscreen></iframe>
           </div>
         </div>
         <p>Learn the logic behind EMA and moving averages, trend confirmation, and crossovers.</p>
@@ -364,12 +364,11 @@
         </button>
       </div>
 
-      <!-- VIDEO 17 -->
       <div class="learning-card step-seven-a">
         <span class="step-badge">STEP 7A · PARTIAL BOOKING</span>
         <h3>Partial Booking Techniques</h3>
         <div class="video-box">
-          <iframe src="https://www.youtube.com/embed/PgRZw4omcC8" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/PgRZw4omcC8" loading="lazy" allowfullscreen></iframe>
           <span class="video-time">18:02</span>
         </div>
         <p>Learn how to book partial profits at key levels while letting the rest of the position run.</p>
@@ -378,12 +377,11 @@
         </button>
       </div>
 
-      <!-- VIDEO 18 -->
       <div class="learning-card step-seven-b">
         <span class="step-badge">STEP 7B · TRAILING STOP-LOSS</span>
         <h3>Trailing Stop-Loss (Protect Profits)</h3>
         <div class="video-box">
-          <iframe src="https://www.youtube.com/embed/0kl47rZZ4SQ" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/0kl47rZZ4SQ" loading="lazy" allowfullscreen></iframe>
           <span class="video-time">23:07</span>
         </div>
         <p>Learn how to trail stop-loss using structure to lock profits while letting winning trades run.</p>
@@ -392,12 +390,11 @@
         </button>
       </div>
 
-      <!-- VIDEO 19 -->
       <div class="learning-card step-seven-c">
         <span class="step-badge">STEP 7C · BREAKEVEN LOGIC</span>
         <h3>Breakeven Logic (Protect Capital)</h3>
         <div class="video-box">
-          <iframe src="https://www.youtube.com/embed/Khs1hwkIOiM" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/Khs1hwkIOiM" loading="lazy" allowfullscreen></iframe>
           <span class="video-time">6:57</span>
         </div>
         <p>Learn when and how to move stop-loss to breakeven without getting stopped out early.</p>
@@ -406,7 +403,6 @@
         </button>
       </div>
 
-      <!-- VIDEO 20 - Text Only Card -->
       <div class="learning-card step-seven-d">
         <span class="step-badge">STEP 7D · SCALING IN & SCALING OUT</span>
         <h3>Scaling In & Scaling Out (Position Management)</h3>
@@ -427,11 +423,15 @@
           <span class="check-icon">✓</span> Mark Complete
         </button>
       </div>
+      
+      <div id="noResults" class="hidden" style="text-align: center; width: 100%; padding: 40px; color: #888;">
+        <h3>😕 No videos found</h3>
+        <p>Try searching for "Candlestick", "RSI", or "SMC"</p>
+      </div>
 
     </div>
   </section>
 
-  <!-- Footer Section -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-brand">
@@ -481,7 +481,6 @@
     </div>
   </footer>
 
-  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
@@ -532,22 +531,34 @@
     }
   </script>
 
-  <!-- Search & Filter Script -->
   <script>
     function filterVideos() {
       const searchTerm = document.getElementById('searchInput').value.toLowerCase();
       const cards = document.querySelectorAll('.learning-card');
+      const noResults = document.getElementById('noResults');
+      let visibleCount = 0;
       
       cards.forEach(card => {
+        // Don't check the noResults div itself
+        if(card.id === 'noResults') return;
+
         const title = card.querySelector('h3').textContent.toLowerCase();
         const desc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
         
         if (title.includes(searchTerm) || desc.includes(searchTerm)) {
           card.classList.remove('hidden');
+          visibleCount++;
         } else {
           card.classList.add('hidden');
         }
       });
+
+      // Toggle No Results Message
+      if (visibleCount === 0) {
+        noResults.classList.remove('hidden');
+      } else {
+        noResults.classList.add('hidden');
+      }
     }
 
     function filterByLevel(level) {
@@ -558,6 +569,9 @@
       event.target.classList.add('active');
       
       cards.forEach(card => {
+        // Skip noResults div logic for buttons
+        if(card.id === 'noResults') return;
+
         const isAdvanced = card.closest('.step-five-a, .step-five-a1, .step-five-a2, .step-five-b1, .step-five-b2, .step-six, .step-seven-a, .step-seven-b, .step-seven-c, .step-seven-d');
         
         if (level === 'all') {
@@ -570,10 +584,11 @@
           card.classList.add('hidden');
         }
       });
+      // Hide the no results message when buttons are clicked (reset)
+      document.getElementById('noResults').classList.add('hidden');
     }
   </script>
 
-  <!-- Progress Tracker Script -->
   <script>
     // Automatic count - jab bhi video add karo, automatic update
     const TOTAL_VIDEOS = document.querySelectorAll('.complete-btn').length;
@@ -637,7 +652,6 @@
     }
   </script>
 
-  <!-- Theme Toggle Script -->
   <script>
     // Check for saved theme preference
     const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -652,7 +666,6 @@
     }
   </script>
 
-  <!-- Scroll Animation Script -->
   <script>
     // Intersection Observer for scroll animations
     const observerOptions = {
@@ -675,7 +688,6 @@
     });
   </script>
 
-  <!-- Sticky Navbar + Back to Top Script -->
   <script>
     const navbar = document.querySelector('.navbar');
     const backToTopBtn = document.getElementById('backToTop');
@@ -705,7 +717,6 @@
     }
   </script>
 
-  <!-- Loading Animation Script -->
   <script>
     window.addEventListener('load', () => {
       // Wait for everything to load, then hide loader
@@ -715,7 +726,6 @@
     });
   </script>
 
-  <!-- Hamburger Menu Script -->
   <script>
     function toggleMenu() {
       const navLinks = document.getElementById('navLinks');
