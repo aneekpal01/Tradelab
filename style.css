@@ -19,31 +19,83 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px 60px;
-  background: #0b0f14;
-  border-bottom: 1px solid #141a22;
+  background: linear-gradient(135deg, #0b0f14 0%, #131a24 100%);
+  border-bottom: 1px solid #1e2a3a;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .logo {
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #00ff9c, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 28px;
+  gap: 8px;
+  align-items: center;
 }
 
-.nav-links a {
+.nav-links li a {
   text-decoration: none;
   color: #cfcfcf;
   font-size: 14px;
-  transition: color 0.2s ease;
+  font-weight: 500;
+  padding: 10px 18px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.nav-links a:hover {
-  color: #00ff9c;
+/* Hover effect - glowing box */
+.nav-links li a:hover {
+  color: #fff;
+  background: rgba(0, 255, 156, 0.1);
+  box-shadow: 0 0 15px rgba(0, 255, 156, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Active link style (for Backtesting Lab) */
+.nav-links li a[style*="color: #58a6ff"] {
+  background: rgba(88, 166, 255, 0.15);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  border-radius: 8px;
+}
+
+/* User greeting style */
+#userItem {
+  background: linear-gradient(90deg, rgba(0, 255, 156, 0.15), rgba(0, 212, 255, 0.15));
+  padding: 8px 16px !important;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 255, 156, 0.3);
+  font-size: 13px !important;
+}
+
+/* Logout button style */
+#logoutItem a {
+  background: rgba(255, 77, 77, 0.15) !important;
+  border: 1px solid rgba(255, 77, 77, 0.4);
+  color: #ff6b6b !important;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+#logoutItem a:hover {
+  background: rgba(255, 77, 77, 0.3) !important;
+  box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
+  color: #fff !important;
 }
 
 /* HERO */
