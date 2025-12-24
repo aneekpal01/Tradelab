@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TradeLab | Backtesting Lab</title>
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <!-- Using specific version of Lightweight Charts that works -->
+    <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -595,7 +596,7 @@
         function initChart() {
             chart = LightweightCharts.createChart(chartElement, {
                 layout: {
-                    background: { type: 'solid', color: '#0d1117' },
+                    backgroundColor: '#0d1117',
                     textColor: '#c9d1d9',
                 },
                 grid: {
@@ -604,18 +605,6 @@
                 },
                 crosshair: {
                     mode: LightweightCharts.CrosshairMode.Normal,
-                    vertLine: {
-                        color: '#00ff9c',
-                        width: 1,
-                        style: 2,
-                        labelBackgroundColor: '#00ff9c',
-                    },
-                    horzLine: {
-                        color: '#00ff9c',
-                        width: 1,
-                        style: 2,
-                        labelBackgroundColor: '#00ff9c',
-                    },
                 },
                 rightPriceScale: {
                     borderColor: '#1e2a3a',
@@ -629,7 +618,7 @@
                 height: 550
             });
 
-            // Candlestick Series
+            // Candlestick Series - v3.8.0 syntax
             candlestickSeries = chart.addCandlestickSeries({
                 upColor: '#26a69a',
                 downColor: '#ef5350',
@@ -639,9 +628,9 @@
             });
 
             // Crosshair move handler
-            chart.subscribeCrosshairMove((param) => {
+            chart.subscribeCrosshairMove(function(param) {
                 if (param.time) {
-                    const data = param.seriesData.get(candlestickSeries);
+                    const data = param.seriesPrices.get(candlestickSeries);
                     if (data) {
                         document.getElementById('oOpen').textContent = formatPrice(data.open);
                         document.getElementById('oHigh').textContent = formatPrice(data.high);
@@ -649,8 +638,8 @@
                         document.getElementById('oClose').textContent = formatPrice(data.close);
                         
                         const price = data.close;
-                        const time = new Date(param.time * 1000).toLocaleDateString();
-                        document.getElementById('coordinates').textContent = `Price: ${formatPrice(price)} | Time: ${time}`;
+                        const dateStr = new Date(param.time * 1000).toLocaleDateString();
+                        document.getElementById('coordinates').textContent = 'Price: ' + formatPrice(price) + ' | Time: ' + dateStr;
                     }
                 }
             });
@@ -672,12 +661,12 @@
 
             try {
                 // CoinGecko OHLC API - Free & CORS friendly
-                const url = `https://api.coingecko.com/api/v3/coins/${coin}/ohlc?vs_currency=usd&days=${days}`;
+                const url = 'https://api.coingecko.com/api/v3/coins/' + coin + '/ohlc?vs_currency=usd&days=' + days;
                 
                 const response = await fetch(url);
                 
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
+                    throw new Error('HTTP ' + response.status);
                 }
                 
                 const data = await response.json();
@@ -687,13 +676,15 @@
                 }
 
                 // Format OHLC data - CoinGecko returns [timestamp, open, high, low, close]
-                const candleData = data.map(d => ({
-                    time: Math.floor(d[0] / 1000),
-                    open: d[1],
-                    high: d[2],
-                    low: d[3],
-                    close: d[4],
-                }));
+                const candleData = data.map(function(d) {
+                    return {
+                        time: Math.floor(d[0] / 1000),
+                        open: d[1],
+                        high: d[2],
+                        low: d[3],
+                        close: d[4]
+                    };
+                });
 
                 // Set data on chart
                 candlestickSeries.setData(candleData);
@@ -724,20 +715,24 @@
                 document.getElementById('currentPrice').textContent = formatPrice(lastCandle.close);
                 
                 const changeEl = document.getElementById('priceChange');
-                changeEl.textContent = `${priceChange >= 0 ? '+' : ''}${priceChange}%`;
-                changeEl.className = `change ${priceChange >= 0 ? 'up' : 'down'}`;
+                changeEl.textContent = (priceChange >= 0 ? '+' : '') + priceChange + '%';
+                changeEl.className = 'change ' + (priceChange >= 0 ? 'up' : 'down');
                 
-                const high = Math.max(...data.map(d => d.high));
-                const low = Math.min(...data.map(d => d.low));
+                let high = data[0].high;
+                let low = data[0].low;
+                for (let i = 1; i < data.length; i++) {
+                    if (data[i].high > high) high = data[i].high;
+                    if (data[i].low < low) low = data[i].low;
+                }
                 
                 document.getElementById('high24h').textContent = formatPrice(high);
                 document.getElementById('low24h').textContent = formatPrice(low);
                 document.getElementById('candlesLoaded').textContent = data.length;
-                document.getElementById('dataInfo').textContent = `Candles: ${data.length}`;
+                document.getElementById('dataInfo').textContent = 'Candles: ' + data.length;
                 
                 const priceChangeCard = document.getElementById('priceChangeCard');
-                priceChangeCard.textContent = `${priceChange >= 0 ? '+' : ''}${priceChange}%`;
-                priceChangeCard.className = `value ${priceChange >= 0 ? 'green' : 'red'}`;
+                priceChangeCard.textContent = (priceChange >= 0 ? '+' : '') + priceChange + '%';
+                priceChangeCard.className = 'value ' + (priceChange >= 0 ? 'green' : 'red');
             }
         }
 
@@ -749,16 +744,22 @@
         }
 
         function showLoading(show) {
-            document.getElementById('loadingOverlay').classList.toggle('hidden', !show);
+            const overlay = document.getElementById('loadingOverlay');
+            if (show) {
+                overlay.classList.remove('hidden');
+            } else {
+                overlay.classList.add('hidden');
+            }
         }
 
         // ===== DRAWING TOOLS =====
         function setDrawingMode(mode) {
             currentDrawingMode = mode;
             
-            document.querySelectorAll('.tool-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            const buttons = document.querySelectorAll('.tool-btn');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
             
             const toolId = mode + 'Tool';
             const activeBtn = document.getElementById(toolId);
@@ -813,16 +814,16 @@
                 lineWidth: 2,
                 lineStyle: currentDrawingMode === 'liquidity' ? 2 : 0,
                 axisLabelVisible: true,
-                title: titles[currentDrawingMode],
+                title: titles[currentDrawingMode]
             });
             
             drawnLines.push(line);
         }
 
         function clearAllDrawings() {
-            drawnLines.forEach(line => {
-                candlestickSeries.removePriceLine(line);
-            });
+            for (let i = 0; i < drawnLines.length; i++) {
+                candlestickSeries.removePriceLine(drawnLines[i]);
+            }
             drawnLines = [];
         }
 
@@ -831,7 +832,7 @@
             initChart();
             loadChartData();
             
-            window.addEventListener('resize', () => {
+            window.addEventListener('resize', function() {
                 chart.applyOptions({ width: chartElement.clientWidth });
             });
         }
