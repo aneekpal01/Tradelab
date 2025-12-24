@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TradeLab | Backtesting Lab</title>
-    <!-- Using specific version of Lightweight Charts that works -->
     <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -22,7 +20,6 @@
             min-height: 100vh;
         }
 
-        /* Navbar */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -33,7 +30,6 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
         }
 
         .logo {
@@ -61,20 +57,19 @@
             color: #000;
         }
 
-        /* Main Container */
         .container {
             padding: 20px;
             max-width: 1800px;
             margin: 0 auto;
         }
 
-        /* Controls Section */
+        /* Controls */
         .controls-section {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 20px;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding: 15px 20px;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
             border: 1px solid #1e2a3a;
@@ -84,43 +79,42 @@
         .control-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .control-group label {
-            font-size: 11px;
+            font-size: 10px;
             color: #888;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .control-group select {
-            padding: 10px 15px;
+            padding: 8px 12px;
             background: #161b22;
             border: 1px solid #30363d;
-            border-radius: 8px;
+            border-radius: 6px;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
-            min-width: 140px;
+            min-width: 120px;
         }
 
         .control-group select:focus {
             outline: none;
             border-color: #00ff9c;
-            box-shadow: 0 0 10px rgba(0, 255, 156, 0.2);
         }
 
         .load-btn {
-            padding: 10px 25px;
+            padding: 8px 20px;
             background: linear-gradient(90deg, #00ff9c, #00d4ff);
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             color: #000;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            height: 42px;
+            font-size: 13px;
         }
 
         .load-btn:hover {
@@ -134,30 +128,71 @@
             transform: none;
         }
 
+        /* Live Indicator */
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(0, 255, 156, 0.1);
+            border: 1px solid #00ff9c;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #00ff9c;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff9c;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .live-indicator.offline {
+            background: rgba(255, 77, 77, 0.1);
+            border-color: #ff4d4d;
+            color: #ff4d4d;
+        }
+
+        .live-indicator.offline .live-dot {
+            background: #ff4d4d;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
         /* Drawing Tools */
         .drawing-tools {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            padding: 15px 20px;
+            gap: 6px;
+            padding: 12px 15px;
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid #1e2a3a;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .tools-label {
+            font-size: 11px;
+            color: #666;
+            margin-right: 10px;
         }
 
         .tool-btn {
-            padding: 10px 16px;
+            padding: 8px 14px;
             background: #161b22;
             border: 1px solid #30363d;
-            border-radius: 8px;
-            color: #ccc;
-            font-size: 13px;
+            border-radius: 6px;
+            color: #aaa;
+            font-size: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            transition: all 0.2s ease;
         }
 
         .tool-btn:hover {
@@ -171,11 +206,12 @@
             color: #00ff9c;
         }
 
-        .tool-btn.sl { border-color: #ff4d4d; color: #ff4d4d; }
-        .tool-btn.sl:hover, .tool-btn.sl.active { background: rgba(255, 77, 77, 0.15); }
+        /* Colored tool buttons */
+        .tool-btn.buy { border-color: #26a69a; color: #26a69a; }
+        .tool-btn.buy:hover, .tool-btn.buy.active { background: rgba(38, 166, 154, 0.15); }
         
-        .tool-btn.tp { border-color: #00ff9c; color: #00ff9c; }
-        .tool-btn.tp:hover, .tool-btn.tp.active { background: rgba(0, 255, 156, 0.15); }
+        .tool-btn.sell { border-color: #ef5350; color: #ef5350; }
+        .tool-btn.sell:hover, .tool-btn.sell.active { background: rgba(239, 83, 80, 0.15); }
 
         .tool-btn.sr { border-color: #ffb700; color: #ffb700; }
         .tool-btn.sr:hover, .tool-btn.sr.active { background: rgba(255, 183, 0, 0.15); }
@@ -186,6 +222,19 @@
         .tool-btn.liq { border-color: #9c00ff; color: #9c00ff; }
         .tool-btn.liq:hover, .tool-btn.liq.active { background: rgba(156, 0, 255, 0.15); }
 
+        .tool-btn.sl { border-color: #ff4d4d; color: #ff4d4d; }
+        .tool-btn.sl:hover, .tool-btn.sl.active { background: rgba(255, 77, 77, 0.15); }
+
+        .tool-btn.tp { border-color: #00ff9c; color: #00ff9c; }
+        .tool-btn.tp:hover, .tool-btn.tp.active { background: rgba(0, 255, 156, 0.15); }
+
+        .divider {
+            width: 1px;
+            height: 30px;
+            background: #30363d;
+            margin: 0 8px;
+        }
+
         .clear-btn {
             margin-left: auto;
             background: rgba(255, 77, 77, 0.1);
@@ -193,15 +242,11 @@
             color: #ff4d4d;
         }
 
-        .clear-btn:hover {
-            background: rgba(255, 77, 77, 0.2);
-        }
-
-        /* Chart Container */
+        /* Chart */
         .chart-wrapper {
             position: relative;
             background: #0d1117;
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid #1e2a3a;
             overflow: hidden;
         }
@@ -210,7 +255,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            padding: 12px 20px;
             background: rgba(0, 0, 0, 0.3);
             border-bottom: 1px solid #1e2a3a;
             flex-wrap: wrap;
@@ -225,19 +270,19 @@
         }
 
         .chart-title h2 {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
         }
 
         .chart-title .price {
-            font-size: 16px;
+            font-size: 15px;
             color: #00ff9c;
             font-weight: 500;
         }
 
         .chart-title .change {
-            font-size: 13px;
-            padding: 4px 8px;
+            font-size: 12px;
+            padding: 3px 8px;
             border-radius: 4px;
         }
 
@@ -253,28 +298,27 @@
 
         #chart {
             width: 100%;
-            height: 550px;
+            height: 500px;
         }
 
-        /* Status Bar */
         .status-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
+            padding: 10px 20px;
             background: rgba(0, 0, 0, 0.3);
             border-top: 1px solid #1e2a3a;
-            font-size: 12px;
+            font-size: 11px;
             color: #888;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .status-bar .coordinates {
+        .status-bar .mode {
             color: #00ff9c;
         }
 
-        /* Loading Overlay */
+        /* Loading */
         .loading-overlay {
             position: absolute;
             top: 0;
@@ -294,8 +338,8 @@
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border: 3px solid #1e2a3a;
             border-top-color: #00ff9c;
             border-radius: 50%;
@@ -307,34 +351,35 @@
         }
 
         .loading-text {
-            margin-top: 15px;
+            margin-top: 12px;
             color: #888;
+            font-size: 13px;
         }
 
         /* Info Panel */
         .info-panel {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
         }
 
         .info-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid #1e2a3a;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 10px;
+            padding: 15px;
         }
 
         .info-card h4 {
-            font-size: 12px;
-            color: #888;
+            font-size: 10px;
+            color: #666;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .info-card .value {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 600;
         }
 
@@ -342,162 +387,153 @@
         .info-card .value.red { color: #ff4d4d; }
         .info-card .value.blue { color: #00d4ff; }
 
-        /* Legend */
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 20px;
-            padding: 15px 20px;
+        /* Trade Log */
+        .trade-log {
+            margin-top: 15px;
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
             border: 1px solid #1e2a3a;
+            border-radius: 10px;
+            padding: 15px;
         }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
+        .trade-log h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
             color: #888;
         }
 
-        .legend-item .color-box {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
+        .trade-list {
+            max-height: 150px;
+            overflow-y: auto;
         }
 
-        /* Mobile Responsive */
+        .trade-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+
+        .trade-item.buy {
+            border-left: 3px solid #26a69a;
+        }
+
+        .trade-item.sell {
+            border-left: 3px solid #ef5350;
+        }
+
+        .no-trades {
+            color: #555;
+            font-size: 12px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Mobile */
         @media (max-width: 768px) {
-            .navbar {
-                padding: 12px 20px;
-            }
-
-            .container {
-                padding: 15px;
-            }
-
-            .controls-section {
-                padding: 15px;
-            }
-
-            .control-group {
-                flex: 1;
-                min-width: 45%;
-            }
-
-            .control-group select {
-                width: 100%;
-            }
-
-            #chart {
-                height: 400px;
-            }
-
-            .drawing-tools {
-                padding: 10px 15px;
-            }
-
-            .tool-btn {
-                padding: 8px 12px;
-                font-size: 11px;
-            }
-
-            .info-panel {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .chart-header {
-                padding: 12px 15px;
-            }
-
-            .chart-title h2 {
-                font-size: 16px;
-            }
+            .navbar { padding: 12px 15px; }
+            .container { padding: 12px; }
+            .controls-section { padding: 12px; }
+            .control-group select { min-width: 100px; font-size: 12px; }
+            #chart { height: 350px; }
+            .tool-btn { padding: 6px 10px; font-size: 11px; }
+            .info-panel { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar">
         <a href="index.html" class="logo">TradeLab</a>
         <a href="index.html" class="back-btn">← Back to Learning</a>
     </nav>
 
     <div class="container">
-        <!-- Controls Section -->
+        <!-- Controls -->
         <div class="controls-section">
             <div class="control-group">
-                <label>Coin Pair</label>
+                <label>Coin</label>
                 <select id="coinSelect">
-                    <option value="bitcoin">Bitcoin (BTC)</option>
-                    <option value="ethereum">Ethereum (ETH)</option>
-                    <option value="solana">Solana (SOL)</option>
-                    <option value="ripple">XRP</option>
-                    <option value="binancecoin">BNB</option>
-                    <option value="dogecoin">Dogecoin (DOGE)</option>
-                    <option value="tether">Tether (USDT)</option>
-                    <option value="usd-coin">USD Coin (USDC)</option>
+                    <option value="BTCUSDT" data-cg="bitcoin">BTC/USDT</option>
+                    <option value="ETHUSDT" data-cg="ethereum">ETH/USDT</option>
+                    <option value="SOLUSDT" data-cg="solana">SOL/USDT</option>
+                    <option value="XRPUSDT" data-cg="ripple">XRP/USDT</option>
+                    <option value="BNBUSDT" data-cg="binancecoin">BNB/USDT</option>
+                    <option value="DOGEUSDT" data-cg="dogecoin">DOGE/USDT</option>
                 </select>
             </div>
 
             <div class="control-group">
-                <label>Time Period</label>
+                <label>Timeframe</label>
                 <select id="timeframeSelect">
-                    <option value="1">1 Day</option>
-                    <option value="7">7 Days</option>
-                    <option value="14">14 Days</option>
-                    <option value="30" selected>30 Days</option>
-                    <option value="90">90 Days</option>
-                    <option value="180">180 Days</option>
-                    <option value="365">1 Year</option>
+                    <option value="1m">1 Minute</option>
+                    <option value="5m">5 Minutes</option>
+                    <option value="15m">15 Minutes</option>
+                    <option value="30m">30 Minutes</option>
+                    <option value="1h" selected>1 Hour</option>
+                    <option value="4h">4 Hours</option>
+                    <option value="1d">1 Day</option>
+                    <option value="1w">1 Week</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>Candles</label>
+                <select id="candleCount">
+                    <option value="100">100</option>
+                    <option value="200" selected>200</option>
+                    <option value="500">500</option>
                 </select>
             </div>
 
             <button class="load-btn" id="loadBtn" onclick="loadChartData()">📊 Load Data</button>
+
+            <div class="live-indicator offline" id="liveIndicator">
+                <div class="live-dot"></div>
+                <span id="liveText">Offline</span>
+            </div>
         </div>
 
         <!-- Drawing Tools -->
         <div class="drawing-tools">
-            <button class="tool-btn active" onclick="setDrawingMode('cursor')" id="cursorTool">
-                🖱️ Cursor
-            </button>
-            <button class="tool-btn sr" onclick="setDrawingMode('support')" id="supportTool">
-                ⬇️ Support
-            </button>
-            <button class="tool-btn sr" onclick="setDrawingMode('resistance')" id="resistanceTool">
-                ⬆️ Resistance
-            </button>
-            <button class="tool-btn sd" onclick="setDrawingMode('supply')" id="supplyTool">
-                🔴 Supply Zone
-            </button>
-            <button class="tool-btn sd" onclick="setDrawingMode('demand')" id="demandTool">
-                🟢 Demand Zone
-            </button>
-            <button class="tool-btn liq" onclick="setDrawingMode('liquidity')" id="liquidityTool">
-                💧 Liquidity
-            </button>
-            <button class="tool-btn sl" onclick="setDrawingMode('stoploss')" id="stoplossTool">
-                🛑 Stop Loss
-            </button>
-            <button class="tool-btn tp" onclick="setDrawingMode('takeprofit')" id="takeprofitTool">
-                🎯 Take Profit
-            </button>
-            <button class="tool-btn clear-btn" onclick="clearAllDrawings()">
-                🗑️ Clear All
-            </button>
+            <span class="tools-label">Tools:</span>
+            <button class="tool-btn active" onclick="setMode('cursor')" id="cursorTool">🖱️ Cursor</button>
+            
+            <div class="divider"></div>
+            
+            <button class="tool-btn buy" onclick="setMode('buy')" id="buyTool">📈 Buy</button>
+            <button class="tool-btn sell" onclick="setMode('sell')" id="sellTool">📉 Sell</button>
+            
+            <div class="divider"></div>
+            
+            <button class="tool-btn sr" onclick="setMode('support')" id="supportTool">⬇️ Support</button>
+            <button class="tool-btn sr" onclick="setMode('resistance')" id="resistanceTool">⬆️ Resistance</button>
+            
+            <div class="divider"></div>
+            
+            <button class="tool-btn sd" onclick="setMode('supply')" id="supplyTool">🔴 Supply</button>
+            <button class="tool-btn sd" onclick="setMode('demand')" id="demandTool">🟢 Demand</button>
+            <button class="tool-btn liq" onclick="setMode('liquidity')" id="liquidityTool">💧 Liquidity</button>
+            
+            <div class="divider"></div>
+            
+            <button class="tool-btn sl" onclick="setMode('stoploss')" id="stoplossTool">🛑 SL</button>
+            <button class="tool-btn tp" onclick="setMode('takeprofit')" id="takeprofitTool">🎯 TP</button>
+            
+            <button class="tool-btn clear-btn" onclick="clearAll()">🗑️ Clear</button>
         </div>
 
         <!-- Chart -->
         <div class="chart-wrapper">
             <div class="chart-header">
                 <div class="chart-title">
-                    <h2 id="chartPair">BTC/USD</h2>
+                    <h2 id="chartPair">BTC/USDT</h2>
                     <span class="price" id="currentPrice">$0.00</span>
                     <span class="change up" id="priceChange">+0.00%</span>
                 </div>
-                <div id="ohlcInfo" style="font-size: 13px; color: #888;">
+                <div style="font-size: 12px; color: #666;">
                     O: <span id="oOpen">-</span> | 
                     H: <span id="oHigh">-</span> | 
                     L: <span id="oLow">-</span> | 
@@ -509,12 +545,12 @@
             
             <div class="loading-overlay" id="loadingOverlay">
                 <div class="spinner"></div>
-                <div class="loading-text">Loading chart data...</div>
+                <div class="loading-text">Loading...</div>
             </div>
 
             <div class="status-bar">
-                <span>Mode: <strong id="currentMode">Cursor</strong></span>
-                <span class="coordinates" id="coordinates">Price: - | Time: -</span>
+                <span>Mode: <strong class="mode" id="currentMode">Cursor</strong></span>
+                <span id="coordinates">-</span>
                 <span id="dataInfo">Candles: 0</span>
             </div>
         </div>
@@ -522,79 +558,46 @@
         <!-- Info Panel -->
         <div class="info-panel">
             <div class="info-card">
-                <h4>Period High</h4>
-                <div class="value green" id="high24h">$0.00</div>
+                <h4>High</h4>
+                <div class="value green" id="highVal">$0</div>
             </div>
             <div class="info-card">
-                <h4>Period Low</h4>
-                <div class="value red" id="low24h">$0.00</div>
+                <h4>Low</h4>
+                <div class="value red" id="lowVal">$0</div>
             </div>
             <div class="info-card">
-                <h4>Price Change</h4>
-                <div class="value blue" id="priceChangeCard">0%</div>
+                <h4>Change</h4>
+                <div class="value blue" id="changeVal">0%</div>
             </div>
             <div class="info-card">
-                <h4>Candles Loaded</h4>
-                <div class="value" id="candlesLoaded">0</div>
+                <h4>Candles</h4>
+                <div class="value" id="candleVal">0</div>
             </div>
         </div>
 
-        <!-- Legend -->
-        <div class="legend">
-            <div class="legend-item">
-                <div class="color-box" style="background: #26a69a;"></div>
-                <span>Bullish Candle</span>
-            </div>
-            <div class="legend-item">
-                <div class="color-box" style="background: #ef5350;"></div>
-                <span>Bearish Candle</span>
-            </div>
-            <div class="legend-item">
-                <div class="color-box" style="background: #ffb700;"></div>
-                <span>Support/Resistance</span>
-            </div>
-            <div class="legend-item">
-                <div class="color-box" style="background: #00d4ff;"></div>
-                <span>Supply/Demand</span>
-            </div>
-            <div class="legend-item">
-                <div class="color-box" style="background: #9c00ff;"></div>
-                <span>Liquidity Zone</span>
-            </div>
-            <div class="legend-item">
-                <div class="color-box" style="background: #ff4d4d;"></div>
-                <span>Stop Loss</span>
-            </div>
-            <div class="legend-item">
-                <div class="color-box" style="background: #00ff9c;"></div>
-                <span>Take Profit</span>
+        <!-- Trade Log -->
+        <div class="trade-log">
+            <h3>📋 Trade Log</h3>
+            <div class="trade-list" id="tradeList">
+                <div class="no-trades">No trades yet. Click Buy/Sell then click on chart.</div>
             </div>
         </div>
     </div>
 
     <script>
-        // ===== GLOBAL VARIABLES =====
-        const chartElement = document.getElementById('chart');
-        let chart = null;
-        let candlestickSeries = null;
-        let currentDrawingMode = 'cursor';
-        let drawnLines = [];
+        // Globals
+        var chartEl = document.getElementById('chart');
+        var chart = null;
+        var candleSeries = null;
+        var currentMode = 'cursor';
+        var drawnLines = [];
+        var trades = [];
+        var ws = null;
+        var lastCandleData = [];
 
-        // Coin display names
-        const coinNames = {
-            'bitcoin': 'BTC/USD',
-            'ethereum': 'ETH/USD',
-            'solana': 'SOL/USD',
-            'ripple': 'XRP/USD',
-            'binancecoin': 'BNB/USD',
-            'dogecoin': 'DOGE/USD',
-            'tether': 'USDT/USD',
-            'usd-coin': 'USDC/USD'
-        };
-
-        // ===== INITIALIZE CHART =====
+        // Init Chart
         function initChart() {
-            chart = LightweightCharts.createChart(chartElement, {
+            chart = LightweightCharts.createChart(chartEl, {
                 layout: {
                     backgroundColor: '#0d1117',
                     textColor: '#c9d1d9',
@@ -612,14 +615,12 @@
                 timeScale: {
                     borderColor: '#1e2a3a',
                     timeVisible: true,
-                    secondsVisible: false,
                 },
-                width: chartElement.clientWidth,
-                height: 550
+                width: chartEl.clientWidth,
+                height: 500
             });
 
-            // Candlestick Series - v3.8.0 syntax
-            candlestickSeries = chart.addCandlestickSeries({
+            candleSeries = chart.addCandlestickSeries({
                 upColor: '#26a69a',
                 downColor: '#ef5350',
                 borderVisible: false,
@@ -627,168 +628,243 @@
                 wickDownColor: '#ef5350',
             });
 
-            // Crosshair move handler
             chart.subscribeCrosshairMove(function(param) {
                 if (param.time) {
-                    const data = param.seriesPrices.get(candlestickSeries);
+                    var data = param.seriesPrices.get(candleSeries);
                     if (data) {
-                        document.getElementById('oOpen').textContent = formatPrice(data.open);
-                        document.getElementById('oHigh').textContent = formatPrice(data.high);
-                        document.getElementById('oLow').textContent = formatPrice(data.low);
-                        document.getElementById('oClose').textContent = formatPrice(data.close);
-                        
-                        const price = data.close;
-                        const dateStr = new Date(param.time * 1000).toLocaleDateString();
-                        document.getElementById('coordinates').textContent = 'Price: ' + formatPrice(price) + ' | Time: ' + dateStr;
+                        document.getElementById('oOpen').textContent = formatP(data.open);
+                        document.getElementById('oHigh').textContent = formatP(data.high);
+                        document.getElementById('oLow').textContent = formatP(data.low);
+                        document.getElementById('oClose').textContent = formatP(data.close);
+                        document.getElementById('coordinates').textContent = formatP(data.close) + ' | ' + new Date(param.time * 1000).toLocaleString();
                     }
                 }
             });
 
-            // Click handler for drawing
-            chartElement.addEventListener('click', handleChartClick);
+            chartEl.addEventListener('click', onChartClick);
         }
 
-        // ===== LOAD DATA FROM COINGECKO =====
+        // Load Data
         async function loadChartData() {
-            const coin = document.getElementById('coinSelect').value;
-            const days = document.getElementById('timeframeSelect').value;
+            var coin = document.getElementById('coinSelect').value;
+            var tf = document.getElementById('timeframeSelect').value;
+            var limit = document.getElementById('candleCount').value;
             
-            const loadBtn = document.getElementById('loadBtn');
-            loadBtn.disabled = true;
-            loadBtn.textContent = '⏳ Loading...';
-            
+            document.getElementById('loadBtn').disabled = true;
+            document.getElementById('loadBtn').textContent = '⏳ Loading...';
             showLoading(true);
 
-            try {
-                // CoinGecko OHLC API - Free & CORS friendly
-                const url = 'https://api.coingecko.com/api/v3/coins/' + coin + '/ohlc?vs_currency=usd&days=' + days;
-                
-                const response = await fetch(url);
-                
-                if (!response.ok) {
-                    throw new Error('HTTP ' + response.status);
-                }
-                
-                const data = await response.json();
-                
-                if (!data || data.length === 0) {
-                    throw new Error('No data');
-                }
+            // Close existing websocket
+            if (ws) {
+                ws.close();
+                ws = null;
+            }
 
-                // Format OHLC data - CoinGecko returns [timestamp, open, high, low, close]
-                const candleData = data.map(function(d) {
+            try {
+                // Try Binance API first
+                var url = 'https://api.binance.com/api/v3/klines?symbol=' + coin + '&interval=' + tf + '&limit=' + limit;
+                var response = await fetch(url);
+                
+                if (!response.ok) throw new Error('Binance failed');
+                
+                var data = await response.json();
+                
+                var candles = data.map(function(d) {
                     return {
                         time: Math.floor(d[0] / 1000),
-                        open: d[1],
-                        high: d[2],
-                        low: d[3],
-                        close: d[4]
+                        open: parseFloat(d[1]),
+                        high: parseFloat(d[2]),
+                        low: parseFloat(d[3]),
+                        close: parseFloat(d[4])
                     };
                 });
 
-                // Set data on chart
-                candlestickSeries.setData(candleData);
+                lastCandleData = candles;
+                candleSeries.setData(candles);
                 chart.timeScale().fitContent();
+                updateInfo(coin.replace('USDT', '/USDT'), candles);
+                
+                // Start live updates
+                startLiveUpdates(coin, tf);
 
-                // Update UI
-                updateChartInfo(coin, candleData);
+            } catch (e) {
+                console.log('Binance failed, trying CoinGecko...', e);
+                
+                // Fallback to CoinGecko
+                try {
+                    var cgCoin = document.getElementById('coinSelect').selectedOptions[0].getAttribute('data-cg');
+                    var days = tf === '1d' || tf === '1w' ? '90' : '30';
+                    var cgUrl = 'https://api.coingecko.com/api/v3/coins/' + cgCoin + '/ohlc?vs_currency=usd&days=' + days;
+                    
+                    var cgRes = await fetch(cgUrl);
+                    var cgData = await cgRes.json();
+                    
+                    var candles = cgData.map(function(d) {
+                        return {
+                            time: Math.floor(d[0] / 1000),
+                            open: d[1],
+                            high: d[2],
+                            low: d[3],
+                            close: d[4]
+                        };
+                    });
 
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Data load nahi ho paaya. Thodi der baad try karein.\n\nTip: CoinGecko free API has rate limits. Wait 1 minute and try again.');
+                    lastCandleData = candles;
+                    candleSeries.setData(candles);
+                    chart.timeScale().fitContent();
+                    updateInfo(coin.replace('USDT', '/USD'), candles);
+                    
+                    setOffline();
+                    
+                } catch (e2) {
+                    alert('Data load failed. Try again later.');
+                    console.error(e2);
+                }
             }
 
             showLoading(false);
-            loadBtn.disabled = false;
-            loadBtn.textContent = '📊 Load Data';
+            document.getElementById('loadBtn').disabled = false;
+            document.getElementById('loadBtn').textContent = '📊 Load Data';
         }
 
-        // ===== UPDATE UI =====
-        function updateChartInfo(coin, data) {
-            document.getElementById('chartPair').textContent = coinNames[coin] || coin;
+        // Live Updates via WebSocket
+        function startLiveUpdates(coin, tf) {
+            try {
+                var wsUrl = 'wss://stream.binance.com:9443/ws/' + coin.toLowerCase() + '@kline_' + tf;
+                ws = new WebSocket(wsUrl);
+
+                ws.onopen = function() {
+                    setOnline();
+                };
+
+                ws.onmessage = function(event) {
+                    var msg = JSON.parse(event.data);
+                    var k = msg.k;
+                    
+                    var candle = {
+                        time: Math.floor(k.t / 1000),
+                        open: parseFloat(k.o),
+                        high: parseFloat(k.h),
+                        low: parseFloat(k.l),
+                        close: parseFloat(k.c)
+                    };
+
+                    candleSeries.update(candle);
+                    
+                    // Update price display
+                    document.getElementById('currentPrice').textContent = formatP(candle.close);
+                };
+
+                ws.onerror = function() {
+                    setOffline();
+                };
+
+                ws.onclose = function() {
+                    setOffline();
+                };
+
+            } catch (e) {
+                setOffline();
+            }
+        }
+
+        function setOnline() {
+            var ind = document.getElementById('liveIndicator');
+            ind.classList.remove('offline');
+            document.getElementById('liveText').textContent = 'LIVE';
+        }
+
+        function setOffline() {
+            var ind = document.getElementById('liveIndicator');
+            ind.classList.add('offline');
+            document.getElementById('liveText').textContent = 'Offline';
+        }
+
+        // Update Info
+        function updateInfo(pair, data) {
+            document.getElementById('chartPair').textContent = pair;
             
             if (data.length > 0) {
-                const lastCandle = data[data.length - 1];
-                const firstCandle = data[0];
-                const priceChange = ((lastCandle.close - firstCandle.open) / firstCandle.open * 100).toFixed(2);
+                var last = data[data.length - 1];
+                var first = data[0];
+                var change = ((last.close - first.open) / first.open * 100).toFixed(2);
                 
-                document.getElementById('currentPrice').textContent = formatPrice(lastCandle.close);
+                document.getElementById('currentPrice').textContent = formatP(last.close);
                 
-                const changeEl = document.getElementById('priceChange');
-                changeEl.textContent = (priceChange >= 0 ? '+' : '') + priceChange + '%';
-                changeEl.className = 'change ' + (priceChange >= 0 ? 'up' : 'down');
+                var changeEl = document.getElementById('priceChange');
+                changeEl.textContent = (change >= 0 ? '+' : '') + change + '%';
+                changeEl.className = 'change ' + (change >= 0 ? 'up' : 'down');
                 
-                let high = data[0].high;
-                let low = data[0].low;
-                for (let i = 1; i < data.length; i++) {
+                var high = data[0].high, low = data[0].low;
+                for (var i = 1; i < data.length; i++) {
                     if (data[i].high > high) high = data[i].high;
                     if (data[i].low < low) low = data[i].low;
                 }
                 
-                document.getElementById('high24h').textContent = formatPrice(high);
-                document.getElementById('low24h').textContent = formatPrice(low);
-                document.getElementById('candlesLoaded').textContent = data.length;
+                document.getElementById('highVal').textContent = formatP(high);
+                document.getElementById('lowVal').textContent = formatP(low);
+                document.getElementById('candleVal').textContent = data.length;
                 document.getElementById('dataInfo').textContent = 'Candles: ' + data.length;
                 
-                const priceChangeCard = document.getElementById('priceChangeCard');
-                priceChangeCard.textContent = (priceChange >= 0 ? '+' : '') + priceChange + '%';
-                priceChangeCard.className = 'value ' + (priceChange >= 0 ? 'green' : 'red');
+                var cv = document.getElementById('changeVal');
+                cv.textContent = (change >= 0 ? '+' : '') + change + '%';
+                cv.className = 'value ' + (change >= 0 ? 'green' : 'red');
             }
         }
 
-        function formatPrice(price) {
-            if (price >= 1000) return '$' + price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            if (price >= 1) return '$' + price.toFixed(2);
-            if (price >= 0.01) return '$' + price.toFixed(4);
-            return '$' + price.toFixed(6);
+        function formatP(p) {
+            if (p >= 1000) return '$' + p.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            if (p >= 1) return '$' + p.toFixed(2);
+            return '$' + p.toFixed(6);
         }
 
         function showLoading(show) {
-            const overlay = document.getElementById('loadingOverlay');
-            if (show) {
-                overlay.classList.remove('hidden');
-            } else {
-                overlay.classList.add('hidden');
-            }
+            document.getElementById('loadingOverlay').classList.toggle('hidden', !show);
         }
 
-        // ===== DRAWING TOOLS =====
-        function setDrawingMode(mode) {
-            currentDrawingMode = mode;
+        // Drawing Mode
+        function setMode(mode) {
+            currentMode = mode;
             
-            const buttons = document.querySelectorAll('.tool-btn');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
+            var btns = document.querySelectorAll('.tool-btn');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].classList.remove('active');
             }
             
-            const toolId = mode + 'Tool';
-            const activeBtn = document.getElementById(toolId);
-            if (activeBtn) activeBtn.classList.add('active');
+            var btn = document.getElementById(mode + 'Tool');
+            if (btn) btn.classList.add('active');
             
-            const modeNames = {
+            var names = {
                 cursor: 'Cursor',
-                support: 'Support Line',
-                resistance: 'Resistance Line',
+                buy: 'BUY Entry',
+                sell: 'SELL Entry',
+                support: 'Support',
+                resistance: 'Resistance',
                 supply: 'Supply Zone',
                 demand: 'Demand Zone',
-                liquidity: 'Liquidity Zone',
+                liquidity: 'Liquidity',
                 stoploss: 'Stop Loss',
                 takeprofit: 'Take Profit'
             };
-            document.getElementById('currentMode').textContent = modeNames[mode] || mode;
+            document.getElementById('currentMode').textContent = names[mode] || mode;
         }
 
-        function handleChartClick(event) {
-            if (currentDrawingMode === 'cursor') return;
+        // Chart Click Handler
+        function onChartClick(e) {
+            if (currentMode === 'cursor') return;
             
-            const rect = chartElement.getBoundingClientRect();
-            const y = event.clientY - rect.top;
+            var rect = chartEl.getBoundingClientRect();
+            var y = e.clientY - rect.top;
+            var x = e.clientX - rect.left;
             
-            const price = candlestickSeries.coordinateToPrice(y);
+            var price = candleSeries.coordinateToPrice(y);
+            var time = chart.timeScale().coordinateToTime(x);
             
             if (!price || isNaN(price)) return;
-            
-            const colors = {
+
+            var colors = {
+                buy: '#26a69a',
+                sell: '#ef5350',
                 support: '#ffb700',
                 resistance: '#ffb700',
                 supply: '#ef5350',
@@ -798,7 +874,9 @@
                 takeprofit: '#00ff9c'
             };
 
-            const titles = {
+            var titles = {
+                buy: 'BUY',
+                sell: 'SELL',
                 support: 'SUPPORT',
                 resistance: 'RESISTANCE',
                 supply: 'SUPPLY',
@@ -807,37 +885,87 @@
                 stoploss: 'SL',
                 takeprofit: 'TP'
             };
-            
-            const line = candlestickSeries.createPriceLine({
+
+            // Create price line
+            var line = candleSeries.createPriceLine({
                 price: price,
-                color: colors[currentDrawingMode],
+                color: colors[currentMode],
                 lineWidth: 2,
-                lineStyle: currentDrawingMode === 'liquidity' ? 2 : 0,
+                lineStyle: (currentMode === 'liquidity' || currentMode === 'supply' || currentMode === 'demand') ? 2 : 0,
                 axisLabelVisible: true,
-                title: titles[currentDrawingMode]
+                title: titles[currentMode]
             });
-            
             drawnLines.push(line);
+
+            // Add marker for buy/sell
+            if (currentMode === 'buy' || currentMode === 'sell') {
+                var markers = candleSeries.markers() || [];
+                
+                if (time) {
+                    markers.push({
+                        time: time,
+                        position: currentMode === 'buy' ? 'belowBar' : 'aboveBar',
+                        color: colors[currentMode],
+                        shape: currentMode === 'buy' ? 'arrowUp' : 'arrowDown',
+                        text: currentMode.toUpperCase() + ' @ ' + formatP(price)
+                    });
+                    candleSeries.setMarkers(markers);
+                }
+
+                // Log trade
+                addTrade(currentMode, price, time);
+            }
         }
 
-        function clearAllDrawings() {
-            for (let i = 0; i < drawnLines.length; i++) {
-                candlestickSeries.removePriceLine(drawnLines[i]);
+        // Trade Log
+        function addTrade(type, price, time) {
+            trades.push({
+                type: type,
+                price: price,
+                time: time ? new Date(time * 1000).toLocaleString() : new Date().toLocaleString()
+            });
+            renderTrades();
+        }
+
+        function renderTrades() {
+            var list = document.getElementById('tradeList');
+            if (trades.length === 0) {
+                list.innerHTML = '<div class="no-trades">No trades yet.</div>';
+                return;
+            }
+            
+            var html = '';
+            for (var i = trades.length - 1; i >= 0; i--) {
+                var t = trades[i];
+                html += '<div class="trade-item ' + t.type + '">';
+                html += '<span>' + t.type.toUpperCase() + ' @ ' + formatP(t.price) + '</span>';
+                html += '<span>' + t.time + '</span>';
+                html += '</div>';
+            }
+            list.innerHTML = html;
+        }
+
+        // Clear All
+        function clearAll() {
+            for (var i = 0; i < drawnLines.length; i++) {
+                candleSeries.removePriceLine(drawnLines[i]);
             }
             drawnLines = [];
+            candleSeries.setMarkers([]);
+            trades = [];
+            renderTrades();
         }
 
-        // ===== INITIALIZATION =====
+        // Init
         function init() {
             initChart();
             loadChartData();
             
             window.addEventListener('resize', function() {
-                chart.applyOptions({ width: chartElement.clientWidth });
+                chart.applyOptions({ width: chartEl.clientWidth });
             });
         }
 
-        // Start app
         init();
     </script>
 </body>
