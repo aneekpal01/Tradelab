@@ -1093,6 +1093,112 @@
   <!-- Certificate Generator -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
+    // Track video watch time
+    var videoWatchTime = JSON.parse(localStorage.getItem('videoWatchTime')) || {};
+    var activeVideo = null;
+    var watchInterval = null;
+
+    // Start tracking when video plays
+    function trackVideoWatch(videoId, duration) {
+      if (!videoWatchTime[videoId]) {
+        videoWatchTime[videoId] = 0;
+      }
+      activeVideo = videoId;
+      
+      // Clear existing interval
+      if (watchInterval) clearInterval(watchInterval);
+      
+      // Track every second
+      watchInterval = setInterval(() => {
+        if (activeVideo === videoId) {
+          videoWatchTime[videoId]++;
+          localStorage.setItem('videoWatchTime', JSON.stringify(videoWatchTime));
+        }
+      }, 1000);
+    }
+
+    // Stop tracking
+    function stopTracking() {
+      if (watchInterval) {
+        clearInterval(watchInterval);
+        watchInterval = null;
+      }
+      activeVideo = null;
+    }
+
+    // Check if video is watched enough (minimum 60 seconds or text content)
+    function isVideoWatched(videoId) {
+      // Text cards (like video-20) don't need watch time
+      const textCards = ['video-20'];
+      if (textCards.includes(videoId)) return true;
+      
+      const watchTime = videoWatchTime[videoId] || 0;
+      return watchTime >= 60; // Minimum 60 seconds watched
+    }
+
+    // Modified toggle complete with verification
+    function toggleCompleteWithVerification(button, videoId) {
+      const card = button.closest('.learning-card');
+      let completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      
+      // If trying to mark complete
+      if (!completedVideos.includes(videoId)) {
+        // Check if video was watched
+        if (!isVideoWatched(videoId)) {
+          alert('⚠️ Please watch the video for at least 1 minute before marking it complete!\n\nClick on the video and watch it first.');
+          return;
+        }
+      }
+      
+      // Toggle completion
+      if (completedVideos.includes(videoId)) {
+        completedVideos = completedVideos.filter(id => id !== videoId);
+        button.classList.remove('completed');
+        button.innerHTML = '<span class="check-icon">✓</span> Mark Complete';
+        card.classList.remove('completed');
+      } else {
+        completedVideos.push(videoId);
+        button.classList.add('completed');
+        button.innerHTML = '<span class="check-icon">✓</span> Completed!';
+        card.classList.add('completed');
+      }
+      
+      localStorage.setItem('completedVideos', JSON.stringify(completedVideos));
+      updateProgressBar();
+      setTimeout(checkCourseCompletion, 100);
+    }
+
+    // Override the original toggleComplete
+    toggleComplete = toggleCompleteWithVerification;
+
+    // Track iframe clicks/interactions
+    document.addEventListener('DOMContentLoaded', () => {
+      const iframes = document.querySelectorAll('.video-box iframe');
+      
+      iframes.forEach((iframe, index) => {
+        const videoId = 'video-' + (index + 1);
+        
+        // When user clicks on iframe area
+        iframe.parentElement.addEventListener('click', () => {
+          trackVideoWatch(videoId, 300);
+        });
+        
+        // Also track on mouseenter (when they hover to play)
+        iframe.parentElement.addEventListener('mouseenter', () => {
+          trackVideoWatch(videoId, 300);
+        });
+        
+        iframe.parentElement.addEventListener('mouseleave', () => {
+          // Don't stop immediately, give some buffer
+          setTimeout(() => {
+            if (activeVideo === videoId) {
+              stopTracking();
+            }
+          }, 5000);
+        });
+      });
+    });
+
     function openCertificateModal() {
       document.getElementById('certificateModal').classList.add('open');
       document.getElementById('certDate').textContent = new Date().toLocaleDateString('en-IN', {
@@ -1139,7 +1245,7 @@
           if (completedVideos.length >= TOTAL_VIDEOS) {
             openCertificateModal();
           } else {
-            alert('Complete all ' + TOTAL_VIDEOS + ' videos to get your certificate! (' + completedVideos.length + '/' + TOTAL_VIDEOS + ' completed)');
+            alert('Complete all ' + TOTAL_VIDEOS + ' videos to get your certificate!\n\n✅ Completed: ' + completedVideos.length + '/' + TOTAL_VIDEOS + '\n\n⚠️ Note: You must watch each video for at least 1 minute to mark it complete.');
           }
         };
         progressTracker.appendChild(certBtn);
@@ -1147,14 +1253,7 @@
     });
   </script>
 
-  <!-- Update toggleComplete to check completion -->
-  <script>
-    const originalToggleComplete = toggleComplete;
-    toggleComplete = function(button, videoId) {
-      originalToggleComplete(button, videoId);
-      setTimeout(checkCourseCompletion, 100);
-    };
-  </script>
+  
 
 </body>
 </html>
