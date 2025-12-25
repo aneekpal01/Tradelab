@@ -62,8 +62,9 @@
     <ul class="nav-links" id="navLinks">
       <li><a href="#learn">Learning Vault</a></li>
       <li><a href="backtest.html" style="color: #58a6ff;">Backtesting Lab</a></li>
+      <li><a href="calculator.html" style="color: #ffb700;">Risk Calculator</a></li>
+      <li><a href="quiz.html" style="color: #9c00ff;">Quiz</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="#community">Community</a></li>
 
       <li id="loginItem"><a href="login.html">Login</a></li>
       <li id="userItem" style="display: none; color: #00ffc8; font-weight: 600; font-size: 14px; padding-top: 10px;"></li>
@@ -90,7 +91,70 @@
       risk management, and disciplined thinking — not signals.
     </p>
     <a href="#learn" class="btn">Start Learning</a>
+    
+    <!-- Stats Counter -->
+    <div class="stats-container">
+      <div class="stat-item">
+        <span class="stat-number" data-target="5000">0</span>
+        <span class="stat-label">Students Enrolled</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-target="1800">0</span>
+        <span class="stat-label">Already Learning</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-target="25">0</span>
+        <span class="stat-label">Video Lessons</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-target="100">0</span>
+        <span class="stat-label">% Free Forever</span>
+      </div>
+    </div>
   </section>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Certificate Modal -->
+  <div class="modal-overlay" id="certificateModal">
+    <div class="modal-content certificate-modal">
+      <button class="modal-close" onclick="closeCertificateModal()">&times;</button>
+      <h2>🎉 Congratulations!</h2>
+      <p>You've completed the TradeLab Trading Course!</p>
+      <div class="certificate-preview" id="certificatePreview">
+        <div class="certificate">
+          <div class="certificate-border">
+            <div class="certificate-inner">
+              <div class="certificate-header">
+                <h1>Certificate of Completion</h1>
+                <p>TradeLab Trading Education</p>
+              </div>
+              <div class="certificate-body">
+                <p>This is to certify that</p>
+                <h2 id="certName">Student Name</h2>
+                <p>has successfully completed the</p>
+                <h3>Complete Trading Education Course</h3>
+                <p>covering Price Action, Smart Money Concepts, Risk Management & Strategy Building</p>
+              </div>
+              <div class="certificate-footer">
+                <div class="cert-date">
+                  <p>Date: <span id="certDate"></span></p>
+                </div>
+                <div class="cert-signature">
+                  <p>TradeLab Team</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="certificate-actions">
+        <input type="text" id="nameInput" placeholder="Enter your name" class="cert-input">
+        <button class="btn-primary" onclick="generateCertificate()">📥 Download Certificate</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Learning Vault Section -->
   <section id="learn" class="learning">
@@ -903,6 +967,193 @@
       
       if (!isOpen) faqItem.classList.add('open');
     }
+  </script>
+
+  <!-- Stats Counter Animation -->
+  <script>
+    function animateCounters() {
+      const counters = document.querySelectorAll('.stat-number');
+      
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+        
+        const updateCounter = () => {
+          current += step;
+          if (current < target) {
+            counter.textContent = Math.floor(current) + '+';
+            requestAnimationFrame(updateCounter);
+          } else {
+            counter.textContent = target + '+';
+          }
+        };
+        
+        updateCounter();
+      });
+    }
+
+    // Trigger when stats section is visible
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const statsContainer = document.querySelector('.stats-container');
+      if (statsContainer) statsObserver.observe(statsContainer);
+    });
+  </script>
+
+  <!-- Confetti Animation -->
+  <script>
+    const confettiCanvas = document.getElementById('confettiCanvas');
+    const confettiCtx = confettiCanvas.getContext('2d');
+    let confettiParticles = [];
+    let confettiAnimationId;
+
+    function resizeConfettiCanvas() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeConfettiCanvas);
+    resizeConfettiCanvas();
+
+    function createConfetti() {
+      const colors = ['#00ff9c', '#00d4ff', '#ffb700', '#ff4d4d', '#9c00ff', '#ffffff'];
+      for (let i = 0; i < 150; i++) {
+        confettiParticles.push({
+          x: Math.random() * confettiCanvas.width,
+          y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+          size: Math.random() * 10 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speedY: Math.random() * 3 + 2,
+          speedX: Math.random() * 2 - 1,
+          rotation: Math.random() * 360,
+          rotationSpeed: Math.random() * 10 - 5
+        });
+      }
+    }
+
+    function drawConfetti() {
+      confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      
+      confettiParticles.forEach((p, index) => {
+        confettiCtx.save();
+        confettiCtx.translate(p.x, p.y);
+        confettiCtx.rotate(p.rotation * Math.PI / 180);
+        confettiCtx.fillStyle = p.color;
+        confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size / 2);
+        confettiCtx.restore();
+
+        p.y += p.speedY;
+        p.x += p.speedX;
+        p.rotation += p.rotationSpeed;
+
+        if (p.y > confettiCanvas.height) {
+          confettiParticles.splice(index, 1);
+        }
+      });
+
+      if (confettiParticles.length > 0) {
+        confettiAnimationId = requestAnimationFrame(drawConfetti);
+      } else {
+        confettiCanvas.style.display = 'none';
+      }
+    }
+
+    function triggerConfetti() {
+      confettiCanvas.style.display = 'block';
+      confettiParticles = [];
+      createConfetti();
+      drawConfetti();
+    }
+
+    // Check if course is complete
+    function checkCourseCompletion() {
+      const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      const hasShownCelebration = localStorage.getItem('hasShownCelebration');
+      
+      if (completedVideos.length >= TOTAL_VIDEOS && !hasShownCelebration) {
+        setTimeout(() => {
+          triggerConfetti();
+          openCertificateModal();
+          localStorage.setItem('hasShownCelebration', 'true');
+        }, 500);
+      }
+    }
+  </script>
+
+  <!-- Certificate Generator -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    function openCertificateModal() {
+      document.getElementById('certificateModal').classList.add('open');
+      document.getElementById('certDate').textContent = new Date().toLocaleDateString('en-IN', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      });
+    }
+
+    function closeCertificateModal() {
+      document.getElementById('certificateModal').classList.remove('open');
+    }
+
+    function generateCertificate() {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) {
+        alert('Please enter your name!');
+        return;
+      }
+      
+      document.getElementById('certName').textContent = name;
+      
+      const certificate = document.querySelector('.certificate');
+      
+      html2canvas(certificate, {
+        scale: 2,
+        backgroundColor: '#0b0f14',
+        logging: false
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'TradeLab-Certificate-' + name.replace(/\s+/g, '-') + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+
+    // Add certificate button to progress tracker
+    document.addEventListener('DOMContentLoaded', () => {
+      const progressTracker = document.querySelector('.progress-tracker');
+      if (progressTracker) {
+        const certBtn = document.createElement('button');
+        certBtn.className = 'cert-btn';
+        certBtn.innerHTML = '🎓 Get Certificate';
+        certBtn.onclick = () => {
+          const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+          if (completedVideos.length >= TOTAL_VIDEOS) {
+            openCertificateModal();
+          } else {
+            alert('Complete all ' + TOTAL_VIDEOS + ' videos to get your certificate! (' + completedVideos.length + '/' + TOTAL_VIDEOS + ' completed)');
+          }
+        };
+        progressTracker.appendChild(certBtn);
+      }
+    });
+  </script>
+
+  <!-- Update toggleComplete to check completion -->
+  <script>
+    const originalToggleComplete = toggleComplete;
+    toggleComplete = function(button, videoId) {
+      originalToggleComplete(button, videoId);
+      setTimeout(checkCourseCompletion, 100);
+    };
   </script>
 
 </body>
