@@ -1,1 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeLab | Risk Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
 
+    body {
+      background: #0b0f14;
+      color: #eaeaea;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: rgba(11, 15, 20, 0.95);
+      border-bottom: 1px solid #1e2a3a;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #00ff9c, #00d4ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .back-btn {
+      padding: 10px 20px;
+      background: rgba(0, 255, 156, 0.1);
+      border: 1px solid #00ff9c;
+      color: #00ff9c;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: #00ff9c;
+      color: #000;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .page-title h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #00ff9c, #00d4ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .page-title p {
+      color: #888;
+      font-size: 16px;
+    }
+
+    /* Calculator Grid */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+    }
+
+    .calc-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid #1e2a3a;
+      border-radius: 16px;
+      padding: 25px;
+    }
+
+    .calc-card h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .calc-card h2 .icon {
+      font-size: 24px;
+    }
+
+    /* Input Groups */
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px 15px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: #00ff9c;
+      box-shadow: 0 0 10px rgba(0, 255, 156, 0.2);
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    /* Buttons */
+    .calc-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(90deg, #00ff9c, #00d4ff);
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .calc-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(0, 255, 156, 0.4);
+    }
+
+    /* Results */
+    .result-box {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(0, 255, 156, 0.05);
+      border: 1px solid rgba(0, 255, 156, 0.2);
+      border-radius: 12px;
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-label {
+      color: #888;
+      font-size: 14px;
+    }
+
+    .result-value {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .result-value.green { color: #00ff9c; }
+    .result-value.red { color: #ff4d4d; }
+    .result-value.blue { color: #00d4ff; }
+    .result-value.yellow { color: #ffb700; }
+
+    /* Info Box */
+    .info-box {
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    .info-box h4 {
+      color: #00d4ff;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .info-box p {
+      color: #888;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* Risk Meter */
+    .risk-meter {
+      margin-top: 20px;
+    }
+
+    .risk-meter-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    .risk-meter-bar {
+      height: 10px;
+      background: linear-gradient(90deg, #00ff9c, #ffb700, #ff4d4d);
+      border-radius: 5px;
+      position: relative;
+    }
+
+    .risk-meter-indicator {
+      position: absolute;
+      top: -5px;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      transition: left 0.3s ease;
+    }
+
+    /* Quick Tips */
+    .tips-section {
+      margin-top: 40px;
+    }
+
+    .tips-section h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .tip-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid #1e2a3a;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .tip-card .tip-icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .tip-card h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .tip-card p {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.6;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 12px 20px;
+      }
+
+      .container {
+        padding: 25px 15px;
+      }
+
+      .page-title h1 {
+        font-size: 28px;
+      }
+
+      .calc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .input-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">TradeLab</a>
+    <a href="index.html" class="back-btn">← Back to Learning</a>
+  </nav>
+
+  <div class="container">
+    <!-- Page Title -->
+    <div class="page-title">
+      <h1>📊 Risk Calculator</h1>
+      <p>Calculate position size, risk-reward, and manage your trades like a pro</p>
+    </div>
+
+    <!-- Calculator Cards -->
+    <div class="calc-grid">
+
+      <!-- Position Size Calculator -->
+      <div class="calc-card">
+        <h2><span class="icon">📐</span> Position Size Calculator</h2>
+        
+        <div class="input-group">
+          <label>Account Balance ($)</label>
+          <input type="number" id="accountBalance" value="10000" placeholder="Enter account balance">
+        </div>
+        
+        <div class="input-group">
+          <label>Risk Per Trade (%)</label>
+          <input type="number" id="riskPercent" value="2" step="0.5" placeholder="1-5% recommended">
+        </div>
+        
+        <div class="input-row">
+          <div class="input-group">
+            <label>Entry Price ($)</label>
+            <input type="number" id="entryPrice" value="100" placeholder="Entry price">
+          </div>
+          <div class="input-group">
+            <label>Stop Loss ($)</label>
+            <input type="number" id="stopLoss" value="95" placeholder="Stop loss price">
+          </div>
+        </div>
+
+        <button class="calc-btn" onclick="calculatePosition()">Calculate Position Size</button>
+
+        <div class="result-box" id="positionResult" style="display: none;">
+          <div class="result-item">
+            <span class="result-label">Risk Amount</span>
+            <span class="result-value red" id="riskAmount">$0</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Stop Loss Distance</span>
+            <span class="result-value yellow" id="slDistance">0%</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Position Size</span>
+            <span class="result-value green" id="positionSize">0 units</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Position Value</span>
+            <span class="result-value blue" id="positionValue">$0</span>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <h4>💡 Pro Tip</h4>
+          <p>Never risk more than 1-2% of your account on a single trade. This ensures you can survive a losing streak.</p>
+        </div>
+      </div>
+
+      <!-- Risk Reward Calculator -->
+      <div class="calc-card">
+        <h2><span class="icon">⚖️</span> Risk : Reward Calculator</h2>
+        
+        <div class="input-group">
+          <label>Entry Price ($)</label>
+          <input type="number" id="rrEntry" value="100" placeholder="Entry price">
+        </div>
+        
+        <div class="input-row">
+          <div class="input-group">
+            <label>Stop Loss ($)</label>
+            <input type="number" id="rrStopLoss" value="95" placeholder="Stop loss">
+          </div>
+          <div class="input-group">
+            <label>Take Profit ($)</label>
+            <input type="number" id="rrTakeProfit" value="115" placeholder="Take profit">
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label>Trade Direction</label>
+          <select id="tradeDirection">
+            <option value="long">Long (Buy)</option>
+            <option value="short">Short (Sell)</option>
+          </select>
+        </div>
+
+        <button class="calc-btn" onclick="calculateRR()">Calculate R:R</button>
+
+        <div class="result-box" id="rrResult" style="display: none;">
+          <div class="result-item">
+            <span class="result-label">Risk (SL Distance)</span>
+            <span class="result-value red" id="rrRisk">$0 (0%)</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Reward (TP Distance)</span>
+            <span class="result-value green" id="rrReward">$0 (0%)</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Risk : Reward Ratio</span>
+            <span class="result-value blue" id="rrRatio">1:0</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Required Win Rate</span>
+            <span class="result-value yellow" id="requiredWinRate">0%</span>
+          </div>
+        </div>
+
+        <div class="risk-meter" id="rrMeter" style="display: none;">
+          <div class="risk-meter-label">
+            <span>Poor (1:1)</span>
+            <span>Good (1:2)</span>
+            <span>Excellent (1:3+)</span>
+          </div>
+          <div class="risk-meter-bar">
+            <div class="risk-meter-indicator" id="rrIndicator" style="left: 0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profit/Loss Calculator -->
+      <div class="calc-card">
+        <h2><span class="icon">💰</span> Profit / Loss Calculator</h2>
+        
+        <div class="input-row">
+          <div class="input-group">
+            <label>Entry Price ($)</label>
+            <input type="number" id="plEntry" value="100" placeholder="Entry">
+          </div>
+          <div class="input-group">
+            <label>Exit Price ($)</label>
+            <input type="number" id="plExit" value="110" placeholder="Exit">
+          </div>
+        </div>
+        
+        <div class="input-row">
+          <div class="input-group">
+            <label>Quantity / Units</label>
+            <input type="number" id="plQuantity" value="10" placeholder="Units">
+          </div>
+          <div class="input-group">
+            <label>Direction</label>
+            <select id="plDirection">
+              <option value="long">Long</option>
+              <option value="short">Short</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="calc-btn" onclick="calculatePL()">Calculate P/L</button>
+
+        <div class="result-box" id="plResult" style="display: none;">
+          <div class="result-item">
+            <span class="result-label">Price Change</span>
+            <span class="result-value" id="plChange">$0 (0%)</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Investment</span>
+            <span class="result-value blue" id="plInvestment">$0</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Profit / Loss</span>
+            <span class="result-value" id="plPnL">$0</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">ROI</span>
+            <span class="result-value" id="plROI">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Breakeven Calculator -->
+      <div class="calc-card">
+        <h2><span class="icon">🎯</span> Breakeven Calculator</h2>
+        
+        <div class="input-group">
+          <label>Your Win Rate (%)</label>
+          <input type="number" id="winRate" value="50" placeholder="Enter win rate">
+        </div>
+        
+        <div class="input-group">
+          <label>Average Win ($)</label>
+          <input type="number" id="avgWin" value="200" placeholder="Avg winning trade">
+        </div>
+        
+        <div class="input-group">
+          <label>Average Loss ($)</label>
+          <input type="number" id="avgLoss" value="100" placeholder="Avg losing trade">
+        </div>
+
+        <button class="calc-btn" onclick="calculateExpectancy()">Calculate Expectancy</button>
+
+        <div class="result-box" id="expectancyResult" style="display: none;">
+          <div class="result-item">
+            <span class="result-label">Risk : Reward</span>
+            <span class="result-value blue" id="expRR">1:0</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Expectancy per Trade</span>
+            <span class="result-value" id="expValue">$0</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">After 100 Trades</span>
+            <span class="result-value" id="exp100">$0</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Breakeven Win Rate</span>
+            <span class="result-value yellow" id="breakevenWR">0%</span>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <h4>📈 Expectancy Formula</h4>
+          <p>(Win Rate × Avg Win) - (Loss Rate × Avg Loss) = Expected profit per trade</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quick Tips Section -->
+    <div class="tips-section">
+      <h2>💡 Risk Management Tips</h2>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-icon">🛡️</div>
+          <h3>The 2% Rule</h3>
+          <p>Never risk more than 2% of your account on a single trade. This protects your capital during losing streaks.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">⚖️</div>
+          <h3>Minimum 1:2 R:R</h3>
+          <p>Always aim for at least 1:2 risk-reward ratio. This means you can be wrong 50% of the time and still be profitable.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">📊</div>
+          <h3>Track Every Trade</h3>
+          <p>Maintain a trading journal. Track entry, exit, R:R, and emotions. Review weekly to improve.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🧠</div>
+          <h3>Plan Before Entry</h3>
+          <p>Know your entry, stop loss, and target BEFORE entering. Never move stop loss further away.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Position Size Calculator
+    function calculatePosition() {
+      const balance = parseFloat(document.getElementById('accountBalance').value);
+      const riskPercent = parseFloat(document.getElementById('riskPercent').value);
+      const entry = parseFloat(document.getElementById('entryPrice').value);
+      const sl = parseFloat(document.getElementById('stopLoss').value);
+
+      const riskAmount = (balance * riskPercent) / 100;
+      const slDistance = Math.abs(entry - sl);
+      const slPercent = (slDistance / entry) * 100;
+      const positionSize = riskAmount / slDistance;
+      const positionValue = positionSize * entry;
+
+      document.getElementById('riskAmount').textContent = '$' + riskAmount.toFixed(2);
+      document.getElementById('slDistance').textContent = slPercent.toFixed(2) + '%';
+      document.getElementById('positionSize').textContent = positionSize.toFixed(2) + ' units';
+      document.getElementById('positionValue').textContent = '$' + positionValue.toFixed(2);
+      document.getElementById('positionResult').style.display = 'block';
+    }
+
+    // Risk Reward Calculator
+    function calculateRR() {
+      const entry = parseFloat(document.getElementById('rrEntry').value);
+      const sl = parseFloat(document.getElementById('rrStopLoss').value);
+      const tp = parseFloat(document.getElementById('rrTakeProfit').value);
+      const direction = document.getElementById('tradeDirection').value;
+
+      let risk, reward;
+      if (direction === 'long') {
+        risk = entry - sl;
+        reward = tp - entry;
+      } else {
+        risk = sl - entry;
+        reward = entry - tp;
+      }
+
+      const riskPercent = (Math.abs(risk) / entry) * 100;
+      const rewardPercent = (Math.abs(reward) / entry) * 100;
+      const ratio = Math.abs(reward) / Math.abs(risk);
+      const requiredWinRate = (1 / (1 + ratio)) * 100;
+
+      document.getElementById('rrRisk').textContent = '$' + Math.abs(risk).toFixed(2) + ' (' + riskPercent.toFixed(1) + '%)';
+      document.getElementById('rrReward').textContent = '$' + Math.abs(reward).toFixed(2) + ' (' + rewardPercent.toFixed(1) + '%)';
+      document.getElementById('rrRatio').textContent = '1 : ' + ratio.toFixed(2);
+      document.getElementById('requiredWinRate').textContent = requiredWinRate.toFixed(1) + '%';
+      
+      // Update risk meter
+      const meterPosition = Math.min(ratio / 3 * 100, 100);
+      document.getElementById('rrIndicator').style.left = meterPosition + '%';
+      
+      document.getElementById('rrResult').style.display = 'block';
+      document.getElementById('rrMeter').style.display = 'block';
+    }
+
+    // Profit/Loss Calculator
+    function calculatePL() {
+      const entry = parseFloat(document.getElementById('plEntry').value);
+      const exit = parseFloat(document.getElementById('plExit').value);
+      const qty = parseFloat(document.getElementById('plQuantity').value);
+      const direction = document.getElementById('plDirection').value;
+
+      let pnl, priceChange;
+      if (direction === 'long') {
+        priceChange = exit - entry;
+        pnl = priceChange * qty;
+      } else {
+        priceChange = entry - exit;
+        pnl = priceChange * qty;
+      }
+
+      const changePercent = (priceChange / entry) * 100;
+      const investment = entry * qty;
+      const roi = (pnl / investment) * 100;
+
+      const changeEl = document.getElementById('plChange');
+      changeEl.textContent = '$' + priceChange.toFixed(2) + ' (' + changePercent.toFixed(2) + '%)';
+      changeEl.className = 'result-value ' + (priceChange >= 0 ? 'green' : 'red');
+
+      document.getElementById('plInvestment').textContent = '$' + investment.toFixed(2);
+      
+      const pnlEl = document.getElementById('plPnL');
+      pnlEl.textContent = (pnl >= 0 ? '+$' : '-$') + Math.abs(pnl).toFixed(2);
+      pnlEl.className = 'result-value ' + (pnl >= 0 ? 'green' : 'red');
+
+      const roiEl = document.getElementById('plROI');
+      roiEl.textContent = (roi >= 0 ? '+' : '') + roi.toFixed(2) + '%';
+      roiEl.className = 'result-value ' + (roi >= 0 ? 'green' : 'red');
+
+      document.getElementById('plResult').style.display = 'block';
+    }
+
+    // Expectancy Calculator
+    function calculateExpectancy() {
+      const winRate = parseFloat(document.getElementById('winRate').value) / 100;
+      const avgWin = parseFloat(document.getElementById('avgWin').value);
+      const avgLoss = parseFloat(document.getElementById('avgLoss').value);
+
+      const lossRate = 1 - winRate;
+      const expectancy = (winRate * avgWin) - (lossRate * avgLoss);
+      const after100 = expectancy * 100;
+      const rr = avgWin / avgLoss;
+      const breakevenWR = (1 / (1 + rr)) * 100;
+
+      document.getElementById('expRR').textContent = '1 : ' + rr.toFixed(2);
+      
+      const expEl = document.getElementById('expValue');
+      expEl.textContent = (expectancy >= 0 ? '+$' : '-$') + Math.abs(expectancy).toFixed(2);
+      expEl.className = 'result-value ' + (expectancy >= 0 ? 'green' : 'red');
+
+      const exp100El = document.getElementById('exp100');
+      exp100El.textContent = (after100 >= 0 ? '+$' : '-$') + Math.abs(after100).toFixed(2);
+      exp100El.className = 'result-value ' + (after100 >= 0 ? 'green' : 'red');
+
+      document.getElementById('breakevenWR').textContent = breakevenWR.toFixed(1) + '%';
+      document.getElementById('expectancyResult').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
