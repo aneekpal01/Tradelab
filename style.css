@@ -1450,3 +1450,27 @@ section {
     grid-template-columns: 1fr;
   }
 }
+/* ===========================
+   RESET PROGRESS BUTTON STYLE
+   =========================== */
+
+.reset-btn {
+  background: transparent;
+  border: 1px solid #ff4d4d; /* Red Border warning color */
+  color: #ff4d4d;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  opacity: 0.8;
+  margin-top: 5px;
+}
+
+.reset-btn:hover {
+  background: #ff4d4d;
+  color: white; /* Hover pe text white ho jayega */
+  opacity: 1;
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.4); /* Glow effect */
+}
