@@ -16,6 +16,24 @@
     .hidden {
       display: none !important;
     }
+    
+    /* Loader Logo Styles */
+    .loader-logo {
+      width: 80px;
+      height: 80px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { 
+        transform: scale(1); 
+        opacity: 1; 
+      }
+      50% { 
+        transform: scale(1.15); 
+        opacity: 0.8; 
+      }
+    }
   </style>
 </head>
 <body>
@@ -41,9 +59,9 @@
     </script>
   </div>
 
-  <!-- Loader -->
+  <!-- Loader with Logo -->
   <div class="loader-wrapper" id="loader">
-    <div class="loader"></div>
+    <img src="logo.png" alt="TradeLab" class="loader-logo">
     <div class="loader-text">
       <span>T</span><span>r</span><span>a</span><span>d</span><span>e</span><span>L</span><span>a</span><span>b</span>
     </div>
@@ -1261,8 +1279,6 @@
       }
     });
   </script>
-
-  
 
 </body>
 </html>
