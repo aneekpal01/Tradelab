@@ -2102,3 +2102,20 @@ section {
   50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
   100% { transform: scale(1) rotate(360deg); opacity: 1; }
 }
+/* ===== LOADER ANIMATION ===== */
+.loader-logo {
+  width: 160px;
+  height: 120px;
+  animation: glowBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes glowBounce {
+  0%, 100% { 
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 0 10px #00ff9c);
+  }
+  50% { 
+    transform: translateY(-15px) scale(1.1);
+    filter: drop-shadow(0 0 30px #00ff9c) drop-shadow(0 0 60px #00d4ff);
+  }
+}
