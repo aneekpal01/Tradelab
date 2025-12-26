@@ -2239,56 +2239,28 @@ section {
   100% { left: 100%; }
 }
 
-/* Button ki basic styling */
-.shine-button {
-  position: relative; /* Zaroori hai taki shine button ke andar rahe */
-  padding: 15px 40px;
-  background-color: #00e6cc; /* Aapka button color */
-  color: #000;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  overflow: hidden; /* Shine ko button ke bahar jaane se rokta hai */
-  box-shadow: 0 0 20px rgba(0, 230, 204, 0.4); /* Glow effect */
-  transition: transform 0.2s;
-}
-
-/* Shine effect create karne wali layer */
+/* Sirf is part ko update karein */
 .shine-button::after {
   content: '';
   position: absolute;
   top: 0;
-  left: -100%; /* Shine ko left side chupana */
-  width: 50%;
+  left: -100%;
+  width: 50%; /* Beam ki chaudai */
   height: 100%;
+  
+  /* Naya Gradient: Pure White (#ffffff) use kiya hai taaki tez dikhe */
   background: linear-gradient(
     to right,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.8) 50%,
+    #ffffff 50%,  /* Pehle 0.8 tha, ab poora white hai */
     rgba(255, 255, 255, 0) 100%
   );
-  transform: skewX(-25deg); /* Shine ko thoda tedha karna */
-  animation: shine 3s infinite; /* Animation loop */
+  
+  /* Naya: Light ke aas-paas glow add kiya hai */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); 
+  
+  transform: skewX(-25deg);
+  
+  /* Animation speed: 3s ki jagah 2.5s kar diya taaki thoda quick dikhe */
+  animation: shine 2.5s infinite; 
 }
-
-/* Button press effect */
-.shine-button:active {
-  transform: scale(0.98);
-}
-
-/* Animation definition */
-@keyframes shine {
-  0% {
-    left: -100%;
-  }
-  20% {
-    left: 200%; /* Jaldi se cross karega */
-  }
-  100% {
-    left: 200%; /* Baki time rukega taki baar-baar fast blink na ho */
-  }
-}
-
-
