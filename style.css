@@ -2135,3 +2135,46 @@ section {
     filter: drop-shadow(0 0 25px #00ff9c) drop-shadow(0 0 50px #00d4ff);
   }
 }
+/* ===== NAV BUTTONS CONTINUOUS GLOW ===== */
+.nav-links li a {
+  animation: navGlow 2s ease-in-out infinite;
+}
+
+@keyframes navGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 15px currentColor, 0 0 30px currentColor, 0 0 45px currentColor;
+  }
+}
+
+/* User greeting box glow */
+#userItem {
+  animation: userGlow 2s ease-in-out infinite;
+}
+
+@keyframes userGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px #00ffc8, 0 0 10px #00ffc8;
+    text-shadow: 0 0 5px #00ffc8;
+  }
+  50% {
+    box-shadow: 0 0 15px #00ffc8, 0 0 30px #00ffc8;
+    text-shadow: 0 0 15px #00ffc8, 0 0 25px #00ffc8;
+  }
+}
+
+/* Logout button glow */
+#logoutItem a {
+  animation: logoutGlow 2s ease-in-out infinite;
+}
+
+@keyframes logoutGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px #ff4d4d, 0 0 10px #ff4d4d;
+  }
+  50% {
+    box-shadow: 0 0 15px #ff4d4d, 0 0 30px #ff4d4d, 0 0 45px #ff4d4d;
+  }
+}
