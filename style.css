@@ -263,7 +263,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* ===== SHINE SWEEP EFFECT ===== */
+/* ===== SHINE SWEEP EFFECT - FIXED: Only runs once ===== */
 @keyframes shineSweep {
   0% {
     left: -100%;
@@ -283,7 +283,7 @@ body {
   padding: 8px 14px;
 }
 
-/* Shine sweep pseudo element */
+/* Shine sweep pseudo element - FIXED: runs only once */
 .nav-links li a[href="backtest.html"]::before,
 .nav-links li a[href="calculator.html"]::before,
 .nav-links li a[href="quiz.html"]::before {
@@ -299,7 +299,7 @@ body {
     rgba(255, 255, 255, 0.4),
     transparent
   );
-  animation: shineSweep 3s ease-in-out infinite;
+  animation: shineSweep 3s ease-in-out 1;
 }
 
 /* Backtesting Lab */
@@ -339,7 +339,7 @@ body {
   box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
 }
 
-/* User greeting style - with shine */
+/* User greeting style - FIXED: runs only once */
 #userItem {
   position: relative;
   overflow: hidden;
@@ -363,11 +363,11 @@ body {
     rgba(0, 255, 156, 0.4),
     transparent
   );
-  animation: shineSweep 3s ease-in-out infinite;
+  animation: shineSweep 3s ease-in-out 1;
   animation-delay: 3s;
 }
 
-/* Logout button style - with red shine */
+/* Logout button style - FIXED: runs only once */
 #logoutItem a {
   position: relative;
   overflow: hidden;
@@ -391,7 +391,7 @@ body {
     rgba(255, 77, 77, 0.4),
     transparent
   );
-  animation: shineSweep 3s ease-in-out infinite;
+  animation: shineSweep 3s ease-in-out 1;
   animation-delay: 4s;
 }
 
@@ -647,7 +647,7 @@ body {
   line-height: 1.8;
 }
 
-/* ===== START LEARNING BUTTON WITH SHINE SWEEP ===== */
+/* ===== START LEARNING BUTTON WITH SHINE SWEEP - FIXED: runs only once ===== */
 .btn {
   display: inline-block;
   padding: 16px 35px;
@@ -677,7 +677,7 @@ body {
     rgba(255, 255, 255, 0.6),
     transparent
   );
-  animation: shineSweep 2.5s ease-in-out infinite;
+  animation: shineSweep 2.5s ease-in-out 1;
   z-index: 2;
 }
 
@@ -2073,4 +2073,21 @@ section {
     gap: 10px;
     text-align: center;
   }
+}
+
+/* Reset button style */
+.reset-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 77, 77, 0.4);
+  color: #ff6b6b;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-btn:hover {
+  background: rgba(255, 77, 77, 0.1);
+  border-color: #ff6b6b;
 }
