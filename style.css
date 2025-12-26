@@ -2092,12 +2092,13 @@ section {
   border-color: #ff6b6b;
 }
 .loader-logo {
-  width: 80px;
-  height: 80px;
-  animation: pulse 1.5s ease-in-out infinite;
+  width: 120px;
+  height: 120px;
+  animation: rotatePulse 2s ease-in-out infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.15); opacity: 0.8; }
+@keyframes rotatePulse {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+  100% { transform: scale(1) rotate(360deg); opacity: 1; }
 }
