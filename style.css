@@ -2119,3 +2119,19 @@ section {
     filter: drop-shadow(0 0 30px #00ff9c) drop-shadow(0 0 60px #00d4ff);
   }
 }
+.loader-logo {
+  width: 120px;
+  height: 120px;
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% { 
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px #00ff9c);
+  }
+  50% { 
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 25px #00ff9c) drop-shadow(0 0 50px #00d4ff);
+  }
+}
