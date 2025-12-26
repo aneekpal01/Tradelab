@@ -2092,9 +2092,9 @@ section {
   border-color: #ff6b6b;
 }
 .loader-logo {
-  width: 120px;
+  width: 180px;
   height: 120px;
-  animation: rotatePulse 2s ease-in-out infinite;
+  animation: rotatePulse 1.5s ease-in-out infinite;
 }
 
 @keyframes rotatePulse {
