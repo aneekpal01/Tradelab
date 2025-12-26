@@ -2135,12 +2135,19 @@ section {
     filter: drop-shadow(0 0 25px #00ff9c) drop-shadow(0 0 50px #00d4ff);
   }
 }
-/* ===== NAV BUTTONS SHINE SWEEP (Own Colors) ===== */
-.nav-links li a,
+
+/* ===== NAV BUTTONS SHINE SWEEP (Fixed) ===== */
+.nav-links li a {
+  position: relative !important;
+  overflow: hidden !important;
+  display: inline-block;
+}
+
 #userItem,
 #logoutItem a {
-  position: relative;
-  overflow: hidden;
+  position: relative !important;
+  overflow: hidden !important;
+  display: inline-block;
 }
 
 .nav-links li a::before,
@@ -2150,42 +2157,43 @@ section {
   position: absolute;
   top: 0;
   left: -100%;
-  width: 100%;
+  width: 50%;
   height: 100%;
-  animation: shineSweep 2s ease-in-out infinite;
+  z-index: 1;
+  animation: shineSweep 2.5s ease-in-out infinite;
+  pointer-events: none;
 }
 
 /* Each button's own color shine */
 .nav-links li:nth-child(1) a::before {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
 }
 
 .nav-links li:nth-child(2) a::before {
-  background: linear-gradient(90deg, transparent, rgba(88,166,255,0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(88,166,255,0.6), transparent);
 }
 
 .nav-links li:nth-child(3) a::before {
-  background: linear-gradient(90deg, transparent, rgba(255,183,0,0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,183,0,0.6), transparent);
 }
 
 .nav-links li:nth-child(4) a::before {
-  background: linear-gradient(90deg, transparent, rgba(156,0,255,0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(156,0,255,0.6), transparent);
 }
 
 .nav-links li:nth-child(5) a::before {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
 }
 
 #userItem::before {
-  background: linear-gradient(90deg, transparent, rgba(0,255,200,0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0,255,200,0.6), transparent);
 }
 
 #logoutItem a::before {
-  background: linear-gradient(90deg, transparent, rgba(255,77,77,0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,77,77,0.6), transparent);
 }
 
 @keyframes shineSweep {
-  0% { left: -100%; }
-  50% { left: 100%; }
-  50.01%, 100% { left: -100%; }
+  0% { left: -50%; }
+  100% { left: 100%; }
 }
