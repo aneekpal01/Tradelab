@@ -1328,6 +1328,36 @@
       }
     });
   </script>
+<div class="chat-container" id="chat-container">
+    <div class="chat-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:20px;">🧠</span>
+            <div>
+                <span style="display:block; font-weight:bold;">TradeLab Mentor</span>
+                <span style="font-size:10px; opacity:0.9;">Powered by AI</span>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="close-btn">✖</button>
+    </div>
 
+    <div class="chat-box" id="chat-box">
+        <div class="bot-message">
+            <strong>Namaste! 🙏</strong> <br>
+            Main TradeLab ka AI Assistant hun. <br><br>
+            Mujhse <b>Trading Psychology, Strategies,</b> ya <b>Risk Management</b> ke baare mein kuch bhi puchiye.
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <button onclick="sendQuickMsg('Best Intraday Strategy?')">📈 Strategy</button>
+        <button onclick="sendQuickMsg('How to control emotions?')">🧠 Psychology</button>
+        <button onclick="sendQuickMsg('Explain RSI Divergence')">📉 RSI</button>
+    </div>
+
+    <div class="chat-input-area">
+        <input type="text" id="user-input" placeholder="Type your question..." onkeypress="handleEnter(event)">
+        <button onclick="sendMessage()">➤</button>
+    </div>
+</div>
 </body>
 </html>
