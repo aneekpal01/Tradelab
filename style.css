@@ -2293,8 +2293,8 @@ section {
 /* ===== NAV LOGO (IMPROVED SIZE & NORMAL LOOK) ===== */
 
 .nav-logo {
-  width: 45px;        /* pehle 35px */
-  height: 45px;
+  width: 50px;        /* pehle 35px */
+  height: 55px;
   margin-right: 12px;
   vertical-align: middle;
   object-fit: contain;
