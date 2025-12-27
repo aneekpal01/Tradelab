@@ -2239,3 +2239,21 @@ section {
   100% { left: 100%; }
 }
 
+/* ===== START LEARNING BUTTON SHINE ===== */
+.hero .btn {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.hero .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shineSweep 2.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
