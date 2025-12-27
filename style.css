@@ -2290,13 +2290,16 @@ section {
       0 0 60px rgba(0, 255, 200, 0.3);
   }
 }
-/* ===== NAV LOGO ===== */
+/* ===== NAV LOGO (IMPROVED SIZE & NORMAL LOOK) ===== */
+
 .nav-logo {
-  width: 35px;
-  height: 35px;
-  margin-right: 10px;
+  width: 45px;        /* pehle 35px */
+  height: 45px;
+  margin-right: 12px;
   vertical-align: middle;
+  object-fit: contain;
 }
+
 
 .navbar .logo {
   display: flex;
