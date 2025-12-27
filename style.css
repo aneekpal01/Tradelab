@@ -2166,31 +2166,31 @@ section {
 
 /* Each button's own color shine */
 .nav-links li:nth-child(1) a::before {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,1.2), transparent);
 }
 
 .nav-links li:nth-child(2) a::before {
-  background: linear-gradient(90deg, transparent, rgba(88,166,255,1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(88,166,255,1.2), transparent);
 }
 
 .nav-links li:nth-child(3) a::before {
-  background: linear-gradient(90deg, transparent, rgba(255,183,0,1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,183,0,1.2), transparent);
 }
 
 .nav-links li:nth-child(4) a::before {
-  background: linear-gradient(90deg, transparent, rgba(156,0,255,1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(156,0,255,1.2), transparent);
 }
 
 .nav-links li:nth-child(5) a::before {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,1.2), transparent);
 }
 
 #userItem::before {
-  background: linear-gradient(90deg, transparent, rgba(0,255,200,1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0,255,200,1.2), transparent);
 }
 
 #logoutItem a::before {
-  background: linear-gradient(90deg, transparent, rgba(255,77,77,1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,77,77,1.2), transparent);
 }
 
 @keyframes shineSweep {
@@ -2221,17 +2221,17 @@ section {
 
 /* Backtesting Lab - Blue */
 .nav-links li a[href="backtest.html"]::before {
-  background: linear-gradient(90deg, transparent, rgba(88,166,255,1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(88,166,255,1.1), transparent);
 }
 
 /* Risk Calculator - Orange */
 .nav-links li a[href="calculator.html"]::before {
-  background: linear-gradient(90deg, transparent, rgba(255,183,0,1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,183,0,1.2), transparent);
 }
 
 /* Quiz - Purple */
 .nav-links li a[href="quiz.html"]::before {
-  background: linear-gradient(90deg, transparent, rgba(156,0,255,1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(156,0,255,1.2), transparent);
 }
 
 @keyframes shineSweep {
@@ -2260,7 +2260,7 @@ section {
     rgba(255, 255, 255, 1),
     transparent
   );
-  animation: shineSweep 1.6s ease-in-out infinite;
+  animation: shineSweep 1.2s ease-in-out infinite;
   pointer-events: none;
   z-index: 1;
   filter: blur(2px);
