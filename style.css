@@ -2295,8 +2295,8 @@ section {
 .nav-logo {
   width: 55px;        /* pehle 35px */
   height: 60px;
-  margin-right: 9px;
-  margin-top: 5px;
+  margin-right: 6px;
+  margin-top: 6px;
   vertical-align: middle;
   object-fit: contain;
 }
