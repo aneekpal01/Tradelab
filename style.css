@@ -2267,29 +2267,26 @@ section {
   mix-blend-mode: screen;
 }
 
-/* Shine animation */
-@keyframes shineSweep {
-  0% {
-    left: -70%;
-  }
-  100% {
-    left: 120%;
-  }
+/* ===== ADVANCED CONCEPTS BOX GLOW ===== */
+.advanced-separator-container {
+  animation: advancedGlow 2s ease-in-out infinite;
 }
 
-
-h2 {
-  background: linear-gradient(
-    90deg,
-    #ff2fd6,
-    #8a2be2,
-    #00e5ff
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  text-shadow:
-    0 0 10px rgba(255, 47, 214, 0.8),
-    0 0 20px rgba(138, 43, 226, 0.6),
-    0 0 30px rgba(0, 229, 255, 0.6);
+@keyframes advancedGlow {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px rgba(255, 0, 128, 0.5),
+      0 0 20px rgba(255, 0, 128, 0.3),
+      0 0 10px rgba(0, 255, 200, 0.5),
+      0 0 20px rgba(0, 255, 200, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px rgba(255, 0, 128, 0.8),
+      0 0 40px rgba(255, 0, 128, 0.5),
+      0 0 60px rgba(255, 0, 128, 0.3),
+      0 0 20px rgba(0, 255, 200, 0.8),
+      0 0 40px rgba(0, 255, 200, 0.5),
+      0 0 60px rgba(0, 255, 200, 0.3);
+  }
 }
