@@ -1,94 +1,89 @@
-// TradeLab future scripts
-
-
 // --- NAVBAR HAMBURGER MENU LOGIC ---
 const navLinks = document.getElementById("navLinks");
 const hamburger = document.getElementById("hamburger");
 
 function toggleMenu() {
-    navLinks.classList.toggle("active");
-    hamburger.classList.toggle("active");
+    if (navLinks && hamburger) {
+        navLinks.classList.toggle("active");
+        hamburger.classList.toggle("active");
+    }
 }
 
-// --- AI CHATBOT LOGIC (TradeLab Mentor) ---
+// --- AI CHATBOT LOGIC (Google Gemini Powered) ---
 const chatContainer = document.getElementById("chat-container");
 const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
 
-// 1. Chat Window Show/Hide karne ke liye
+// 🟢 AAPKI GOOGLE API KEY (Maine yahan daal di hai)
+const API_KEY = "AIzaSyAfwrM3u2a7aZx1BlXCriaEGp7zyseMF-0"; 
+
 function toggleChat() {
     if (chatContainer.style.display === "flex") {
         chatContainer.style.display = "none";
     } else {
         chatContainer.style.display = "flex";
-        // Chat khulte hi input par focus aa jaye
         if(userInput) userInput.focus(); 
     }
 }
 
-// 2. Quick Buttons (Chips) par click hone par
 function sendQuickMsg(text) {
-    userInput.value = text;
-    sendMessage();
+    if(userInput) {
+        userInput.value = text;
+        sendMessage();
+    }
 }
 
-// 3. Enter button dabane par message bhejne ke liye
 function handleEnter(event) {
     if (event.key === "Enter") sendMessage();
 }
 
-// 4. Text Formatting (Bold aur Lines theek karne ke liye)
 function formatResponse(text) {
-    // **text** ko Bold banata hai
+    // Bold text handling (**text**)
     let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    // New lines ko <br> mein badalta hai
+    // New lines handling
     return formatted.replace(/\n/g, '<br>');
 }
 
-// 5. Message Bhejne ka Main Function (OpenAI API)
 async function sendMessage() {
     const text = userInput.value.trim();
     if (!text) return;
 
-    // User ka message screen par dikhayein
     appendMessage(text, "user-message");
     userInput.value = "";
 
-    // "Thinking..." loading dikhayein
     const loadingId = appendMessage("Thinking...", "bot-message");
 
+    // System Prompt (Bot ka dimaag)
+    const systemPrompt = "You are a professional Trading Mentor for 'TradeLab'. Answer clearly in Hinglish (Hindi + English mix). Focus on Psychology, Risk Management, and clear explanations. Keep answers short and crisp. Do not give financial advice.";
+
+    // Gemini API ko request bhejna
     try {
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                // 🔴 APNI OPENAI API KEY NEECHE PASTE KAREIN 🔴
-                "Authorization": "Bearer YOUR_OPENAI_API_KEY" 
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "gpt-3.5-turbo",
-                messages: [
-                    {
-                        role: "system", 
-                        content: "You are a professional Trading Mentor for 'TradeLab'. Answer clearly in Hinglish (Hindi + English mix). Focus on Psychology, Risk Management, and clear explanations. Keep answers short and crisp."
-                    },
-                    { role: "user", content: text }
-                ]
+                contents: [{
+                    parts: [{
+                        text: systemPrompt + "\n\nUser Question: " + text
+                    }]
+                }]
             })
         });
 
         const data = await response.json();
-        
-        // Agar API Key galat ho toh error dikhaye
-        if(data.error) {
-             document.getElementById(loadingId).innerText = "Error: API Key missing or invalid.";
-             console.error("API Error:", data.error);
-             return;
+
+        // Error checking
+        if (data.error) {
+            document.getElementById(loadingId).innerText = "Error: API Key limit or invalid.";
+            console.error("Gemini Error:", data.error);
+            return;
         }
 
-        const botReply = data.choices[0].message.content;
-        
-        // Loading hatakar asli jawab dikhayein
+        // Gemini ka jawab nikalna
+        const botReply = data.candidates[0].content.parts[0].text;
+
         document.getElementById(loadingId).remove();
         
         const msgDiv = document.createElement("div");
@@ -98,12 +93,11 @@ async function sendMessage() {
         chatBox.scrollTop = chatBox.scrollHeight;
 
     } catch (error) {
-        document.getElementById(loadingId).innerText = "Connection Error. Check internet.";
+        document.getElementById(loadingId).innerText = "Connection Error. Try again.";
         console.error(error);
     }
 }
 
-// Helper: Message ko chat box mein add karna
 function appendMessage(text, className) {
     const msgDiv = document.createElement("div");
     msgDiv.className = className;
@@ -114,4 +108,3 @@ function appendMessage(text, className) {
     chatBox.scrollTop = chatBox.scrollHeight;
     return id;
 }
-
