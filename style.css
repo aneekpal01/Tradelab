@@ -2290,3 +2290,15 @@ section {
       0 0 60px rgba(0, 255, 200, 0.3);
   }
 }
+/* ===== NAV LOGO ===== */
+.nav-logo {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+}
