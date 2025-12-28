@@ -3,111 +3,99 @@ const navLinks = document.getElementById("navLinks");
 const hamburger = document.getElementById("hamburger");
 
 function toggleMenu() {
-    if (navLinks && hamburger) {
-        navLinks.classList.toggle("active");
-        hamburger.classList.toggle("active");
-    }
+  if (navLinks && hamburger) {
+    navLinks.classList.toggle("active");
+    hamburger.classList.toggle("active");
+  }
 }
 
-// --- AI CHATBOT LOGIC (Final Working Version) ---
+// --- AI CHATBOT LOGIC (SECURE VERSION) ---
 const chatContainer = document.getElementById("chat-container");
 const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
 
-// 🟢 AAPKI NAYI API KEY (Maine yahan daal di hai)
-const API_KEY = "AIzaSyDvFBizewUa7wC1c_H2upSOWLwGqt6LS8I"; 
+// 🔒 NO API KEY IN FRONTEND ❌
+// const API_KEY = "REMOVED";
 
 function toggleChat() {
-    if (!chatContainer) return;
-    if (chatContainer.style.display === "flex") {
-        chatContainer.style.display = "none";
-    } else {
-        chatContainer.style.display = "flex";
-        if(userInput) userInput.focus(); 
-    }
+  if (!chatContainer) return;
+  chatContainer.style.display =
+    chatContainer.style.display === "flex" ? "none" : "flex";
+  userInput?.focus();
 }
 
 function sendQuickMsg(text) {
-    if(userInput) {
-        userInput.value = text;
-        sendMessage();
-    }
+  if (!userInput) return;
+  userInput.value = text;
+  sendMessage();
 }
 
-function handleEnter(event) {
-    if (event.key === "Enter") sendMessage();
+function handleEnter(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendMessage();
+  }
 }
 
+// Safe formatter (bot response only)
 function formatResponse(text) {
-    // Bold text handling
-    let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    return formatted.replace(/\n/g, '<br>');
+  return text
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\n/g, "<br>");
 }
 
-// Helper to add messages safely
-function appendMessage(text, className) {
-    const msgDiv = document.createElement("div");
-    msgDiv.className = className;
-    msgDiv.innerHTML = text;
-    
-    // Unique ID generation (Crash Proof)
-    const id = "msg-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
-    msgDiv.id = id; 
-    
-    chatBox.appendChild(msgDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-    return id;
+// Safe append
+function appendMessage(text, className, isHTML = false) {
+  const div = document.createElement("div");
+  div.className = className;
+  if (isHTML) {
+    div.innerHTML = text;
+  } else {
+    div.textContent = text;
+  }
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+  return div;
 }
 
+// 🚀 MAIN FUNCTION
 async function sendMessage() {
-    const text = userInput.value.trim();
-    if (!text) return;
+  if (!userInput || !chatBox) return;
 
-    appendMessage(text, "user-message");
-    userInput.value = "";
+  const text = userInput.value.trim();
+  if (!text) return;
 
-    // Show Loading
-    const loadingId = appendMessage("Thinking...", "bot-message");
+  appendMessage(text, "user-message");
+  userInput.value = "";
 
-    const systemPrompt = "You are a professional Trading Mentor. Answer in Hinglish. Keep it short and clear.";
+  const loading = appendMessage("Thinking...", "bot-message");
 
-    try {
-        // 👇 Using 'gemini-1.5-flash'
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: systemPrompt + "\n\nUser: " + text }] }]
-            })
-        });
+  try {
+    const response = await fetch(
+      "https://late-wood-8220.aneekpal199400.workers.dev",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message:
+            "You are a professional Trading Mentor. Answer in Hinglish. Keep it short.\n\nUser: " +
+            text
+        })
+      }
+    );
 
-        const data = await response.json();
-        
-        // Safe Element Selection
-        const loadingElem = document.getElementById(loadingId);
+    const data = await response.json();
+    loading.remove();
 
-        if (data.error) {
-            console.error("Gemini API Error:", data.error);
-            if(loadingElem) {
-                loadingElem.innerHTML = "<span style='color:red'>Error: " + data.error.message + "</span>";
-            }
-            return;
-        }
-
-        // Response Success
-        const botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I am silent today.";
-        
-        if(loadingElem) loadingElem.remove();
-        
-        const msgDiv = document.createElement("div");
-        msgDiv.className = "bot-message";
-        msgDiv.innerHTML = formatResponse(botReply);
-        chatBox.appendChild(msgDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-    } catch (error) {
-        console.error("Network Error:", error);
-        const loadingElem = document.getElementById(loadingId);
-        if(loadingElem) loadingElem.innerText = "Connection Error. Check internet.";
+    if (data.reply) {
+      appendMessage(formatResponse(data.reply), "bot-message", true);
+    } else {
+      appendMessage("⚠️ No response from AI", "bot-message");
     }
+
+  } catch (err) {
+    console.error(err);
+    loading.remove();
+    appendMessage("❌ Server error. Try again.", "bot-message");
+  }
 }
