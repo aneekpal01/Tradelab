@@ -9,13 +9,10 @@ function toggleMenu() {
   }
 }
 
-// --- AI CHATBOT LOGIC (SECURE VERSION) ---
-const chatContainer = document.getElementById("chat-container");
+// --- AI CHATBOT LOGIC ---
+const chatContainer = document.querySelector(".chat-container"); // ✅ FIX
 const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
-
-// 🔒 NO API KEY IN FRONTEND ❌
-// const API_KEY = "REMOVED";
 
 function toggleChat() {
   if (!chatContainer) return;
@@ -37,22 +34,18 @@ function handleEnter(e) {
   }
 }
 
-// Safe formatter (bot response only)
+// Bot formatting only
 function formatResponse(text) {
   return text
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
     .replace(/\n/g, "<br>");
 }
 
-// Safe append
+// Append message safely
 function appendMessage(text, className, isHTML = false) {
   const div = document.createElement("div");
   div.className = className;
-  if (isHTML) {
-    div.innerHTML = text;
-  } else {
-    div.textContent = text;
-  }
+  isHTML ? (div.innerHTML = text) : (div.textContent = text);
   chatBox.appendChild(div);
   chatBox.scrollTop = chatBox.scrollHeight;
   return div;
@@ -76,21 +69,19 @@ async function sendMessage() {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message:
-            "You are a professional Trading Mentor. Answer in Hinglish. Keep it short.\n\nUser: " +
-            text
-        })
+        body: JSON.stringify({ message: text }) // ✅ ONLY USER MESSAGE
       }
     );
 
     const data = await response.json();
+    console.log("AI DATA 👉", data);
+
     loading.remove();
 
-    if (data.reply) {
+    if (data && data.reply) {
       appendMessage(formatResponse(data.reply), "bot-message", true);
     } else {
-      appendMessage("⚠️ No response from AI", "bot-message");
+      appendMessage("⚠️ AI replied but no text found", "bot-message");
     }
 
   } catch (err) {
