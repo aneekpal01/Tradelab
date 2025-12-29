@@ -2795,7 +2795,7 @@ body.loading #ai-float-btn {
 /* ⬆ Back to Top – AI ke niche */
 #backToTop {
   position: fixed;
-  bottom: 190px;         /* 🔽 AI ke niche */
+  bottom: 180px;         /* 🔽 AI ke niche */
   right: 25px;
   z-index: 99999;
 }
@@ -2803,10 +2803,14 @@ body.loading #ai-float-btn {
 /* 🌙 Theme button – sabse niche */
 #theme-toggle {
   position: fixed;
-  bottom: 30px;
+  bottom: 10px;
   right: 25px;
   z-index: 8000;
 }
 
+/* Hide Back-to-Top arrow during loading */
+body.loading #backToTop {
+  display: none !important;
+}
 
 
