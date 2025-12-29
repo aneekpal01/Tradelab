@@ -2846,3 +2846,59 @@ body.loading #backToTop {
 }
 
 
+/* ===== Header Layout ===== */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-left .title {
+  font-weight: bold;
+  display: block;
+}
+
+.header-left .subtitle {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ===== Mini AI Mode Toggle ===== */
+.ai-mode-mini {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+}
+
+.ai-mode-mini button {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  background: transparent;
+  color: #aaa;
+  transition: all 0.2s ease;
+}
+
+.ai-mode-mini button.active {
+  background: #00ffd5;
+  color: #000;
+  box-shadow: 0 0 8px rgba(0,255,213,0.8);
+}
