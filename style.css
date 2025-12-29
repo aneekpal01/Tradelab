@@ -2784,19 +2784,18 @@ body.loading #ai-float-btn {
   display: none !important;
 }
 
-
-
-/* Scroll to top arrow = sabse upar */
-#scrollToTop {
-  z-index: 99999;
+/* ⬆ Back to Top arrow = SABSE UPAR */
+#backToTop {
+  z-index: 99999 !important;
 }
 
-/* AI Mentor button = arrow ke niche */
+/* 🤖 AI Mentor = arrow ke niche */
 #ai-float-btn {
-  z-index: 9000;
+  z-index: 9000 !important;
 }
 
-/* Moon / theme button = sabse niche */
+/* 🌙 Theme (moon) button = sabse niche */
 #theme-toggle {
-  z-index: 8000;
+  z-index: 8000 !important;
 }
+
