@@ -181,3 +181,24 @@ function setAIMode(mode) {
   console.log("AI mode set to:", mode);
 }
 
+
+// ===== STOP CLICK BUBBLING INSIDE AI CHAT =====
+const aiChatBox = document.getElementById("aiChatBox");
+const aiModeMini = document.querySelector(".ai-mode-mini");
+
+if (aiChatBox) {
+  aiChatBox.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+}
+
+if (aiModeMini) {
+  aiModeMini.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+}
+
+
+
+
+
