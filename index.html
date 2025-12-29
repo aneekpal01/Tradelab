@@ -1334,26 +1334,28 @@
     });
   </script>
 <div class="chat-container" id="aiChatBox">
-    <div class="chat-header" id="aiChatHeader">
+  <div class="chat-header" id="aiChatHeader">
 
-        <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:20px;">🧠</span>
-            <div>
-                <span style="display:block; font-weight:bold;">TradeLab Mentor</span>
-                <span style="font-size:10px; opacity:0.9;">Powered by AI</span>
-            </div>
-        </div>
-        <button onclick="toggleChat()" class="close-btn">✖</button>
+  <div class="header-left">
+    <span class="brain">🧠</span>
+    <div>
+      <span class="title">TradeLab Mentor</span>
+      <span class="subtitle">Powered by AI</span>
     </div>
-  
-<div class="ai-mode-toggle">
-  <button id="ai-beginner" class="active" onclick="setAIMode('Beginner')">
-    Beginner
-  </button>
-  <button id="ai-pro" onclick="setAIMode('Pro')">
-    Pro
-  </button>
+  </div>
+
+  <div class="header-right">
+    <div class="ai-mode-mini">
+      <button id="ai-beginner" class="active" onclick="setAIMode('Beginner')">B</button>
+      <button id="ai-pro" onclick="setAIMode('Pro')">P</button>
+    </div>
+
+    <button onclick="toggleChat()" class="close-btn">✖</button>
+  </div>
+
 </div>
+ 
+  
 
   
 <div class="chat-box" id="chat-box">
