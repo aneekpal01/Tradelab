@@ -18,19 +18,24 @@ const userInput = document.getElementById("user-input");
 function toggleChat() {
   if (!chatContainer) return;
 
-  if (chatContainer.classList.contains("show")) {
+  const isOpen = chatContainer.classList.contains("show");
+
+  if (isOpen) {
+    // CLOSE
     chatContainer.classList.remove("show");
     setTimeout(() => {
       chatContainer.style.display = "none";
-    }, 450);
+    }, 300);
   } else {
+    // OPEN
     chatContainer.style.display = "flex";
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       chatContainer.classList.add("show");
-      userInput && userInput.focus();
-    }, 10);
+      userInput?.focus();
+    });
   }
 }
+
 
 // --- QUICK BUTTONS ---
 function sendQuickMsg(text) {
