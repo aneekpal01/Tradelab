@@ -2564,3 +2564,7 @@ body.dark-mode .chat-input-area {
 .nav-links li:first-child {
   margin-right: 14px;
 }
+.ai-mentor-btn {
+  box-sizing: border-box;   /* 🔑 sab padding border ke andar */
+  margin: 0 auto;           /* 🔑 center align */
+}
