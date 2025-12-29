@@ -2521,7 +2521,7 @@ body.dark-mode .chat-input-area {
   overflow: hidden !important;
 
   /* 🔑 SAME sizing logic as nav-links li a */
-  padding: 10px 16px;
+  padding: 12px 16px;
   font-size: 14px;
   font-weight: 600;
   line-height: normal;
