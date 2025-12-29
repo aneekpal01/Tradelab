@@ -2532,7 +2532,7 @@ body.dark-mode .chat-input-area {
   color: #00e5ff;
   background: transparent;
 
-  border: 2px solid #00e5ff;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
 }
