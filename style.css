@@ -2513,65 +2513,47 @@ body.dark-mode .chat-input-area {
   border-color: #00c6ff;
   color: #00c6ff;
 }
-/* 1. Button ka Main Structure */
+
+/* ===== AI MENTOR BUTTON (SIZE FIXED – MATCHES NAV BUTTONS) ===== */
 .ai-mentor-btn {
-    /* Layout & Size (Same as other buttons) */
-    position: relative; /* Zaroori hai taaki light iske andar rahe */
-    display: block;
-    width: 100%;
-    padding: 8px 16px;
-    margin-bottom: 15px;
-    
-    /* Text Styles */
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-    text-transform: uppercase;
-    color: #00e5ff; /* Text Color */
-    background: transparent; /* Main background saaf rahega */
-    
-    /* Border */
-    border: 2px solid #00e5ff;
-    border-radius: 8px;
-    cursor: pointer;
-    
-    /* MAGIC COMMAND: Yeh light ko bahar nikalne se rokega */
-    overflow: hidden; 
+  position: relative !important;
+  display: inline-block;          /* 🔑 nav buttons jaisa */
+  overflow: hidden !important;
+
+  /* 🔑 SAME sizing logic as nav-links li a */
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: normal;
+  white-space: nowrap;
+
+  text-align: center;
+  text-transform: uppercase;
+  color: #00e5ff;
+  background: transparent;
+
+  border: 2px solid #00e5ff;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* 2. Light Effect (Jo andar chalega) */
+/* Shine effect – EXACT nav buttons style */
 .ai-mentor-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%; /* Shuru mein box ke left side bahar */
-    width: 50%;
-    height: 100%;
-    
-    /* Light ka Color: Beech mein bright, sides mein transparent */
-    background: linear-gradient(
-        90deg, 
-        transparent, 
-        rgba(0, 229, 255, 1.2), 
-        transparent
-    );
-    
-    /* Animation settings */
-    transition: none;
-    animation: shine-move 1.2s infinite; /* Non-stop chalega */
-}
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
 
-/* 3. Animation Keyframes */
-@keyframes shine-move {
-    0% {
-        left: -100%; /* Left se start */
-    }
-    100% {
-        left: 100%; /* Right mein khatam */
-    }
-}
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0,255,200,1.2),
+    transparent
+  );
 
-/* Hover Effect (Optional) */
-.ai-mentor-btn:hover {
-    box-shadow: 0 0 15px rgba(0, 229, 255, 1.2); /* Sirf box glow karega */
+  animation: shineSweep 1s ease-in-out infinite;
 }
