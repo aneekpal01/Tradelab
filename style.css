@@ -2913,4 +2913,45 @@ body.loading #backToTop {
 
 
 
+/* ===== MOBILE FIX: Prevent Right Overflow ===== */
+@media (max-width: 768px) {
+
+  /* Overall safety */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Search + filter container */
+  .search-container,
+  .filter-container {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Search input */
+  .search-container input {
+    width: 100%;
+  }
+
+  /* Filter buttons wrap */
+  .filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .filter-buttons button {
+    flex: 1 1 30%;
+    min-width: 90px;
+  }
+}
+
+
+
+
+@media (max-width: 420px) {
+  .filter-buttons button {
+    flex: 1 1 100%;
+  }
+}
 
