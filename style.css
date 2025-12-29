@@ -2786,3 +2786,17 @@ body.loading #ai-float-btn {
 
 
 
+/* Scroll to top arrow = sabse upar */
+#scrollToTop {
+  z-index: 99999;
+}
+
+/* AI Mentor button = arrow ke niche */
+#ai-float-btn {
+  z-index: 9000;
+}
+
+/* Moon / theme button = sabse niche */
+#theme-toggle {
+  z-index: 8000;
+}
