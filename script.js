@@ -16,10 +16,21 @@ const userInput = document.getElementById("user-input");
 
 function toggleChat() {
   if (!chatContainer) return;
-  chatContainer.style.display =
-    chatContainer.style.display === "flex" ? "none" : "flex";
-  userInput?.focus();
+
+  if (chatContainer.classList.contains("show")) {
+    chatContainer.classList.remove("show");
+    setTimeout(() => {
+      chatContainer.style.display = "none";
+    }, 450);
+  } else {
+    chatContainer.style.display = "flex";
+    setTimeout(() => {
+      chatContainer.classList.add("show");
+      userInput?.focus();
+    }, 10);
+  }
 }
+
 
 function sendQuickMsg(text) {
   if (!userInput) return;
