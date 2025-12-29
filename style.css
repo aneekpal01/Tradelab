@@ -2568,3 +2568,47 @@ body.dark-mode .chat-input-area {
   box-sizing: border-box;   /* 🔑 sab padding border ke andar */
   margin: 0 auto;           /* 🔑 center align */
 }
+
+
+
+/* ===== FAQ BUTTON (SAME AS OTHERS) ===== */
+.faq-btn {
+  position: relative !important;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden !important;
+
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  color: #ffffff;
+  background: transparent;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+/* Shine effect – SAME SYSTEM */
+.faq-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,1.1),
+    transparent
+  );
+
+  animation: shineSweep 1s ease-in-out infinite;
+}
