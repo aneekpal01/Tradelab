@@ -145,3 +145,17 @@ window.addEventListener("load", () => {
   document.body.classList.remove("loading");
 });
 
+// ===== CONNECT FLOATING AI BUTTON =====
+window.addEventListener("load", () => {
+  const aiBtn = document.getElementById("ai-float-btn");
+
+  if (!aiBtn) {
+    console.log("❌ Floating AI button NOT found");
+    return;
+  }
+
+  aiBtn.addEventListener("click", () => {
+    console.log("🤖 Floating AI clicked");
+    toggleChat();   // SAME function as navbar
+  });
+});
