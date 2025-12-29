@@ -1,4 +1,70 @@
-// 🚀 MAIN FUNCTION
+// --- NAVBAR HAMBURGER MENU LOGIC ---
+const navLinks = document.getElementById("navLinks");
+const hamburger = document.getElementById("hamburger");
+
+function toggleMenu() {
+  if (navLinks && hamburger) {
+    navLinks.classList.toggle("active");
+    hamburger.classList.toggle("active");
+  }
+}
+
+// --- CHAT ELEMENT REFERENCES (IMPORTANT) ---
+const chatContainer = document.getElementById("aiChatBox");
+const chatBox = document.getElementById("chat-box");
+const userInput = document.getElementById("user-input");
+
+// --- TOGGLE AI MENTOR CHAT (OPEN / CLOSE WITH ANIMATION) ---
+function toggleChat() {
+  if (!chatContainer) return;
+
+  if (chatContainer.classList.contains("show")) {
+    chatContainer.classList.remove("show");
+    setTimeout(() => {
+      chatContainer.style.display = "none";
+    }, 450);
+  } else {
+    chatContainer.style.display = "flex";
+    setTimeout(() => {
+      chatContainer.classList.add("show");
+      userInput && userInput.focus();
+    }, 10);
+  }
+}
+
+// --- QUICK BUTTONS ---
+function sendQuickMsg(text) {
+  if (!userInput) return;
+  userInput.value = text;
+  sendMessage();
+}
+
+// --- ENTER KEY HANDLER ---
+function handleEnter(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+// --- BOT RESPONSE FORMATTING ---
+function formatResponse(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\n/g, "<br>");
+}
+
+// --- APPEND MESSAGE SAFELY ---
+function appendMessage(text, className, isHTML = false) {
+  const div = document.createElement("div");
+  div.className = className;
+  isHTML ? (div.innerHTML = text) : (div.textContent = text);
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+  return div;
+}
+
+// --- MAIN SEND MESSAGE FUNCTION (MULTI-LANGUAGE ENABLED) ---
 async function sendMessage() {
   if (!userInput || !chatBox) return;
 
@@ -11,8 +77,7 @@ async function sendMessage() {
   const loading = appendMessage("Thinking...", "bot-message");
 
   try {
-
-    // ✅ MULTI-LANGUAGE INSTRUCTION (ADDED)
+    // ✅ MULTI-LANGUAGE + SAME LANGUAGE REPLY
     const finalMessage = `
 You are TradeLab Mentor.
 Automatically detect the user's language.
@@ -29,7 +94,7 @@ ${text}
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: finalMessage }) // ✅ ONLY CHANGE
+        body: JSON.stringify({ message: finalMessage })
       }
     );
 
