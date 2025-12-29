@@ -2750,3 +2750,35 @@ body.dark-mode .chat-input-area {
   20% { opacity: 1; }
   100% { opacity: .2; }
 }
+
+
+
+/* Floating AI Mentor Button */
+#ai-float-btn {
+  position: fixed;
+  bottom: 90px;            /* moon button ke upar */
+  right: 25px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 9999;
+
+  font-size: 24px;
+  background: linear-gradient(135deg, #00e5ff, #00ffa2);
+  color: #002b2b;
+
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.6);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#ai-float-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 28px rgba(0, 229, 255, 0.9);
+}
+
+
+
+
+
