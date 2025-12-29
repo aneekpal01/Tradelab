@@ -139,3 +139,9 @@ const aiFloatBtn = document.getElementById("ai-float-btn");
 if (aiFloatBtn) {
   aiFloatBtn.addEventListener("click", () => toggleChat());
 }
+
+
+window.addEventListener("load", () => {
+  document.body.classList.remove("loading");
+});
+
