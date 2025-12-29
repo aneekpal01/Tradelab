@@ -2807,3 +2807,27 @@ body.loading #ai-float-btn {
   right: 25px;
   z-index: 8000;
 }
+
+
+/* ===== Equal vertical gap for floating buttons ===== */
+
+/* Arrow (top) */
+#backToTop {
+  position: fixed;
+  right: 25px;
+  bottom: 160px;   /* top button */
+}
+
+/* AI Mentor (middle) */
+#ai-float-btn {
+  position: fixed;
+  right: 25px;
+  bottom: 100px;   /* equal gap */
+}
+
+/* Theme / Moon (bottom) */
+#theme-toggle {
+  position: fixed;
+  right: 25px;
+  bottom: 40px;    /* equal gap */
+}
