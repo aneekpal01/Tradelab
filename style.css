@@ -2561,3 +2561,6 @@ body.dark-mode .chat-input-area {
   display: block;     /* 🔑 inline-block → block */
   width: 100%;        /* 🔑 full width like others */
 }
+.nav-links li:first-child {
+  margin-right: 14px;
+}
