@@ -2649,3 +2649,55 @@ body.dark-mode .chat-input-area {
 #aiChatHeader:active {
   cursor: grabbing;
 }
+
+/* ===== CHAT CONTAINER DARK SKIN ===== */
+#aiChatBox {
+  background: linear-gradient(180deg, #050914, #02040a);
+  color: #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.25);
+  overflow: hidden;
+}
+
+/* Header */
+#aiChatHeader {
+  background: linear-gradient(90deg, #020617, #020b1f);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Chat body (jo white lag raha tha) */
+#chat-box {
+  background: transparent;
+}
+
+/* Messages */
+.bot-message {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #e5e7eb;
+}
+
+/* Input area */
+.chat-input-area {
+  background: rgba(255,255,255,0.04);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.chat-input-area input {
+  background: transparent;
+  color: #ffffff;
+}
+
+
+/* Hidden state */
+#aiChatBox {
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition: all 0.45s ease;
+}
+
+/* Visible state */
+#aiChatBox.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
