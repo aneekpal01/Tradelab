@@ -2557,3 +2557,7 @@ body.dark-mode .chat-input-area {
 
   animation: shineSweep 1s ease-in-out infinite;
 }
+.ai-mentor-btn {
+  display: block;     /* 🔑 inline-block → block */
+  width: 100%;        /* 🔑 full width like others */
+}
