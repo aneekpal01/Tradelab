@@ -2799,3 +2799,17 @@ body.loading #ai-float-btn {
   z-index: 8000 !important;
 }
 
+/* 🤖 AI Mentor = SABSE UPAR */
+#ai-float-btn {
+  z-index: 99999 !important;
+}
+
+/* ⬆ Back to Top = AI ke niche */
+#backToTop {
+  z-index: 9000 !important;
+}
+
+/* 🌙 Theme button = sabse niche */
+#theme-toggle {
+  z-index: 8000 !important;
+}
