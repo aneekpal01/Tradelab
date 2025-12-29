@@ -115,3 +115,16 @@ ${text}
     appendMessage("❌ Server error. Try again.", "bot-message");
   }
 }
+
+
+
+function showTyping() {
+  const t = document.getElementById("typing-indicator");
+  if (t) t.style.display = "block";
+}
+
+function hideTyping() {
+  const t = document.getElementById("typing-indicator");
+  if (t) t.style.display = "none";
+}
+
