@@ -2612,3 +2612,26 @@ body.dark-mode .chat-input-area {
 
   animation: shineSweep 1s ease-in-out infinite;
 }
+
+
+
+/* Chat main body (white area) */
+.ai-chat-body {
+  background: linear-gradient(180deg, #0b1220, #060b16);
+  color: #e5e7eb;
+}
+
+/* Bot / system message bubble */
+.ai-chat-body .message {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e5e7eb;
+}
+
+/* Input area */
+.ai-chat-input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
