@@ -2902,3 +2902,15 @@ body.loading #backToTop {
   color: #000;
   box-shadow: 0 0 8px rgba(0,255,213,0.8);
 }
+
+
+.ai-mode-mini button {
+  padding: 4px 8px;
+  min-width: 64px;
+  font-size: 11px;
+}
+
+
+
+
+
