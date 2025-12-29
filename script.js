@@ -159,3 +159,20 @@ window.addEventListener("load", () => {
     toggleChat();   // SAME function as navbar
   });
 });
+
+
+// ===== AI MODE SWITCH =====
+function setAIMode(mode) {
+  window.AI_LEVEL = mode;
+
+  const beginnerBtn = document.getElementById("ai-beginner");
+  const proBtn = document.getElementById("ai-pro");
+
+  if (beginnerBtn && proBtn) {
+    beginnerBtn.classList.toggle("active", mode === "Beginner");
+    proBtn.classList.toggle("active", mode === "Pro");
+  }
+
+  console.log("AI mode set to:", mode);
+}
+
