@@ -2513,52 +2513,65 @@ body.dark-mode .chat-input-area {
   border-color: #00c6ff;
   color: #00c6ff;
 }
-/* 1. Animation Define karein (Isko CSS file me sabse upar ya button ke paas rakhein) */
-@keyframes continuous-shine {
-    0% {
-        background-position: 0% 50%;
-    }
-    100% {
-        background-position: 200% 50%; /* Position shift hoti rahegi */
-    }
-}
-
-/* 2. AI MENTOR Button Style */
+/* 1. Button ka Main Structure */
 .ai-mentor-btn {
+    /* Layout & Size (Same as other buttons) */
+    position: relative; /* Zaroori hai taaki light iske andar rahe */
     display: block;
     width: 100%;
     padding: 12px 15px;
     margin-bottom: 15px;
+    
+    /* Text Styles */
     font-size: 16px;
     font-weight: 600;
     text-align: center;
+    text-transform: uppercase;
+    color: #00e5ff; /* Text Color */
+    background: transparent; /* Main background saaf rahega */
+    
+    /* Border */
+    border: 2px solid #00e5ff;
     border-radius: 8px;
     cursor: pointer;
-    text-transform: uppercase;
     
-    /* Border and Text Color (Cyan) */
-    border: 2px solid #00e5ff;
-    color: #00e5ff;
-
-    /* --- MAGIC PART: Moving Gradient --- */
-    /* Dark -> Bright Cyan -> Dark */
-    background: linear-gradient(
-        90deg, 
-        rgba(0, 0, 0, 0) 0%, 
-        rgba(0, 229, 255, 0.4) 50%, 
-        rgba(0, 0, 0, 0) 100%
-    );
-    
-    background-size: 200% auto; /* Size bada rakha taaki move ho sake */
-    
-    /* Animation: Name | Duration | Timing | Loop */
-    animation: continuous-shine 3s linear infinite; 
-    
-    /* Thoda Glow bahar ki taraf bhi */
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.1);
+    /* MAGIC COMMAND: Yeh light ko bahar nikalne se rokega */
+    overflow: hidden; 
 }
 
-/* Hover par thoda speed badha sakte hain ya glow strong kar sakte hain */
+/* 2. Light Effect (Jo andar chalega) */
+.ai-mentor-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; /* Shuru mein box ke left side bahar */
+    width: 100%;
+    height: 100%;
+    
+    /* Light ka Color: Beech mein bright, sides mein transparent */
+    background: linear-gradient(
+        90deg, 
+        transparent, 
+        rgba(0, 229, 255, 0.5), 
+        transparent
+    );
+    
+    /* Animation settings */
+    transition: none;
+    animation: shine-move 3s infinite; /* Non-stop chalega */
+}
+
+/* 3. Animation Keyframes */
+@keyframes shine-move {
+    0% {
+        left: -100%; /* Left se start */
+    }
+    100% {
+        left: 100%; /* Right mein khatam */
+    }
+}
+
+/* Hover Effect (Optional) */
 .ai-mentor-btn:hover {
-    box-shadow: 0 0 20px rgba(0, 229, 255, 0.6), inset 0 0 15px rgba(0, 229, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); /* Sirf box glow karega */
 }
