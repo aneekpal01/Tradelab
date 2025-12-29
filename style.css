@@ -2787,17 +2787,17 @@ body.loading #ai-float-btn {
 /* 🤖 AI Mentor – sabse upar physically */
 #ai-float-btn {
   position: fixed;
-  bottom: 160px;        /* 🔥 arrow se upar */
+  bottom: 90px;        /* 🔥 arrow se upar */
   right: 25px;
-  z-index: 99999;
+  z-index: 9000;
 }
 
 /* ⬆ Back to Top – AI ke niche */
 #backToTop {
   position: fixed;
-  bottom: 90px;         /* 🔽 AI ke niche */
+  bottom: 160px;         /* 🔽 AI ke niche */
   right: 25px;
-  z-index: 9000;
+  z-index: 99999;
 }
 
 /* 🌙 Theme button – sabse niche */
