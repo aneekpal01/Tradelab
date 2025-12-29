@@ -2784,32 +2784,26 @@ body.loading #ai-float-btn {
   display: none !important;
 }
 
-/* ⬆ Back to Top arrow = SABSE UPAR */
-#backToTop {
-  z-index: 99999 !important;
-}
-
-/* 🤖 AI Mentor = arrow ke niche */
+/* 🤖 AI Mentor – sabse upar physically */
 #ai-float-btn {
-  z-index: 9000 !important;
+  position: fixed;
+  bottom: 160px;        /* 🔥 arrow se upar */
+  right: 25px;
+  z-index: 99999;
 }
 
-/* 🌙 Theme (moon) button = sabse niche */
-#theme-toggle {
-  z-index: 8000 !important;
-}
-
-/* 🤖 AI Mentor = SABSE UPAR */
-#ai-float-btn {
-  z-index: 99999 !important;
-}
-
-/* ⬆ Back to Top = AI ke niche */
+/* ⬆ Back to Top – AI ke niche */
 #backToTop {
-  z-index: 9000 !important;
+  position: fixed;
+  bottom: 90px;         /* 🔽 AI ke niche */
+  right: 25px;
+  z-index: 9000;
 }
 
-/* 🌙 Theme button = sabse niche */
+/* 🌙 Theme button – sabse niche */
 #theme-toggle {
-  z-index: 8000 !important;
+  position: fixed;
+  bottom: 30px;
+  right: 25px;
+  z-index: 8000;
 }
