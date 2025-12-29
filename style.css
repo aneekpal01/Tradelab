@@ -2814,3 +2814,26 @@ body.loading #backToTop {
 }
 
 
+.fab-container {
+    position: fixed; /* Screen par fix karne ke liye */
+    bottom: 20px;    /* Neeche se doori */
+    right: 20px;     /* Right side se doori */
+    
+    display: flex;   /* Flexbox on karein */
+    flex-direction: column; /* Buttons ko ek ke neeche ek (vertical) rakhe */
+    align-items: center;    /* Center align karein */
+    
+    gap: 20px;       /* YAHAN HAI MAGIC: Teeno ke beech 20px ka equal gap */
+    z-index: 1000;   /* Sabse upar dikhane ke liye */
+}
+
+/* Optional: Buttons ki styling taaki wo round aur sundar dikhein */
+.fab-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    /* Baki aapki styling... */
+}
