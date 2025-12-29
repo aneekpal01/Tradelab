@@ -2545,20 +2545,20 @@ body.dark-mode .chat-input-area {
     position: absolute;
     top: 0;
     left: -100%; /* Shuru mein box ke left side bahar */
-    width: 100%;
+    width: 50%;
     height: 100%;
     
     /* Light ka Color: Beech mein bright, sides mein transparent */
     background: linear-gradient(
         90deg, 
         transparent, 
-        rgba(0, 229, 255, 0.5), 
+        rgba(0, 229, 255, 1.2), 
         transparent
     );
     
     /* Animation settings */
     transition: none;
-    animation: shine-move 3s infinite; /* Non-stop chalega */
+    animation: shine-move 1.2s infinite; /* Non-stop chalega */
 }
 
 /* 3. Animation Keyframes */
@@ -2573,5 +2573,5 @@ body.dark-mode .chat-input-area {
 
 /* Hover Effect (Optional) */
 .ai-mentor-btn:hover {
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); /* Sirf box glow karega */
+    box-shadow: 0 0 15px rgba(0, 229, 255, 1.2); /* Sirf box glow karega */
 }
