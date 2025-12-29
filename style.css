@@ -2779,6 +2779,10 @@ body.dark-mode .chat-input-area {
 }
 
 
+/* Hide AI button during loading */
+body.loading #ai-float-btn {
+  display: none !important;
+}
 
 
 
