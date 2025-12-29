@@ -2635,3 +2635,17 @@ body.dark-mode .chat-input-area {
   color: #ffffff;
 }
 
+#aiChatBox {
+  position: fixed;
+  bottom: 80px;
+  right: 30px;
+  z-index: 9999;
+}
+
+#aiChatHeader {
+  cursor: grab;
+}
+
+#aiChatHeader:active {
+  cursor: grabbing;
+}
