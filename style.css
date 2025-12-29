@@ -2795,7 +2795,7 @@ body.loading #ai-float-btn {
 /* ⬆ Back to Top – AI ke niche */
 #backToTop {
   position: fixed;
-  bottom: 160px;         /* 🔽 AI ke niche */
+  bottom: 190px;         /* 🔽 AI ke niche */
   right: 25px;
   z-index: 99999;
 }
@@ -2809,25 +2809,4 @@ body.loading #ai-float-btn {
 }
 
 
-/* ===== Equal vertical gap for floating buttons ===== */
 
-/* Arrow (top) */
-#backToTop {
-  position: fixed;
-  right: 25px;
-  bottom: 160px;   /* top button */
-}
-
-/* AI Mentor (middle) */
-#ai-float-btn {
-  position: fixed;
-  right: 25px;
-  bottom: 100px;   /* equal gap */
-}
-
-/* Theme / Moon (bottom) */
-#theme-toggle {
-  position: fixed;
-  right: 25px;
-  bottom: 40px;    /* equal gap */
-}
