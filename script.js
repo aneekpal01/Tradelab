@@ -135,3 +135,7 @@ function hideTyping() {
   if (t) t.style.display = "none";
 }
 
+const aiFloatBtn = document.getElementById("ai-float-btn");
+if (aiFloatBtn) {
+  aiFloatBtn.addEventListener("click", () => toggleChat());
+}
