@@ -199,6 +199,25 @@ if (aiModeMini) {
 }
 
 
+/* ===== SCROLL ANIMATION FOR CONCEPT CARDS ===== */
+/* Add this to your existing script.js or inside a <script> tag */
 
+document.addEventListener('DOMContentLoaded', () => {
+  // Observe concept cards for scroll animation
+  const conceptCards = document.querySelectorAll('.concept-card');
+  
+  const conceptObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { 
+    threshold: 0.1, 
+    rootMargin: '0px 0px -50px 0px' 
+  });
+
+  conceptCards.forEach(card => conceptObserver.observe(card));
+});
 
 
