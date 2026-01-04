@@ -7,840 +7,324 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
-    body {
-      background: #0b0f14;
-      color: #eaeaea;
-      min-height: 100vh;
-    }
-
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 40px;
-      background: rgba(11, 15, 20, 0.95);
-      border-bottom: 1px solid #1e2a3a;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: 700;
-      background: linear-gradient(90deg, #00ff9c, #00d4ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-decoration: none;
-    }
-
-    .back-btn {
-      padding: 10px 20px;
-      background: rgba(0, 255, 156, 0.1);
-      border: 1px solid #00ff9c;
-      color: #00ff9c;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 500;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-
-    .page-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .page-header h1 {
-      font-size: 36px;
-      margin-bottom: 10px;
-      background: linear-gradient(90deg, #00ff9c, #00d4ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .page-header p {
-      color: #888;
-    }
-
-    /* Quiz Selection */
-    .quiz-selection {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-
-    .quiz-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid #1e2a3a;
-      border-radius: 12px;
-      padding: 25px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .quiz-card:hover {
-      border-color: #00ff9c;
-      transform: translateY(-5px);
-    }
-
-    .quiz-card.completed {
-      border-color: #00ff9c;
-    }
-
-    .quiz-card .icon {
-      font-size: 40px;
-      margin-bottom: 15px;
-    }
-
-    .quiz-card h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-
-    .quiz-card p {
-      font-size: 13px;
-      color: #888;
-      margin-bottom: 15px;
-    }
-
-    .quiz-card .meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: #666;
-    }
-
-    .quiz-card .badge {
-      background: rgba(0, 255, 156, 0.1);
-      color: #00ff9c;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-    }
-
-    .quiz-card .badge.completed {
-      background: #00ff9c;
-      color: #000;
-    }
-
-    /* Quiz Container */
-    .quiz-container {
-      display: none;
-    }
-
-    .quiz-container.active {
-      display: block;
-    }
-
-    .quiz-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #1e2a3a;
-    }
-
-    .quiz-progress {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .progress-bar {
-      width: 200px;
-      height: 8px;
-      background: #1e2a3a;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #00ff9c, #00d4ff);
-      transition: width 0.3s ease;
-    }
-
-    .question-counter {
-      font-size: 14px;
-      color: #888;
-    }
-
-    .score-display {
-      font-size: 16px;
-      color: #00ff9c;
-    }
-
-    /* Question Card */
-    .question-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid #1e2a3a;
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 20px;
-    }
-
-    .question-text {
-      font-size: 20px;
-      margin-bottom: 25px;
-      line-height: 1.5;
-    }
-
-    .options-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .option-btn {
-      padding: 16px 20px;
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 10px;
-      color: #eaeaea;
-      font-size: 15px;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .option-btn:hover:not(.disabled) {
-      border-color: #00ff9c;
-      background: rgba(0, 255, 156, 0.05);
-    }
-
-    .option-btn.selected {
-      border-color: #00d4ff;
-      background: rgba(0, 212, 255, 0.1);
-    }
-
-    .option-btn.correct {
-      border-color: #00ff9c;
-      background: rgba(0, 255, 156, 0.15);
-      color: #00ff9c;
-    }
-
-    .option-btn.wrong {
-      border-color: #ff4d4d;
-      background: rgba(255, 77, 77, 0.15);
-      color: #ff4d4d;
-    }
-
-    .option-btn.disabled {
-      cursor: not-allowed;
-      opacity: 0.7;
-    }
-
-    /* Explanation */
-    .explanation {
-      margin-top: 20px;
-      padding: 20px;
-      background: rgba(0, 212, 255, 0.05);
-      border: 1px solid rgba(0, 212, 255, 0.2);
-      border-radius: 10px;
-      display: none;
-    }
-
-    .explanation.show {
-      display: block;
-    }
-
-    .explanation h4 {
-      color: #00d4ff;
-      margin-bottom: 10px;
-    }
-
-    .explanation p {
-      color: #888;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    /* Navigation Buttons */
-    .quiz-nav {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 25px;
-    }
-
-    .nav-btn {
-      padding: 12px 30px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .nav-btn.secondary {
-      background: transparent;
-      border: 1px solid #30363d;
-      color: #888;
-    }
-
-    .nav-btn.primary {
-      background: linear-gradient(90deg, #00ff9c, #00d4ff);
-      border: none;
-      color: #000;
-    }
-
-    .nav-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .nav-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* Results Screen */
-    .results-screen {
-      display: none;
-      text-align: center;
-      padding: 40px;
-    }
-
-    .results-screen.active {
-      display: block;
-    }
-
-    .results-icon {
-      font-size: 80px;
-      margin-bottom: 20px;
-    }
-
-    .results-score {
-      font-size: 48px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .results-score.great {
-      color: #00ff9c;
-    }
-
-    .results-score.good {
-      color: #00d4ff;
-    }
-
-    .results-score.poor {
-      color: #ff4d4d;
-    }
-
-    .results-message {
-      font-size: 18px;
-      color: #888;
-      margin-bottom: 30px;
-    }
-
-    .results-actions {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-    }
-
-    /* Mobile */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #0b0f14; color: #eaeaea; min-height: 100vh; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: rgba(11, 15, 20, 0.95); border-bottom: 1px solid #1e2a3a; }
+    .logo { font-size: 22px; font-weight: 700; background: linear-gradient(90deg, #00ff9c, #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 15px; }
+    .back-btn { padding: 10px 20px; background: rgba(0, 255, 156, 0.1); border: 1px solid #00ff9c; color: #00ff9c; text-decoration: none; border-radius: 8px; font-weight: 500; }
+    .lang-toggle { display: flex; background: #161b22; border-radius: 8px; overflow: hidden; border: 1px solid #30363d; }
+    .lang-btn { padding: 8px 16px; background: transparent; border: none; color: #888; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+    .lang-btn.active { background: linear-gradient(90deg, #00ff9c, #00d4ff); color: #000; }
+    .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+    .page-header { text-align: center; margin-bottom: 40px; }
+    .page-header h1 { font-size: 36px; margin-bottom: 10px; background: linear-gradient(90deg, #00ff9c, #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-header p { color: #888; }
+    .quiz-selection { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .quiz-card { background: rgba(255,255,255,0.03); border: 1px solid #1e2a3a; border-radius: 12px; padding: 25px; cursor: pointer; transition: all 0.3s; }
+    .quiz-card:hover { border-color: #00ff9c; transform: translateY(-5px); }
+    .quiz-card .icon { font-size: 40px; margin-bottom: 15px; }
+    .quiz-card h3 { font-size: 18px; margin-bottom: 8px; }
+    .quiz-card p { font-size: 13px; color: #888; margin-bottom: 15px; }
+    .quiz-card .meta { display: flex; justify-content: space-between; font-size: 12px; color: #666; }
+    .quiz-card .badge { background: rgba(0,255,156,0.1); color: #00ff9c; padding: 4px 10px; border-radius: 20px; font-size: 11px; }
+    .quiz-card .badge.completed { background: #00ff9c; color: #000; }
+    .quiz-card.reality-card { grid-column: 1 / -1; background: linear-gradient(135deg, rgba(255,77,77,0.08), rgba(255,150,50,0.05)); border-color: rgba(255,77,77,0.3); }
+    .quiz-card.reality-card:hover { border-color: #ff6b6b; box-shadow: 0 10px 40px rgba(255,77,77,0.15); }
+    .quiz-card.reality-card .badge { background: rgba(255,77,77,0.2); color: #ff6b6b; }
+    .brutal-tag { display: inline-block; background: rgba(255,77,77,0.2); color: #ff6b6b; font-size: 10px; padding: 2px 8px; border-radius: 4px; margin-left: 8px; font-weight: 700; }
+    .quiz-container { display: none; }
+    .quiz-container.active { display: block; }
+    .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #1e2a3a; }
+    .quiz-progress { display: flex; align-items: center; gap: 15px; }
+    .progress-bar { width: 200px; height: 8px; background: #1e2a3a; border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #00ff9c, #00d4ff); transition: width 0.3s; }
+    .question-counter { font-size: 14px; color: #888; }
+    .score-display { font-size: 16px; color: #00ff9c; }
+    .question-card { background: rgba(255,255,255,0.03); border: 1px solid #1e2a3a; border-radius: 16px; padding: 30px; margin-bottom: 20px; }
+    .question-text { font-size: 20px; margin-bottom: 25px; line-height: 1.5; }
+    .options-list { display: flex; flex-direction: column; gap: 12px; }
+    .option-btn { padding: 16px 20px; background: #161b22; border: 1px solid #30363d; border-radius: 10px; color: #eaeaea; font-size: 15px; text-align: left; cursor: pointer; transition: all 0.3s; }
+    .option-btn:hover:not(.disabled) { border-color: #00ff9c; background: rgba(0,255,156,0.05); }
+    .option-btn.correct { border-color: #00ff9c; background: rgba(0,255,156,0.15); color: #00ff9c; }
+    .option-btn.wrong { border-color: #ff4d4d; background: rgba(255,77,77,0.15); color: #ff4d4d; }
+    .option-btn.disabled { cursor: not-allowed; opacity: 0.7; }
+    .explanation { margin-top: 20px; padding: 20px; background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.2); border-radius: 10px; display: none; }
+    .explanation.show { display: block; animation: slideIn 0.3s; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .explanation.correct-exp { background: rgba(0,255,156,0.05); border-color: rgba(0,255,156,0.3); }
+    .explanation.wrong-exp { background: rgba(255,77,77,0.05); border-color: rgba(255,77,77,0.3); }
+    .explanation h4 { color: #00d4ff; margin-bottom: 10px; }
+    .explanation.correct-exp h4 { color: #00ff9c; }
+    .explanation.wrong-exp h4 { color: #ff6b6b; }
+    .explanation p { color: #888; font-size: 14px; line-height: 1.6; }
+    .reality-box { margin-top: 15px; padding: 12px 15px; background: rgba(255,183,0,0.1); border-left: 3px solid #ffb700; border-radius: 0 8px 8px 0; display: none; }
+    .reality-box.show { display: block; }
+    .reality-box p { color: #ffb700; font-size: 13px; font-weight: 500; }
+    .quiz-nav { display: flex; justify-content: space-between; margin-top: 25px; }
+    .nav-btn { padding: 12px 30px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+    .nav-btn.secondary { background: transparent; border: 1px solid #30363d; color: #888; }
+    .nav-btn.primary { background: linear-gradient(90deg, #00ff9c, #00d4ff); border: none; color: #000; }
+    .nav-btn:hover { transform: translateY(-2px); }
+    .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .results-screen { display: none; text-align: center; padding: 40px; }
+    .results-screen.active { display: block; }
+    .results-icon { font-size: 80px; margin-bottom: 20px; }
+    .results-score { font-size: 48px; font-weight: 700; margin-bottom: 10px; }
+    .results-score.great { color: #00ff9c; }
+    .results-score.good { color: #00d4ff; }
+    .results-score.poor { color: #ff4d4d; }
+    .results-message { font-size: 18px; color: #888; margin-bottom: 30px; }
+    .results-reality { background: rgba(255,77,77,0.1); border: 1px solid rgba(255,77,77,0.3); border-radius: 10px; padding: 20px; margin-bottom: 25px; max-width: 500px; margin-left: auto; margin-right: auto; display: none; }
+    .results-reality.show { display: block; }
+    .results-reality p { color: #ff6b6b; font-size: 14px; line-height: 1.6; }
+    .results-actions { display: flex; gap: 15px; justify-content: center; }
     @media (max-width: 768px) {
-      .navbar {
-        padding: 12px 20px;
-      }
-
-      .page-header h1 {
-        font-size: 28px;
-      }
-
-      .question-text {
-        font-size: 18px;
-      }
-
-      .quiz-nav {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .nav-btn {
-        width: 100%;
-      }
+      .navbar { padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
+      .nav-right { width: 100%; justify-content: space-between; }
+      .page-header h1 { font-size: 28px; }
+      .question-text { font-size: 18px; }
+      .quiz-nav { flex-direction: column; gap: 10px; }
+      .nav-btn { width: 100%; }
     }
   </style>
 </head>
 <body>
-
   <nav class="navbar">
     <a href="index.html" class="logo">TradeLab</a>
-    <a href="index.html" class="back-btn">← Back to Learning</a>
+    <div class="nav-right">
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLanguage('en')">English</button>
+        <button class="lang-btn" onclick="setLanguage('hi')">हिंदी</button>
+      </div>
+      <a href="index.html" class="back-btn">← Back to Learning</a>
+    </div>
   </nav>
-
   <div class="container">
     <div class="page-header">
       <h1>🧠 Trading Quiz</h1>
       <p>Test your knowledge and reinforce your learning</p>
     </div>
-
-    <!-- Quiz Selection -->
     <div class="quiz-selection" id="quizSelection">
       <div class="quiz-card" onclick="startQuiz('basics')">
         <div class="icon">📊</div>
         <h3>Trading Basics</h3>
         <p>Candlesticks, Market Structure, Trendlines</p>
-        <div class="meta">
-          <span>10 Questions</span>
-          <span class="badge" id="badge-basics">Start</span>
-        </div>
+        <div class="meta"><span>10 Questions</span><span class="badge" id="badge-basics">Start</span></div>
       </div>
-
       <div class="quiz-card" onclick="startQuiz('snr')">
         <div class="icon">📈</div>
         <h3>Support & Resistance</h3>
         <p>S&R Zones, Role Reversal, Entry/Exit</p>
-        <div class="meta">
-          <span>10 Questions</span>
-          <span class="badge" id="badge-snr">Start</span>
-        </div>
+        <div class="meta"><span>10 Questions</span><span class="badge" id="badge-snr">Start</span></div>
       </div>
-
       <div class="quiz-card" onclick="startQuiz('risk')">
         <div class="icon">🛡️</div>
         <h3>Risk Management</h3>
         <p>Position Sizing, Stop Loss, R:R Ratio</p>
-        <div class="meta">
-          <span>10 Questions</span>
-          <span class="badge" id="badge-risk">Start</span>
-        </div>
+        <div class="meta"><span>10 Questions</span><span class="badge" id="badge-risk">Start</span></div>
       </div>
-
       <div class="quiz-card" onclick="startQuiz('smc')">
         <div class="icon">🧠</div>
         <h3>Smart Money Concepts</h3>
         <p>Liquidity, BOS, CHoCH, Order Blocks</p>
-        <div class="meta">
-          <span>10 Questions</span>
-          <span class="badge" id="badge-smc">Start</span>
-        </div>
+        <div class="meta"><span>10 Questions</span><span class="badge" id="badge-smc">Start</span></div>
+      </div>
+      <div class="quiz-card reality-card" onclick="startQuiz('reality')">
+        <div class="icon">🔥</div>
+        <h3>Reality Check<span class="brutal-tag">BRUTAL</span></h3>
+        <p>30 advanced questions. No sugarcoating. If you can't score 80%+, you're NOT ready to trade real money.</p>
+        <div class="meta"><span>30 Questions</span><span class="badge" id="badge-reality">Start</span></div>
       </div>
     </div>
-
-    <!-- Quiz Container -->
     <div class="quiz-container" id="quizContainer">
       <div class="quiz-header">
         <div class="quiz-progress">
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-          </div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
           <span class="question-counter" id="questionCounter">1/10</span>
         </div>
         <span class="score-display">Score: <span id="currentScore">0</span></span>
       </div>
-
       <div class="question-card">
         <div class="question-text" id="questionText"></div>
         <div class="options-list" id="optionsList"></div>
         <div class="explanation" id="explanation">
-          <h4>💡 Explanation</h4>
+          <h4 id="expTitle">💡 Explanation</h4>
           <p id="explanationText"></p>
         </div>
+        <div class="reality-box" id="realityBox">
+          <p id="realityText"></p>
+        </div>
       </div>
-
       <div class="quiz-nav">
         <button class="nav-btn secondary" onclick="backToSelection()">← Back to Quizzes</button>
         <button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()" disabled>Next Question →</button>
       </div>
     </div>
-
-    <!-- Results Screen -->
     <div class="results-screen" id="resultsScreen">
       <div class="results-icon" id="resultsIcon">🎉</div>
       <div class="results-score" id="resultsScore">0/10</div>
       <div class="results-message" id="resultsMessage">Great job!</div>
+      <div class="results-reality" id="resultsReality"><p id="resultsRealityText"></p></div>
       <div class="results-actions">
         <button class="nav-btn secondary" onclick="backToSelection()">Try Another Quiz</button>
         <button class="nav-btn primary" onclick="retryQuiz()">Retry This Quiz</button>
       </div>
     </div>
   </div>
-
   <script>
-    // Quiz Data
+    let currentLang = 'en';
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      if (currentQuiz && document.getElementById('quizContainer').classList.contains('active')) loadQuestion();
+    }
+
     const quizData = {
       basics: [
-        {
-          q: "What does a green/bullish candlestick indicate?",
-          options: ["Price went down", "Price went up", "No price change", "Market is closed"],
-          correct: 1,
-          explanation: "A green/bullish candlestick means the closing price was higher than the opening price, indicating buyers were in control."
-        },
-        {
-          q: "What is a 'Higher High' in market structure?",
-          options: ["A new low below previous low", "A new high above previous high", "Price moving sideways", "A reversal pattern"],
-          correct: 1,
-          explanation: "A Higher High (HH) occurs when price makes a new high that is above the previous high, indicating an uptrend."
-        },
-        {
-          q: "What is the correct way to draw a trendline?",
-          options: ["Connect random points", "Connect at least 2 swing lows/highs", "Draw horizontally only", "Use only 1 point"],
-          correct: 1,
-          explanation: "A valid trendline requires at least 2 swing points (lows for uptrend, highs for downtrend). More touches = stronger trendline."
-        },
-        {
-          q: "What does a Doji candlestick indicate?",
-          options: ["Strong bullish momentum", "Strong bearish momentum", "Indecision in the market", "Trend continuation"],
-          correct: 2,
-          explanation: "A Doji has nearly equal open and close prices, indicating indecision between buyers and sellers."
-        },
-        {
-          q: "What is BOS (Break of Structure)?",
-          options: ["A candlestick pattern", "When price breaks a key swing high/low", "A type of indicator", "A trading strategy"],
-          correct: 1,
-          explanation: "BOS occurs when price breaks a significant swing high (in uptrend) or swing low (in downtrend), confirming trend continuation."
-        },
-        {
-          q: "What does a long upper wick indicate?",
-          options: ["Buyers are strong", "Sellers rejected higher prices", "Market is bullish", "Volume is high"],
-          correct: 1,
-          explanation: "A long upper wick shows that price went up but sellers pushed it back down, indicating selling pressure at higher levels."
-        },
-        {
-          q: "What is CHoCH (Change of Character)?",
-          options: ["A bullish pattern", "A bearish pattern", "A potential trend reversal signal", "A volume indicator"],
-          correct: 2,
-          explanation: "CHoCH occurs when price breaks structure in the opposite direction, signaling a potential trend change."
-        },
-        {
-          q: "In an uptrend, where should you look for entries?",
-          options: ["At the highs", "At the lows/pullbacks", "Anywhere", "Only at support"],
-          correct: 1,
-          explanation: "In an uptrend, the best entries are at pullbacks to support or demand zones, giving better risk-reward."
-        },
-        {
-          q: "What creates a swing high?",
-          options: ["Lower highs on both sides", "Higher lows on both sides", "Lower highs before and after", "A candle with highest high surrounded by lower highs"],
-          correct: 3,
-          explanation: "A swing high is a candle with the highest high that has lower highs on both sides, creating a peak."
-        },
-        {
-          q: "What timeframe should beginners focus on?",
-          options: ["1 minute", "Higher timeframes (4H, Daily)", "5 seconds", "All timeframes equally"],
-          correct: 1,
-          explanation: "Beginners should focus on higher timeframes (4H, Daily) as they have less noise and clearer structure."
-        }
+        { q: { en: "What does a green/bullish candlestick indicate?", hi: "Green/bullish candlestick क्या indicate करती है?" }, options: { en: ["Price went down", "Price went up", "No price change", "Market is closed"], hi: ["Price नीचे गया", "Price ऊपर गया", "कोई change नहीं", "Market बंद है"] }, correct: 1, explanation: { en: "A green candlestick means closing price was higher than opening - buyers in control.", hi: "Green candlestick मतलब closing price opening से ज्यादा थी - buyers control में।" } },
+        { q: { en: "What is a 'Higher High' in market structure?", hi: "Market structure में 'Higher High' क्या है?" }, options: { en: ["New low below previous", "New high above previous high", "Sideways price", "Reversal pattern"], hi: ["Previous से नीचे new low", "Previous high से ऊपर new high", "Sideways price", "Reversal pattern"] }, correct: 1, explanation: { en: "Higher High occurs when price makes new high above previous, indicating uptrend.", hi: "Higher High तब होता है जब price previous high से ऊपर new high बनाए।" } },
+        { q: { en: "Correct way to draw a trendline?", hi: "Trendline draw करने का सही तरीका?" }, options: { en: ["Random points", "At least 2 swing lows/highs", "Horizontal only", "1 point only"], hi: ["Random points", "कम से कम 2 swing lows/highs", "सिर्फ horizontal", "सिर्फ 1 point"] }, correct: 1, explanation: { en: "Valid trendline needs at least 2 swing points. More touches = stronger.", hi: "Valid trendline के लिए कम से कम 2 swing points चाहिए।" } },
+        { q: { en: "What does a Doji candlestick indicate?", hi: "Doji candlestick क्या indicate करती है?" }, options: { en: ["Strong bullish", "Strong bearish", "Indecision", "Continuation"], hi: ["Strong bullish", "Strong bearish", "Indecision", "Continuation"] }, correct: 2, explanation: { en: "Doji has nearly equal open and close - indecision between buyers/sellers.", hi: "Doji में open और close लगभग equal - buyers/sellers में indecision।" } },
+        { q: { en: "What is BOS (Break of Structure)?", hi: "BOS क्या है?" }, options: { en: ["Candlestick pattern", "Price breaks key swing high/low", "Indicator type", "Strategy"], hi: ["Candlestick pattern", "Price key swing high/low break करे", "Indicator type", "Strategy"] }, correct: 1, explanation: { en: "BOS occurs when price breaks significant swing high/low, confirming trend.", hi: "BOS तब होता है जब price significant swing high/low break करे।" } },
+        { q: { en: "What does a long upper wick indicate?", hi: "Long upper wick क्या indicate करती है?" }, options: { en: ["Buyers strong", "Sellers rejected higher prices", "Bullish market", "High volume"], hi: ["Buyers strong", "Sellers ने higher prices reject किए", "Bullish market", "High volume"] }, correct: 1, explanation: { en: "Long upper wick shows sellers pushed price down - selling pressure at highs.", hi: "Long upper wick दिखाती है sellers ने price नीचे push किया।" } },
+        { q: { en: "What is CHoCH (Change of Character)?", hi: "CHoCH क्या है?" }, options: { en: ["Bullish pattern", "Bearish pattern", "Potential trend reversal signal", "Volume indicator"], hi: ["Bullish pattern", "Bearish pattern", "Potential trend reversal signal", "Volume indicator"] }, correct: 2, explanation: { en: "CHoCH occurs when price breaks structure in opposite direction - potential trend change.", hi: "CHoCH तब होता है जब price opposite direction में structure break करे।" } },
+        { q: { en: "In uptrend, where to look for entries?", hi: "Uptrend में entries कहां देखें?" }, options: { en: ["At highs", "At lows/pullbacks", "Anywhere", "Only at support"], hi: ["Highs पे", "Lows/pullbacks पे", "कहीं भी", "सिर्फ support पे"] }, correct: 1, explanation: { en: "In uptrend, best entries are at pullbacks for better risk-reward.", hi: "Uptrend में best entries pullbacks पे होती हैं।" } },
+        { q: { en: "What creates a swing high?", hi: "Swing high कैसे बनता है?" }, options: { en: ["Lower highs both sides", "Higher lows both sides", "Lower highs before/after", "Highest high with lower highs on sides"], hi: ["Both sides lower highs", "Both sides higher lows", "Before/after lower highs", "Highest high दोनों तरफ lower highs"] }, correct: 3, explanation: { en: "Swing high = candle with highest high surrounded by lower highs on both sides.", hi: "Swing high = highest high candle दोनों तरफ lower highs के साथ।" } },
+        { q: { en: "What timeframe for beginners?", hi: "Beginners के लिए कौन सा timeframe?" }, options: { en: ["1 minute", "Higher (4H, Daily)", "5 seconds", "All equally"], hi: ["1 minute", "Higher (4H, Daily)", "5 seconds", "सभी equally"] }, correct: 1, explanation: { en: "Beginners should focus on higher timeframes - less noise, clearer structure.", hi: "Beginners को higher timeframes पे focus करना चाहिए।" } }
       ],
       snr: [
-        {
-          q: "What is Support in trading?",
-          options: ["A price level where selling pressure increases", "A price level where buying pressure increases", "A type of indicator", "The highest price"],
-          correct: 1,
-          explanation: "Support is a price level where buying interest is strong enough to overcome selling pressure, preventing further decline."
-        },
-        {
-          q: "What is Role Reversal in S&R?",
-          options: ["Support becomes resistance after breaking down", "Resistance always stays resistance", "Support never changes", "Buying at resistance"],
-          correct: 0,
-          explanation: "Role Reversal occurs when broken support becomes resistance, or broken resistance becomes support."
-        },
-        {
-          q: "Where should you place your stop loss when buying at support?",
-          options: ["Exactly at support", "Above resistance", "Below the support zone", "No stop loss needed"],
-          correct: 2,
-          explanation: "Stop loss should be placed below the support zone to give the trade room to breathe while limiting risk."
-        },
-        {
-          q: "What makes a support/resistance level stronger?",
-          options: ["Fewer touches", "More touches and reactions", "Only one touch", "Random price levels"],
-          correct: 1,
-          explanation: "The more times price reacts to a level, the stronger it becomes. Multiple touches = more significance."
-        },
-        {
-          q: "What is a fake breakout?",
-          options: ["A real breakout", "Price breaks level but quickly reverses", "Price staying at support", "A candlestick pattern"],
-          correct: 1,
-          explanation: "A fake breakout occurs when price briefly breaks a level but quickly reverses, trapping traders who entered on the breakout."
-        },
-        {
-          q: "How should you mark S&R zones?",
-          options: ["As exact lines", "As zones/areas", "Only on 1 min chart", "Using indicators only"],
-          correct: 1,
-          explanation: "S&R should be marked as zones rather than exact lines because price rarely reacts to exact levels."
-        },
-        {
-          q: "What happens when support is broken with strong volume?",
-          options: ["It becomes stronger support", "It likely becomes resistance", "Nothing changes", "Volume doesn't matter"],
-          correct: 1,
-          explanation: "When support breaks with strong volume, it often flips to become resistance (Role Reversal)."
-        },
-        {
-          q: "What is a retest in S&R trading?",
-          options: ["First touch of a level", "Price returning to test broken level", "A new support level", "Drawing new lines"],
-          correct: 1,
-          explanation: "A retest occurs when price returns to a broken level to test it from the other side, confirming the break."
-        },
-        {
-          q: "Which S&R levels are more reliable?",
-          options: ["Lower timeframe levels", "Higher timeframe levels", "Both are equal", "Only daily levels"],
-          correct: 1,
-          explanation: "Higher timeframe S&R levels are more reliable because more traders see and react to them."
-        },
-        {
-          q: "What is confluence in S&R?",
-          options: ["One reason to trade", "Multiple factors aligning at same level", "Random trading", "High volume only"],
-          correct: 1,
-          explanation: "Confluence occurs when multiple factors (S&R, trendline, fib level) align at the same price, increasing probability."
-        }
+        { q: { en: "What is Support in trading?", hi: "Support क्या है?" }, options: { en: ["Selling increases", "Buying increases", "Indicator type", "Highest price"], hi: ["Selling बढ़े", "Buying बढ़े", "Indicator type", "Highest price"] }, correct: 1, explanation: { en: "Support = where buying overcomes selling, preventing decline.", hi: "Support = जहां buying selling को overcome करे।" } },
+        { q: { en: "What is Role Reversal?", hi: "Role Reversal क्या है?" }, options: { en: ["Support becomes resistance after break", "Resistance stays resistance", "Support never changes", "Buy at resistance"], hi: ["Break के बाद Support resistance बने", "Resistance हमेशा resistance", "Support कभी change न हो", "Resistance पे buy"] }, correct: 0, explanation: { en: "Role Reversal = broken support becomes resistance, vice versa.", hi: "Role Reversal = broken support resistance बन जाए।" } },
+        { q: { en: "Stop loss when buying at support?", hi: "Support पे buy करते समय SL?" }, options: { en: ["At support exactly", "Above resistance", "Below support zone", "No SL needed"], hi: ["Support पे exactly", "Resistance के ऊपर", "Support zone के नीचे", "SL की जरूरत नहीं"] }, correct: 2, explanation: { en: "SL should be below support zone to give trade room.", hi: "SL support zone के नीचे रखो।" } },
+        { q: { en: "What makes S&R level stronger?", hi: "S&R level क्या stronger बनाता है?" }, options: { en: ["Fewer touches", "More touches/reactions", "One touch", "Random levels"], hi: ["कम touches", "ज्यादा touches/reactions", "एक touch", "Random levels"] }, correct: 1, explanation: { en: "More price reactions = stronger level.", hi: "जितने ज्यादा reactions, उतना stronger।" } },
+        { q: { en: "What is fake breakout?", hi: "Fake breakout क्या है?" }, options: { en: ["Real breakout", "Breaks then quickly reverses", "Price at support", "Candlestick pattern"], hi: ["Real breakout", "Break करके जल्दी reverse", "Price support पे", "Candlestick pattern"] }, correct: 1, explanation: { en: "Fake breakout = price briefly breaks then reverses, trapping traders.", hi: "Fake breakout = price briefly break करके reverse।" } },
+        { q: { en: "How to mark S&R zones?", hi: "S&R zones कैसे mark करें?" }, options: { en: ["Exact lines", "Zones/areas", "1 min chart only", "Indicators only"], hi: ["Exact lines", "Zones/areas", "सिर्फ 1 min", "सिर्फ indicators"] }, correct: 1, explanation: { en: "Mark as zones - price rarely reacts to exact levels.", hi: "Zones के रूप में mark करो।" } },
+        { q: { en: "Support breaks with strong volume?", hi: "Support strong volume से break हो?" }, options: { en: ["Stronger support", "Becomes resistance", "Nothing changes", "Volume irrelevant"], hi: ["Stronger support", "Resistance बने", "कुछ न बदले", "Volume irrelevant"] }, correct: 1, explanation: { en: "Support breaking with volume often flips to resistance.", hi: "Strong volume से break = resistance बन जाए।" } },
+        { q: { en: "What is retest in S&R?", hi: "S&R में retest क्या है?" }, options: { en: ["First touch", "Returns to test broken level", "New support", "Drawing new lines"], hi: ["First touch", "Broken level test करने वापस आए", "New support", "New lines draw"] }, correct: 1, explanation: { en: "Retest = price returns to test broken level from other side.", hi: "Retest = price broken level पे वापस आए।" } },
+        { q: { en: "Which S&R more reliable?", hi: "कौन से S&R ज्यादा reliable?" }, options: { en: ["Lower TF", "Higher TF", "Both equal", "Daily only"], hi: ["Lower TF", "Higher TF", "दोनों equal", "सिर्फ daily"] }, correct: 1, explanation: { en: "Higher TF S&R more reliable - more traders see them.", hi: "Higher TF S&R ज्यादा reliable।" } },
+        { q: { en: "What is confluence?", hi: "Confluence क्या है?" }, options: { en: ["One reason", "Multiple factors at same level", "Random trading", "High volume only"], hi: ["एक reason", "Multiple factors same level पे", "Random trading", "सिर्फ high volume"] }, correct: 1, explanation: { en: "Confluence = multiple factors (S&R, trendline, fib) aligning.", hi: "Confluence = multiple factors same price पे align।" } }
       ],
       risk: [
-        {
-          q: "What is the recommended maximum risk per trade?",
-          options: ["10-20%", "5-10%", "1-2%", "50%"],
-          correct: 2,
-          explanation: "Professional traders risk 1-2% per trade maximum. This allows surviving losing streaks while preserving capital."
-        },
-        {
-          q: "What is Risk-Reward Ratio (R:R)?",
-          options: ["How much you win vs lose overall", "Potential profit vs potential loss on a trade", "Your account balance", "Win rate percentage"],
-          correct: 1,
-          explanation: "R:R compares your potential reward (take profit distance) to your potential risk (stop loss distance)."
-        },
-        {
-          q: "What is a good minimum R:R ratio?",
-          options: ["1:0.5", "1:1", "1:2 or better", "1:0.1"],
-          correct: 2,
-          explanation: "Minimum 1:2 R:R means you can be wrong 50% of the time and still be profitable."
-        },
-        {
-          q: "What is position sizing?",
-          options: ["How big your monitor is", "Calculating how many units to buy based on risk", "Random lot size", "Maximum leverage"],
-          correct: 1,
-          explanation: "Position sizing calculates how many units to trade so that if stop loss hits, you only lose your predetermined risk amount."
-        },
-        {
-          q: "Why should you never move your stop loss further away?",
-          options: ["It's fine to move it", "It increases risk beyond planned", "Stop losses don't matter", "To get better fills"],
-          correct: 1,
-          explanation: "Moving stop loss further increases your risk beyond what you planned, breaking your risk management rules."
-        },
-        {
-          q: "What is drawdown?",
-          options: ["Your total profit", "Peak to trough decline in account", "Daily profit", "Lot size"],
-          correct: 1,
-          explanation: "Drawdown measures the decline from your account peak to its lowest point before a new peak."
-        },
-        {
-          q: "If you have $10,000 and risk 2%, what is your risk amount?",
-          options: ["$100", "$200", "$500", "$1000"],
-          correct: 1,
-          explanation: "$10,000 × 2% = $200. This is the maximum you should lose if your stop loss is hit."
-        },
-        {
-          q: "What is the purpose of a stop loss?",
-          options: ["To guarantee profit", "To limit potential loss", "To increase leverage", "To avoid trading"],
-          correct: 1,
-          explanation: "A stop loss automatically exits your trade at a predetermined price to limit your potential loss."
-        },
-        {
-          q: "What is scaling in?",
-          options: ["Adding to losing trades", "Adding to winning trades after confirmation", "Exiting all at once", "Using maximum leverage"],
-          correct: 1,
-          explanation: "Scaling in means adding to a winning position after price confirms your direction. Never scale into losers."
-        },
-        {
-          q: "What is the breakeven point?",
-          options: ["Maximum loss point", "When profit equals your initial risk", "Entry price after moving SL", "The highest profit"],
-          correct: 2,
-          explanation: "Breakeven is when you move your stop loss to entry price, ensuring you don't lose money even if trade reverses."
-        }
+        { q: { en: "Maximum risk per trade?", hi: "Per trade maximum risk?" }, options: { en: ["10-20%", "5-10%", "1-2%", "50%"], hi: ["10-20%", "5-10%", "1-2%", "50%"] }, correct: 2, explanation: { en: "Professionals risk 1-2% max to survive losing streaks.", hi: "Professionals 1-2% max risk करते हैं।" } },
+        { q: { en: "What is Risk-Reward Ratio?", hi: "Risk-Reward Ratio क्या है?" }, options: { en: ["Overall win/lose", "Potential profit vs loss per trade", "Account balance", "Win rate"], hi: ["Overall win/lose", "Trade पे profit vs loss", "Balance", "Win rate"] }, correct: 1, explanation: { en: "R:R = potential reward vs potential risk on a trade.", hi: "R:R = potential reward vs risk।" } },
+        { q: { en: "Good minimum R:R?", hi: "Good minimum R:R?" }, options: { en: ["1:0.5", "1:1", "1:2 or better", "1:0.1"], hi: ["1:0.5", "1:1", "1:2 या better", "1:0.1"] }, correct: 2, explanation: { en: "1:2 R:R = can be wrong 50% and still profit.", hi: "1:2 R:R = 50% wrong होने पे भी profit।" } },
+        { q: { en: "What is position sizing?", hi: "Position sizing क्या है?" }, options: { en: ["Monitor size", "Calculate units based on risk", "Random lot", "Max leverage"], hi: ["Monitor size", "Risk के base पे units calculate", "Random lot", "Max leverage"] }, correct: 1, explanation: { en: "Position sizing = calculating units so SL = predetermined risk.", hi: "Position sizing = units calculate करना।" } },
+        { q: { en: "Why never move SL further?", hi: "SL दूर क्यों न move करें?" }, options: { en: ["Fine to move", "Increases risk beyond plan", "SL don't matter", "Better fills"], hi: ["Move करना fine", "Plan से ज्यादा risk", "SL matter नहीं", "Better fills"] }, correct: 1, explanation: { en: "Moving SL further increases risk beyond planned.", hi: "SL दूर move = planned से ज्यादा risk।" } },
+        { q: { en: "What is drawdown?", hi: "Drawdown क्या है?" }, options: { en: ["Total profit", "Peak to trough decline", "Daily profit", "Lot size"], hi: ["Total profit", "Peak to trough decline", "Daily profit", "Lot size"] }, correct: 1, explanation: { en: "Drawdown = decline from account peak to lowest point.", hi: "Drawdown = peak से lowest point तक decline।" } },
+        { q: { en: "₹1L account, 2% risk = ?", hi: "₹1L account, 2% risk = ?" }, options: { en: ["₹1,000", "₹2,000", "₹5,000", "₹10,000"], hi: ["₹1,000", "₹2,000", "₹5,000", "₹10,000"] }, correct: 1, explanation: { en: "₹1,00,000 × 2% = ₹2,000 max loss per trade.", hi: "₹1,00,000 × 2% = ₹2,000 max loss।" } },
+        { q: { en: "Purpose of stop loss?", hi: "Stop loss का purpose?" }, options: { en: ["Guarantee profit", "Limit loss", "Increase leverage", "Avoid trading"], hi: ["Profit guarantee", "Loss limit", "Leverage increase", "Trading avoid"] }, correct: 1, explanation: { en: "Stop loss exits at predetermined price to limit loss.", hi: "Stop loss predetermined price पे exit करता है।" } },
+        { q: { en: "What is scaling in?", hi: "Scaling in क्या है?" }, options: { en: ["Add to losers", "Add to winners after confirmation", "Exit all at once", "Max leverage"], hi: ["Losers में add", "Confirmation के बाद winners में add", "एक साथ exit", "Max leverage"] }, correct: 1, explanation: { en: "Scaling in = adding to winners after confirmation. Never scale into losers.", hi: "Scaling in = winners में add करना confirmation के बाद।" } },
+        { q: { en: "What is breakeven point?", hi: "Breakeven point क्या है?" }, options: { en: ["Max loss point", "Profit = initial risk", "SL moved to entry", "Highest profit"], hi: ["Max loss", "Profit = initial risk", "SL entry पे move", "Highest profit"] }, correct: 2, explanation: { en: "Breakeven = moving SL to entry price.", hi: "Breakeven = SL entry price पे move करना।" } }
       ],
       smc: [
-        {
-          q: "What is liquidity in SMC?",
-          options: ["Water in the market", "Clusters of stop losses that big players target", "Trading volume only", "Market depth"],
-          correct: 1,
-          explanation: "In SMC, liquidity refers to clusters of stop losses (above highs, below lows) that institutions target to fill large orders."
-        },
-        {
-          q: "What is an Order Block?",
-          options: ["A random candle", "The last bullish/bearish candle before a strong move", "A support level", "A trendline"],
-          correct: 1,
-          explanation: "An Order Block is typically the last opposing candle before a strong impulsive move, showing where institutions placed orders."
-        },
-        {
-          q: "What is a Fair Value Gap (FVG)?",
-          options: ["A type of indicator", "An imbalance/gap in price action", "A support zone", "A candlestick pattern"],
-          correct: 1,
-          explanation: "FVG is a gap between candles showing imbalance. Price often returns to fill these gaps before continuing."
-        },
-        {
-          q: "What is inducement in SMC?",
-          options: ["A breakout", "A trap to lure retail traders before reversal", "A strong support", "High volume"],
-          correct: 1,
-          explanation: "Inducement is a setup that tricks retail traders into entering, then reverses to stop them out and provide liquidity."
-        },
-        {
-          q: "Where is Buy-Side Liquidity located?",
-          options: ["Below swing lows", "Above swing highs", "At support", "In the middle of range"],
-          correct: 1,
-          explanation: "Buy-side liquidity sits above swing highs where stop losses of short sellers and buy stop orders are clustered."
-        },
-        {
-          q: "Where is Sell-Side Liquidity located?",
-          options: ["Above swing highs", "Below swing lows", "At resistance", "At order blocks"],
-          correct: 1,
-          explanation: "Sell-side liquidity sits below swing lows where stop losses of long traders are clustered."
-        },
-        {
-          q: "What is a liquidity sweep?",
-          options: ["Price staying at support", "Price quickly taking out liquidity then reversing", "A breakout trade", "A trend continuation"],
-          correct: 1,
-          explanation: "A liquidity sweep occurs when price spikes to take out stop losses then quickly reverses, trapping traders."
-        },
-        {
-          q: "What is smart money?",
-          options: ["Retail traders", "Institutional traders/banks with large capital", "High frequency traders only", "News traders"],
-          correct: 1,
-          explanation: "Smart money refers to institutional traders, banks, and hedge funds who move markets with large orders."
-        },
-        {
-          q: "What should you look for before entering at an Order Block?",
-          options: ["Just enter blindly", "Confirmation like CHoCH or BOS", "High volume only", "News events"],
-          correct: 1,
-          explanation: "Always wait for confirmation (CHoCH, BOS, or engulfing pattern) at order blocks before entering."
-        },
-        {
-          q: "Why do institutions need liquidity?",
-          options: ["They don't need it", "To fill large orders without moving price too much", "To lose money", "For fun"],
-          correct: 1,
-          explanation: "Institutions need liquidity (opposing orders) to fill their large positions without causing excessive slippage."
-        }
+        { q: { en: "What is liquidity in SMC?", hi: "SMC में liquidity क्या है?" }, options: { en: ["Water", "Stop loss clusters big players target", "Volume only", "Market depth"], hi: ["पानी", "Stop loss clusters जो big players target करें", "सिर्फ volume", "Market depth"] }, correct: 1, explanation: { en: "Liquidity = stop loss clusters institutions target.", hi: "Liquidity = stop loss clusters जो institutions target करें।" } },
+        { q: { en: "What is Order Block?", hi: "Order Block क्या है?" }, options: { en: ["Random candle", "Last opposing candle before strong move", "Support level", "Trendline"], hi: ["Random candle", "Strong move से पहले last opposing candle", "Support level", "Trendline"] }, correct: 1, explanation: { en: "Order Block = last opposing candle before strong move.", hi: "Order Block = strong move से पहले last opposing candle।" } },
+        { q: { en: "What is Fair Value Gap?", hi: "Fair Value Gap क्या है?" }, options: { en: ["Indicator type", "Imbalance/gap in price", "Support zone", "Candlestick pattern"], hi: ["Indicator type", "Price में imbalance/gap", "Support zone", "Candlestick pattern"] }, correct: 1, explanation: { en: "FVG = gap between candles showing imbalance.", hi: "FVG = candles के बीच gap जो imbalance दिखाए।" } },
+        { q: { en: "What is inducement?", hi: "Inducement क्या है?" }, options: { en: ["Breakout", "Trap to lure retail before reversal", "Strong support", "High volume"], hi: ["Breakout", "Reversal से पहले retail को trap", "Strong support", "High volume"] }, correct: 1, explanation: { en: "Inducement tricks retail into entering, then reverses.", hi: "Inducement retail को trap करता है, फिर reverse।" } },
+        { q: { en: "Where is Buy-Side Liquidity?", hi: "Buy-Side Liquidity कहां?" }, options: { en: ["Below lows", "Above highs", "At support", "Middle of range"], hi: ["Lows के नीचे", "Highs के ऊपर", "Support पे", "Range के middle"] }, correct: 1, explanation: { en: "Buy-side liquidity sits above swing highs.", hi: "Buy-side liquidity swing highs के ऊपर।" } },
+        { q: { en: "Where is Sell-Side Liquidity?", hi: "Sell-Side Liquidity कहां?" }, options: { en: ["Above highs", "Below lows", "At resistance", "At OBs"], hi: ["Highs के ऊपर", "Lows के नीचे", "Resistance पे", "OBs पे"] }, correct: 1, explanation: { en: "Sell-side liquidity sits below swing lows.", hi: "Sell-side liquidity swing lows के नीचे।" } },
+        { q: { en: "What is liquidity sweep?", hi: "Liquidity sweep क्या है?" }, options: { en: ["Price at support", "Takes liquidity then reverses", "Breakout trade", "Trend continuation"], hi: ["Support पे price", "Liquidity लेकर reverse", "Breakout trade", "Trend continuation"] }, correct: 1, explanation: { en: "Sweep = price spikes to take stops then reverses.", hi: "Sweep = price stops लेकर reverse।" } },
+        { q: { en: "What is smart money?", hi: "Smart money क्या है?" }, options: { en: ["Retail traders", "Institutions/banks with large capital", "HFT only", "News traders"], hi: ["Retail traders", "Large capital वाले institutions/banks", "सिर्फ HFT", "News traders"] }, correct: 1, explanation: { en: "Smart money = institutions, banks, hedge funds.", hi: "Smart money = institutions, banks, hedge funds।" } },
+        { q: { en: "What to look for before OB entry?", hi: "OB entry से पहले क्या देखें?" }, options: { en: ["Enter blindly", "Confirmation like CHoCH/BOS", "High volume only", "News"], hi: ["Blindly enter", "CHoCH/BOS जैसी confirmation", "सिर्फ high volume", "News"] }, correct: 1, explanation: { en: "Always wait for confirmation at Order Blocks.", hi: "Order Blocks पे confirmation का wait करो।" } },
+        { q: { en: "Why institutions need liquidity?", hi: "Institutions को liquidity क्यों चाहिए?" }, options: { en: ["Don't need it", "Fill large orders without slippage", "Lose money", "For fun"], hi: ["नहीं चाहिए", "Large orders fill करने को बिना slippage", "पैसे lose करने को", "मजे के लिए"] }, correct: 1, explanation: { en: "Institutions need liquidity to fill large positions.", hi: "Institutions को large positions fill करने को liquidity चाहिए।" } }
+      ],
+      reality: [
+        { q: { en: "You had 3 consecutive losses. What to do?", hi: "लगातार 3 losses। क्या करोगे?" }, options: { en: ["Bigger position to recover", "Stop trading and review", "Keep trading - losses happen", "Double risk to breakeven"], hi: ["बड़ी position recover करने को", "Trading बंद करो और review", "Trading जारी - losses होते हैं", "Risk double breakeven के लिए"] }, correct: 1, explanation: { en: "After consecutive losses, judgment is impaired. STOP and review.", hi: "Consecutive losses के बाद judgment impaired। STOP करो और review।" }, reality: { en: "🔥 If you chose A or D, you're a gambler. Revenge trading has blown more accounts than bad strategies.", hi: "🔥 A या D चुना तो gambler हो। Revenge trading ने bad strategies से ज्यादा accounts उड़ाए।" } },
+        { q: { en: "Perfect setup outside your plan. What to do?", hi: "Perfect setup लेकिन plan में नहीं। क्या करोगे?" }, options: { en: ["Take it - opportunities don't wait", "Skip and wait for plan setups", "Small position to test", "Modify plan"], hi: ["ले लो - opportunities wait नहीं", "छोड़ो और plan setups का wait करो", "Small position test को", "Plan modify करो"] }, correct: 1, explanation: { en: "Trading plan removes emotion. Outside trades = bad habits.", hi: "Trading plan emotions हटाता है। Plan के बाहर = bad habits।" }, reality: { en: "🔥 Every blown account started with 'just this one trade outside plan.' No discipline.", hi: "🔥 हर blown account 'बस ये एक trade plan के बाहर' से शुरू। Discipline नहीं।" } },
+        { q: { en: "Trade 50% in profit, price reversing. What to do?", hi: "Trade 50% profit में, price reverse। क्या करोगे?" }, options: { en: ["Close for profits", "Move SL to breakeven", "Add more position", "Remove stop loss"], hi: ["Close करो profits के लिए", "SL breakeven पे move", "Position add करो", "Stop loss हटाओ"] }, correct: 1, explanation: { en: "Breakeven protects capital while giving room to hit target.", hi: "Breakeven capital protect करता है target hit करने का room देते हुए।" }, reality: { en: "🔥 If you chose D (remove SL), close your account. That habit takes EVERYTHING.", hi: "🔥 D चुना (SL हटाना) तो account बंद करो। यह habit सब ले लेगी।" } },
+        { q: { en: "What % of retail traders lose money?", hi: "कितने % retail traders पैसे lose करते हैं?" }, options: { en: ["30-40%", "50-60%", "70-80%", "90%+"], hi: ["30-40%", "50-60%", "70-80%", "90%+"] }, correct: 3, explanation: { en: "Studies show 90%+ retail traders lose. Understand the odds.", hi: "Studies show 90%+ retail traders lose करते हैं।" }, reality: { en: "🔥 You're not special. Until 6+ months consistent profits, assume you're in losing 90%.", hi: "🔥 तुम special नहीं। 6+ months profits से prove करो, वरना losing 90% में हो।" } },
+        { q: { en: "Missed trade that would make 10%. How do you feel?", hi: "10% देने वाला trade miss। कैसा feel?" }, options: { en: ["Angry - should have taken", "Nothing - missed trades irrelevant", "Chase next similar setup", "FOMO - need trade fast"], hi: ["Angry - लेना था", "कुछ नहीं - missed trades irrelevant", "Next similar chase करो", "FOMO - जल्दी trade चाहिए"] }, correct: 1, explanation: { en: "Missed trades are irrelevant. Judge only taken trades.", hi: "Missed trades irrelevant। सिर्फ taken trades पे judge।" }, reality: { en: "🔥 If missing one trade affects emotions, you'll make emotional decisions with real money.", hi: "🔥 एक trade miss से emotions affect तो real money पे emotional decisions लोगे।" } },
+        { q: { en: "How many trades per day?", hi: "एक दिन में कितने trades?" }, options: { en: ["As many as possible", "Only exact criteria - could be 0", "At least 5-10", "Every hour"], hi: ["जितने हो सकें", "सिर्फ exact criteria - 0 भी", "कम से कम 5-10", "हर घंटे"] }, correct: 1, explanation: { en: "Quality over quantity. Best days sometimes have ZERO trades.", hi: "Quality over quantity। Best days में कभी ZERO trades।" }, reality: { en: "🔥 NEED to trade daily? Addicted to action, not profits. Pros wait days.", hi: "🔥 Daily trade की NEED? Action के addicted, profits के नहीं। Pros days wait करते हैं।" } },
+        { q: { en: "5-trade winning streak. Your mindset?", hi: "5-trade winning streak। Mindset?" }, options: { en: ["On fire! Increase size", "Stay humble, stick to plan", "Figured out market", "Bigger risks while hot"], hi: ["Fire पे! Size बढ़ाओ", "Humble रहो, plan follow", "Market समझ गया", "Hot हूं तो bigger risks"] }, correct: 1, explanation: { en: "Winning streaks = overconfidence = larger positions = larger losses.", hi: "Winning streaks = overconfidence = larger positions = larger losses।" }, reality: { en: "🔥 Market doesn't care about streak. 'Figured it out' = usually before massive loss.", hi: "🔥 Market को streak से फर्क नहीं। 'समझ गया' = usually massive loss से पहले।" } },
+        { q: { en: "SL hit by 2 pips, then reversed your way. What do you think?", hi: "SL 2 pips से hit, फिर तुम्हारी direction। क्या सोचते हो?" }, options: { en: ["Market maker hunted stop!", "Stop was poorly placed - review needed", "Remove stops next time", "Market is rigged"], hi: ["Market maker ने hunt किया!", "Stop poorly placed था - review", "अगली बार stops हटाओ", "Market rigged है"] }, correct: 1, explanation: { en: "Stops get hit at obvious levels. Improve placement instead of blaming.", hi: "Stops obvious levels पे hit होते हैं। Blame की जगह placement improve करो।" }, reality: { en: "🔥 Blaming 'market makers' = loser mentality. Take responsibility.", hi: "🔥 'Market makers' blame करना = loser mentality। Responsibility लो।" } },
+        { q: { en: "Need ₹50K this month for bills. Effect on trading?", hi: "इस महीने bills के लिए ₹50K चाहिए। Trading पे effect?" }, options: { en: ["Trade bigger for goal", "Extremely dangerous - never trade needed money", "Normal trading, target motivates", "More trades for chances"], hi: ["बड़ा trade goal के लिए", "Extremely dangerous - जरूरी पैसों से trade मत करो", "Normal trading, target motivate", "ज्यादा trades chances के लिए"] }, correct: 1, explanation: { en: "Scared money = desperation = emotional decisions.", hi: "Scared money = desperation = emotional decisions।" }, reality: { en: "🔥 Trading to pay bills? Already lost. Only trade money you can 100% lose.", hi: "🔥 Bills के लिए trading? पहले ही हार गए। सिर्फ वो trade करो जो 100% lose कर सको।" } },
+        { q: { en: "Most important trait for trading success?", hi: "Trading success का सबसे important trait?" }, options: { en: ["High IQ", "Emotional discipline & patience", "Advanced TA", "Premium indicators"], hi: ["High IQ", "Emotional discipline & patience", "Advanced TA", "Premium indicators"] }, correct: 1, explanation: { en: "Emotional discipline beats all. Mediocre strategy + discipline > perfect strategy + no discipline.", hi: "Emotional discipline सब beat करती है।" }, reality: { en: "🔥 Learn any strategy in a week. Control emotions when down 5 trades? Takes years.", hi: "🔥 Strategy एक week में सीखो। 5 trades down पे emotions control? Years लगते हैं।" } },
+        { q: { en: "₹1L account. Max risk per trade?", hi: "₹1L account। Per trade max risk?" }, options: { en: ["₹10K (10%)", "₹5K (5%)", "₹1-2K (1-2%)", "₹20K (20%)"], hi: ["₹10K (10%)", "₹5K (5%)", "₹1-2K (1-2%)", "₹20K (20%)"] }, correct: 2, explanation: { en: "Professional = 1-2% max. ₹1L = ₹1-2K max loss.", hi: "Professional = 1-2% max। ₹1L = ₹1-2K max loss।" }, reality: { en: "🔥 10% or 20%? Account blown in 10-15 bad trades. Gambling, not trading.", hi: "🔥 10% या 20%? 10-15 bad trades में account blown। Gambling है, trading नहीं।" } },
+        { q: { en: "SL 50 pts, ₹1L account, 2% risk. Position size?", hi: "SL 50 pts, ₹1L account, 2% risk। Position size?" }, options: { en: ["1 lot", "40 qty (₹2K÷50)", "100 qty", "Doesn't matter"], hi: ["1 lot", "40 qty (₹2K÷50)", "100 qty", "Matter नहीं"] }, correct: 1, explanation: { en: "Position Size = Risk ÷ SL. ₹2000÷50 = 40 qty.", hi: "Position Size = Risk ÷ SL। ₹2000÷50 = 40 qty।" }, reality: { en: "🔥 Don't calculate position size every trade? Not managing risk - just hoping.", hi: "🔥 हर trade position size calculate नहीं? Risk manage नहीं - बस hope कर रहे।" } },
+        { q: { en: "10% risk, 5 consecutive losses. Account impact?", hi: "10% risk, 5 consecutive losses। Account पे impact?" }, options: { en: ["50% loss", "~41% loss (compounding)", "10% loss", "Nothing major"], hi: ["50% loss", "~41% loss (compounding)", "10% loss", "कुछ major नहीं"] }, correct: 1, explanation: { en: "Compounding: 0.9^5 = 59% left. Lost 41% in 5 trades.", hi: "Compounding: 0.9^5 = 59% बचा। 5 trades में 41% गया।" }, reality: { en: "🔥 5 losses happen often. 10% risk = game over. 2% risk = only 10% drawdown.", hi: "🔥 5 losses often होते हैं। 10% risk = game over। 2% risk = सिर्फ 10% drawdown।" } },
+        { q: { en: "Minimum R:R to accept?", hi: "Minimum R:R accept करो?" }, options: { en: ["1:0.5", "1:1", "1:2 minimum", "R:R irrelevant"], hi: ["1:0.5", "1:1", "1:2 minimum", "R:R irrelevant"] }, correct: 2, explanation: { en: "1:2 R:R = wrong 60% and still profitable.", hi: "1:2 R:R = 60% wrong और फिर भी profitable।" }, reality: { en: "🔥 1:0.5 trades = need 67% win rate to breakeven. No one has that consistently.", hi: "🔥 1:0.5 trades = breakeven के लिए 67% win rate। Consistently कोई नहीं रखता।" } },
+        { q: { en: "Lost 5 in a row. Position size?", hi: "लगातार 5 losses। Position size?" }, options: { en: ["Double to recover", "Keep same or reduce", "All-in next", "Skip next setup"], hi: ["Double recover करने को", "Same या reduce", "Next पे all-in", "Next skip"] }, correct: 1, explanation: { en: "After losing streak, reduce or keep same. Psychology affected.", hi: "Losing streak के बाद reduce या same रखो। Psychology affected।" }, reality: { en: "🔥 Increasing size after losses = FASTEST way to blow account.", hi: "🔥 Losses के बाद size increase = account blow करने का सबसे fast तरीका।" } },
+        { q: { en: "Strategy: 45% win, 1:2.5 R:R. Profitable?", hi: "Strategy: 45% win, 1:2.5 R:R। Profitable?" }, options: { en: ["No, win rate low", "Yes, math is positive", "Need more data", "Only with leverage"], hi: ["नहीं, win rate low", "हां, math positive", "और data चाहिए", "सिर्फ leverage से"] }, correct: 1, explanation: { en: "Expectancy = (0.45×2.5)-(0.55×1) = +0.575R. Profitable!", hi: "Expectancy = (0.45×2.5)-(0.55×1) = +0.575R। Profitable!" }, reality: { en: "🔥 Can't calculate expectancy? Don't know if strategy works. Just guessing.", hi: "🔥 Expectancy calculate नहीं कर सकते? नहीं पता strategy काम करती है। बस guess।" } },
+        { q: { en: "When to move SL to breakeven?", hi: "SL breakeven पे कब move?" }, options: { en: ["Immediately", "At 1:1 profit", "Never move", "When uncomfortable"], hi: ["तुरंत", "1:1 profit पे", "कभी move नहीं", "Uncomfortable लगे तब"] }, correct: 1, explanation: { en: "1:1 BE eliminates risk while keeping upside.", hi: "1:1 पे BE risk eliminate करता है upside रखते हुए।" }, reality: { en: "🔥 Too early BE = stopped on normal pullbacks. 1:1 is reasonable rule.", hi: "🔥 बहुत जल्दी BE = normal pullbacks पे stop। 1:1 reasonable rule।" } },
+        { q: { en: "With 2% risk, survive how many consecutive losses?", hi: "2% risk के साथ कितने consecutive losses survive?" }, options: { en: ["5", "10", "50+ theoretically", "2-3"], hi: ["5", "10", "50+ theoretically", "2-3"] }, correct: 2, explanation: { en: "2% risk, even 20 losses = ~33% drawdown. Account survives.", hi: "2% risk, 20 losses भी = ~33% drawdown। Account survive।" }, reality: { en: "🔥 This is WHY small risk. Losing streaks inevitable. Survival = opportunity.", hi: "🔥 इसीलिए small risk। Losing streaks inevitable। Survival = opportunity।" } },
+        { q: { en: "More important: Win Rate or R:R?", hi: "ज्यादा important: Win Rate या R:R?" }, options: { en: ["Win Rate", "R:R", "Both equal", "Neither"], hi: ["Win Rate", "R:R", "दोनों equal", "कोई नहीं"] }, correct: 1, explanation: { en: "40% win + 1:3 R:R = profitable. 60% win + 1:0.5 = barely breakeven.", hi: "40% win + 1:3 R:R = profitable। 60% win + 1:0.5 = barely breakeven।" }, reality: { en: "🔥 Stop chasing high win rate. Pros have 40-50% but profitable - bigger winners.", hi: "🔥 High win rate chase बंद। Pros 40-50% पे profitable - bigger winners।" } },
+        { q: { en: "Account down 20%. What to do?", hi: "Account 20% down। क्या करो?" }, options: { en: ["Increase risk to recover", "Reduce size and review", "Complete break", "Borrow money to add"], hi: ["Risk increase recover को", "Size reduce और review", "Complete break", "पैसे उधार लेकर add"] }, correct: 1, explanation: { en: "After drawdown, reduce size to protect remaining and review.", hi: "Drawdown के बाद size reduce करो और review।" }, reality: { en: "🔥 Borrowing to trade = financial suicide. Thinking about it? Gambling problem.", hi: "🔥 Trade के लिए उधार = financial suicide। सोच रहे हो? Gambling problem।" } },
+        { q: { en: "Where is Buy-Side Liquidity?", hi: "Buy-Side Liquidity कहां?" }, options: { en: ["Below lows", "Above highs", "At MAs", "Round numbers only"], hi: ["Lows के नीचे", "Highs के ऊपर", "MAs पे", "सिर्फ round numbers"] }, correct: 1, explanation: { en: "Buy-side liquidity ABOVE swing highs where stops cluster.", hi: "Buy-side liquidity swing highs के ABOVE जहां stops cluster।" }, reality: { en: "🔥 Don't know where liquidity is? YOU are the liquidity. Stops being hunted.", hi: "🔥 नहीं पता liquidity कहां? तुम ही liquidity हो। Stops hunt हो रहे।" } },
+        { q: { en: "What BEFORE entering at Order Block?", hi: "Order Block पे entry से पहले क्या?" }, options: { en: ["Just price at OB", "CHoCH/BOS confirming, then retest", "High volume at OB", "Indicator signal"], hi: ["बस price OB पे", "CHoCH/BOS confirm, फिर retest", "OB पे high volume", "Indicator signal"] }, correct: 1, explanation: { en: "OB entry without structure confirmation = gambling.", hi: "Structure confirmation के बिना OB entry = gambling।" }, reality: { en: "🔥 Most retail 'SMC traders' enter blindly at OBs and get stopped. OB alone = nothing.", hi: "🔥 Most retail 'SMC traders' blindly OBs पे enter और stop out। OB alone = कुछ नहीं।" } },
+        { q: { en: "What is Liquidity Sweep?", hi: "Liquidity Sweep क्या है?" }, options: { en: ["Price slowly to level", "Spikes through, triggers stops, reverses", "High volume candle", "Gap in price"], hi: ["Price slowly level को", "Spike through, stops trigger, reverse", "High volume candle", "Price में gap"] }, correct: 1, explanation: { en: "Sweep = price runs through liquidity, triggers stops, reverses.", hi: "Sweep = price liquidity से run through, stops trigger, reverse।" }, reality: { en: "🔥 Consistently stopped before reversal? Being swept. Stops in obvious places.", hi: "🔥 Consistently reversal से पहले stop? Swept हो रहे। Stops obvious places पे।" } },
+        { q: { en: "Why do institutions need liquidity?", hi: "Institutions को liquidity क्यों चाहिए?" }, options: { en: ["Don't need, move freely", "Fill large orders without slippage", "Regulatory", "Manipulate retail"], hi: ["नहीं चाहिए, freely move", "Large orders fill बिना slippage", "Regulatory", "Retail manipulate"] }, correct: 1, explanation: { en: "Massive orders need opposing liquidity to fill without slippage.", hi: "Massive orders को fill करने को opposing liquidity चाहिए।" }, reality: { en: "🔥 Institutions not hunting YOUR stops. Need liquidity for billion-dollar orders. You = collateral damage.", hi: "🔥 Institutions तुम्हारे stops hunt नहीं। Billion-dollar orders को liquidity। तुम = collateral damage।" } },
+        { q: { en: "What is inducement in SMC?", hi: "SMC में inducement क्या है?" }, options: { en: ["Strong breakout", "Trap retail before reversal", "Volume spike", "Continuation"], hi: ["Strong breakout", "Reversal से पहले retail trap", "Volume spike", "Continuation"] }, correct: 1, explanation: { en: "Inducement = liquidity trap. Lures retail, stops fuel opposite move.", hi: "Inducement = liquidity trap। Retail को lure करे, stops opposite move का fuel।" }, reality: { en: "🔥 That 'breakout' you buy? Often inducement. Smart money needs your stops to sell.", hi: "🔥 वो 'breakout' buy करते हो? Often inducement। Smart money को stops sell करने को।" } },
+        { q: { en: "Where to place SL in SMC?", hi: "SMC में SL कहां रखो?" }, options: { en: ["Just below/above OB", "Beyond liquidity, past sweep", "Round number", "10 pts from entry"], hi: ["OB के just below/above", "Liquidity के beyond, sweep के past", "Round number", "Entry से 10 pts"] }, correct: 1, explanation: { en: "SL beyond where liquidity was swept - past that wick.", hi: "SL वहां जहां liquidity sweep हुई - उस wick के past।" }, reality: { en: "🔥 SL just below OB = where everyone puts them. First target for sweeps.", hi: "🔥 SL just below OB = जहां सब रखते हैं। Sweeps का first target।" } },
+        { q: { en: "What is Fair Value Gap?", hi: "Fair Value Gap क्या है?" }, options: { en: ["S&R", "Imbalance - gap between wicks", "Average price", "Volume indicator"], hi: ["S&R", "Imbalance - wicks के बीच gap", "Average price", "Volume indicator"] }, correct: 1, explanation: { en: "FVG = gap between wicks in 3-candle sequence.", hi: "FVG = 3-candle sequence में wicks के बीच gap।" }, reality: { en: "🔥 Not every FVG fills. Context matters. Random FVG = 50/50.", hi: "🔥 हर FVG fill नहीं होता। Context matters। Random FVG = 50/50।" } },
+        { q: { en: "Lower low in uptrend = ? in SMC", hi: "Uptrend में lower low = SMC में?" }, options: { en: ["Higher Low", "BOS", "CHoCH", "Order Block"], hi: ["Higher Low", "BOS", "CHoCH", "Order Block"] }, correct: 2, explanation: { en: "CHoCH = price breaks structure in OPPOSITE direction.", hi: "CHoCH = price OPPOSITE direction में structure break।" }, reality: { en: "🔥 One CHoCH ≠ instant reversal. Need confirmation. Every CHoCH = death by 1000 cuts.", hi: "🔥 एक CHoCH ≠ instant reversal। Confirmation चाहिए। हर CHoCH = death by 1000 cuts।" } },
+        { q: { en: "Bearish market - where to short?", hi: "Bearish market - short कहां?" }, options: { en: ["Demand zones", "Supply zones/Bearish OBs after pullback", "Any resistance", "After 3 green candles"], hi: ["Demand zones", "Supply zones/Bearish OBs pullback के बाद", "कोई भी resistance", "3 green candles बाद"] }, correct: 1, explanation: { en: "Bearish = shorts at supply/Bearish OBs after pullback with LTF confirmation.", hi: "Bearish = supply/Bearish OBs पे shorts pullback के बाद LTF confirmation।" }, reality: { en: "🔥 'Oversold' or 'must bounce' = retail mentality. Trade WITH trend until shift.", hi: "🔥 'Oversold' या 'bounce होना चाहिए' = retail mentality। Trend के साथ trade shift तक।" } }
       ]
     };
 
-    let currentQuiz = null;
-    let currentQuestion = 0;
-    let score = 0;
-    let answered = false;
+    let currentQuiz = null, currentQuestion = 0, score = 0, answered = false;
 
-    function startQuiz(quizId) {
-      currentQuiz = quizId;
-      currentQuestion = 0;
-      score = 0;
-      answered = false;
-
+    function startQuiz(id) {
+      currentQuiz = id; currentQuestion = 0; score = 0; answered = false;
       document.getElementById('quizSelection').style.display = 'none';
       document.getElementById('quizContainer').classList.add('active');
       document.getElementById('resultsScreen').classList.remove('active');
       document.getElementById('currentScore').textContent = '0';
-
       loadQuestion();
     }
 
     function loadQuestion() {
-      const quiz = quizData[currentQuiz];
-      const q = quiz[currentQuestion];
-
-      document.getElementById('questionText').textContent = q.q;
+      const quiz = quizData[currentQuiz], q = quiz[currentQuestion];
+      document.getElementById('questionText').textContent = q.q[currentLang] || q.q.en;
       document.getElementById('questionCounter').textContent = (currentQuestion + 1) + '/' + quiz.length;
       document.getElementById('progressFill').style.width = ((currentQuestion + 1) / quiz.length * 100) + '%';
-
-      const optionsList = document.getElementById('optionsList');
-      optionsList.innerHTML = '';
-
-      q.options.forEach((opt, index) => {
+      const list = document.getElementById('optionsList');
+      list.innerHTML = '';
+      (q.options[currentLang] || q.options.en).forEach((opt, i) => {
         const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        btn.textContent = opt;
-        btn.onclick = () => selectAnswer(index);
-        optionsList.appendChild(btn);
+        btn.className = 'option-btn'; btn.textContent = opt;
+        btn.onclick = () => selectAnswer(i);
+        list.appendChild(btn);
       });
-
-      document.getElementById('explanation').classList.remove('show');
+      document.getElementById('explanation').classList.remove('show','correct-exp','wrong-exp');
+      document.getElementById('realityBox').classList.remove('show');
       document.getElementById('nextBtn').disabled = true;
+      document.getElementById('nextBtn').textContent = 'Next Question →';
       answered = false;
     }
 
     function selectAnswer(index) {
       if (answered) return;
       answered = true;
-
-      const quiz = quizData[currentQuiz];
-      const q = quiz[currentQuestion];
-      const options = document.querySelectorAll('.option-btn');
-
-      options.forEach((opt, i) => {
-        opt.classList.add('disabled');
-        if (i === q.correct) {
-          opt.classList.add('correct');
-        } else if (i === index) {
-          opt.classList.add('wrong');
-        }
-      });
-
-      if (index === q.correct) {
-        score++;
-        document.getElementById('currentScore').textContent = score;
-      }
-
-      document.getElementById('explanationText').textContent = q.explanation;
-      document.getElementById('explanation').classList.add('show');
-      
-      const nextBtn = document.getElementById('nextBtn');
-      nextBtn.disabled = false;
-      if (currentQuestion === quiz.length - 1) {
-        nextBtn.textContent = 'See Results →';
-      } else {
-        nextBtn.textContent = 'Next Question →';
-      }
+      const quiz = quizData[currentQuiz], q = quiz[currentQuestion], opts = document.querySelectorAll('.option-btn'), exp = document.getElementById('explanation');
+      opts.forEach((o,i) => { o.classList.add('disabled'); if (i===q.correct) o.classList.add('correct'); else if (i===index) o.classList.add('wrong'); });
+      if (index === q.correct) { score++; document.getElementById('currentScore').textContent = score; exp.classList.add('correct-exp'); document.getElementById('expTitle').textContent = currentLang==='hi'?'✅ सही!':'✅ Correct!'; }
+      else { exp.classList.add('wrong-exp'); document.getElementById('expTitle').textContent = currentLang==='hi'?'❌ गलत!':'❌ Wrong!'; }
+      document.getElementById('explanationText').textContent = q.explanation[currentLang] || q.explanation.en;
+      exp.classList.add('show');
+      if (q.reality) { document.getElementById('realityText').textContent = q.reality[currentLang] || q.reality.en; document.getElementById('realityBox').classList.add('show'); }
+      document.getElementById('nextBtn').disabled = false;
+      if (currentQuestion === quiz.length - 1) document.getElementById('nextBtn').textContent = currentLang==='hi'?'Results →':'See Results →';
     }
 
     function nextQuestion() {
-      const quiz = quizData[currentQuiz];
-      
-      if (currentQuestion < quiz.length - 1) {
-        currentQuestion++;
-        loadQuestion();
-      } else {
-        showResults();
-      }
+      if (currentQuestion < quizData[currentQuiz].length - 1) { currentQuestion++; loadQuestion(); }
+      else showResults();
     }
 
     function showResults() {
       document.getElementById('quizContainer').classList.remove('active');
       document.getElementById('resultsScreen').classList.add('active');
-
-      const quiz = quizData[currentQuiz];
-      const percentage = (score / quiz.length) * 100;
-
-      document.getElementById('resultsScore').textContent = score + '/' + quiz.length;
-      
-      const scoreEl = document.getElementById('resultsScore');
-      const iconEl = document.getElementById('resultsIcon');
-      const msgEl = document.getElementById('resultsMessage');
-
-      if (percentage >= 80) {
-        scoreEl.className = 'results-score great';
-        iconEl.textContent = '🎉';
-        msgEl.textContent = 'Excellent! You really know your stuff!';
-      } else if (percentage >= 60) {
-        scoreEl.className = 'results-score good';
-        iconEl.textContent = '👍';
-        msgEl.textContent = 'Good job! Keep learning to improve!';
-      } else {
-        scoreEl.className = 'results-score poor';
-        iconEl.textContent = '📚';
-        msgEl.textContent = 'Review the material and try again!';
-      }
-
-      // Save completion
-      const completed = JSON.parse(localStorage.getItem('quizCompleted')) || {};
-      completed[currentQuiz] = Math.max(completed[currentQuiz] || 0, score);
-      localStorage.setItem('quizCompleted', JSON.stringify(completed));
+      const quiz = quizData[currentQuiz], pct = (score/quiz.length)*100, isReality = currentQuiz==='reality';
+      document.getElementById('resultsScore').textContent = score+'/'+quiz.length;
+      const sEl = document.getElementById('resultsScore'), iEl = document.getElementById('resultsIcon'), mEl = document.getElementById('resultsMessage'), rEl = document.getElementById('resultsReality'), rTxt = document.getElementById('resultsRealityText');
+      if (pct >= 80) { sEl.className='results-score great'; iEl.textContent='🎉'; mEl.textContent=currentLang==='hi'?'बढ़िया!':'Excellent!'; if(isReality){rEl.classList.add('show'); rTxt.textContent=currentLang==='hi'?"Overconfident मत हो। Paper trade 3 months पहले।":"Don't get cocky. Paper trade 3 months first.";} }
+      else if (pct >= 60) { sEl.className='results-score good'; iEl.textContent='👍'; mEl.textContent=currentLang==='hi'?'ठीक है, gaps हैं।':'Good, but gaps exist.'; if(isReality){rEl.classList.add('show'); rTxt.textContent=currentLang==='hi'?"Real money ready नहीं। 80%+ तक study करो।":"Not ready for real money. Study until 80%+.";} }
+      else { sEl.className='results-score poor'; iEl.textContent='📚'; mEl.textContent=currentLang==='hi'?'Practice करो!':'Review material!'; if(isReality){rEl.classList.add('show'); rTxt.textContent=currentLang==='hi'?"Real money से trade किया तो LOSE करोगे। Learning Vault जाओ।":"You WILL lose real money. Go back to Learning Vault.";} }
+      const c = JSON.parse(localStorage.getItem('quizCompleted'))||{};
+      c[currentQuiz] = Math.max(c[currentQuiz]||0, score);
+      localStorage.setItem('quizCompleted', JSON.stringify(c));
       updateBadges();
     }
 
@@ -848,28 +332,19 @@
       document.getElementById('quizSelection').style.display = 'grid';
       document.getElementById('quizContainer').classList.remove('active');
       document.getElementById('resultsScreen').classList.remove('active');
-      document.getElementById('nextBtn').textContent = 'Next Question →';
+      document.getElementById('resultsReality').classList.remove('show');
     }
 
-    function retryQuiz() {
-      startQuiz(currentQuiz);
-    }
+    function retryQuiz() { startQuiz(currentQuiz); }
 
     function updateBadges() {
-      const completed = JSON.parse(localStorage.getItem('quizCompleted')) || {};
-      
-      Object.keys(completed).forEach(quiz => {
-        const badge = document.getElementById('badge-' + quiz);
-        if (badge) {
-          badge.textContent = completed[quiz] + '/10 ✓';
-          badge.classList.add('completed');
-        }
+      const c = JSON.parse(localStorage.getItem('quizCompleted'))||{};
+      Object.keys(c).forEach(q => {
+        const b = document.getElementById('badge-'+q);
+        if(b) { b.textContent = c[q]+'/'+(quizData[q]?quizData[q].length:10)+' ✓'; b.classList.add('completed'); }
       });
     }
-
-    // Load badges on page load
     updateBadges();
   </script>
-
 </body>
 </html>
