@@ -711,7 +711,7 @@
       
       <!-- Concept 1: Supply & Demand -->
       <div class="concept-card">
-        <div class="concept-image">
+        <div class="concept-image" onclick="openLightbox(0)">
           <img src="concepts/supply-demand.png" alt="Supply & Demand Entry Model" loading="lazy">
         </div>
         <div class="concept-info">
@@ -723,7 +723,7 @@
 
       <!-- Concept 2: AMD -->
       <div class="concept-card">
-        <div class="concept-image">
+        <div class="concept-image" onclick="openLightbox(1)">
           <img src="concepts/amd.png" alt="Accumulation Manipulation Distribution" loading="lazy">
         </div>
         <div class="concept-info">
@@ -735,7 +735,7 @@
 
       <!-- Concept 3: Asia Range -->
       <div class="concept-card">
-        <div class="concept-image">
+        <div class="concept-image" onclick="openLightbox(2)">
           <img src="concepts/asia-range.png" alt="Asia Range Liquidity Sweep" loading="lazy">
         </div>
         <div class="concept-info">
@@ -747,7 +747,7 @@
 
       <!-- Concept 4: CHOCH -->
       <div class="concept-card">
-        <div class="concept-image">
+        <div class="concept-image" onclick="openLightbox(3)">
           <img src="concepts/choch.png" alt="CHOCH & Retest Order Block" loading="lazy">
         </div>
         <div class="concept-info">
@@ -759,7 +759,7 @@
 
       <!-- Concept 5: Liquidity Sweep -->
       <div class="concept-card">
-        <div class="concept-image">
+        <div class="concept-image" onclick="openLightbox(4)">
           <img src="concepts/liquidity-sweep.png" alt="Liquidity Sweep + Grab" loading="lazy">
         </div>
         <div class="concept-info">
@@ -771,7 +771,7 @@
 
       <!-- Concept 6: Breaker -->
       <div class="concept-card">
-        <div class="concept-image">
+        <div class="concept-image" onclick="openLightbox(5)">
           <img src="concepts/breaker.png" alt="Breaker Short Entry Model" loading="lazy">
         </div>
         <div class="concept-info">
@@ -783,6 +783,79 @@
 
     </div>
   </section>
+
+  <!-- Image Lightbox Modal -->
+  <div class="image-lightbox" id="imageLightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
+    <button class="lightbox-nav lightbox-prev" onclick="navigateLightbox(event, -1)">&#10094;</button>
+    <img src="" alt="" id="lightboxImage">
+    <button class="lightbox-nav lightbox-next" onclick="navigateLightbox(event, 1)">&#10095;</button>
+    <div class="lightbox-title" id="lightboxTitle"></div>
+  </div>
+
+  <!-- Lightbox Script -->
+  <script>
+    const conceptImages = [
+      { src: 'concepts/supply-demand.png', title: 'Supply & Demand Entry Model' },
+      { src: 'concepts/amd.png', title: 'Accumulation | Manipulation | Distribution' },
+      { src: 'concepts/asia-range.png', title: 'Asia Range Liquidity Sweep' },
+      { src: 'concepts/choch.png', title: 'CHOCH & Retest Order Block' },
+      { src: 'concepts/liquidity-sweep.png', title: 'Liquidity Sweep + Grab' },
+      { src: 'concepts/breaker.png', title: 'Breaker Short Entry Model' }
+    ];
+    
+    let currentImageIndex = 0;
+
+    function openLightbox(index) {
+      currentImageIndex = index;
+      const lightbox = document.getElementById('imageLightbox');
+      const img = document.getElementById('lightboxImage');
+      const title = document.getElementById('lightboxTitle');
+      
+      img.src = conceptImages[index].src;
+      img.alt = conceptImages[index].title;
+      title.textContent = conceptImages[index].title;
+      
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(event) {
+      if (event.target.classList.contains('image-lightbox') || 
+          event.target.classList.contains('lightbox-close')) {
+        document.getElementById('imageLightbox').classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    function navigateLightbox(event, direction) {
+      event.stopPropagation();
+      currentImageIndex += direction;
+      
+      if (currentImageIndex < 0) currentImageIndex = conceptImages.length - 1;
+      if (currentImageIndex >= conceptImages.length) currentImageIndex = 0;
+      
+      const img = document.getElementById('lightboxImage');
+      const title = document.getElementById('lightboxTitle');
+      
+      img.src = conceptImages[currentImageIndex].src;
+      img.alt = conceptImages[currentImageIndex].title;
+      title.textContent = conceptImages[currentImageIndex].title;
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      const lightbox = document.getElementById('imageLightbox');
+      if (!lightbox.classList.contains('active')) return;
+      
+      if (e.key === 'Escape') {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+      if (e.key === 'ArrowLeft') navigateLightbox(e, -1);
+      if (e.key === 'ArrowRight') navigateLightbox(e, 1);
+    });
+  </script>
 
   <!-- FAQ Section -->
   <section id="faq" class="faq-section">
@@ -879,7 +952,7 @@
       <div class="footer-links">
         <h4>Contact</h4>
         <ul>
-          <li><a href="mailto:tradelab.edu.team@gmail.com">📧 tradelab.edu.team@gmail.com</a></li>
+          <li><a href="/cdn-cgi/l/email-protection#5a2e283b3e3f363b38743f3e2f742e3f3b371a3d373b333674393537">📧 <span class="__cf_email__" data-cfemail="196d6b787d7c75787b377c7d6c376d7c7874597e74787075377a7674">[email&#160;protected]</span></a></li>
           <li><a href="#">📍 India</a></li>
           <li><a href="#">💼 Collaborate</a></li>
         </ul>
@@ -893,7 +966,7 @@
   </footer>
 
   <!-- Firebase Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
   <script>
@@ -1519,20 +1592,3 @@
 
     box.style.left = initialX + dx + "px";
     box.style.top = initialY + dy + "px";
-  });
-
-  document.addEventListener("mouseup", () => {
-    dragging = false;
-    document.body.style.userSelect = "auto";
-  });
-})();
-</script>
-
-<button id="ai-float-btn" title="AI Mentor">
-  🤖
-</button>
-
-<script src="script.js"></script>
-  
-</body>
-</html>
