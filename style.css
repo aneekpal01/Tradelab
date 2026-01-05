@@ -3528,3 +3528,33 @@ body.loading #backToTop {
 
 
 
+.warning-box {
+    background: rgba(255, 183, 0, 0.1);
+    border: 1px solid #ffb700;
+    border-radius: 12px;
+    padding: 15px 25px;
+    margin: 0 auto 40px auto;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: pulse 2s infinite;
+}
+
+.warning-icon {
+    font-size: 24px;
+}
+
+.warning-text {
+    color: #ffb700;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: left;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 183, 0, 0.2); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 183, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 183, 0, 0); }
+}
