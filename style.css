@@ -3862,3 +3862,151 @@ body.loading #backToTop {
   }
 
 }
+
+
+
+/* =========================================
+   LIGHT MODE FULL FIX
+========================================= */
+
+.light-mode {
+    background: #f4f7fb;
+    color: #111827;
+}
+
+/* REMOVE EXTRA GLOW */
+.light-mode * {
+    text-shadow: none !important;
+}
+
+/* NAVBAR */
+.light-mode .navbar {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #dbe4ee;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* NAV BUTTONS */
+.light-mode .nav-links a,
+.light-mode .ai-btn,
+.light-mode .risk-btn,
+.light-mode .quiz-btn {
+    box-shadow: none !important;
+}
+
+/* HERO SECTION */
+.light-mode .hero {
+    background:
+    linear-gradient(
+        to bottom,
+        #eef4ff,
+        #f7faff
+    );
+}
+
+/* HERO TITLE */
+.light-mode .hero h1 {
+    color: #0f172a;
+    text-shadow: none;
+}
+
+/* TEXT */
+.light-mode p {
+    color: #475569;
+}
+
+/* FAQ */
+.light-mode .faq-item {
+    background: white;
+    border: 1px solid #dbe4ee;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+
+/* PDF CARDS */
+.light-mode .resource-card {
+    background: white;
+    border: 1px solid #dbe4ee;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+/* EASY TO UNDERSTAND */
+.light-mode .concept-card {
+    background: white;
+    border: 1px solid #dbe4ee;
+}
+
+/* ADVANCED TITLE */
+.light-mode .advanced-title {
+    background: white;
+    color: #111827;
+    border: 2px solid #8b5cf6;
+    box-shadow: 0 4px 18px rgba(139,92,246,0.15);
+}
+
+/* PROGRESS SECTION */
+.light-mode .progress-section {
+    background: white;
+    border: 1px solid #dbe4ee;
+}
+
+/* SEARCH BAR */
+.light-mode .search-box input {
+    background: white;
+    color: #111827;
+    border: 1px solid #dbe4ee;
+}
+
+/* FOOTER */
+.light-mode footer {
+    background: #ffffff;
+    border-top: 1px solid #dbe4ee;
+}
+
+.light-mode footer p,
+.light-mode footer a,
+.light-mode footer li {
+    color: #475569;
+}
+
+/* GENERAL CARDS */
+.light-mode .video-card,
+.light-mode .card,
+.light-mode .faq-box {
+    background: white;
+    border: 1px solid #dbe4ee;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+/* BUTTONS */
+.light-mode button,
+.light-mode .btn {
+    box-shadow: none;
+}
+
+/* INPUTS */
+.light-mode input,
+.light-mode textarea {
+    background: white;
+    color: #111827;
+    border: 1px solid #dbe4ee;
+}
+
+/* SECTION TITLES */
+.light-mode h1,
+.light-mode h2,
+.light-mode h3,
+.light-mode h4 {
+    color: #111827;
+}
+
+/* LINKS */
+.light-mode a {
+    color: #0f172a;
+}
+
+/* SCROLL FIX */
+.light-mode ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 20px;
+}
