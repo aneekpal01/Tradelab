@@ -3897,15 +3897,9 @@ body.loading #backToTop {
 
 /* HERO TITLE */
 [data-theme="light"] .hero h1 {
-    background: linear-gradient(
-        90deg,
-        #111827,
-        #00b894
-    ) !important;
-
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-
+    color: #111827 !important;
+    background: none !important;
+    -webkit-text-fill-color: unset !important;
     filter: none !important;
 }
 
