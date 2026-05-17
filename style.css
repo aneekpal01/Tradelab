@@ -4024,3 +4024,31 @@ body.loading #backToTop {
 [data-theme="light"] .hero::after {
     opacity: 0.15 !important;
 }
+
+
+
+/* =========================
+   LIGHT MODE HERO GRID FIX
+========================= */
+
+[data-theme="light"] .hero {
+    background:
+        linear-gradient(
+            rgba(0,0,0,0.04) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,0.04) 1px,
+            transparent 1px
+        ),
+        #eef2f7 !important;
+
+    background-size: 40px 40px !important;
+}
+
+/* hero overlay remove */
+[data-theme="light"] .hero::before,
+[data-theme="light"] .hero::after {
+    opacity: 0 !important;
+}
