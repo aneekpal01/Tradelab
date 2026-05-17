@@ -3619,7 +3619,7 @@ body.loading #backToTop {
 
   gap: 28px;
 
-  justify-content: center;
+  justify-content: start;
 }
 
 /* CARD */
