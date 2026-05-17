@@ -3613,17 +3613,19 @@ body.loading #backToTop {
 
 .resources-grid {
 
-  display: grid;
+  display: flex;
 
-  grid-template-columns: repeat(auto-fit, 420px);
+  flex-wrap: wrap;
 
   gap: 28px;
 
-  justify-content: start;
+  align-items: flex-start;
 }
 
 /* CARD */
 .resource-card {
+
+  width: 420px;
 
   background: linear-gradient(
     180deg,
@@ -3636,7 +3638,6 @@ body.loading #backToTop {
   border-radius: 22px;
 
   padding: 22px;
-max-width: 420px;
 
   transition: 0.3s ease;
 
