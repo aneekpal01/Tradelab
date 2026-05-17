@@ -3611,11 +3611,15 @@ body.loading #backToTop {
   font-size: 16px;
 }
 
-/* GRID */
 .resources-grid {
+
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
+
+  grid-template-columns: repeat(auto-fit, 420px);
+
+  gap: 28px;
+
+  justify-content: center;
 }
 
 /* CARD */
@@ -3631,7 +3635,8 @@ body.loading #backToTop {
 
   border-radius: 22px;
 
-  padding: 26px;
+  padding: 22px;
+max-width: 420px;
 
   transition: 0.3s ease;
 
@@ -3695,7 +3700,7 @@ body.loading #backToTop {
 /* TITLE */
 .resource-card h3 {
 
-  font-size: 28px;
+  font-size: 22px;
 
   line-height: 1.2;
 
@@ -3713,7 +3718,7 @@ body.loading #backToTop {
 
   color: #a6b0bf;
 
-  font-size: 15px;
+  font-size: 14px;
 
   line-height: 1.7;
 
