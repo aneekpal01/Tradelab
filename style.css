@@ -4226,3 +4226,227 @@ body.loading #backToTop {
 [data-theme="light"] .video-card.text-card .concept-item h4 {
     color: #0d1117 !important;
 }
+
+
+/* =============================================
+   EASY WIN 1: TICKER BAR — PREMIUM GLASS STYLE
+   (TradingView widget wrapper ko override karo)
+=============================================== */
+
+.tradingview-widget-container {
+  position: relative;
+  background: linear-gradient(90deg, #050d1a 0%, #071525 50%, #050d1a 100%);
+  border-bottom: 1px solid rgba(0, 255, 156, 0.15);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+/* Subtle green glow line at top of ticker */
+.tradingview-widget-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0, 255, 156, 0.6) 30%,
+    rgba(0, 212, 255, 0.6) 70%,
+    transparent 100%
+  );
+  z-index: 2;
+}
+
+/* Subtle animated scanner line */
+.tradingview-widget-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 156, 0.03),
+    transparent
+  );
+  animation: tickerScan 6s ease-in-out infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes tickerScan {
+  0% { left: -60%; }
+  100% { left: 110%; }
+}
+
+/* Light mode ticker */
+[data-theme="light"] .tradingview-widget-container {
+  background: linear-gradient(90deg, #f0f6ff 0%, #e8f4ff 50%, #f0f6ff 100%);
+  border-bottom: 1px solid rgba(0, 145, 90, 0.20);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .tradingview-widget-container::before {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0, 145, 90, 0.5) 30%,
+    rgba(0, 100, 180, 0.5) 70%,
+    transparent 100%
+  );
+}
+
+
+/* =============================================
+   EASY WIN 2: STEP BADGE COLORS — PROFIT/LOSS
+   COLOR SYSTEM (green=begin, red=danger, etc.)
+=============================================== */
+
+/* Base badge reset — consistent sizing */
+.step-badge,
+.step-three-badge {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+}
+
+/* STEP 1 — Entry Signal Green */
+.step-one .step-badge {
+  background: linear-gradient(90deg, #00ff9c, #00e187) !important;
+  color: #002b1a !important;
+  box-shadow: 0 2px 8px rgba(0, 255, 156, 0.35) !important;
+}
+
+/* STEP 2, 2A, 2B — Learning Blue */
+.step-two .step-badge {
+  background: linear-gradient(90deg, #00d4ff, #00b8e0) !important;
+  color: #002a36 !important;
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.35) !important;
+}
+
+/* STEP 3, 3A, 3B — Support/Resistance Teal */
+.step-three .step-badge,
+.step-three-badge {
+  background: linear-gradient(90deg, #00ffa5, #00d98c) !important;
+  color: #002b1a !important;
+  box-shadow: 0 2px 8px rgba(0, 255, 165, 0.35) !important;
+}
+
+/* STEP 4 — Risk Management Amber */
+.step-four .step-badge {
+  background: linear-gradient(90deg, #ffb700, #e0a000) !important;
+  color: #2b1f00 !important;
+  box-shadow: 0 2px 8px rgba(255, 183, 0, 0.35) !important;
+}
+
+/* STEP 5 — Psychology Purple */
+.step-five .step-badge {
+  background: linear-gradient(90deg, #b060ff, #9c00ff) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(156, 0, 255, 0.35) !important;
+}
+
+/* STEP 5A, 5A1, 5A2 — Liquidity Cyan */
+.step-five-a .step-badge,
+.step-five-a1 .step-badge,
+.step-five-a2 .step-badge {
+  background: linear-gradient(90deg, #00e5ff, #00c5de) !important;
+  color: #002a36 !important;
+  box-shadow: 0 2px 8px rgba(0, 229, 255, 0.35) !important;
+}
+
+/* STEP 5B1, 5B2 — SMC Magenta */
+.step-five-b1 .step-badge,
+.step-five-b2 .step-badge {
+  background: linear-gradient(90deg, #ff40ff, #d400d4) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 0, 255, 0.35) !important;
+}
+
+/* STEP 6, 6A — Indicator Orange */
+.step-six .step-badge {
+  background: linear-gradient(90deg, #ff6b35, #e85520) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.35) !important;
+}
+
+/* STEP 7A, 7B, 7C, 7D — Profit/Exit Gold */
+.step-seven-a .step-badge,
+.step-seven-b .step-badge,
+.step-seven-c .step-badge,
+.step-seven-d .step-badge {
+  background: linear-gradient(90deg, #ffd700, #f0c000) !important;
+  color: #2b2000 !important;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.35) !important;
+}
+
+/* STEP 8, 8A, 8B — Multi-TF Teal-Green */
+.step-eight .step-badge,
+.step-eight-a .step-badge,
+.step-eight-b .step-badge {
+  background: linear-gradient(90deg, #00e5b0, #00bf96) !important;
+  color: #002b22 !important;
+  box-shadow: 0 2px 8px rgba(0, 229, 176, 0.35) !important;
+}
+
+/* STEP 9 — Backtesting Red (danger/testing) */
+.step-nine .step-badge {
+  background: linear-gradient(90deg, #ff3b3b, #e02020) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 59, 59, 0.35) !important;
+}
+
+/* STEP 10 — Strategy Build Fire Orange */
+.step-ten .step-badge {
+  background: linear-gradient(90deg, #ff8c00, #ff6b00) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 140, 0, 0.35) !important;
+}
+
+/* ADVANCED badge on separator */
+.advanced-separator-content {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  letter-spacing: 3px !important;
+}
+
+
+/* =============================================
+   EASY WIN 3: HERO HEADING — BARLOW CONDENSED
+   Premium financial/trading terminal font feel
+=============================================== */
+
+.hero h1 {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 64px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
+  line-height: 1.1 !important;
+  text-transform: uppercase !important;
+}
+
+/* Light mode heading stays dark gradient */
+[data-theme="light"] .hero h1 {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 64px !important;
+}
+
+/* Mobile size fix */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 40px !important;
+  }
+}
+
+/* Stat numbers also get Barlow for terminal feel */
+.stat-number {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 48px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+}
