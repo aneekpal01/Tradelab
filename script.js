@@ -221,3 +221,120 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
+// =============================================
+// MARKET STATUS BAR — IST TIME + NSE HOURS
+// =============================================
+
+function updateMarketStatus() {
+  const dot    = document.getElementById("marketDot");
+  const label  = document.getElementById("marketLabel");
+  const session = document.getElementById("marketSession");
+  const timeEl = document.getElementById("marketTime");
+  const niftyTag = document.getElementById("niftyTag");
+
+  if (!dot || !label || !timeEl) return;
+
+  // IST = UTC+5:30
+  const now = new Date();
+  const istOffset = 5.5 * 60 * 60 * 1000;
+  const ist = new Date(now.getTime() + (now.getTimezoneOffset() * 60 * 1000) + istOffset);
+
+  const h = ist.getHours();
+  const m = ist.getMinutes();
+  const totalMins = h * 60 + m;
+  const day = ist.getDay(); // 0=Sun, 6=Sat
+
+  // Format time
+  const hh = String(h).padStart(2, '0');
+  const mm = String(m).padStart(2, '0');
+  const ss = String(ist.getSeconds()).padStart(2, '0');
+  timeEl.textContent = `${hh}:${mm}:${ss}`;
+
+  const isWeekend = (day === 0 || day === 6);
+
+  // NSE: Pre-open 9:00–9:15, Market 9:15–15:30, Post 15:30–16:00
+  const PRE_OPEN_START = 9 * 60;
+  const MARKET_OPEN    = 9 * 60 + 15;
+  const MARKET_CLOSE   = 15 * 60 + 30;
+  const POST_CLOSE     = 16 * 60;
+
+  let status = "closed";
+  if (!isWeekend) {
+    if (totalMins >= PRE_OPEN_START && totalMins < MARKET_OPEN) status = "pre";
+    else if (totalMins >= MARKET_OPEN && totalMins < MARKET_CLOSE) status = "open";
+    else if (totalMins >= MARKET_CLOSE && totalMins < POST_CLOSE) status = "post";
+  }
+
+  // Clear classes
+  dot.className = "market-dot";
+  label.className = "market-label";
+  niftyTag.className = "market-session-tag";
+
+  if (status === "open") {
+    dot.classList.add("open");
+    label.classList.add("open");
+    label.textContent = "NSE OPEN";
+    session.textContent = "· Live Trading";
+    niftyTag.classList.add("open");
+    niftyTag.textContent = "LIVE";
+  } else if (status === "pre") {
+    dot.classList.add("pre");
+    label.classList.add("pre");
+    label.textContent = "PRE-OPEN";
+    session.textContent = "· 9:00–9:15 AM";
+    niftyTag.classList.add("pre");
+    niftyTag.textContent = "PRE";
+  } else if (status === "post") {
+    dot.classList.add("pre");
+    label.classList.add("pre");
+    label.textContent = "POST-MARKET";
+    session.textContent = "· Closing session";
+    niftyTag.classList.add("pre");
+    niftyTag.textContent = "POST";
+  } else {
+    dot.classList.add("closed");
+    label.classList.add("closed");
+    label.textContent = isWeekend ? "MARKET CLOSED" : "NSE CLOSED";
+    session.textContent = isWeekend ? "· Weekend" : "· Opens 9:15 AM";
+    niftyTag.classList.add("closed");
+    niftyTag.textContent = "CLOSED";
+  }
+}
+
+// Run immediately + every second for live clock
+updateMarketStatus();
+setInterval(updateMarketStatus, 1000);
+
+
+// =============================================
+// PROGRESS MILESTONES — UPDATE ON PROGRESS CHANGE
+// =============================================
+
+function updateMilestones() {
+  const bar = document.getElementById("progressBar");
+  if (!bar) return;
+
+  const pct = parseFloat(bar.style.width) || 0;
+  const milestones = document.querySelectorAll(".progress-milestone");
+
+  milestones.forEach(m => {
+    const mLeft = parseFloat(m.style.left);
+    if (pct >= mLeft) {
+      m.classList.add("reached");
+    } else {
+      m.classList.remove("reached");
+    }
+  });
+}
+
+// Hook into existing progress update — observe bar width changes
+const progressBarEl = document.getElementById("progressBar");
+if (progressBarEl) {
+  const observer = new MutationObserver(updateMilestones);
+  observer.observe(progressBarEl, { attributes: true, attributeFilter: ['style'] });
+}
+
+// Also run on load
+window.addEventListener("load", updateMilestones);
