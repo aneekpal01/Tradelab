@@ -4558,3 +4558,380 @@ body.loading #backToTop {
   font-weight: 700 !important;
   letter-spacing: 1px !important;
 }
+
+
+/* =============================================
+   MEDIUM WIN 1: MARKET STATUS BAR
+=============================================== */
+
+.market-status-bar {
+  background: linear-gradient(90deg, #020b16 0%, #041020 50%, #020b16 100%);
+  border-bottom: 1px solid rgba(0, 255, 156, 0.12);
+  padding: 6px 24px;
+  font-size: 12px;
+  font-family: 'Barlow Condensed', 'Inter', monospace;
+  letter-spacing: 0.05em;
+  position: relative;
+  z-index: 998;
+}
+
+.market-status-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.market-status-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.market-status-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #7a8fa8;
+}
+
+/* Blinking dot */
+.market-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.market-dot.open {
+  background: #00ff9c;
+  box-shadow: 0 0 8px rgba(0, 255, 156, 0.8);
+  animation: marketBlink 2s ease-in-out infinite;
+}
+
+.market-dot.closed {
+  background: #ff4d4d;
+  box-shadow: 0 0 6px rgba(255, 77, 77, 0.6);
+}
+
+.market-dot.pre {
+  background: #ffb700;
+  box-shadow: 0 0 7px rgba(255, 183, 0, 0.7);
+  animation: marketBlink 1.5s ease-in-out infinite;
+}
+
+@keyframes marketBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.market-label {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.market-label.open  { color: #00ff9c; }
+.market-label.closed { color: #ff6b6b; }
+.market-label.pre   { color: #ffb700; }
+
+.market-session {
+  color: #4a6070;
+  font-size: 11px;
+}
+
+.market-time-label,
+.market-nifty-label {
+  color: #4a6070;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.market-time {
+  color: #a0b4c4;
+  font-weight: 600;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.market-divider {
+  color: #2a3a4a;
+}
+
+.market-session-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.market-session-tag.open {
+  background: rgba(0, 255, 156, 0.12);
+  color: #00ff9c;
+  border: 1px solid rgba(0, 255, 156, 0.25);
+}
+
+.market-session-tag.closed {
+  background: rgba(255, 77, 77, 0.10);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 77, 77, 0.20);
+}
+
+.market-session-tag.pre {
+  background: rgba(255, 183, 0, 0.10);
+  color: #ffb700;
+  border: 1px solid rgba(255, 183, 0, 0.22);
+}
+
+/* Light mode */
+[data-theme="light"] .market-status-bar {
+  background: linear-gradient(90deg, #e8f0f8 0%, #f0f6ff 50%, #e8f0f8 100%);
+  border-bottom: 1px solid rgba(0, 145, 90, 0.15);
+}
+
+[data-theme="light"] .market-time { color: #334155; }
+[data-theme="light"] .market-time-label,
+[data-theme="light"] .market-nifty-label { color: #94a3b8; }
+[data-theme="light"] .market-session { color: #94a3b8; }
+[data-theme="light"] .market-divider { color: #cbd5e1; }
+[data-theme="light"] .market-label.open  { color: #00724a; }
+[data-theme="light"] .market-label.closed { color: #dc2626; }
+[data-theme="light"] .market-label.pre   { color: #92400e; }
+
+/* Mobile: hide right side on small screens */
+@media (max-width: 600px) {
+  .market-status-right { display: none; }
+  .market-status-bar { padding: 5px 16px; }
+}
+
+
+/* =============================================
+   MEDIUM WIN 2: HERO REDESIGN
+=============================================== */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 85vh;
+  padding: 0 20px 0;
+}
+
+/* Candlestick SVG background */
+.hero-chart-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-candles-svg {
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+}
+
+/* Fade gradient over candlesticks so content readable */
+.hero-chart-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(11,15,20,0.55) 0%,
+    rgba(11,15,20,0.30) 40%,
+    rgba(11,15,20,0.70) 100%
+  );
+}
+
+[data-theme="light"] .hero-chart-bg::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(219,234,254,0.75) 0%,
+    rgba(224,253,244,0.55) 40%,
+    rgba(237,233,254,0.80) 100%
+  );
+}
+
+/* Hero tag pill */
+.hero-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 99px;
+  background: rgba(0, 255, 156, 0.10);
+  border: 1px solid rgba(0, 255, 156, 0.30);
+  color: #00ff9c;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme="light"] .hero-tag {
+  background: rgba(0, 145, 90, 0.08);
+  border-color: rgba(0, 145, 90, 0.30);
+  color: #00724a;
+}
+
+/* Hero content wrapper */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Stats strip */
+.stats-strip {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-top: 48px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px 40px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  flex-wrap: wrap;
+}
+
+[data-theme="light"] .stats-strip {
+  background: rgba(255, 255, 255, 0.80);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+}
+
+.stat-strip-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 36px;
+}
+
+.stat-strip-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.10);
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .stat-strip-divider {
+  background: rgba(0, 0, 0, 0.10);
+}
+
+/* hide old stats-container if still exists */
+.stats-container {
+  display: none !important;
+}
+
+/* Mobile stats strip */
+@media (max-width: 700px) {
+  .stats-strip {
+    padding: 16px 20px;
+    gap: 0;
+    border-radius: 12px;
+    width: 100%;
+  }
+  .stat-strip-item {
+    padding: 8px 16px;
+  }
+  .stat-strip-divider {
+    display: none;
+  }
+  .stats-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+
+/* =============================================
+   MEDIUM WIN 3: PROGRESS BAR MILESTONES
+=============================================== */
+
+/* Make progress bar container relative for milestone positioning */
+.progress-bar-container {
+  position: relative;
+  overflow: visible !important;
+  margin-bottom: 20px;
+}
+
+/* Milestone marker */
+.progress-milestone {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.milestone-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #1e2a3a;
+  border: 2px solid rgba(255, 255, 255, 0.20);
+  display: block;
+  transition: all 0.4s ease;
+}
+
+/* When progress bar fills past this milestone, dot glows */
+.progress-milestone.reached .milestone-dot {
+  background: #00ff9c;
+  border-color: #00ff9c;
+  box-shadow: 0 0 8px rgba(0, 255, 156, 0.8);
+}
+
+.milestone-label {
+  position: absolute;
+  top: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.25);
+  font-family: 'Barlow Condensed', monospace;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  transition: color 0.4s ease;
+}
+
+.progress-milestone.reached .milestone-label {
+  color: #00ff9c;
+}
+
+[data-theme="light"] .milestone-dot {
+  background: #dde4ed;
+  border-color: #c8d5e0;
+}
+
+[data-theme="light"] .progress-milestone.reached .milestone-dot {
+  background: #00915a;
+  border-color: #00915a;
+  box-shadow: 0 0 8px rgba(0, 145, 90, 0.5);
+}
+
+[data-theme="light"] .milestone-label { color: #94a3b8; }
+[data-theme="light"] .progress-milestone.reached .milestone-label { color: #00724a; }
