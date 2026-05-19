@@ -228,11 +228,13 @@ document.addEventListener('DOMContentLoaded', () => {
 // =============================================
 
 function updateMarketStatus() {
-  const dot    = document.getElementById("marketDot");
-  const label  = document.getElementById("marketLabel");
-  const session = document.getElementById("marketSession");
-  const timeEl = document.getElementById("marketTime");
+  const dot      = document.getElementById("marketDot");
+  const label    = document.getElementById("marketLabel");
+  const session  = document.getElementById("marketSession");
+  const timeEl   = document.getElementById("marketTime");
   const niftyTag = document.getElementById("niftyTag");
+  const forexTag = document.getElementById("forexTag");
+  const cryptoTag = document.getElementById("cryptoTag");
 
   if (!dot || !label || !timeEl) return;
 
@@ -254,39 +256,60 @@ function updateMarketStatus() {
 
   const isWeekend = (day === 0 || day === 6);
 
-  // NSE: Pre-open 9:00–9:15, Market 9:15–15:30, Post 15:30–16:00
+  // ── NSE Hours (IST) ──
   const PRE_OPEN_START = 9 * 60;
   const MARKET_OPEN    = 9 * 60 + 15;
   const MARKET_CLOSE   = 15 * 60 + 30;
   const POST_CLOSE     = 16 * 60;
 
-  let status = "closed";
+  let nseStatus = "closed";
   if (!isWeekend) {
-    if (totalMins >= PRE_OPEN_START && totalMins < MARKET_OPEN) status = "pre";
-    else if (totalMins >= MARKET_OPEN && totalMins < MARKET_CLOSE) status = "open";
-    else if (totalMins >= MARKET_CLOSE && totalMins < POST_CLOSE) status = "post";
+    if (totalMins >= PRE_OPEN_START && totalMins < MARKET_OPEN) nseStatus = "pre";
+    else if (totalMins >= MARKET_OPEN && totalMins < MARKET_CLOSE) nseStatus = "open";
+    else if (totalMins >= MARKET_CLOSE && totalMins < POST_CLOSE) nseStatus = "post";
   }
 
-  // Clear classes
+  // ── Forex Hours (IST) ──
+  // Forex: Mon 6:30 AM IST → Sat 4:30 AM IST (24/5)
+  // Closed: Sat 4:30 AM → Mon 6:30 AM IST
+  // Sessions in IST:
+  //   Sydney:  5:30 AM – 2:30 PM
+  //   Tokyo:   6:30 AM – 3:30 PM
+  //   London:  1:30 PM – 10:30 PM  ← best liquidity
+  //   NY:      6:30 PM – 1:30 AM
+  let forexStatus = "closed";
+  let forexSession = "";
+  if (!(day === 6 && totalMins >= 4*60+30) && !(day === 0) && !(day === 1 && totalMins < 6*60+30)) {
+    forexStatus = "open";
+    // Show current active session
+    if (totalMins >= 5*60+30 && totalMins < 6*60+30)       forexSession = "Sydney";
+    else if (totalMins >= 6*60+30 && totalMins < 13*60+30)  forexSession = "Tokyo";
+    else if (totalMins >= 13*60+30 && totalMins < 18*60+30) forexSession = "London ⚡";
+    else if (totalMins >= 18*60+30 && totalMins < 22*60)    forexSession = "NY+London";
+    else if (totalMins >= 22*60 || totalMins < 1*60+30)     forexSession = "New York";
+    else forexSession = "Open";
+  }
+
+  // ── NSE tag update ──
   dot.className = "market-dot";
   label.className = "market-label";
   niftyTag.className = "market-session-tag";
 
-  if (status === "open") {
+  if (nseStatus === "open") {
     dot.classList.add("open");
     label.classList.add("open");
     label.textContent = "NSE OPEN";
     session.textContent = "· Live Trading";
     niftyTag.classList.add("open");
     niftyTag.textContent = "LIVE";
-  } else if (status === "pre") {
+  } else if (nseStatus === "pre") {
     dot.classList.add("pre");
     label.classList.add("pre");
     label.textContent = "PRE-OPEN";
     session.textContent = "· 9:00–9:15 AM";
     niftyTag.classList.add("pre");
     niftyTag.textContent = "PRE";
-  } else if (status === "post") {
+  } else if (nseStatus === "post") {
     dot.classList.add("pre");
     label.classList.add("pre");
     label.textContent = "POST-MARKET";
@@ -300,6 +323,24 @@ function updateMarketStatus() {
     session.textContent = isWeekend ? "· Weekend" : "· Opens 9:15 AM";
     niftyTag.classList.add("closed");
     niftyTag.textContent = "CLOSED";
+  }
+
+  // ── Crypto tag (always 24/7) ──
+  if (cryptoTag) {
+    cryptoTag.className = "market-session-tag open";
+    cryptoTag.textContent = "24/7";
+  }
+
+  // ── Forex tag update ──
+  if (forexTag) {
+    forexTag.className = "market-session-tag";
+    if (forexStatus === "open") {
+      forexTag.classList.add("open");
+      forexTag.textContent = forexSession || "OPEN";
+    } else {
+      forexTag.classList.add("closed");
+      forexTag.textContent = "CLOSED";
+    }
   }
 }
 
