@@ -119,6 +119,10 @@
   <div class="logo">
   <img src="logo.png" alt="TradeLab" class="nav-logo">
   TradeLab
+  <div class="streak-badge" id="streakBadge" title="Your learning streak">
+    <span class="streak-fire">🔥</span>
+    <span class="streak-count" id="streakCount">0</span>
+  </div>
 </div>
     
     <button class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -1088,6 +1092,126 @@
     });
   </script>
 
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <div class="testimonials-header">
+      <div class="testimonials-tag">Student Reviews</div>
+      <h2>What Our Students Say</h2>
+      <p class="testimonials-sub">Real feedback from traders who started from zero</p>
+    </div>
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">RK</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Rahul K.</span>
+            <span class="testimonial-tag nse-tag">NSE Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"TradeLab ne mujhe SMC aur liquidity concepts itne clearly samjhaye jo koi paid course nahi kar paya. Ab main apne setups khud identify kar sakta hun."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">SMC</span>
+          <span class="learned-tag">Liquidity</span>
+          <span class="learned-tag">Order Blocks</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">PS</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Priya S.</span>
+            <span class="testimonial-tag crypto-tag">Crypto Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"The structured roadmap is exactly what I needed. Started from Step 1 and went all the way — the risk management module literally saved my account."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">Risk Mgmt</span>
+          <span class="learned-tag">Trendlines</span>
+          <span class="learned-tag">Backtesting</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">AM</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Arjun M.</span>
+            <span class="testimonial-tag forex-tag">Forex Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"AI Mentor feature is insane — 3 AM ko bhi trading psychology questions ke jawab mil jaate hain. Aur sab kuch free hai, yeh believe hi nahi hota."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">Psychology</span>
+          <span class="learned-tag">Multi-TF</span>
+          <span class="learned-tag">Strategy</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">NS</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Neha S.</span>
+            <span class="testimonial-tag nse-tag">Options Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"Backtesting Lab aur Risk Calculator tools ne mera confidence double kar diya. Pehle blindly trade karta tha, ab system ke saath trade karta hun."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">Backtesting</span>
+          <span class="learned-tag">S&R</span>
+          <span class="learned-tag">Entry Models</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">VT</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Vikram T.</span>
+            <span class="testimonial-tag crypto-tag">BankNifty Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"Concept cards aur PDF notes — best resource for quick revision before market opens. Ye platform genuinely traders ke liye traders ne banaya hai."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">AMD Model</span>
+          <span class="learned-tag">CHOCH</span>
+          <span class="learned-tag">Asia Range</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">DK</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Dev K.</span>
+            <span class="testimonial-tag forex-tag">Swing Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"Maine 3 paid courses kiye the pehle. TradeLab ka free content unse better hai — no fluff, pure concepts, aur market status bar jaisi details show karte hain care."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">Supply/Demand</span>
+          <span class="learned-tag">EMA</span>
+          <span class="learned-tag">Top-Down</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- FAQ Section -->
   <section id="faq" class="faq-section">
     <h2>❓ Frequently Asked Questions</h2>
@@ -1196,7 +1320,29 @@
     </div>
   </footer>
 
-  <!-- Firebase Scripts -->
+  <!-- Mobile Bottom Tab Bar -->
+  <nav class="mobile-tab-bar" id="mobileTabBar">
+    <a href="#" class="tab-item tab-ai" onclick="toggleChat(); return false;">
+      <span class="tab-icon">🤖</span>
+      <span class="tab-label">AI Mentor</span>
+    </a>
+    <a href="#learn" class="tab-item" id="tabLearn">
+      <span class="tab-icon">📚</span>
+      <span class="tab-label">Learn</span>
+    </a>
+    <a href="backtest.html" class="tab-item">
+      <span class="tab-icon">📊</span>
+      <span class="tab-label">Backtest</span>
+    </a>
+    <a href="calculator.html" class="tab-item">
+      <span class="tab-icon">🧮</span>
+      <span class="tab-label">Risk Calc</span>
+    </a>
+    <a href="quiz.html" class="tab-item">
+      <span class="tab-icon">🏆</span>
+      <span class="tab-label">Quiz</span>
+    </a>
+  </nav>
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
