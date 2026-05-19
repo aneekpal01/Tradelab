@@ -3892,7 +3892,7 @@ body.loading #backToTop {
     box-shadow: 0 4px 24px rgba(0,0,0,0.10) !important;
 }
 
-/* Nav links */
+/* Nav links — base style */
 [data-theme="light"] .nav-links li a {
     color: #1e293b !important;
     font-weight: 500 !important;
@@ -3902,6 +3902,69 @@ body.loading #backToTop {
     background: rgba(0,180,120,0.08) !important;
     color: #00915a !important;
     box-shadow: none !important;
+}
+
+/* Learning Vault — border box (same family as other nav items) */
+[data-theme="light"] .nav-links li a[href="#learn"] {
+    background: rgba(0,180,120,0.06) !important;
+    border: 1px solid rgba(0,180,120,0.45) !important;
+    color: #00724a !important;
+    border-radius: 6px !important;
+    padding: 8px 14px !important;
+}
+
+[data-theme="light"] .nav-links li a[href="#learn"]:hover {
+    background: rgba(0,180,120,0.13) !important;
+    border-color: #00915a !important;
+    color: #005a3a !important;
+    box-shadow: none !important;
+}
+
+/* FAQ — neutral border box */
+[data-theme="light"] .nav-links li a[href="#faq"] {
+    background: rgba(0,0,0,0.03) !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #1e293b !important;
+    border-radius: 6px !important;
+    padding: 8px 14px !important;
+}
+
+[data-theme="light"] .nav-links li a[href="#faq"]:hover {
+    background: rgba(0,0,0,0.06) !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+}
+
+/* Login — neutral border box */
+[data-theme="light"] .nav-links li a[href="login.html"] {
+    background: rgba(0,0,0,0.03) !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #1e293b !important;
+    border-radius: 6px !important;
+    padding: 8px 14px !important;
+}
+
+[data-theme="light"] .nav-links li a[href="login.html"]:hover {
+    background: rgba(0,0,0,0.06) !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+}
+
+/* AI Mentor button — light mode clean border box */
+[data-theme="light"] .ai-mentor-btn {
+    background: rgba(0,114,255,0.07) !important;
+    border: 1px solid #3b82f6 !important;
+    color: #1d4ed8 !important;
+    box-shadow: none !important;
+    border-radius: 20px !important;
+}
+
+[data-theme="light"] .ai-mentor-btn:hover {
+    background: rgba(0,114,255,0.14) !important;
+    box-shadow: none !important;
+    transform: translateY(-2px) !important;
 }
 
 /* Colored nav buttons: keep their border tints, darken text */
