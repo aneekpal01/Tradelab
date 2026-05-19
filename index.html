@@ -82,6 +82,24 @@
     </script>
   </div>
 
+  <!-- Market Status Bar -->
+  <div class="market-status-bar" id="marketStatusBar">
+    <div class="market-status-inner">
+      <div class="market-status-left">
+        <span class="market-dot" id="marketDot"></span>
+        <span class="market-label" id="marketLabel">Checking markets...</span>
+        <span class="market-session" id="marketSession"></span>
+      </div>
+      <div class="market-status-right">
+        <span class="market-time-label">IST</span>
+        <span class="market-time" id="marketTime"></span>
+        <span class="market-divider">·</span>
+        <span class="market-nifty-label">NIFTY 50</span>
+        <span class="market-session-tag" id="niftyTag"></span>
+      </div>
+    </div>
+  </div>
+
   <!-- Loader with Logo -->
   <div class="loader-wrapper" id="loader">
     <img src="logo.png" alt="TradeLab" class="loader-logo">
@@ -134,32 +152,93 @@
 
   <!-- Hero Section -->
   <section class="hero">
-    <h1>Learn Trading the Right Way</h1>
-    <p>
-      TradeLab is a free educational platform focused on trading concepts,
-      risk management, and disciplined thinking — not signals.
-    </p>
-   <a href="#learn" class="btn">Start Learning</a>
-    
-    <!-- Stats Counter -->
-    <div class="stats-container">
-      <div class="stat-item">
+
+    <!-- Candlestick SVG Background -->
+    <div class="hero-chart-bg" aria-hidden="true">
+      <svg class="hero-candles-svg" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Bullish candles (green) -->
+        <g class="candle-group" opacity="0.18">
+          <!-- Wicks -->
+          <line x1="60" y1="60" x2="60" y2="200" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="120" y1="50" x2="120" y2="190" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="240" y1="70" x2="240" y2="220" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="360" y1="40" x2="360" y2="170" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="480" y1="80" x2="480" y2="210" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="600" y1="55" x2="600" y2="185" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="720" y1="65" x2="720" y2="200" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="840" y1="45" x2="840" y2="175" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="960" y1="75" x2="960" y2="215" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="1080" y1="50" x2="1080" y2="180" stroke="#00ff9c" stroke-width="1.5"/>
+          <!-- Bearish candles -->
+          <line x1="180" y1="55" x2="180" y2="195" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="300" y1="65" x2="300" y2="205" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="420" y1="50" x2="420" y2="185" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="540" y1="70" x2="540" y2="210" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="660" y1="60" x2="660" y2="190" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="780" y1="55" x2="780" y2="200" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="900" y1="65" x2="900" y2="195" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="1020" y1="45" x2="1020" y2="185" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="1140" y1="60" x2="1140" y2="200" stroke="#ff4d4d" stroke-width="1.5"/>
+          <!-- Bullish bodies -->
+          <rect x="45" y="110" width="30" height="60" fill="#00ff9c" rx="2"/>
+          <rect x="105" y="100" width="30" height="65" fill="#00ff9c" rx="2"/>
+          <rect x="225" y="120" width="30" height="70" fill="#00ff9c" rx="2"/>
+          <rect x="345" y="90" width="30" height="55" fill="#00ff9c" rx="2"/>
+          <rect x="465" y="130" width="30" height="55" fill="#00ff9c" rx="2"/>
+          <rect x="585" y="105" width="30" height="60" fill="#00ff9c" rx="2"/>
+          <rect x="705" y="115" width="30" height="65" fill="#00ff9c" rx="2"/>
+          <rect x="825" y="95" width="30" height="55" fill="#00ff9c" rx="2"/>
+          <rect x="945" y="125" width="30" height="65" fill="#00ff9c" rx="2"/>
+          <rect x="1065" y="100" width="30" height="60" fill="#00ff9c" rx="2"/>
+          <!-- Bearish bodies -->
+          <rect x="165" y="100" width="30" height="65" fill="#ff4d4d" rx="2"/>
+          <rect x="285" y="110" width="30" height="70" fill="#ff4d4d" rx="2"/>
+          <rect x="405" y="95" width="30" height="60" fill="#ff4d4d" rx="2"/>
+          <rect x="525" y="115" width="30" height="68" fill="#ff4d4d" rx="2"/>
+          <rect x="645" y="105" width="30" height="62" fill="#ff4d4d" rx="2"/>
+          <rect x="765" y="100" width="30" height="70" fill="#ff4d4d" rx="2"/>
+          <rect x="885" y="110" width="30" height="60" fill="#ff4d4d" rx="2"/>
+          <rect x="1005" y="95" width="30" height="65" fill="#ff4d4d" rx="2"/>
+          <rect x="1125" y="105" width="30" height="68" fill="#ff4d4d" rx="2"/>
+        </g>
+        <!-- Trend line -->
+        <polyline points="45,170 165,165 225,190 345,145 465,185 585,165 705,180 825,150 945,190 1065,160" fill="none" stroke="#00ff9c" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.25"/>
+      </svg>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-tag">🚀 Free Trading Education Platform</div>
+      <h1>Learn Trading<br>the Right Way</h1>
+      <p>
+        TradeLab is a free educational platform focused on trading concepts,
+        risk management, and disciplined thinking — not signals.
+      </p>
+      <a href="#learn" class="btn">Start Learning</a>
+    </div>
+
+    <!-- Stats Banner Strip -->
+    <div class="stats-strip">
+      <div class="stat-strip-item">
         <span class="stat-number" data-target="5000">0</span>
         <span class="stat-label">Students Enrolled</span>
       </div>
-      <div class="stat-item">
+      <div class="stat-strip-divider"></div>
+      <div class="stat-strip-item">
         <span class="stat-number" data-target="1800">0</span>
         <span class="stat-label">Already Learning</span>
       </div>
-      <div class="stat-item">
+      <div class="stat-strip-divider"></div>
+      <div class="stat-strip-item">
         <span class="stat-number" data-target="25">0</span>
         <span class="stat-label">Video Lessons</span>
       </div>
-      <div class="stat-item">
+      <div class="stat-strip-divider"></div>
+      <div class="stat-strip-item">
         <span class="stat-number" data-target="100">0</span>
         <span class="stat-label">% Free Forever</span>
       </div>
     </div>
+
   </section>
 
   <!-- Confetti Canvas -->
@@ -227,6 +306,19 @@
       </div>
       <div class="progress-bar-container">
         <div class="progress-bar-fill" id="progressBar"></div>
+        <!-- Milestone markers -->
+        <div class="progress-milestone" style="left: 25%" data-label="25%">
+          <span class="milestone-dot"></span>
+          <span class="milestone-label">25%</span>
+        </div>
+        <div class="progress-milestone" style="left: 50%" data-label="Halfway">
+          <span class="milestone-dot"></span>
+          <span class="milestone-label">50%</span>
+        </div>
+        <div class="progress-milestone" style="left: 75%" data-label="75%">
+          <span class="milestone-dot"></span>
+          <span class="milestone-label">75%</span>
+        </div>
       </div>
       <div style="text-align: right; margin-top: 10px;">
         <button class="reset-btn" onclick="resetProgress()">🔄 Reset Progress</button>
