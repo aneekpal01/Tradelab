@@ -379,3 +379,72 @@ if (progressBarEl) {
 
 // Also run on load
 window.addEventListener("load", updateMilestones);
+
+
+// =============================================
+// STREAK / XP SYSTEM
+// =============================================
+
+function initStreak() {
+  const badge  = document.getElementById("streakBadge");
+  const countEl = document.getElementById("streakCount");
+  if (!badge || !countEl) return;
+
+  const today     = new Date().toDateString();
+  const lastVisit = localStorage.getItem("tl_last_visit");
+  let streak      = parseInt(localStorage.getItem("tl_streak") || "0");
+
+  if (lastVisit === today) {
+    // Same day — streak unchanged
+  } else {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    if (lastVisit === yesterday.toDateString()) {
+      // Consecutive day — increment
+      streak += 1;
+    } else if (!lastVisit) {
+      // First ever visit
+      streak = 1;
+    } else {
+      // Streak broken
+      streak = 1;
+    }
+    localStorage.setItem("tl_last_visit", today);
+    localStorage.setItem("tl_streak", streak);
+  }
+
+  // Show badge only if streak >= 1
+  if (streak >= 1) {
+    countEl.textContent = `Day ${streak}`;
+    badge.classList.remove("hidden");
+    // Hot glow if 7+ day streak
+    if (streak >= 7) badge.classList.add("hot");
+    else badge.classList.remove("hot");
+  } else {
+    badge.classList.add("hidden");
+  }
+}
+
+initStreak();
+
+
+// =============================================
+// MOBILE TAB BAR — ACTIVE STATE ON SCROLL
+// =============================================
+
+(function() {
+  const tabLearn = document.getElementById("tabLearn");
+  if (!tabLearn) return;
+
+  const learnSection = document.getElementById("learn");
+  if (!learnSection) return;
+
+  window.addEventListener("scroll", () => {
+    const rect = learnSection.getBoundingClientRect();
+    if (rect.top <= 120 && rect.bottom > 0) {
+      tabLearn.classList.add("active");
+    } else {
+      tabLearn.classList.remove("active");
+    }
+  }, { passive: true });
+})();
