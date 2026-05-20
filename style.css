@@ -3927,14 +3927,18 @@ body.loading #backToTop {
 
 /* ── NAVBAR ───────────────────────────── */
 [data-theme="light"] .navbar {
-    background: rgba(255,255,255,0.97) !important;
-    border-bottom: 1px solid #d1dce8 !important;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.08) !important;
+    background: rgba(248, 252, 255, 0.92) !important;
+    border-bottom: 1px solid rgba(0, 180, 160, 0.18) !important;
+    box-shadow: 0 1px 0 rgba(0,180,160,0.10), 0 4px 24px rgba(0,0,0,0.07) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
 }
 
 [data-theme="light"] .navbar.scrolled {
-    background: rgba(255,255,255,0.99) !important;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.10) !important;
+    background: rgba(245, 251, 255, 0.97) !important;
+    box-shadow: 0 1px 0 rgba(0,180,160,0.15), 0 8px 32px rgba(0,0,0,0.09) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
 }
 
 /* Nav links — base style */
@@ -4690,20 +4694,33 @@ body.loading #backToTop {
   border: 1px solid rgba(255, 183, 0, 0.22);
 }
 
-/* Light mode */
+/* Light mode — market bar kept dark for readability (terminal style) */
 [data-theme="light"] .market-status-bar {
-  background: linear-gradient(90deg, #e8f0f8 0%, #f0f6ff 50%, #e8f0f8 100%);
-  border-bottom: 1px solid rgba(0, 145, 90, 0.15);
+  background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.15);
 }
 
-[data-theme="light"] .market-time { color: #334155; }
+[data-theme="light"] .market-status-right { color: #94a3b8; }
+[data-theme="light"] .market-time { color: #e2e8f0; font-weight: 700; }
 [data-theme="light"] .market-time-label,
-[data-theme="light"] .market-nifty-label { color: #94a3b8; }
-[data-theme="light"] .market-session { color: #94a3b8; }
-[data-theme="light"] .market-divider { color: #cbd5e1; }
-[data-theme="light"] .market-label.open  { color: #00724a; }
-[data-theme="light"] .market-label.closed { color: #dc2626; }
-[data-theme="light"] .market-label.pre   { color: #92400e; }
+[data-theme="light"] .market-nifty-label { color: #64748b; }
+[data-theme="light"] .market-session { color: #64748b; }
+[data-theme="light"] .market-divider { color: #334155; }
+[data-theme="light"] .market-label.open  { color: #00ff9c; }
+[data-theme="light"] .market-label.closed { color: #ff6b6b; }
+[data-theme="light"] .market-label.pre   { color: #ffb700; }
+
+/* CRYPTO 24/7 and FOREX LONDON tags — visible in light mode */
+[data-theme="light"] .market-session-tag.open {
+  background: rgba(0, 255, 156, 0.15);
+  color: #00ff9c;
+  border: 1px solid rgba(0, 255, 156, 0.35);
+}
+[data-theme="light"] .market-session-tag.closed {
+  background: rgba(255, 77, 77, 0.15);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 77, 77, 0.30);
+}
 
 /* Mobile: hide right side on small screens */
 @media (max-width: 600px) {
