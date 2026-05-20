@@ -146,14 +146,19 @@
       <li id="loginItem"><a href="login.html">Login</a></li>
       <li id="userItem" style="display: none; color: #00ffc8; font-weight: 600; font-size: 14px; padding-top: 10px;"></li>
       <li id="logoutItem" style="display: none;"><a href="#" onclick="logoutUser()">Logout</a></li>
+      <!-- Theme Toggle — inside navbar -->
+      <li class="nav-theme-toggle-li">
+        <button class="nav-theme-toggle" id="navThemeToggle" onclick="toggleTheme()" title="Switch theme">
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb">
+              <span class="toggle-icon-sun">☀️</span>
+              <span class="toggle-icon-moon">🌙</span>
+            </span>
+          </span>
+        </button>
+      </li>
     </ul>
   </nav>
-
-  <!-- Theme Toggle -->
-  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-    <span class="icon-moon">🌙</span>
-    <span class="icon-sun">☀️</span>
-  </button>
 
   <!-- Back to Top -->
   <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to Top">
@@ -229,23 +234,23 @@
     <!-- Stats Banner Strip -->
     <div class="stats-strip">
       <div class="stat-strip-item">
-        <span class="stat-number" data-target="5000">0</span>
+        <span class="stat-number" id="statEnrolled">1,523</span>
         <span class="stat-label">Students Enrolled</span>
       </div>
       <div class="stat-strip-divider"></div>
       <div class="stat-strip-item">
-        <span class="stat-number" data-target="1800">0</span>
+        <span class="stat-number" id="statLearning">0</span>
         <span class="stat-label">Already Learning</span>
       </div>
       <div class="stat-strip-divider"></div>
       <div class="stat-strip-item">
-        <span class="stat-number" data-target="25">0</span>
+        <span class="stat-number" id="statVideos">0</span>
         <span class="stat-label">Video Lessons</span>
       </div>
       <div class="stat-strip-divider"></div>
       <div class="stat-strip-item">
-        <span class="stat-number" data-target="100">0</span>
-        <span class="stat-label">% Free Forever</span>
+        <span class="stat-number">100%</span>
+        <span class="stat-label">Free Forever</span>
       </div>
     </div>
 
@@ -1494,9 +1499,51 @@
     function toggleTheme() {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
+
+      // Premium ripple overlay animation
+      const ripple = document.createElement('div');
+      ripple.className = 'theme-ripple';
+      ripple.style.cssText = `
+        position: fixed; inset: 0; z-index: 99999; pointer-events: none;
+        background: ${newTheme === 'light' ? 'radial-gradient(circle at 50% 0%, #dbeafe 0%, #e0fdf4 60%, #f0f4f8 100%)' : 'radial-gradient(circle at 50% 0%, #020d18 0%, #071525 60%, #0b0f14 100%)'};
+        opacity: 0; transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1);
+        clip-path: circle(0% at 50% 0%);
+      `;
+      document.body.appendChild(ripple);
+
+      // Trigger animation
+      requestAnimationFrame(() => {
+        ripple.style.transition = 'clip-path 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.55s ease';
+        ripple.style.opacity = '1';
+        ripple.style.clipPath = 'circle(150% at 50% 0%)';
+      });
+
+      // Apply theme halfway through
+      setTimeout(() => {
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateNavThemeToggle(newTheme);
+      }, 250);
+
+      // Remove ripple
+      setTimeout(() => {
+        ripple.style.opacity = '0';
+        setTimeout(() => ripple.remove(), 300);
+      }, 520);
     }
+
+    function updateNavThemeToggle(theme) {
+      const btn = document.getElementById('navThemeToggle');
+      if (!btn) return;
+      if (theme === 'light') {
+        btn.classList.add('is-light');
+      } else {
+        btn.classList.remove('is-light');
+      }
+    }
+
+    // Set initial state
+    updateNavThemeToggle(savedTheme);
   </script>
 
   <script>
