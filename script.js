@@ -448,3 +448,67 @@ initStreak();
     }
   }, { passive: true });
 })();
+
+
+
+// =============================================
+// STATS — LOGIN COUNT + COMPLETED + TOTAL VIDEOS
+// =============================================
+
+function initStats() {
+  // 1. LOGIN COUNT — increment each session
+  let loginCount = parseInt(localStorage.getItem("tl_login_count") || "0");
+  const lastSession = localStorage.getItem("tl_last_session");
+  const nowSession  = Date.now().toString();
+
+  // Count each new page load as a visit (throttled: once per 5 mins)
+  if (!lastSession || (Date.now() - parseInt(lastSession)) > 5 * 60 * 1000) {
+    loginCount += 1;
+    localStorage.setItem("tl_login_count", loginCount);
+    localStorage.setItem("tl_last_session", nowSession);
+  }
+
+  // 2. COMPLETED LECTURES
+  const completed = (JSON.parse(localStorage.getItem("completedVideos") || "[]")).length;
+
+  // 3. TOTAL VIDEOS — count from DOM
+  const totalVideos = document.querySelectorAll('.complete-btn').length || 25;
+
+  // 4. UPDATE STATS STRIP
+  const statLearning = document.getElementById("statLearning");
+  const statVideos   = document.getElementById("statVideos");
+
+  if (statLearning) {
+    // "Already Learning" = base 1523 + login count
+    animateCount(statLearning, 1523 + loginCount, false);
+  }
+
+  if (statVideos) {
+    animateCount(statVideos, totalVideos, false);
+  }
+}
+
+function animateCount(el, target, isPercent) {
+  const duration = 1200;
+  const start = performance.now();
+  const from = 0;
+
+  function step(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(from + (target - from) * eased);
+    el.textContent = isPercent ? current + "%" : current.toLocaleString();
+    if (progress < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
+
+// Run after DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initStats);
+} else {
+  initStats();
+}
