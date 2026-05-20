@@ -5547,3 +5547,145 @@ body.loading #backToTop {
   color: var(--accent-primary, #00ffc8);
   line-height: 1;
 }
+
+
+/* ============================================================
+   DAY MODE COMPREHENSIVE FIX
+   - Text colors strong karo
+   - Complete button visible + bordered
+   - Card descriptions, h3, p sab dark
+   - General readability improve
+   ============================================================ */
+
+/* --- LEARNING CARD TEXT --- */
+[data-theme="light"] .learning-card h3 {
+    color: #0d1117 !important;
+    font-weight: 700 !important;
+}
+
+[data-theme="light"] .learning-card p {
+    color: #374151 !important;
+    font-weight: 500 !important;
+}
+
+/* --- COMPLETE BUTTON — day mode visible + bordered --- */
+[data-theme="light"] .complete-btn {
+    background: #f8fafc !important;
+    border: 1.5px solid #cbd5e1 !important;
+    color: #374151 !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="light"] .complete-btn:hover {
+    background: rgba(0, 145, 90, 0.08) !important;
+    border-color: #00915a !important;
+    color: #00724a !important;
+}
+
+[data-theme="light"] .complete-btn.completed {
+    background: rgba(0, 145, 90, 0.10) !important;
+    border: 1.5px solid #00915a !important;
+    color: #00724a !important;
+    font-weight: 700 !important;
+}
+
+[data-theme="light"] .complete-btn.completed .check-icon {
+    color: #00724a !important;
+    opacity: 1 !important;
+}
+
+/* --- SECTION TITLES & SUBTITLES --- */
+[data-theme="light"] .section-title,
+[data-theme="light"] .section-header,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4 {
+    color: #0d1117 !important;
+}
+
+[data-theme="light"] .section-subtitle,
+[data-theme="light"] .section-desc,
+[data-theme="light"] p {
+    color: #374151 !important;
+}
+
+/* --- LEARNING VAULT HEADING --- */
+[data-theme="light"] #learn h2,
+[data-theme="light"] #learn p {
+    color: #0d1117 !important;
+}
+
+/* --- STATS SECTION --- */
+[data-theme="light"] .stat-label {
+    color: #475569 !important;
+    font-weight: 600 !important;
+}
+
+/* --- PROGRESS TEXT --- */
+[data-theme="light"] .progress-text {
+    color: #0d1117 !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="light"] .progress-count {
+    color: #00724a !important;
+    font-weight: 700 !important;
+}
+
+/* --- SEARCH BOX TEXT --- */
+[data-theme="light"] .search-box input {
+    color: #0d1117 !important;
+}
+
+/* --- FILTER BUTTONS --- */
+[data-theme="light"] .filter-btn {
+    color: #374151 !important;
+    border-color: #cbd5e1 !important;
+    background: #f8fafc !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="light"] .filter-btn.active {
+    background: #0d9488 !important;
+    color: #ffffff !important;
+    border-color: #0d9488 !important;
+}
+
+/* --- VIDEO CARD BACKGROUND --- */
+[data-theme="light"] .video-card {
+    background: #f1f5f9 !important;
+}
+
+/* --- ADVANCED SEPARATOR TEXT --- */
+[data-theme="light"] .advanced-separator-content h3,
+[data-theme="light"] .advanced-separator-content p {
+    color: #0d1117 !important;
+}
+
+/* --- FAQ SECTION --- */
+[data-theme="light"] .faq-question {
+    color: #0d1117 !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="light"] .faq-answer p {
+    color: #374151 !important;
+}
+
+/* --- FOOTER --- */
+[data-theme="light"] .footer-links ul li a {
+    color: #475569 !important;
+}
+
+[data-theme="light"] .footer-links h4 {
+    color: #0d1117 !important;
+}
+
+[data-theme="light"] .footer-bottom p {
+    color: #64748b !important;
+}
+
+/* --- GENERAL BODY TEXT --- */
+[data-theme="light"] body {
+    color: #0d1117 !important;
+}
