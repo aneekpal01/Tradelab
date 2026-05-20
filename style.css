@@ -5336,3 +5336,214 @@ body.loading #backToTop {
     bottom: 85px !important;
   }
 }
+
+
+
+/* =============================================
+   NAVBAR DAY MODE FIX — COMPLETE OVERRIDE
+=============================================== */
+
+[data-theme="light"] .navbar {
+  background: #ffffff !important;
+  border-bottom: 1.5px solid #d1dce8 !important;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.07) !important;
+}
+
+[data-theme="light"] .logo {
+  color: #0d1117 !important;
+}
+
+[data-theme="light"] .nav-links {
+  background: transparent !important;
+}
+
+/* All nav links — dark text */
+[data-theme="light"] .nav-links li a {
+  color: #1e293b !important;
+  background: transparent !important;
+  border-color: #d1dce8 !important;
+}
+
+[data-theme="light"] .nav-links li a:hover {
+  background: rgba(0,145,90,0.07) !important;
+  color: #00724a !important;
+  box-shadow: none !important;
+  border-color: rgba(0,145,90,0.25) !important;
+}
+
+/* Learning Vault */
+[data-theme="light"] .nav-links li a[href="#learn"] {
+  color: #1e293b !important;
+  border: 1px solid #d1dce8 !important;
+}
+
+/* Backtesting Lab */
+[data-theme="light"] .nav-links li a[href="backtest.html"] {
+  background: rgba(59,130,246,0.06) !important;
+  border: 1px solid rgba(59,130,246,0.30) !important;
+  color: #1d4ed8 !important;
+}
+
+/* Risk Calculator */
+[data-theme="light"] .nav-links li a[href="calculator.html"] {
+  background: rgba(245,158,11,0.06) !important;
+  border: 1px solid rgba(217,119,6,0.30) !important;
+  color: #92400e !important;
+}
+
+/* Quiz */
+[data-theme="light"] .nav-links li a[href="quiz.html"] {
+  background: rgba(139,92,246,0.06) !important;
+  border: 1px solid rgba(124,58,237,0.30) !important;
+  color: #5b21b6 !important;
+}
+
+/* FAQ */
+[data-theme="light"] .nav-links li a[href="#faq"] {
+  color: #1e293b !important;
+}
+
+/* AI Mentor button */
+[data-theme="light"] .ai-mentor-btn {
+  background: linear-gradient(135deg, rgba(99,102,241,0.10), rgba(0,180,120,0.10)) !important;
+  border: 1.5px solid rgba(99,102,241,0.30) !important;
+  color: #3730a3 !important;
+}
+
+/* User greeting */
+[data-theme="light"] #userItem {
+  color: #00724a !important;
+  background: rgba(0,180,120,0.07) !important;
+  border: 1px solid rgba(0,180,120,0.22) !important;
+  border-radius: 20px !important;
+  padding: 4px 12px !important;
+}
+
+/* Logout */
+[data-theme="light"] #logoutItem a {
+  background: rgba(239,68,68,0.06) !important;
+  border: 1px solid rgba(239,68,68,0.30) !important;
+  color: #dc2626 !important;
+}
+
+[data-theme="light"] #logoutItem a:hover {
+  background: rgba(239,68,68,0.12) !important;
+}
+
+
+/* =============================================
+   NAV THEME TOGGLE — PREMIUM PILL SWITCH
+=============================================== */
+
+/* Remove old floating theme toggle */
+.theme-toggle {
+  display: none !important;
+}
+
+.nav-theme-toggle-li {
+  display: flex;
+  align-items: center;
+}
+
+.nav-theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Track */
+.theme-toggle-track {
+  display: flex;
+  align-items: center;
+  width: 54px;
+  height: 28px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+  overflow: hidden;
+}
+
+/* Night mode track */
+.nav-theme-toggle:not(.is-light) .theme-toggle-track {
+  background: rgba(30,50,80,0.60);
+  border-color: rgba(0,212,255,0.25);
+}
+
+/* Light mode track */
+.nav-theme-toggle.is-light .theme-toggle-track {
+  background: rgba(219,234,254,0.80);
+  border-color: rgba(0,145,90,0.35);
+}
+
+/* Thumb */
+.theme-toggle-thumb {
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e40af, #0ea5e9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.30);
+}
+
+/* Thumb in light mode — slide right, yellow */
+.nav-theme-toggle.is-light .theme-toggle-thumb {
+  left: calc(100% - 25px);
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  box-shadow: 0 2px 10px rgba(251,191,36,0.40);
+}
+
+/* Icons inside thumb */
+.toggle-icon-sun,
+.toggle-icon-moon {
+  font-size: 12px;
+  line-height: 1;
+  position: absolute;
+  transition: opacity 0.3s ease;
+}
+
+/* Dark mode: show moon, hide sun */
+.nav-theme-toggle:not(.is-light) .toggle-icon-sun { opacity: 0; }
+.nav-theme-toggle:not(.is-light) .toggle-icon-moon { opacity: 1; }
+
+/* Light mode: show sun, hide moon */
+.nav-theme-toggle.is-light .toggle-icon-sun { opacity: 1; }
+.nav-theme-toggle.is-light .toggle-icon-moon { opacity: 0; }
+
+/* Hover glow */
+.nav-theme-toggle:hover .theme-toggle-track {
+  border-color: rgba(0,255,156,0.40);
+  box-shadow: 0 0 10px rgba(0,255,156,0.15);
+}
+
+[data-theme="light"] .nav-theme-toggle:hover .theme-toggle-track {
+  border-color: rgba(0,145,90,0.50);
+  box-shadow: 0 0 10px rgba(0,145,90,0.15);
+}
+
+
+/* =============================================
+   STAT NUMBERS — CLEAN DISPLAY (NO ANIMATION BUG)
+=============================================== */
+
+#statEnrolled,
+#statLearning,
+#statVideos {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent-primary, #00ffc8);
+  line-height: 1;
+}
