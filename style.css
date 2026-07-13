@@ -5720,8 +5720,13 @@ body.loading #backToTop {
   width: 100%;
 }
 
-/* ---------- SIDEBAR ---------- */
+/* ---------- SIDEBAR (right side) ---------- */
+.main-content {
+  order: 1;
+}
+
 .sidebar {
+  order: 2;
   width: 250px;
   flex-shrink: 0;
   position: sticky;
@@ -5731,11 +5736,12 @@ body.loading #backToTop {
   display: flex;
   flex-direction: column;
   background: var(--bg-secondary);
-  border-right: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
   padding: 20px 16px 24px;
   overflow-y: auto;
   z-index: 999;
-  transition: transform 0.35s ease, background 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.35s ease, width 0.3s ease, opacity 0.3s ease,
+    padding 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
 .sidebar::-webkit-scrollbar { width: 6px; }
@@ -5806,6 +5812,40 @@ body.loading #backToTop {
   min-width: 0;
 }
 
+/* Hamburger + user icon: always visible now, in all screen sizes */
+.top-header .hamburger {
+  display: flex !important;
+}
+
+.topbar-user-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.topbar-user-btn:hover {
+  background: rgba(0, 255, 156, 0.1);
+  border-color: var(--accent-green);
+  transform: translateY(-1px);
+}
+
+.top-header .header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 /* ---------- TOP HEADER (slim bar above the page content) ---------- */
 .top-header {
   display: flex;
@@ -5837,21 +5877,25 @@ body.loading #backToTop {
 /* Hamburger stays hidden on desktop (existing rule already
    does this) — only header-right/theme toggle shows there */
 
-/* ---------- MOBILE: sidebar becomes an off-canvas drawer ---------- */
+/* ---------- MOBILE: sidebar becomes an off-canvas drawer (slides
+   in from the RIGHT, since the sidebar now lives on the right) ---------- */
 @media (max-width: 900px) {
   .sidebar {
     position: fixed;
     top: 0;
-    left: 0;
+    right: 0;
+    left: auto;
     width: 78%;
     max-width: 280px;
     height: 100vh;
     height: 100dvh;
-    transform: translateX(-100%);
-    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.6);
+    transform: translateX(100%);
+    opacity: 1;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
     z-index: 1000;
   }
 
+  /* Closed by default on mobile — hamburger tap reveals it */
   .sidebar.active {
     transform: translateX(0);
   }
@@ -5874,14 +5918,6 @@ body.loading #backToTop {
     overflow-y: visible;
   }
 
-  .sidebar .nav-links.active {
-    right: auto;
-  }
-
-  .hamburger {
-    display: flex;
-  }
-
   .top-header {
     padding: 12px 16px;
   }
@@ -5889,11 +5925,23 @@ body.loading #backToTop {
   .main-content {
     width: 100%;
   }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
 }
 
+/* ---------- DESKTOP: hamburger COLLAPSES the sidebar instead of
+   opening a drawer — same .active class, opposite meaning,
+   scoped strictly to this breakpoint so the two never clash ---------- */
 @media (min-width: 901px) {
-  .hamburger {
-    display: none;
+  .sidebar.active {
+    width: 0;
+    min-width: 0;
+    padding: 0;
+    opacity: 0;
+    border: none;
+    overflow: hidden;
   }
 
   .menu-overlay {
@@ -5906,6 +5954,129 @@ body.loading #backToTop {
   z-index: 999;
 }
 
-body.sidebar-open {
-  overflow: hidden;
+/* =============================================================
+   LIGHT MODE — consistent, colorful sidebar buttons.
+   Scoped to `.sidebar` specifically so it wins over the earlier
+   (partially inconsistent) light-mode nav-link rules without
+   touching or deleting them.
+============================================================= */
+
+[data-theme="light"] .sidebar {
+  background: #ffffff;
+  border-left: 1px solid #e2e8f0;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .sidebar-logo {
+  border-bottom-color: #e2e8f0;
+}
+
+/* AI Mentor — blue */
+[data-theme="light"] .sidebar .nav-links li .ai-mentor-btn {
+  background: rgba(0, 114, 255, 0.08) !important;
+  border: 1px solid #3b82f6 !important;
+  color: #1d4ed8 !important;
+  box-shadow: none !important;
+}
+[data-theme="light"] .sidebar .nav-links li .ai-mentor-btn:hover {
+  background: rgba(0, 114, 255, 0.15) !important;
+}
+
+/* Learning Vault — green */
+[data-theme="light"] .sidebar .nav-links li a[href="#learn"] {
+  background: rgba(0, 180, 120, 0.08) !important;
+  border: 1px solid #00915a !important;
+  color: #00724a !important;
+}
+[data-theme="light"] .sidebar .nav-links li a[href="#learn"]:hover {
+  background: rgba(0, 180, 120, 0.16) !important;
+}
+
+/* Backtesting Lab — blue */
+[data-theme="light"] .sidebar .nav-links li a[href="backtest.html"] {
+  background: rgba(59, 130, 246, 0.08) !important;
+  border: 1px solid #3b82f6 !important;
+  color: #1d4ed8 !important;
+}
+[data-theme="light"] .sidebar .nav-links li a[href="backtest.html"]:hover {
+  background: rgba(59, 130, 246, 0.16) !important;
+}
+
+/* Risk Calculator — orange */
+[data-theme="light"] .sidebar .nav-links li a[href="calculator.html"] {
+  background: rgba(245, 158, 11, 0.10) !important;
+  border: 1px solid #d97706 !important;
+  color: #92400e !important;
+}
+[data-theme="light"] .sidebar .nav-links li a[href="calculator.html"]:hover {
+  background: rgba(245, 158, 11, 0.18) !important;
+}
+
+/* Quiz — purple */
+[data-theme="light"] .sidebar .nav-links li a[href="quiz.html"] {
+  background: rgba(139, 92, 246, 0.08) !important;
+  border: 1px solid #7c3aed !important;
+  color: #5b21b6 !important;
+}
+[data-theme="light"] .sidebar .nav-links li a[href="quiz.html"]:hover {
+  background: rgba(139, 92, 246, 0.16) !important;
+}
+
+/* FAQ — neutral teal outline */
+[data-theme="light"] .sidebar .nav-links li a[href="#faq"] {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #1e293b !important;
+}
+[data-theme="light"] .sidebar .nav-links li a[href="#faq"]:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Login — neutral outline */
+[data-theme="light"] .sidebar .nav-links li a[href="login.html"] {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #1e293b !important;
+}
+[data-theme="light"] .sidebar .nav-links li a[href="login.html"]:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* User greeting pill — green */
+[data-theme="light"] .sidebar #userItem {
+  background: rgba(0, 180, 120, 0.08) !important;
+  border: 1px solid rgba(0, 180, 120, 0.35) !important;
+  color: #00724a !important;
+}
+
+/* Logout — red */
+[data-theme="light"] .sidebar #logoutItem a {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border: 1px solid #ef4444 !important;
+  color: #b91c1c !important;
+}
+[data-theme="light"] .sidebar #logoutItem a:hover {
+  background: rgba(239, 68, 68, 0.16) !important;
+  color: #991b1b !important;
+}
+
+/* Top header + hamburger + user icon in light mode */
+[data-theme="light"] .top-header {
+  background: #ffffff;
+  border-bottom-color: #e2e8f0;
+}
+[data-theme="light"] .top-header.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+}
+[data-theme="light"] .topbar-user-btn {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: #cbd5e1;
+  color: #1e293b;
+}
+[data-theme="light"] .topbar-user-btn:hover {
+  background: rgba(0, 180, 120, 0.1);
+  border-color: #00915a;
+}
+[data-theme="light"] .hamburger .bar {
+  background: var(--accent-green);
 }
