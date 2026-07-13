@@ -114,6 +114,9 @@
     </div>
   </div>
 
+  <!-- App Layout: Sidebar + Main Content -->
+  <div class="app-layout">
+
   <!-- Navbar -->
   <!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
@@ -162,6 +165,10 @@
 
 </aside>
 
+<!-- Mobile overlay - tap to close sidebar -->
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+
+<div class="main-content" id="mainContent">
 
 <!-- TOP HEADER -->
 <header class="top-header">
@@ -1353,6 +1360,9 @@
     </div>
   </footer>
 
+  </div> <!-- /.main-content -->
+  </div> <!-- /.app-layout -->
+
   <!-- Mobile Bottom Tab Bar -->
   <nav class="mobile-tab-bar" id="mobileTabBar">
     <a href="#" class="tab-item tab-ai" onclick="toggleChat(); return false;">
@@ -1589,11 +1599,11 @@
   </script>
 
   <script>
-    const navbar = document.querySelector('.navbar');
+    const navbar = document.querySelector('.top-header');
     const backToTopBtn = document.getElementById('backToTop');
 
     window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 100);
+      if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 100);
       backToTopBtn.classList.toggle('visible', window.scrollY > 500);
     });
 
@@ -1612,14 +1622,18 @@
 
   <script>
     function toggleMenu() {
-      document.getElementById('navLinks').classList.toggle('active');
+      document.getElementById('sidebar').classList.toggle('active');
       document.getElementById('hamburger').classList.toggle('active');
+      document.getElementById('menuOverlay').classList.toggle('active');
+      document.body.classList.toggle('sidebar-open');
     }
 
-    document.querySelectorAll('.nav-links a').forEach(link => {
+    document.querySelectorAll('.nav-links a, .nav-links button').forEach(link => {
       link.addEventListener('click', () => {
-        document.getElementById('navLinks').classList.remove('active');
+        document.getElementById('sidebar').classList.remove('active');
         document.getElementById('hamburger').classList.remove('active');
+        document.getElementById('menuOverlay').classList.remove('active');
+        document.body.classList.remove('sidebar-open');
       });
     });
   </script>
