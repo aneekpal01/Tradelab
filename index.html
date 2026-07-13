@@ -115,51 +115,79 @@
   </div>
 
   <!-- Navbar -->
-  <nav class="navbar">
-  <div class="logo">
-  <img src="logo.png" alt="TradeLab" class="nav-logo">
-  TradeLab
-  <div class="streak-badge" id="streakBadge" title="Your learning streak">
-    <span class="streak-fire">🔥</span>
-    <span class="streak-count" id="streakCount">0</span>
+  <!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="sidebar-logo">
+    <img src="logo.png" alt="TradeLab" class="nav-logo">
+    <span>TradeLab</span>
+
+    <div class="streak-badge" id="streakBadge" title="Your learning streak">
+      <span class="streak-fire">🔥</span>
+      <span class="streak-count" id="streakCount">0</span>
+    </div>
   </div>
-</div>
-    
-    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
-    
-    <ul class="nav-links" id="navLinks">
-      <li>
-    <button onclick="toggleChat()" class="nav-btn ai-mentor-btn">
+
+  <ul class="nav-links" id="navLinks">
+
+    <li>
+      <button onclick="toggleChat()" class="nav-btn ai-mentor-btn">
         🤖 AI Mentor
-    </button>
-</li>
-      <li><a href="#learn">Learning Vault</a></li>
-      <li><a href="backtest.html">Backtesting Lab</a></li>
-      <li><a href="calculator.html">Risk Calculator</a></li>
-      <li><a href="quiz.html">Quiz</a></li>
-      <li><a href="#faq">FAQ</a></li>
+      </button>
+    </li>
 
-      <li id="loginItem"><a href="login.html">Login</a></li>
-      <li id="userItem" style="display: none; color: #00ffc8; font-weight: 600; font-size: 14px; padding-top: 10px;"></li>
-      <li id="logoutItem" style="display: none;"><a href="#" onclick="logoutUser()">Logout</a></li>
-      <!-- Theme Toggle — inside navbar -->
-      <li class="nav-theme-toggle-li">
-        <button class="nav-theme-toggle" id="navThemeToggle" onclick="toggleTheme()" title="Switch theme">
-          <span class="theme-toggle-track">
-            <span class="theme-toggle-thumb">
-              <span class="toggle-icon-sun">☀️</span>
-              <span class="toggle-icon-moon">🌙</span>
-            </span>
-          </span>
-        </button>
-      </li>
-    </ul>
-  </nav>
+    <li><a href="#learn"> Learning Vault</a></li>
 
+    <li><a href="backtest.html"> Backtesting Lab</a></li>
+
+    <li><a href="calculator.html"> Risk Calculator</a></li>
+
+    <li><a href="quiz.html"> Quiz</a></li>
+
+    <li><a href="#faq">❓ FAQ</a></li>
+
+    <li id="loginItem">
+      <a href="login.html">👤 Login</a>
+    </li>
+
+    <li id="userItem"
+        style="display:none;color:#00ffc8;font-weight:600;font-size:14px;">
+    </li>
+
+    <li id="logoutItem" style="display:none;">
+      <a href="#" onclick="logoutUser()">🚪 Logout</a>
+    </li>
+
+  </ul>
+
+</aside>
+
+
+<!-- TOP HEADER -->
+<header class="top-header">
+
+  <button class="hamburger"
+          id="hamburger"
+          onclick="toggleMenu()">
+
+      ☰
+
+  </button>
+
+  <div class="header-right">
+
+      <button class="nav-theme-toggle"
+              id="navThemeToggle"
+              onclick="toggleTheme()"
+              title="Switch theme">
+
+          🌙
+
+      </button>
+
+  </div>
+
+</header>
   <!-- Back to Top -->
   <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to Top">
     ↑
