@@ -173,20 +173,12 @@
 <!-- TOP HEADER -->
 <header class="top-header">
 
-  <button class="hamburger"
-          id="hamburger"
-          onclick="toggleMenu()">
-
-      ☰
-
-  </button>
-
   <div class="header-right">
 
       <button class="topbar-user-btn"
               id="topbarUserBtn"
-              onclick="toggleMenu()"
-              title="Account">
+              onclick="openUserNamePrompt()"
+              title="Set your name">
 
           👤
 
@@ -198,6 +190,15 @@
               title="Switch theme">
 
           🌙
+
+      </button>
+
+      <button class="hamburger"
+              id="hamburger"
+              onclick="toggleMenu()"
+              title="Toggle menu">
+
+          ☰
 
       </button>
 
@@ -1420,10 +1421,11 @@
         document.body.style.opacity = "1";
         if(loginItem) loginItem.style.display = 'none';
         if(logoutItem) logoutItem.style.display = 'block';
+        window.__emailUsername = user.email.split('@')[0];
         if(userItem) {
           userItem.style.display = 'block';
-          userItem.textContent = "Hi, " + user.email.split('@')[0];
         }
+        updateUserNameDisplay();
       } else {
         window.location.href = "login.html";
       }
@@ -1431,6 +1433,32 @@
 
     function logoutUser() {
       auth.signOut();
+    }
+
+    // ---- Display name (set via the 👤 icon, saved locally) ----
+    function getDisplayName() {
+      return localStorage.getItem('tradelab_display_name') || window.__emailUsername || 'Trader';
+    }
+
+    function setDisplayName(name) {
+      localStorage.setItem('tradelab_display_name', name);
+    }
+
+    function openUserNamePrompt() {
+      const current = localStorage.getItem('tradelab_display_name') || window.__emailUsername || '';
+      const name = prompt('Apna naam set karo:', current);
+      if (name && name.trim()) {
+        setDisplayName(name.trim());
+        updateUserNameDisplay();
+      }
+    }
+
+    function updateUserNameDisplay() {
+      const name = getDisplayName();
+      const topbarBtn = document.getElementById('topbarUserBtn');
+      if (topbarBtn) topbarBtn.title = name;
+      const userItem = document.getElementById('userItem');
+      if (userItem) userItem.textContent = 'Hi, ' + name;
     }
   </script>
 
