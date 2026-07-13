@@ -5812,9 +5812,43 @@ body.loading #backToTop {
   min-width: 0;
 }
 
-/* Hamburger + user icon: always visible now, in all screen sizes */
+/* Hamburger: redesigned as a proper circular icon button so it
+   matches the other topbar buttons and is always clearly visible
+   (previously it was 3 bare lines with no background — easy to
+   lose against a dark background). */
 .top-header .hamburger {
   display: flex !important;
+  width: 36px;
+  height: 36px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  transition: all 0.25s ease;
+  padding: 0;
+}
+
+.top-header .hamburger:hover {
+  background: rgba(0, 255, 156, 0.1);
+  border-color: var(--accent-green);
+}
+
+.top-header .hamburger .bar {
+  width: 16px;
+  height: 2px;
+  background: var(--accent-green);
+  border-radius: 2px;
+}
+
+.top-header .hamburger.active .bar:nth-child(1) {
+  transform: rotate(45deg) translate(3px, 3px);
+}
+
+.top-header .hamburger.active .bar:nth-child(3) {
+  transform: rotate(-45deg) translate(3px, -3px);
 }
 
 .topbar-user-btn {
@@ -5839,6 +5873,59 @@ body.loading #backToTop {
   transform: translateY(-1px);
 }
 
+/* Logo on the left of the top header — stays visible even when
+   the sidebar is collapsed, so branding never disappears */
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.topbar-logo-icon {
+  width: 32px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.topbar-logo span {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: linear-gradient(90deg, #00ff9c, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+}
+
+/* Explicit close button inside the sidebar — always visible,
+   works whether the sidebar is a mobile drawer or a collapsible
+   desktop panel, independent of the hamburger */
+.sidebar-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 13px;
+  cursor: pointer;
+  margin-left: 8px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.sidebar-close-btn:hover {
+  background: rgba(255, 77, 77, 0.15);
+  border-color: #ff4d4d;
+  color: #ff6b6b;
+}
+
 .top-header .header-right {
   margin-left: auto;
   display: flex;
@@ -5850,7 +5937,8 @@ body.loading #backToTop {
 .top-header {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 12px;
   padding: 14px 20px;
   position: sticky;
   top: 0;
@@ -5869,13 +5957,6 @@ body.loading #backToTop {
 [data-theme="light"] .top-header.scrolled {
   background: rgba(245, 247, 250, 0.95);
 }
-
-.top-header .header-right {
-  margin-left: auto;
-}
-
-/* Hamburger stays hidden on desktop (existing rule already
-   does this) — only header-right/theme toggle shows there */
 
 /* ---------- MOBILE: sidebar becomes an off-canvas drawer (slides
    in from the RIGHT, since the sidebar now lives on the right) ---------- */
@@ -5920,6 +6001,26 @@ body.loading #backToTop {
 
   .top-header {
     padding: 12px 16px;
+    gap: 8px;
+  }
+
+  .topbar-logo-icon {
+    width: 26px;
+    height: 28px;
+  }
+
+  .topbar-logo span {
+    font-size: 15px;
+  }
+
+  .header-right {
+    gap: 6px;
+  }
+
+  .topbar-user-btn,
+  .top-header .hamburger {
+    width: 34px;
+    height: 34px;
   }
 
   .main-content {
@@ -5928,6 +6029,12 @@ body.loading #backToTop {
 
   body.sidebar-open {
     overflow: hidden;
+  }
+}
+
+@media (max-width: 380px) {
+  .topbar-logo span {
+    display: none;
   }
 }
 
@@ -6079,4 +6186,70 @@ body.loading #backToTop {
 }
 [data-theme="light"] .hamburger .bar {
   background: var(--accent-green);
+}
+
+/* =============================================================
+   DAY MODE — extra polish pass on the new nav chrome + hero,
+   the areas we've been redesigning. Layered on top of the
+   existing light-theme rules above via `.sidebar`/`.top-header`
+   scoping, so nothing earlier is touched or removed.
+============================================================= */
+
+[data-theme="light"] body {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%) !important;
+}
+
+/* Sidebar: soft elevated card feel instead of a flat block */
+[data-theme="light"] .sidebar {
+  box-shadow: -6px 0 30px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="light"] .sidebar-logo {
+  border-bottom-color: #e8edf3;
+}
+
+/* Top-left brand logo */
+[data-theme="light"] .topbar-logo span {
+  background: linear-gradient(90deg, #00915a, #0284c7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Hamburger + close button: crisp on white */
+[data-theme="light"] .top-header .hamburger {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: #cbd5e1;
+}
+[data-theme="light"] .top-header .hamburger:hover {
+  background: rgba(0, 145, 90, 0.1);
+  border-color: #00915a;
+}
+[data-theme="light"] .top-header .hamburger .bar {
+  background: #00915a;
+}
+
+[data-theme="light"] .sidebar-close-btn {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: #cbd5e1;
+  color: #1e293b;
+}
+[data-theme="light"] .sidebar-close-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #b91c1c;
+}
+
+/* Hero: make the candlestick background actually visible on a
+   light page (it was tuned for a near-black background) */
+[data-theme="light"] .hero-candles-svg .candle-group {
+  opacity: 0.45 !important;
+}
+[data-theme="light"] .hero-candles-svg polyline {
+  opacity: 0.4 !important;
+}
+
+/* Streak badge border reads a bit crisper on white */
+[data-theme="light"] .streak-badge {
+  border-color: rgba(255, 183, 0, 0.4);
 }
