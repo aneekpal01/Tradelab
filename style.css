@@ -119,6 +119,7 @@ body {
 .loader-wrapper.hidden {
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 }
 
 .loader {
@@ -5753,31 +5754,26 @@ body.loading #backToTop {
 .sidebar-logo {
   display: flex;
   align-items: center;
-  gap: 4px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-wrap: nowrap;
   padding-bottom: 16px;
   margin-bottom: 12px;
   border-bottom: 1px solid var(--border-color);
 }
 
-.sidebar-logo span {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  background: linear-gradient(90deg, #00ff9c, #00d4ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.sidebar-logo .nav-logo {
-  width: 40px;
-  height: 42px;
-  margin: 0;
-}
-
+/* Smaller streak/"Day N" badge, as requested */
 .sidebar-logo .streak-badge {
-  margin-left: auto;
+  margin-left: 0;
+  padding: 2px 9px;
+  gap: 3px;
+}
+
+.sidebar-logo .streak-badge .streak-fire {
+  font-size: 11px;
+}
+
+.sidebar-logo .streak-badge .streak-count {
+  font-size: 11px;
 }
 
 /* Nav links: vertical stack inside the sidebar (overrides the
