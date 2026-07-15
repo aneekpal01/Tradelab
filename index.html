@@ -122,15 +122,12 @@
 <aside class="sidebar" id="sidebar">
 
   <div class="sidebar-logo">
-    <img src="logo.png" alt="TradeLab" class="nav-logo">
-    <span>TradeLab</span>
-
     <div class="streak-badge" id="streakBadge" title="Your learning streak">
       <span class="streak-fire">🔥</span>
       <span class="streak-count" id="streakCount">0</span>
     </div>
 
-    <button class="sidebar-close-btn" onclick="toggleMenu()" title="Close menu" aria-label="Close menu">✕</button>
+    <button class="sidebar-close-btn" type="button" id="sidebarCloseBtn" onclick="closeMenu()" title="Close menu" aria-label="Close menu">✕</button>
   </div>
 
   <ul class="nav-links" id="navLinks">
@@ -168,7 +165,7 @@
 </aside>
 
 <!-- Mobile overlay - tap to close sidebar -->
-<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
 <div class="main-content" id="mainContent">
 
@@ -1657,28 +1654,75 @@
   </script>
 
   <script>
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-      }, 1500);
-    });
+    let __loaderHidden = false;
+    function hideLoader() {
+      if (__loaderHidden) return;
+      __loaderHidden = true;
+      const loader = document.getElementById('loader');
+      if (loader) loader.classList.add('hidden');
+    }
+
+    window.addEventListener('load', () => setTimeout(hideLoader, 1500));
+
+    // Safety net: never let a slow/hanging third-party resource
+    // (ticker widget, Firebase, etc.) keep this full-screen loader
+    // blocking clicks forever.
+    setTimeout(hideLoader, 4000);
   </script>
 
   <script>
+    function isDesktopView() {
+      return window.matchMedia('(min-width: 901px)').matches;
+    }
+
     function toggleMenu() {
-      document.getElementById('sidebar').classList.toggle('active');
-      document.getElementById('hamburger').classList.toggle('active');
-      document.getElementById('menuOverlay').classList.toggle('active');
+      const sidebar = document.getElementById('sidebar');
+      const hamburger = document.getElementById('hamburger');
+      const overlay = document.getElementById('menuOverlay');
+      if (sidebar) sidebar.classList.toggle('active');
+      if (hamburger) hamburger.classList.toggle('active');
+      if (overlay) overlay.classList.toggle('active');
       document.body.classList.toggle('sidebar-open');
     }
 
+    // Explicit close (✕ button / tapping the dark overlay) — always
+    // ends up closed, on both mobile and desktop. NOTE: the .active
+    // class means the OPPOSITE thing on each breakpoint (desktop:
+    // .active = collapsed, mobile: .active = drawer open), so
+    // "close" is add-active on desktop but remove-active on mobile.
+    function closeMenu() {
+      const sidebar = document.getElementById('sidebar');
+      const hamburger = document.getElementById('hamburger');
+      const overlay = document.getElementById('menuOverlay');
+      if (sidebar) {
+        if (isDesktopView()) {
+          sidebar.classList.add('active');
+        } else {
+          sidebar.classList.remove('active');
+        }
+      }
+      if (hamburger) hamburger.classList.remove('active');
+      if (overlay) overlay.classList.remove('active');
+      document.body.classList.remove('sidebar-open');
+    }
+
+    // After tapping a nav link, only auto-close the MOBILE drawer —
+    // the persistent desktop sidebar should stay open while browsing.
+    function closeMobileMenuAfterNav() {
+      if (isDesktopView()) return;
+      closeMenu();
+    }
+
+    // Redundant JS-level binding for the close button only — it's
+    // idempotent, so double-firing alongside its inline onclick is
+    // harmless. We do NOT do this for the hamburger, since that
+    // already has its own inline onclick=toggleMenu() and a second
+    // toggle would cancel it out.
+    const sidebarCloseBtnEl = document.getElementById('sidebarCloseBtn');
+    if (sidebarCloseBtnEl) sidebarCloseBtnEl.addEventListener('click', closeMenu);
+
     document.querySelectorAll('.nav-links a, .nav-links button').forEach(link => {
-      link.addEventListener('click', () => {
-        document.getElementById('sidebar').classList.remove('active');
-        document.getElementById('hamburger').classList.remove('active');
-        document.getElementById('menuOverlay').classList.remove('active');
-        document.body.classList.remove('sidebar-open');
-      });
+      link.addEventListener('click', closeMobileMenuAfterNav);
     });
   </script>
 
