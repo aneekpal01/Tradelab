@@ -184,7 +184,7 @@
               onclick="openUserNamePrompt()"
               title="Set your name">
 
-          👤
+          <span id="topbarUserInitial">?</span>
 
       </button>
 
@@ -1461,6 +1461,8 @@
       const name = getDisplayName();
       const topbarBtn = document.getElementById('topbarUserBtn');
       if (topbarBtn) topbarBtn.title = name;
+      const initialEl = document.getElementById('topbarUserInitial');
+      if (initialEl) initialEl.textContent = name.trim().charAt(0).toUpperCase() || '?';
       const userItem = document.getElementById('userItem');
       if (userItem) userItem.textContent = 'Hi, ' + name;
     }
