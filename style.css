@@ -5814,37 +5814,39 @@ body.loading #backToTop {
    lose against a dark background). */
 .top-header .hamburger {
   display: flex !important;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 5px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
+  background: rgba(0, 255, 156, 0.08);
+  border: 1.5px solid rgba(0, 255, 156, 0.45);
+  box-shadow: 0 0 8px rgba(0, 255, 156, 0.15);
   transition: all 0.25s ease;
   padding: 0;
 }
 
 .top-header .hamburger:hover {
-  background: rgba(0, 255, 156, 0.1);
+  background: rgba(0, 255, 156, 0.18);
   border-color: var(--accent-green);
+  box-shadow: 0 0 14px rgba(0, 255, 156, 0.35);
 }
 
 .top-header .hamburger .bar {
-  width: 16px;
-  height: 2px;
+  width: 18px;
+  height: 2.5px;
   background: var(--accent-green);
   border-radius: 2px;
 }
 
 .top-header .hamburger.active .bar:nth-child(1) {
-  transform: rotate(45deg) translate(3px, 3px);
+  transform: rotate(45deg) translate(3.5px, 3.5px);
 }
 
 .top-header .hamburger.active .bar:nth-child(3) {
-  transform: rotate(-45deg) translate(3px, -3px);
+  transform: rotate(-45deg) translate(3.5px, -3.5px);
 }
 
 .topbar-user-btn {
@@ -5854,17 +5856,18 @@ body.loading #backToTop {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, rgba(0, 255, 156, 0.18), rgba(0, 212, 255, 0.18));
   border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  font-size: 16px;
+  color: var(--accent-green);
+  font-size: 15px;
+  font-weight: 700;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
 .topbar-user-btn:hover {
-  background: rgba(0, 255, 156, 0.1);
+  background: rgba(0, 255, 156, 0.28);
   border-color: var(--accent-green);
   transform: translateY(-1px);
 }
@@ -5880,13 +5883,13 @@ body.loading #backToTop {
 }
 
 .topbar-logo-icon {
-  width: 32px;
-  height: 34px;
+  width: 42px;
+  height: 44px;
   object-fit: contain;
 }
 
 .topbar-logo span {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   letter-spacing: 0.3px;
   background: linear-gradient(90deg, #00ff9c, #00d4ff);
@@ -6001,12 +6004,12 @@ body.loading #backToTop {
   }
 
   .topbar-logo-icon {
-    width: 26px;
-    height: 28px;
+    width: 32px;
+    height: 34px;
   }
 
   .topbar-logo span {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .header-right {
@@ -6172,12 +6175,12 @@ body.loading #backToTop {
   background: rgba(255, 255, 255, 0.95);
 }
 [data-theme="light"] .topbar-user-btn {
-  background: rgba(0, 0, 0, 0.03);
+  background: linear-gradient(135deg, rgba(0, 145, 90, 0.12), rgba(2, 132, 199, 0.12));
   border-color: #cbd5e1;
-  color: #1e293b;
+  color: #00724a;
 }
 [data-theme="light"] .topbar-user-btn:hover {
-  background: rgba(0, 180, 120, 0.1);
+  background: rgba(0, 180, 120, 0.2);
   border-color: #00915a;
 }
 [data-theme="light"] .hamburger .bar {
@@ -6216,10 +6219,12 @@ body.loading #backToTop {
 [data-theme="light"] .top-header .hamburger {
   background: rgba(0, 0, 0, 0.03);
   border-color: #cbd5e1;
+  box-shadow: none;
 }
 [data-theme="light"] .top-header .hamburger:hover {
   background: rgba(0, 145, 90, 0.1);
   border-color: #00915a;
+  box-shadow: none;
 }
 [data-theme="light"] .top-header .hamburger .bar {
   background: #00915a;
