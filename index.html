@@ -69,23 +69,138 @@
   <!-- Market Status Bar -->
   <div class="market-status-bar" id="marketStatusBar">
     <div class="market-status-inner">
-      <div class="market-status-left">
-        <span class="market-dot" id="marketDot"></span>
-        <span class="market-label" id="marketLabel">Checking markets...</span>
-        <span class="market-session" id="marketSession"></span>
+      <!-- LEFT: Market Status & Countdown -->
+      <div class="market-status-group left">
+        <span class="status-indicator-dot" id="marketDot"></span>
+        <div class="status-text-block">
+          <span class="status-main-label" id="marketLabel">Checking markets...</span>
+          <span class="status-sub-label" id="marketSession">Please wait</span>
+        </div>
       </div>
-      <div class="market-status-right">
-        <span class="market-time-label">IST</span>
-        <span class="market-time" id="marketTime"></span>
-        <span class="market-divider">·</span>
-        <span class="market-nifty-label">NSE</span>
-        <span class="market-session-tag" id="niftyTag"></span>
-        <span class="market-divider">·</span>
-        <span class="market-nifty-label">CRYPTO</span>
-        <span class="market-session-tag open" id="cryptoTag">24/7</span>
-        <span class="market-divider">·</span>
-        <span class="market-nifty-label">FOREX</span>
-        <span class="market-session-tag" id="forexTag"></span>
+      
+      <!-- CENTER: Indian Clock & Live Flag -->
+      <div class="market-status-group center" id="clockGroup" onclick="toggleClockDropdown(event)" style="position: relative; cursor: pointer;">
+        <span class="clock-icon">🕘</span>
+        <span class="flag-icon">🇮🇳</span>
+        <span class="clock-label">IST</span>
+        <span class="clock-time" id="marketTime">00:00:00</span>
+        
+        <!-- Dropdown Selector -->
+        <div class="clock-dropdown" id="clockDropdown">
+          <div class="clock-dropdown-item" onclick="changeClockFormat(event, '24h')">
+            <span class="check-mark" id="check24">✓</span> 24-Hour Format
+          </div>
+          <div class="clock-dropdown-item" onclick="changeClockFormat(event, '12h')">
+            <span class="check-mark" id="check12"></span> 12-Hour Format
+          </div>
+        </div>
+      </div>
+      
+      <!-- RIGHT: Weather style dots, active markers, News, Alerts & Market Health -->
+      <div class="market-status-group right">
+        <!-- Market Pulse / Health Info -->
+        <div class="market-pulse-block">
+          <span class="pulse-icon">📊</span>
+          <span class="pulse-title">Market Pulse:</span>
+          <span class="pulse-value text-green">Bullish (62%)</span>
+          <span class="pulse-divider">|</span>
+          <span class="pulse-title">VIX:</span>
+          <span class="pulse-value text-blue">14.8 (Low Volatility)</span>
+        </div>
+        
+        <span class="status-divider-bar">|</span>
+
+        <!-- Weather Style Sessions with Hovers -->
+        <div class="weather-sessions">
+          <span style="font-size: 12px; color: #475569; margin-right: -4px;">🌍</span>
+          <div class="weather-session-item tooltip-trigger" id="nseSessionItem">
+            <span class="weather-dot" id="nseDot">●</span>
+            <span class="weather-name">NSE</span>
+            <span class="tooltip-text">NSE Session Hours<br>09:15–15:30 IST (Mon-Fri)</span>
+          </div>
+          
+          <div class="weather-session-item tooltip-trigger" id="cryptoSessionItem">
+            <span class="weather-dot green-dot">●</span>
+            <span class="weather-name">Crypto</span>
+            <span class="tooltip-text">Crypto Market<br>24 Hours, 365 Days</span>
+          </div>
+          
+          <div class="weather-session-item tooltip-trigger" id="londonSessionItem">
+            <span class="weather-dot" id="londonDot">●</span>
+            <span class="weather-name">London</span>
+            <span class="tooltip-text">London Session<br>08:00–17:00 GMT<br>(13:30–22:30 IST)</span>
+          </div>
+
+          <div class="weather-session-item tooltip-trigger" id="nySessionItem">
+            <span class="weather-dot" id="nyDot">●</span>
+            <span class="weather-name">New York</span>
+            <span class="tooltip-text">New York Session<br>13:00–22:00 GMT<br>(18:30–01:30 IST)</span>
+          </div>
+        </div>
+
+        <span class="status-divider-bar">|</span>
+        
+        <!-- Live Alerts & News indicators -->
+        <div class="interactive-icons">
+          <div class="news-indicator tooltip-trigger" onclick="openAlertsDrawer()">
+            <span>📰 3 News</span>
+            <span class="tooltip-text">Click to view 3 Important News Alerts Today</span>
+          </div>
+          <div class="alert-indicator tooltip-trigger" onclick="openAlertsDrawer()">
+            <span>🔔 2 Alerts</span>
+            <span class="tooltip-text">Click to view active price triggers</span>
+          </div>
+        </div>
+
+        <span class="status-divider-bar">|</span>
+        
+        <!-- Live Data Sync -->
+        <div class="data-sync-block">
+          <span class="sync-dot animate-pulse">●</span>
+          <span class="sync-text" id="syncText">Receiving live data</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert & News Slide-out Panel (Premium Feature) -->
+  <div class="alerts-panel" id="alertsPanel">
+    <div class="alerts-panel-header">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 18px;">🔔</span>
+        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: #ffffff;">Terminal Notifications</h3>
+      </div>
+      <button onclick="closeAlertsDrawer()" class="close-panel-btn">✕</button>
+    </div>
+    <div class="alerts-panel-content">
+      <div class="alerts-section">
+        <h4 style="margin: 0 0 10px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #00d4ff;">🚨 Price Alerts Triggered</h4>
+        <div class="alert-item" style="display: flex; gap: 10px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.04);">
+          <span class="alert-badge status-green" style="background: rgba(0, 255, 156, 0.1); color: #00ff9c; border: 1px solid rgba(0,255,156,0.2); font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; height: 18px; line-height: 12px;">TRIGGERED</span>
+          <span class="alert-desc" style="font-size: 12px; color: #eaeaea; line-height: 1.4;">BTCUSD reached ₹5,200,000 target</span>
+        </div>
+        <div class="alert-item" style="display: flex; gap: 10px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+          <span class="alert-badge status-yellow" style="background: rgba(255, 183, 0, 0.1); color: #ffb700; border: 1px solid rgba(255,183,0,0.2); font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; height: 18px; line-height: 12px;">PENDING</span>
+          <span class="alert-desc" style="font-size: 12px; color: #eaeaea; line-height: 1.4;">ETHUSD below ₹150,000 support level</span>
+        </div>
+      </div>
+      
+      <div style="height: 1px; background: rgba(255,255,255,0.06); margin: 20px 0;"></div>
+      
+      <div class="alerts-section">
+        <h4 style="margin: 0 0 12px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #00d4ff;">📰 Top Market News</h4>
+        <div class="news-item" style="padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.04);">
+          <div class="news-time" style="font-size: 10px; color: #8892b0; margin-bottom: 4px;">10 mins ago</div>
+          <div class="news-headline" style="font-size: 12px; color: #eaeaea; line-height: 1.45;">US Fed signals rate cuts in next meeting, global markets surge.</div>
+        </div>
+        <div class="news-item" style="padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.04);">
+          <div class="news-time" style="font-size: 10px; color: #8892b0; margin-bottom: 4px;">2 hours ago</div>
+          <div class="news-headline" style="font-size: 12px; color: #eaeaea; line-height: 1.45;">SEBI introduces new margin limits for option trading indexes.</div>
+        </div>
+        <div class="news-item" style="padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+          <div class="news-time" style="font-size: 10px; color: #8892b0; margin-bottom: 4px;">5 hours ago</div>
+          <div class="news-headline" style="font-size: 12px; color: #eaeaea; line-height: 1.45;">Solana DEX volume surpasses Ethereum for third consecutive day.</div>
+        </div>
       </div>
     </div>
   </div>
