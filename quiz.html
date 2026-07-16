@@ -81,6 +81,7 @@
     .option-btn.correct { border-color: rgba(0, 255, 156, 0.4) !important; background: rgba(0, 255, 156, 0.08) !important; color: #00ff9c !important; font-weight: 600; }
     .option-btn.wrong { border-color: rgba(255, 77, 77, 0.4) !important; background: rgba(255, 77, 77, 0.08) !important; color: #ff4d4d !important; font-weight: 600; }
     .option-btn.disabled { cursor: not-allowed; opacity: 0.6; }
+    .option-btn.selected-choice { border-color: #00d4ff !important; background: rgba(0, 212, 255, 0.1) !important; color: #00d4ff !important; font-weight: 600; }
     
     .explanation { margin-top: 20px; padding: 20px; background: rgba(0,212,255,0.04); border: 1px solid rgba(0,212,255,0.15); border-radius: 10px; display: none; }
     .explanation.show { display: block; animation: slideIn 0.3s; }
@@ -135,6 +136,28 @@
       .nav-btn { width: 100%; text-align: center; }
       .results-actions { flex-direction: column; gap: 10px; }
     }
+
+    /* Modal Backdrop */
+    .modal-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+    .modal-backdrop.show { display: flex; }
+    
+    .modal-content { background: #0f141c; border: 1px solid #1e2a3a; border-radius: 16px; max-width: 500px; width: 100%; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); text-align: left; }
+    .modal-content h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; background: linear-gradient(90deg, #00ff9c, #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .modal-sub { color: #8892b0; font-size: 13.5px; margin-bottom: 25px; }
+    
+    .mode-options { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
+    .mode-option { display: flex; align-items: flex-start; gap: 15px; padding: 18px; background: rgba(255,255,255,0.02); border: 1px solid #1e2a3a; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
+    .mode-option:hover { border-color: rgba(0, 255, 156, 0.25); background: rgba(255,255,255,0.03); }
+    .mode-option.active { border-color: #00ff9c; background: rgba(0, 255, 156, 0.04); }
+    .mode-icon { font-size: 28px; }
+    .mode-details h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: #ffffff; }
+    .mode-details p { font-size: 12px; color: #8892b0; line-height: 1.5; margin: 0; }
+    
+    .modal-actions { display: flex; justify-content: flex-end; gap: 12px; }
+
+    /* Blinking Timer animation */
+    .timer-display.blinking { color: #ff4d4d; animation: blinker 1s linear infinite; font-weight: 700; }
+    @keyframes blinker { 50% { opacity: 0; } }
   </style>
 </head>
 <body>
@@ -241,8 +264,9 @@
           <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
         </div>
         <div class="quiz-sub-header">
-          <span class="score-display">Score: <span id="currentScore">0</span></span>
-          <span class="passing-requirement">80% Required</span>
+          <span class="timer-display" id="quizTimerDisplay" style="font-weight: 600; color: #8892b0;">⏱ 00:00</span>
+          <span class="score-display" style="font-weight: 600;">⭐ Score: <span id="currentScore" style="color: #00ff9c;">0/10</span></span>
+          <span class="passing-requirement" style="font-weight: 600; color: #ffb700;">🎯 Need: 80%</span>
         </div>
       </div>
 
@@ -268,12 +292,63 @@
       <div class="results-icon" id="resultsIcon">🎉</div>
       <div class="results-status-badge" id="resultsStatusBadge">PASSED</div>
       <div class="results-score" id="resultsScore">8/10 (80%)</div>
+      
+      <!-- Metrics Grid -->
+      <div class="results-metrics-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 400px; margin: 0 auto 25px; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 12px; border: 1px solid #1e2a3a;">
+        <div style="text-align: center;">
+          <div style="font-size: 12px; color: #64748b; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">⏱ Time Taken</div>
+          <div style="font-size: 18px; font-weight: 700; color: #ffffff;" id="timeTakenDisplay">04:32</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 12px; color: #64748b; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">🎯 Accuracy</div>
+          <div style="font-size: 18px; font-weight: 700; color: #ffffff;" id="accuracyDisplay">80%</div>
+        </div>
+      </div>
+      
       <div class="results-message" id="resultsMessage">Great job! You've shown strong trading discipline.</div>
       <div class="results-reality" id="resultsReality"><p id="resultsRealityText"></p></div>
       <div class="results-actions">
-        <button class="nav-btn secondary" onclick="backToSelection()">Try Another Quiz</button>
-        <button class="nav-btn secondary" onclick="retryQuiz()">Retry Quiz</button>
+        <button class="nav-btn secondary" onclick="backToSelection()">Try Another</button>
+        <button class="nav-btn secondary" onclick="retryQuiz()">Retry</button>
+        <button class="nav-btn secondary" onclick="reviewAnswers()" style="background: rgba(255,255,255,0.05); color: #ffffff;">Review Answers</button>
         <a href="index.html#learn" class="nav-btn primary" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Continue Learning</a>
+      </div>
+      
+      <!-- Review Section -->
+      <div id="reviewSection" style="display: none; text-align: left; margin-top: 35px; border-top: 1px solid #1e2a3a; padding-top: 25px;">
+        <h3 style="font-size: 20px; margin-bottom: 20px; color: #ffffff; text-align: center;">Review Answers</h3>
+        <div id="reviewList" style="display: flex; flex-direction: column; gap: 20px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mode Selection Modal -->
+  <div class="modal-backdrop" id="modeModal">
+    <div class="modal-content">
+      <h2>Select Quiz Mode</h2>
+      <p class="modal-sub">Choose how you want to take this test</p>
+      
+      <div class="mode-options">
+        <div class="mode-option active" onclick="selectQuizMode('practice')">
+          <div class="mode-icon">📚</div>
+          <div class="mode-details">
+            <h3>Practice Mode</h3>
+            <p>No time pressure. Explanations shown after every question. Great for learning.</p>
+          </div>
+        </div>
+        
+        <div class="mode-option" onclick="selectQuizMode('exam')">
+          <div class="mode-icon">🏆</div>
+          <div class="mode-details">
+            <h3>Exam Mode</h3>
+            <p>Time limit applies. Explanations hidden until the end. Required for Certificate eligibility.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="nav-btn secondary" onclick="closeModeModal()">Cancel</button>
+        <button class="nav-btn primary" onclick="confirmStartQuiz()">Start Test →</button>
       </div>
     </div>
   </div>
@@ -373,6 +448,10 @@
     };
 
     let currentQuiz = null, currentQuestion = 0, score = 0, answered = false;
+    let quizMode = 'practice';
+    let pendingQuizId = null;
+    let timerInterval = null;
+    let secondsElapsed = 0;
 
     function startQuiz(id) {
       const lockStatus = checkQuizLock(id);
@@ -380,12 +459,92 @@
         alert(`🔒 Quiz Locked!\n\n${lockStatus.message} with 80%+ to unlock this test.`);
         return;
       }
+      openModeModal(id);
+    }
+
+    function openModeModal(id) {
+      pendingQuizId = id;
+      document.getElementById('modeModal').classList.add('show');
+    }
+    
+    function closeModeModal() {
+      document.getElementById('modeModal').classList.remove('show');
+    }
+    
+    function selectQuizMode(mode) {
+      quizMode = mode;
+      document.querySelectorAll('.mode-option').forEach(opt => opt.classList.remove('active'));
+      const activeIdx = mode === 'practice' ? 0 : 1;
+      document.querySelectorAll('.mode-option')[activeIdx].classList.add('active');
+    }
+    
+    function confirmStartQuiz() {
+      closeModeModal();
+      actualStartQuiz(pendingQuizId);
+    }
+
+    function actualStartQuiz(id) {
       currentQuiz = id; currentQuestion = 0; score = 0; answered = false;
+      
+      const quiz = quizData[currentQuiz];
+      quiz.forEach(q => { delete q.userAnswer; });
+      
       document.getElementById('quizSelection').style.display = 'none';
       document.getElementById('quizContainer').classList.add('active');
       document.getElementById('resultsScreen').classList.remove('active');
-      document.getElementById('currentScore').textContent = '0';
+      document.getElementById('reviewSection').style.display = 'none';
+      document.getElementById('currentScore').textContent = `0/${quiz.length}`;
+      
+      clearInterval(timerInterval);
+      if (quizMode === 'practice') {
+        secondsElapsed = 0;
+        document.getElementById('quizTimerDisplay').textContent = '⏱ 00:00';
+        document.getElementById('quizTimerDisplay').classList.remove('blinking');
+        timerInterval = setInterval(updatePracticeTimer, 1000);
+      } else {
+        if (id === 'basics' || id === 'snr' || id === 'risk') {
+          secondsElapsed = 8 * 60;
+        } else if (id === 'smc' || id === 'deep') {
+          secondsElapsed = 10 * 60;
+        } else {
+          secondsElapsed = 20 * 60;
+        }
+        updateExamTimerDisplay();
+        timerInterval = setInterval(updateExamTimer, 1000);
+      }
+      
       loadQuestion();
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    function updatePracticeTimer() {
+      secondsElapsed++;
+      document.getElementById('quizTimerDisplay').textContent = `⏱ ${formatTime(secondsElapsed)}`;
+    }
+    
+    function updateExamTimer() {
+      secondsElapsed--;
+      updateExamTimerDisplay();
+      if (secondsElapsed <= 0) {
+        clearInterval(timerInterval);
+        alert('⏱ Time Out! Your exam will be submitted automatically.');
+        showResults();
+      }
+    }
+    
+    function updateExamTimerDisplay() {
+      const timerDisplay = document.getElementById('quizTimerDisplay');
+      timerDisplay.textContent = `⏱ ${formatTime(secondsElapsed)}`;
+      if (secondsElapsed <= 30) {
+        timerDisplay.classList.add('blinking');
+      } else {
+        timerDisplay.classList.remove('blinking');
+      }
     }
 
     function checkQuizLock(id) {
@@ -457,36 +616,49 @@
       if (answered) return;
       answered = true;
       const quiz = quizData[currentQuiz], q = quiz[currentQuestion], opts = document.querySelectorAll('.option-btn'), exp = document.getElementById('explanation');
+      
+      q.userAnswer = index;
+      
       opts.forEach((o,i) => { 
         o.classList.add('disabled'); 
-        if (i===q.correct) o.classList.add('correct'); 
-        else if (i===index) o.classList.add('wrong'); 
+        if (quizMode === 'practice') {
+          if (i===q.correct) o.classList.add('correct'); 
+          else if (i===index) o.classList.add('wrong'); 
+        } else {
+          if (i===index) o.classList.add('selected-choice'); 
+        }
       });
       
       const isCorrect = (index === q.correct);
       if (isCorrect) { 
-        score++; 
-        document.getElementById('currentScore').textContent = score; 
-        exp.classList.add('correct-exp'); 
-        document.getElementById('expTitle').textContent = currentLang==='hi'?'✅ सही!':'✅ Correct!'; 
-      } else { 
-        exp.classList.add('wrong-exp'); 
-        document.getElementById('expTitle').textContent = currentLang==='hi'?'❌ गलत!':'❌ Wrong!'; 
+        score++;
       }
       
-      document.getElementById('explanationText').textContent = q.explanation[currentLang] || q.explanation.en;
-      exp.classList.add('show');
+      document.getElementById('currentScore').textContent = `${score}/${quiz.length}`;
       
-      if (q.reality) { 
-        document.getElementById('realityText').textContent = q.reality[currentLang] || q.reality.en; 
-        document.getElementById('realityBox').classList.add('show'); 
+      if (quizMode === 'practice') {
+        if (isCorrect) { 
+          exp.classList.add('correct-exp'); 
+          document.getElementById('expTitle').textContent = currentLang==='hi'?'✅ सही!':'✅ Correct!'; 
+        } else { 
+          exp.classList.add('wrong-exp'); 
+          document.getElementById('expTitle').textContent = currentLang==='hi'?'❌ गलत!':'❌ Wrong!'; 
+        }
+        
+        document.getElementById('explanationText').textContent = q.explanation[currentLang] || q.explanation.en;
+        exp.classList.add('show');
+        
+        if (q.reality) { 
+          document.getElementById('realityText').textContent = q.reality[currentLang] || q.reality.en; 
+          document.getElementById('realityBox').classList.add('show'); 
+        }
       }
       
       const nextBtn = document.getElementById('nextBtn');
       if (nextBtn) {
         nextBtn.classList.add('visible');
         if (currentQuestion === quiz.length - 1) {
-          nextBtn.textContent = currentLang==='hi'?'Results →':'See Results →';
+          nextBtn.textContent = currentLang==='hi'?'Submit Exam':'Submit Exam';
         }
       }
     }
@@ -497,12 +669,31 @@
     }
 
     function showResults() {
+      clearInterval(timerInterval);
       document.getElementById('quizContainer').classList.remove('active');
       document.getElementById('resultsScreen').classList.add('active');
       const quiz = quizData[currentQuiz], pct = (score/quiz.length)*100, isReality = currentQuiz==='reality';
       
       const roundedPct = Math.round(pct);
       document.getElementById('resultsScore').textContent = `${score}/${quiz.length} (${roundedPct}%)`;
+      
+      let timeString = '';
+      if (quizMode === 'practice') {
+        timeString = formatTime(secondsElapsed);
+      } else {
+        let initialTime = 0;
+        if (currentQuiz === 'basics' || currentQuiz === 'snr' || currentQuiz === 'risk') {
+          initialTime = 8 * 60;
+        } else if (currentQuiz === 'smc' || currentQuiz === 'deep') {
+          initialTime = 10 * 60;
+        } else {
+          initialTime = 20 * 60;
+        }
+        timeString = formatTime(initialTime - secondsElapsed);
+      }
+      
+      document.getElementById('timeTakenDisplay').textContent = timeString;
+      document.getElementById('accuracyDisplay').textContent = `${roundedPct}%`;
       
       const sBadge = document.getElementById('resultsStatusBadge');
       const sEl = document.getElementById('resultsScore');
@@ -512,14 +703,14 @@
       const rTxt = document.getElementById('resultsRealityText');
       
       if (pct >= 80) { 
-        sBadge.textContent = 'PASSED';
+        sBadge.textContent = quizMode === 'exam' ? '🏆 PASSED (EXAM)' : '🎉 PASSED';
         sBadge.className = 'results-status-badge passed';
         sEl.className='results-score great'; 
         iEl.textContent='🎉'; 
         mEl.textContent=currentLang==='hi'?'बढ़िया! आपने strong discipline दिखाया है।':'Excellent! You\'ve shown strong trading discipline.'; 
         if(isReality){rEl.classList.add('show'); rTxt.textContent=currentLang==='hi'?"Overconfident मत हो। Paper trade 3 months पहले।":"Don't get cocky. Paper trade 3 months first.";} 
       } else { 
-        sBadge.textContent = 'FAILED';
+        sBadge.textContent = quizMode === 'exam' ? '❌ FAILED (EXAM)' : '📚 FAILED';
         sBadge.className = 'results-status-badge failed';
         sEl.className='results-score poor'; 
         iEl.textContent='📚'; 
@@ -530,20 +721,75 @@
       const c = JSON.parse(localStorage.getItem('quizCompleted'))||{};
       c[currentQuiz] = Math.max(c[currentQuiz]||0, score);
       localStorage.setItem('quizCompleted', JSON.stringify(c));
+      
+      if (pct >= 80 && quizMode === 'exam') {
+        const examPassed = JSON.parse(localStorage.getItem('quizExamPassed')) || {};
+        examPassed[currentQuiz] = true;
+        localStorage.setItem('quizExamPassed', JSON.stringify(examPassed));
+      }
+      
       updateBadges();
     }
 
+    function reviewAnswers() {
+      const reviewSection = document.getElementById('reviewSection');
+      if (reviewSection.style.display === 'block') {
+        reviewSection.style.display = 'none';
+        return;
+      }
+      
+      const list = document.getElementById('reviewList');
+      list.innerHTML = '';
+      const quiz = quizData[currentQuiz];
+      
+      quiz.forEach((q, index) => {
+        const item = document.createElement('div');
+        item.className = 'question-card';
+        item.style.marginBottom = '20px';
+        
+        let userChoiceText = 'No Answer';
+        if (q.userAnswer !== undefined) {
+          userChoiceText = (q.options[currentLang] || q.options.en)[q.userAnswer];
+        }
+        const isCorrect = (q.userAnswer === q.correct);
+        
+        item.innerHTML = `
+          <div style="font-size: 13px; color: #64748b; font-weight: 600; margin-bottom: 8px;">Question ${index + 1}</div>
+          <div class="question-text" style="font-size: 19px; margin-bottom: 15px; font-weight: 700; color: #ffffff;">${q.q[currentLang] || q.q.en}</div>
+          <div class="options-list" style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px;">
+            ${(q.options[currentLang] || q.options.en).map((opt, i) => {
+              let cls = 'option-btn disabled';
+              if (i === q.correct) cls += ' correct';
+              else if (i === q.userAnswer && !isCorrect) cls += ' wrong';
+              return `<div class="${cls}" style="pointer-events: none; padding: 12px 18px; font-size: 15px; margin-bottom: 0;">${opt}</div>`;
+            }).join('')}
+          </div>
+          <div class="explanation show ${isCorrect ? 'correct-exp' : 'wrong-exp'}" style="margin-top: 10px;">
+            <h4 style="margin-bottom: 4px;">${isCorrect ? '✅ Correct' : '❌ Incorrect'}</h4>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.5;">${q.explanation[currentLang] || q.explanation.en}</p>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+      
+      reviewSection.style.display = 'block';
+      reviewSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
     function backToSelection() {
+      clearInterval(timerInterval);
       document.getElementById('quizSelection').style.display = 'grid';
       document.getElementById('quizContainer').classList.remove('active');
       document.getElementById('resultsScreen').classList.remove('active');
       document.getElementById('resultsReality').classList.remove('show');
+      document.getElementById('reviewSection').style.display = 'none';
     }
 
     function retryQuiz() { startQuiz(currentQuiz); }
 
     function updateBadges() {
       const c = JSON.parse(localStorage.getItem('quizCompleted'))||{};
+      const examPassed = JSON.parse(localStorage.getItem('quizExamPassed'))||{};
       const quizIds = ['basics', 'snr', 'risk', 'smc', 'reality', 'deep'];
       
       quizIds.forEach(q => {
@@ -577,11 +823,12 @@
             const score = c[q];
             const pct = (score / total) * 100;
             if (badge) {
+              const prefix = examPassed[q] ? '🏆 Exam ' : '';
               if (pct >= 80) {
-                badge.innerHTML = `Passed ${score}/${total}`;
+                badge.innerHTML = `${prefix}Passed ${score}/${total}`;
                 badge.className = 'badge passed';
               } else {
-                badge.innerHTML = `Retry ${score}/${total}`;
+                badge.innerHTML = `${prefix}Retry ${score}/${total}`;
                 badge.className = 'badge failed';
               }
             }
