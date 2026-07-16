@@ -6635,109 +6635,60 @@ body.loading #backToTop {
   filter: brightness(1.08) !important;
 }
 
-/* Desktop Collapse Animation / Mini-Sidebar (Checklist 1) */
-.close-icon-mobile {
-  display: block;
-}
-
-.collapse-icon-desktop {
-  display: none;
-}
-
+/* Desktop Collapse Animation / Full Slide-Out (Checklist 1) */
 .sidebar-logo {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  justify-content: flex-end;
+  margin-bottom: 12px;
 }
 
-.sidebar-logo-collapsed {
-  display: none;
+.sidebar-close-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.sidebar-close-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="light"] .sidebar-close-btn {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+[data-theme="light"] .sidebar-close-btn:hover {
+  background: rgba(220, 38, 38, 0.08);
+  color: #dc2626;
+  border-color: rgba(220, 38, 38, 0.25);
 }
 
 @media (min-width: 901px) {
-  .close-icon-mobile {
-    display: none !important;
-  }
-  .collapse-icon-desktop {
-    display: block !important;
+  .sidebar-logo {
+    display: none !important; /* Hide header controls on desktop sidebar */
   }
   
+  /* When sidebar is collapsed on desktop, slide it out completely */
   .sidebar.active {
-    width: 78px !important;
-    min-width: 78px !important;
-    padding: 24px 12px !important;
-    align-items: center;
-  }
-  
-  .sidebar.active .sidebar-logo {
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 16px;
-    padding-bottom: 0;
-    border-bottom: none;
-  }
-  
-  .sidebar.active .sidebar-close-btn {
-    position: static;
-    margin: 0;
-  }
-
-  .sidebar.active .profile-card {
-    padding: 10px 4px !important;
-    align-items: center;
-    border-color: rgba(255, 255, 255, 0.04);
-    background: transparent;
-    margin-bottom: 16px;
-    width: 100%;
-  }
-
-  .sidebar.active .profile-card-top {
-    justify-content: center;
-    width: 100%;
-  }
-
-  .sidebar.active .profile-meta,
-  .sidebar.active .profile-card-bottom {
-    display: none !important;
-  }
-
-  .sidebar.active #continueLearningCard {
-    display: none !important;
-  }
-
-  .sidebar.active .menu-section-title {
-    display: none !important;
-  }
-
-  .sidebar.active .menu-item {
-    justify-content: center;
-    padding: 10px 0 !important;
-    border-radius: 10px;
+    width: 0 !important;
+    min-width: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     border-left: none !important;
-  }
-  
-  .sidebar.active .menu-item.active {
-    background: rgba(0, 255, 196, 0.08) !important;
-    color: #00ffc8 !important;
-    border-color: rgba(0, 255, 196, 0.15) !important;
-  }
-
-  [data-theme="light"] .sidebar.active .menu-item.active {
-    background: rgba(13, 148, 136, 0.08) !important;
-    color: #0d9488 !important;
-    border-color: rgba(13, 148, 136, 0.15) !important;
-  }
-
-  .sidebar.active .menu-text {
-    display: none !important;
-  }
-
-  .sidebar.active .sidebar-footer {
-    display: none !important;
-  }
-
-  .sidebar.active .sidebar-logo-collapsed {
-    display: block !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
   }
 }
