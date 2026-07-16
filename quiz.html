@@ -20,72 +20,116 @@
     .page-header { text-align: center; margin-bottom: 40px; }
     .page-header h1 { font-size: 36px; margin-bottom: 10px; background: linear-gradient(90deg, #00ff9c, #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .page-header p { color: #888; }
-    .quiz-selection { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-    .quiz-card { background: rgba(255,255,255,0.03); border: 1px solid #1e2a3a; border-radius: 12px; padding: 25px; cursor: pointer; transition: all 0.3s; }
-    .quiz-card:hover { border-color: #00ff9c; transform: translateY(-5px); }
-    .quiz-card .icon { font-size: 40px; margin-bottom: 15px; }
-    .quiz-card h3 { font-size: 18px; margin-bottom: 8px; }
-    .quiz-card p { font-size: 13px; color: #888; margin-bottom: 15px; }
-    .quiz-card .meta { display: flex; justify-content: space-between; font-size: 12px; color: #666; }
-    .quiz-card .badge { background: rgba(0,255,156,0.1); color: #00ff9c; padding: 4px 10px; border-radius: 20px; font-size: 11px; }
-    .quiz-card .badge.completed { background: #00ff9c; color: #000; }
-    .quiz-card.reality-card { grid-column: 1 / -1; background: linear-gradient(135deg, rgba(255,77,77,0.08), rgba(255,150,50,0.05)); border-color: rgba(255,77,77,0.3); }
-    .quiz-card.reality-card:hover { border-color: #ff6b6b; box-shadow: 0 10px 40px rgba(255,77,77,0.15); }
-    .quiz-card.reality-card .badge { background: rgba(255,77,77,0.2); color: #ff6b6b; }
-    .brutal-tag { display: inline-block; background: rgba(255,77,77,0.2); color: #ff6b6b; font-size: 10px; padding: 2px 8px; border-radius: 4px; margin-left: 8px; font-weight: 700; }
+    .quiz-selection { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .quiz-card { background: rgba(255,255,255,0.02); border: 1px solid #1e2a3a; border-radius: 16px; padding: 25px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+    .quiz-card:hover { border-color: rgba(0, 255, 156, 0.4); transform: translateY(-3px); background: rgba(255,255,255,0.04); }
+    .quiz-card .icon { font-size: 38px; margin-bottom: 15px; }
+    
+    /* Difficulty Tags (Fix 5) */
+    .difficulty { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .difficulty.beginner { background: rgba(0, 255, 156, 0.08); color: #00ff9c; }
+    .difficulty.intermediate { background: rgba(255, 183, 0, 0.08); color: #ffb700; }
+    .difficulty.advanced { background: rgba(255, 77, 77, 0.08); color: #ff4d4d; }
+    .difficulty.brutal { background: rgba(255, 77, 77, 0.15); color: #ff4d4d; border: 1px solid rgba(255, 77, 77, 0.3); }
+    .difficulty.expert { background: rgba(156, 0, 255, 0.12); color: #c084fc; border: 1px solid rgba(156, 0, 255, 0.25); }
+
+    .quiz-card h3 { font-size: 19px; font-weight: 700; margin-bottom: 8px; color: #ffffff; }
+    .quiz-card p { font-size: 13px; color: #8892b0; margin-bottom: 20px; line-height: 1.5; }
+    .quiz-card .meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #64748b; font-weight: 500; }
+    
+    /* Progress Badges (Fix 6) */
+    .quiz-card .badge { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; transition: all 0.2s; }
+    .quiz-card .badge.passed { background: rgba(0, 255, 156, 0.08) !important; border-color: rgba(0, 255, 156, 0.25) !important; color: #00ffc8 !important; }
+    .quiz-card .badge.failed { background: rgba(255, 183, 0, 0.08) !important; border-color: rgba(255, 183, 0, 0.25) !important; color: #ffb700 !important; }
+    
+    .quiz-card.reality-card { grid-column: 1 / -1; background: linear-gradient(135deg, rgba(255,77,77,0.05), rgba(255,150,50,0.03)); border-color: rgba(255,77,77,0.22); }
+    .quiz-card.reality-card:hover { border-color: rgba(255, 77, 77, 0.4); }
+    .brutal-tag { display: inline-block; background: rgba(255,77,77,0.15); color: #ff4d4d; font-size: 9px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; font-weight: 700; border: 1px solid rgba(255, 77, 77, 0.25); letter-spacing: 0.5px; }
+    
+    /* Warning Card Redesign (Fix 7) */
+    .warning-card { background: rgba(255, 183, 0, 0.03); border: 1px solid rgba(255, 183, 0, 0.15); border-radius: 12px; padding: 20px; margin-bottom: 30px; }
+    .warning-header { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #ffb700; margin-bottom: 8px; font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .warning-card p { font-size: 13.5px; color: #8892b0; line-height: 1.6; margin: 0; }
+    .warning-card strong { color: #ffffff; }
+
     .quiz-container { display: none; }
     .quiz-container.active { display: block; }
-    .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #1e2a3a; }
-    .quiz-progress { display: flex; align-items: center; gap: 15px; }
-    .progress-bar { width: 200px; height: 8px; background: #1e2a3a; border-radius: 4px; overflow: hidden; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, #00ff9c, #00d4ff); transition: width 0.3s; }
-    .question-counter { font-size: 14px; color: #888; }
-    .score-display { font-size: 16px; color: #00ff9c; }
-    .question-card { background: rgba(255,255,255,0.03); border: 1px solid #1e2a3a; border-radius: 16px; padding: 30px; margin-bottom: 20px; }
-    .question-text { font-size: 20px; margin-bottom: 25px; line-height: 1.5; }
+    
+    /* Redesigned Progress Header (Fix 1) */
+    .quiz-header-container { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #1e2a3a; }
+    .question-counter-label { font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 10px; }
+    .quiz-progress-bar-wrapper { margin-bottom: 12px; }
+    .progress-bar { width: 100%; height: 6px; background: rgba(0,0,0,0.4); border-radius: 10px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #00ff9c, #00d4ff); transition: width 0.3s ease; }
+    .quiz-sub-header { display: flex; justify-content: space-between; align-items: center; }
+    .score-display { font-size: 13.5px; color: #8892b0; font-weight: 500; }
+    .score-display span { color: #00ff9c; font-weight: 600; }
+    .passing-requirement { font-size: 12px; color: #64748b; font-weight: 600; background: rgba(255,255,255,0.03); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); }
+
+    .question-card { background: rgba(255,255,255,0.02); border: 1px solid #1e2a3a; border-radius: 16px; padding: 30px; margin-bottom: 20px; transition: padding 0.3s; }
+    /* Question Typography (Fix 2) */
+    .question-text { font-size: 24px; font-weight: 700; margin-bottom: 25px; line-height: 1.45; color: #ffffff; }
+    
     .options-list { display: flex; flex-direction: column; gap: 12px; }
-    .option-btn { padding: 16px 20px; background: #161b22; border: 1px solid #30363d; border-radius: 10px; color: #eaeaea; font-size: 15px; text-align: left; cursor: pointer; transition: all 0.3s; }
-    .option-btn:hover:not(.disabled) { border-color: #00ff9c; background: rgba(0,255,156,0.05); }
-    .option-btn.correct { border-color: #00ff9c; background: rgba(0,255,156,0.15); color: #00ff9c; }
-    .option-btn.wrong { border-color: #ff4d4d; background: rgba(255,77,77,0.15); color: #ff4d4d; }
-    .option-btn.disabled { cursor: not-allowed; opacity: 0.7; }
-    .explanation { margin-top: 20px; padding: 20px; background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.2); border-radius: 10px; display: none; }
+    /* Option Button Styles (Fix 3) */
+    .option-btn { padding: 16px 20px; background: #161b22; border: 1px solid #30363d; border-radius: 10px; color: #eaeaea; font-size: 18px; font-weight: 500; text-align: left; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .option-btn:hover:not(.disabled) { border-color: rgba(0, 255, 156, 0.3); background: rgba(0,255,156,0.03); }
+    .option-btn.correct { border-color: rgba(0, 255, 156, 0.4) !important; background: rgba(0, 255, 156, 0.08) !important; color: #00ff9c !important; font-weight: 600; }
+    .option-btn.wrong { border-color: rgba(255, 77, 77, 0.4) !important; background: rgba(255, 77, 77, 0.08) !important; color: #ff4d4d !important; font-weight: 600; }
+    .option-btn.disabled { cursor: not-allowed; opacity: 0.6; }
+    
+    .explanation { margin-top: 20px; padding: 20px; background: rgba(0,212,255,0.04); border: 1px solid rgba(0,212,255,0.15); border-radius: 10px; display: none; }
     .explanation.show { display: block; animation: slideIn 0.3s; }
     @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-    .explanation.correct-exp { background: rgba(0,255,156,0.05); border-color: rgba(0,255,156,0.3); }
-    .explanation.wrong-exp { background: rgba(255,77,77,0.05); border-color: rgba(255,77,77,0.3); }
-    .explanation h4 { color: #00d4ff; margin-bottom: 10px; }
+    .explanation.correct-exp { background: rgba(0,255,156,0.03); border-color: rgba(0,255,156,0.15); }
+    .explanation.wrong-exp { background: rgba(255,77,77,0.03); border-color: rgba(255,77,77,0.15); }
+    .explanation h4 { color: #00d4ff; margin-bottom: 8px; font-weight: 700; }
     .explanation.correct-exp h4 { color: #00ff9c; }
     .explanation.wrong-exp h4 { color: #ff6b6b; }
-    .explanation p { color: #888; font-size: 14px; line-height: 1.6; }
-    .reality-box { margin-top: 15px; padding: 12px 15px; background: rgba(255,183,0,0.1); border-left: 3px solid #ffb700; border-radius: 0 8px 8px 0; display: none; }
+    .explanation p { color: #8892b0; font-size: 14px; line-height: 1.6; }
+    
+    .reality-box { margin-top: 15px; padding: 12px 15px; background: rgba(255,183,0,0.04); border-left: 3px solid #ffb700; border-radius: 0 8px 8px 0; display: none; }
     .reality-box.show { display: block; }
-    .reality-box p { color: #ffb700; font-size: 13px; font-weight: 500; }
-    .quiz-nav { display: flex; justify-content: space-between; margin-top: 25px; }
-    .nav-btn { padding: 12px 30px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
-    .nav-btn.secondary { background: transparent; border: 1px solid #30363d; color: #888; }
+    .reality-box p { color: #ffb700; font-size: 13px; font-weight: 500; line-height: 1.5; }
+    
+    .quiz-nav { display: flex; justify-content: space-between; margin-top: 25px; gap: 15px; }
+    .nav-btn { padding: 12px 30px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 14.5px; }
+    .nav-btn.secondary { background: transparent; border: 1px solid #30363d; color: #94a3b8; }
+    .nav-btn.secondary:hover { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.15); }
     .nav-btn.primary { background: linear-gradient(90deg, #00ff9c, #00d4ff); border: none; color: #000; }
-    .nav-btn:hover { transform: translateY(-2px); }
-    .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .nav-btn.primary:hover { transform: translateY(-1px); opacity: 0.95; }
+    
+    /* Next Button Animation and Transition (Fix 4) */
+    #nextBtn { opacity: 0; pointer-events: none; transform: translateY(5px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    #nextBtn.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+    /* Results screen styling (Fix 8) */
     .results-screen { display: none; text-align: center; padding: 40px; }
     .results-screen.active { display: block; }
-    .results-icon { font-size: 80px; margin-bottom: 20px; }
-    .results-score { font-size: 48px; font-weight: 700; margin-bottom: 10px; }
+    .results-icon { font-size: 72px; margin-bottom: 15px; }
+    
+    .results-status-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 15px; }
+    .results-status-badge.passed { background: rgba(0, 255, 156, 0.08); color: #00ffc8; border: 1px solid rgba(0, 255, 156, 0.25); }
+    .results-status-badge.failed { background: rgba(255, 77, 77, 0.08); color: #ff4d4d; border: 1px solid rgba(255, 77, 77, 0.25); }
+
+    .results-score { font-size: 40px; font-weight: 800; margin-bottom: 10px; }
     .results-score.great { color: #00ff9c; }
-    .results-score.good { color: #00d4ff; }
     .results-score.poor { color: #ff4d4d; }
-    .results-message { font-size: 18px; color: #888; margin-bottom: 30px; }
-    .results-reality { background: rgba(255,77,77,0.1); border: 1px solid rgba(255,77,77,0.3); border-radius: 10px; padding: 20px; margin-bottom: 25px; max-width: 500px; margin-left: auto; margin-right: auto; display: none; }
+    .results-message { font-size: 16px; color: #8892b0; margin-bottom: 30px; }
+    .results-reality { background: rgba(255,77,77,0.03); border: 1px solid rgba(255,77,77,0.15); border-radius: 12px; padding: 20px; margin-bottom: 30px; max-width: 500px; margin-left: auto; margin-right: auto; display: none; }
     .results-reality.show { display: block; }
-    .results-reality p { color: #ff6b6b; font-size: 14px; line-height: 1.6; }
-    .results-actions { display: flex; gap: 15px; justify-content: center; }
+    .results-reality p { color: #ff6b6b; font-size: 14px; line-height: 1.6; margin: 0; }
+    .results-actions { display: flex; gap: 15px; justify-content: center; align-items: center; }
+    
     @media (max-width: 768px) {
       .navbar { padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
       .nav-right { width: 100%; justify-content: space-between; }
       .page-header h1 { font-size: 28px; }
-      .question-text { font-size: 18px; }
+      .question-card { padding: 20px; } /* Finger-friendly 20px padding (Fix 10) */
+      .question-text { font-size: 20px; }
       .quiz-nav { flex-direction: column; gap: 10px; }
-      .nav-btn { width: 100%; }
+      .nav-btn { width: 100%; text-align: center; }
+      .results-actions { flex-direction: column; gap: 10px; }
     }
   </style>
 </head>
@@ -106,59 +150,98 @@
       <p>Test your knowledge and reinforce your learning</p>
     </div>
 
-   <div class="warning-box">
-    <div class="warning-icon">⚠</div>
-    <div class="warning-text">
-        <strong>WARNING:</strong> If you cannot score 80%+ across these tests, you are NOT ready to risk real capital in the markets.
+    <!-- Redesigned Warning Card (Fix 7) -->
+    <div class="warning-card">
+      <div class="warning-header">
+        <span>⚠️</span> Trading Warning
+      </div>
+      <p>
+        You must score at least <strong>80%</strong> on these tests before risking real capital in the live markets. Self-discipline is your ultimate defense against ruin.
+      </p>
     </div>
-</div>
+
     <div class="quiz-selection" id="quizSelection">
+      <!-- Card 1 -->
       <div class="quiz-card" onclick="startQuiz('basics')">
         <div class="icon">📊</div>
+        <span class="difficulty beginner">🟢 Beginner</span>
         <h3>Trading Basics</h3>
         <p>Candlesticks, Market Structure, Trendlines</p>
-        <div class="meta"><span>10 Questions</span><span class="badge" id="badge-basics">Start</span></div>
+        <div class="meta">
+          <span>10 Questions · ~7 min</span>
+          <span class="badge" id="badge-basics">Start</span>
+        </div>
       </div>
+      <!-- Card 2 -->
       <div class="quiz-card" onclick="startQuiz('snr')">
         <div class="icon">📈</div>
+        <span class="difficulty intermediate">🟡 Intermediate</span>
         <h3>Support & Resistance</h3>
         <p>S&R Zones, Role Reversal, Entry/Exit</p>
-        <div class="meta"><span>10 Questions</span><span class="badge" id="badge-snr">Start</span></div>
+        <div class="meta">
+          <span>10 Questions · ~7 min</span>
+          <span class="badge" id="badge-snr">Start</span>
+        </div>
       </div>
+      <!-- Card 3 -->
       <div class="quiz-card" onclick="startQuiz('risk')">
         <div class="icon">🛡️</div>
+        <span class="difficulty intermediate">🟡 Intermediate</span>
         <h3>Risk Management</h3>
         <p>Position Sizing, Stop Loss, R:R Ratio</p>
-        <div class="meta"><span>10 Questions</span><span class="badge" id="badge-risk">Start</span></div>
+        <div class="meta">
+          <span>10 Questions · ~8 min</span>
+          <span class="badge" id="badge-risk">Start</span>
+        </div>
       </div>
+      <!-- Card 4 -->
       <div class="quiz-card" onclick="startQuiz('smc')">
         <div class="icon">🧠</div>
+        <span class="difficulty advanced">🔴 Advanced</span>
         <h3>Smart Money Concepts</h3>
         <p>Liquidity, BOS, CHoCH, Order Blocks</p>
-        <div class="meta"><span>10 Questions</span><span class="badge" id="badge-smc">Start</span></div>
+        <div class="meta">
+          <span>10 Questions · ~10 min</span>
+          <span class="badge" id="badge-smc">Start</span>
+        </div>
       </div>
+      <!-- Card 5 -->
       <div class="quiz-card reality-card" onclick="startQuiz('reality')">
         <div class="icon">🔥</div>
-        <h3>Reality Check<span class="brutal-tag">BRUTAL</span></h3>
+        <span class="difficulty brutal">⚡ Brutal Check</span>
+        <h3>Reality Check <span class="brutal-tag">BRUTAL</span></h3>
         <p>30 advanced questions. No sugarcoating. If you can't score 80%+, you're NOT ready to trade real money.</p>
-        <div class="meta"><span>30 Questions</span><span class="badge" id="badge-reality">Start</span></div>
+        <div class="meta">
+          <span>30 Questions · ~20 min</span>
+          <span class="badge" id="badge-reality">Start</span>
+        </div>
       </div>
+      <!-- Card 6 -->
       <div class="quiz-card reality-card" onclick="startQuiz('deep')">
         <div class="icon">🧬</div>
-        <h3>Deep Market Reality<span class="brutal-tag">EXPERT</span></h3>
+        <span class="difficulty expert">🏆 Expert Test</span>
+        <h3>Deep Market Reality <span class="brutal-tag">EXPERT</span></h3>
         <p>20 questions that separate real traders from pretenders.</p>
-        <div class="meta"><span>20 Questions</span><span class="badge" id="badge-deep">Start</span></div> 
+        <div class="meta">
+          <span>20 Questions · ~15 min</span>
+          <span class="badge" id="badge-deep">Start</span>
+        </div>
       </div>
     </div>
 
     <div class="quiz-container" id="quizContainer">
-      <div class="quiz-header">
-        <div class="quiz-progress">
+      <!-- Redesigned Progress Header (Fix 1) -->
+      <div class="quiz-header-container">
+        <div class="question-counter-label" id="questionCounter">Question 1 of 10</div>
+        <div class="quiz-progress-bar-wrapper">
           <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-          <span class="question-counter" id="questionCounter">1/10</span>
         </div>
-        <span class="score-display">Score: <span id="currentScore">0</span></span>
+        <div class="quiz-sub-header">
+          <span class="score-display">Score: <span id="currentScore">0</span></span>
+          <span class="passing-requirement">80% Required</span>
+        </div>
       </div>
+
       <div class="question-card">
         <div class="question-text" id="questionText"></div>
         <div class="options-list" id="optionsList"></div>
@@ -172,18 +255,21 @@
       </div>
       <div class="quiz-nav">
         <button class="nav-btn secondary" onclick="backToSelection()">← Back to Quizzes</button>
-        <button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()" disabled>Next Question →</button>
+        <button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
       </div>
     </div>
 
+    <!-- Redesigned Quiz Results Screen (Fix 8) -->
     <div class="results-screen" id="resultsScreen">
       <div class="results-icon" id="resultsIcon">🎉</div>
-      <div class="results-score" id="resultsScore">0/10</div>
-      <div class="results-message" id="resultsMessage">Great job!</div>
+      <div class="results-status-badge" id="resultsStatusBadge">PASSED</div>
+      <div class="results-score" id="resultsScore">8/10 (80%)</div>
+      <div class="results-message" id="resultsMessage">Great job! You've shown strong trading discipline.</div>
       <div class="results-reality" id="resultsReality"><p id="resultsRealityText"></p></div>
       <div class="results-actions">
         <button class="nav-btn secondary" onclick="backToSelection()">Try Another Quiz</button>
-        <button class="nav-btn primary" onclick="retryQuiz()">Retry This Quiz</button>
+        <button class="nav-btn secondary" onclick="retryQuiz()">Retry Quiz</button>
+        <a href="index.html#learn" class="nav-btn primary" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Continue Learning</a>
       </div>
     </div>
   </div>
@@ -278,7 +364,158 @@
         { q: { en: "Why do filters reduce profitability even improving accuracy?", hi: "Filters accuracy improve के बावजूद profitability reduce क्यों?" }, options: { en: ["Filters improve profit", "No effect", "Filters cut opportunity - most profits from fat tails which filters remove", "Only bad filters"], hi: ["Filters profit improve", "कोई effect नहीं", "Filters opportunity cut - most profits fat tails से जो filters remove", "सिर्फ bad filters"] }, correct: 2, explanation: { en: "Filters improve accuracy but reduce opportunity. Most profits from fat tails. Filters cut tails, not noise.", hi: "Filters accuracy improve लेकिन opportunity reduce। Most profits fat tails से। Filters tails cut।" }, reality: { en: "🔥 Added 5 filters? You filtered out all best trades.", hi: "🔥 5 filters add किए? सब best trades filter out।" } },
         { q: { en: "Why do strategies stop working gradually, not suddenly?", hi: "Strategies suddenly नहीं gradually बंद क्यों?" }, options: { en: ["Always suddenly", "Never stop", "Markets adapt gradually - erosion blamed on 'bad luck' until collapse", "Only retail"], hi: ["हमेशा suddenly", "कभी बंद नहीं", "Markets gradually adapt - erosion 'bad luck' blame collapse तक", "सिर्फ retail"] }, correct: 2, explanation: { en: "Markets adapt gradually. Erosion blamed on 'bad luck' until collapse. Notice only when capital gone.", hi: "Markets gradually adapt। Erosion 'bad luck' blame। तभी notice जब capital gone।" }, reality: { en: "🔥 Returns 5% to 3%? Not variance - beginning of end.", hi: "🔥 Returns 5% से 3%? Variance नहीं - end की beginning।" } },
         { q: { en: "Is trading skill game or capital allocation game disguised as skill?", hi: "Trading skill game है या capital allocation game disguised as skill?" }, options: { en: ["Pure skill", "Pure luck", "Capital allocation - skill gives edge, capital management determines survival", "Neither"], hi: ["Pure skill", "Pure luck", "Capital allocation - skill edge देती है, capital management survival determine", "कोई नहीं"] }, correct: 2, explanation: { en: "Capital allocation game. Skill gives slight edge. Great traders are best risk managers, not predictors.", hi: "Capital allocation game। Skill slight edge। Great traders best risk managers हैं, predictors नहीं।" }, reality: { en: "🔥 Think you're great because entries? Greats became great by sizing and risk management.", hi: "🔥 Entries से great हो? Greats size और risk management से great बने।" } },
-        { q: { en: "If money removed, would traders follow same rules?", hi: "Money हटा do तो traders same rules follow करेंगे?" }, options: { en: ["Yes - true discipline internal", "More strictly", "No - proves discipline fear-based. Real discipline = rules without reward", "No effect"], hi: ["हां - true discipline internal", "और strictly", "नहीं - prove करता discipline fear-based। Real discipline = बिना reward rules", "कोई effect नहीं"] }, correct: 2, explanation: { en: "No. Proves discipline externally enforced by fear. Real discipline = rules without reward. Most aren't disciplined - just afraid.", hi: "नहीं। Prove करता discipline fear से। Real discipline = बिना reward rules। Most disciplined नहीं - बस डरे हुए।" }, reality: { en: "🔥 Think you're disciplined? Would you follow same rules in demo with nothing at stake?", hi: "🔥 Disciplined हो? Demo में बिना stake same rules follow करोगे?" } }
+        { q: { en: "If money removed, would traders follow same rules?", hi: "Money हटा do तो traders same rules follow करेंगे?" }, options: { en: ["Yes - true discipline internal", "More strictly", "No - proves discipline fear-based. Real discipline = rules without reward", "No effect"], hi: ["हां - true discipline internal", "और strictly", "नहीं - prove करता discipline fear-based। Real discipline = बिना reward rules", "कोई effect नहीं"] }, correct: 2, explanation: { en: "No. Proves discipline externally enforced by fear. Real discipline = rules without reward. Most aren't disciplined - just afraid.", hi: "नहीं। Prove करता discipline fear से। Real discipline = बिना reward rules। Most disciplined नहीं - बस डरे हुए।" }, reality: { en: "🔥 Think you're disciplined? Would you follow same rules in demo with nothing at stake?", hi: "🔥 Disciplined हो? Demo में बिना stake same rules follow corregenge?" } }
+      ]
+    };
+
+    let currentQuiz = null, currentQuestion = 0, score = 0, answered = false;
+
+    function startQuiz(id) {
+      currentQuiz = id; currentQuestion = 0; score = 0; answered = false;
+      document.getElementById('quizSelection').style.display = 'none';
+      document.getElementById('quizContainer').classList.add('active');
+      document.getElementById('resultsScreen').classList.remove('active');
+      document.getElementById('currentScore').textContent = '0';
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const quiz = quizData[currentQuiz], q = quiz[currentQuestion];
+      document.getElementById('questionText').textContent = q.q[currentLang] || q.q.en;
+      document.getElementById('questionCounter').textContent = `Question ${currentQuestion + 1} of ${quiz.length}`;
+      document.getElementById('progressFill').style.width = ((currentQuestion + 1) / quiz.length * 100) + '%';
+      const list = document.getElementById('optionsList');
+      list.innerHTML = '';
+      (q.options[currentLang] || q.options.en).forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn'; btn.textContent = opt;
+        btn.onclick = () => selectAnswer(i);
+        list.appendChild(btn);
+      });
+      document.getElementById('explanation').classList.remove('show','correct-exp','wrong-exp');
+      document.getElementById('realityBox').classList.remove('show');
+      
+      const nextBtn = document.getElementById('nextBtn');
+      if (nextBtn) {
+        nextBtn.classList.remove('visible');
+        nextBtn.textContent = 'Next Question →';
+      }
+      answered = false;
+    }
+
+    function selectAnswer(index) {
+      if (answered) return;
+      answered = true;
+      const quiz = quizData[currentQuiz], q = quiz[currentQuestion], opts = document.querySelectorAll('.option-btn'), exp = document.getElementById('explanation');
+      opts.forEach((o,i) => { 
+        o.classList.add('disabled'); 
+        if (i===q.correct) o.classList.add('correct'); 
+        else if (i===index) o.classList.add('wrong'); 
+      });
+      
+      const isCorrect = (index === q.correct);
+      if (isCorrect) { 
+        score++; 
+        document.getElementById('currentScore').textContent = score; 
+        exp.classList.add('correct-exp'); 
+        document.getElementById('expTitle').textContent = currentLang==='hi'?'✅ सही!':'✅ Correct!'; 
+      } else { 
+        exp.classList.add('wrong-exp'); 
+        document.getElementById('expTitle').textContent = currentLang==='hi'?'❌ गलत!':'❌ Wrong!'; 
+      }
+      
+      document.getElementById('explanationText').textContent = q.explanation[currentLang] || q.explanation.en;
+      exp.classList.add('show');
+      
+      if (q.reality) { 
+        document.getElementById('realityText').textContent = q.reality[currentLang] || q.reality.en; 
+        document.getElementById('realityBox').classList.add('show'); 
+      }
+      
+      const nextBtn = document.getElementById('nextBtn');
+      if (nextBtn) {
+        nextBtn.classList.add('visible');
+        if (currentQuestion === quiz.length - 1) {
+          nextBtn.textContent = currentLang==='hi'?'Results →':'See Results →';
+        }
+      }
+    }
+
+    function nextQuestion() {
+      if (currentQuestion < quizData[currentQuiz].length - 1) { currentQuestion++; loadQuestion(); }
+      else showResults();
+    }
+
+    function showResults() {
+      document.getElementById('quizContainer').classList.remove('active');
+      document.getElementById('resultsScreen').classList.add('active');
+      const quiz = quizData[currentQuiz], pct = (score/quiz.length)*100, isReality = currentQuiz==='reality';
+      
+      const roundedPct = Math.round(pct);
+      document.getElementById('resultsScore').textContent = `${score}/${quiz.length} (${roundedPct}%)`;
+      
+      const sBadge = document.getElementById('resultsStatusBadge');
+      const sEl = document.getElementById('resultsScore');
+      const iEl = document.getElementById('resultsIcon');
+      const mEl = document.getElementById('resultsMessage');
+      const rEl = document.getElementById('resultsReality');
+      const rTxt = document.getElementById('resultsRealityText');
+      
+      if (pct >= 80) { 
+        sBadge.textContent = 'PASSED';
+        sBadge.className = 'results-status-badge passed';
+        sEl.className='results-score great'; 
+        iEl.textContent='🎉'; 
+        mEl.textContent=currentLang==='hi'?'बढ़िया! आपने strong discipline दिखाया है।':'Excellent! You\'ve shown strong trading discipline.'; 
+        if(isReality){rEl.classList.add('show'); rTxt.textContent=currentLang==='hi'?"Overconfident मत हो। Paper trade 3 months पहले।":"Don't get cocky. Paper trade 3 months first.";} 
+      } else { 
+        sBadge.textContent = 'FAILED';
+        sBadge.className = 'results-status-badge failed';
+        sEl.className='results-score poor'; 
+        iEl.textContent='📚'; 
+        mEl.textContent=currentLang==='hi'?'Practice करो! Markets में discipline ही survival है।':'Review material! Discipline is survival in the markets.'; 
+        if(isReality){rEl.classList.add('show'); rTxt.textContent=currentLang==='hi'?"Real money से trade किया तो LOSE करोगे। Learning Vault जाओ।":"You WILL lose real money. Go back to Learning Vault.";} 
+      }
+      
+      const c = JSON.parse(localStorage.getItem('quizCompleted'))||{};
+      c[currentQuiz] = Math.max(c[currentQuiz]||0, score);
+      localStorage.setItem('quizCompleted', JSON.stringify(c));
+      updateBadges();
+    }
+
+    function backToSelection() {
+      document.getElementById('quizSelection').style.display = 'grid';
+      document.getElementById('quizContainer').classList.remove('active');
+      document.getElementById('resultsScreen').classList.remove('active');
+      document.getElementById('resultsReality').classList.remove('show');
+    }
+
+    function retryQuiz() { startQuiz(currentQuiz); }
+
+    function updateBadges() {
+      const c = JSON.parse(localStorage.getItem('quizCompleted'))||{};
+      Object.keys(quizData).forEach(q => {
+        const b = document.getElementById('badge-'+q);
+        if(b) {
+          if (c[q] !== undefined) {
+            const total = quizData[q].length;
+            const score = c[q];
+            const pct = (score / total) * 100;
+            if (pct >= 80) {
+              b.textContent = `Passed ${score}/${total}`;
+              b.className = 'badge passed';
+            } else {
+              b.textContent = `Retry ${score}/${total}`;
+              b.className = 'badge failed';
+            }
+          } else {
+            b.textContent = 'Start';
+            b.className = 'badge';
+          }
+        }
+      });
+    }
+    updateBadges();o - proves discipline fear-based. Real discipline = rules without reward", "No effect"], hi: ["हां - true discipline internal", "और strictly", "नहीं - prove करता discipline fear-based। Real discipline = बिना reward rules", "कोई effect नहीं"] }, correct: 2, explanation: { en: "No. Proves discipline externally enforced by fear. Real discipline = rules without reward. Most aren't disciplined - just afraid.", hi: "नहीं। Prove करता discipline fear से। Real discipline = बिना reward rules। Most disciplined नहीं - बस डरे हुए।" }, reality: { en: "🔥 Think you're disciplined? Would you follow same rules in demo with nothing at stake?", hi: "🔥 Disciplined हो? Demo में बिना stake same rules follow करोगे?" } }
       ]
     };
 
