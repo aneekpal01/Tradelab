@@ -1,445 +1,2438 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create a TradeLab account</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0f1729 0%, #1a1f35 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 40px 20px;
-            position: relative;
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(0, 255, 200, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(0, 132, 255, 0.06) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
-            pointer-events: none;
-        }
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(50px, 30px); }
-        }
-        .container {
-            background: rgba(20, 25, 40, 0.7);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 60px 50px;
-            width: 100%;
-            max-width: 520px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.03);
-            position: relative;
-            z-index: 1;
-            animation: slideUp 0.6s ease;
-            margin: 20px auto;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .logo-section { text-align: center; margin-bottom: 50px; position: relative; }
-        .logo-image { width: 120px; height: 120px; margin: 0 auto 25px; position: relative; z-index: 2; }
-        .logo-image img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 6px 16px rgba(0, 255, 200, 0.4)); }
-        .particle-container { position: absolute; top: 60px; left: 50%; transform: translateX(-50%); width: 240px; height: 240px; pointer-events: none; }
-        .orbit-particle { position: absolute; width: 6px; height: 6px; background: linear-gradient(135deg, #00ffc8, #00d4ff); border-radius: 50%; box-shadow: 0 0 15px rgba(0, 255, 200, 0.9); }
-        .orbit-particle:nth-child(1) { animation: orbit1 8s linear infinite; }
-        .orbit-particle:nth-child(2) { animation: orbit2 10s linear infinite; }
-        .orbit-particle:nth-child(3) { animation: orbit3 12s linear infinite; }
-        .orbit-particle:nth-child(4) { animation: orbit4 9s linear infinite; }
-        @keyframes orbit1 { 0% { transform: rotate(0deg) translateX(110px) rotate(0deg); opacity: 0.3; } 50% { opacity: 1; } 100% { transform: rotate(360deg) translateX(110px) rotate(-360deg); opacity: 0.3; } }
-        @keyframes orbit2 { 0% { transform: rotate(90deg) translateX(100px) rotate(-90deg); opacity: 0.4; } 50% { opacity: 1; } 100% { transform: rotate(450deg) translateX(100px) rotate(-450deg); opacity: 0.4; } }
-        @keyframes orbit3 { 0% { transform: rotate(180deg) translateX(105px) rotate(-180deg); opacity: 0.5; } 50% { opacity: 1; } 100% { transform: rotate(540deg) translateX(105px) rotate(-540deg); opacity: 0.5; } }
-        @keyframes orbit4 { 0% { transform: rotate(270deg) translateX(115px) rotate(-270deg); opacity: 0.3; } 50% { opacity: 1; } 100% { transform: rotate(630deg) translateX(115px) rotate(-630deg); opacity: 0.3; } }
-        .logo-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150px; height: 150px; background: radial-gradient(circle, rgba(0, 255, 200, 0.2), transparent); filter: blur(40px); pointer-events: none; animation: pulse 3s ease-in-out infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); } }
-        .logo { font-size: 42px; font-weight: 800; background: linear-gradient(135deg, #00ffc8 0%, #00d4ff 50%, #0084ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -1px; margin-bottom: 8px; position: relative; display: inline-block; animation: logoGlow 3s ease-in-out infinite, logoFloat 4s ease-in-out infinite; }
-        @keyframes logoGlow { 0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 255, 200, 0.5)) drop-shadow(0 0 20px rgba(0, 255, 200, 0.3)); } 50% { filter: drop-shadow(0 0 20px rgba(0, 255, 200, 0.9)) drop-shadow(0 0 40px rgba(0, 255, 200, 0.6)) drop-shadow(0 0 60px rgba(0, 132, 255, 0.4)); } }
-        @keyframes logoFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-        .page-title { font-size: 30px; font-weight: 700; color: #ffffff; text-align: center; margin-bottom: 10px; letter-spacing: -0.5px; }
-        .page-subtitle { font-size: 16px; color: rgba(255, 255, 255, 0.5); text-align: center; margin-bottom: 40px; font-weight: 400; }
-        .auth-buttons { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
-        .auth-btn { width: 100%; padding: 16px 20px; background: rgba(255, 255, 255, 0.05); border: 1.5px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 16px; font-weight: 600; color: #ffffff; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: 'Inter', sans-serif; }
-        .auth-btn:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); }
-        .auth-btn:active { transform: translateY(0); }
-        .divider { text-align: center; position: relative; margin: 32px 0; }
-        .divider::before { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 1px; background: rgba(255, 255, 255, 0.08); }
-        .divider span { background: rgba(20, 25, 40, 0.9); padding: 0 16px; color: rgba(255, 255, 255, 0.4); font-size: 14px; position: relative; z-index: 1; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
-        .form-group { margin-bottom: 22px; }
-        .form-label { display: block; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.8); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        /* New Password Wrapper Styles */
-        .password-wrapper { position: relative; }
-        .password-toggle { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; color: rgba(255, 255, 255, 0.5); transition: color 0.3s; display: flex; align-items: center; }
-        .password-toggle:hover { color: #00ffc8; }
-        
-        .form-input { width: 100%; padding: 14px 16px; padding-right: 45px; /* Space for eye icon */ background: rgba(255, 255, 255, 0.04); border: 1.5px solid rgba(255, 255, 255, 0.08); border-radius: 12px; font-size: 15px; color: #ffffff; transition: all 0.3s; font-family: 'Inter', sans-serif; }
-        .form-input:focus { outline: none; border-color: #00ffc8; background: rgba(255, 255, 255, 0.06); box-shadow: 0 0 0 4px rgba(0, 255, 200, 0.1); }
-        .form-input::placeholder { color: rgba(255, 255, 255, 0.3); }
-        .password-hint { font-size: 12px; color: rgba(255, 255, 255, 0.4); margin-top: 6px; }
-        
-        /* Forgot Password Link Style */
-        .forgot-password { text-align: right; margin-bottom: 24px; margin-top: -10px; }
-        .forgot-password a { color: rgba(255, 255, 255, 0.6); font-size: 13px; text-decoration: none; font-weight: 500; transition: all 0.3s; }
-        .forgot-password a:hover { color: #00ffc8; text-decoration: underline; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TradeLab | Free Trading Education</title>
+  <meta name="description" content="TradeLab - Free trading education platform. Learn price action, smart money concepts, risk management, candlestick patterns, and build profitable trading strategies. 100% free forever.">
+<meta name="keywords" content="trading education, free trading course, price action, smart money concepts, SMC, risk management, candlestick patterns, support resistance, liquidity, trading psychology, backtesting, TradeLab">
+<meta name="author" content="TradeLab">
+<meta name="robots" content="index, follow">
 
-        .submit-btn { width: 100%; padding: 16px 20px; background: linear-gradient(135deg, #00ffc8 0%, #00d4ff 100%); border: none; border-radius: 12px; font-size: 16px; font-weight: 700; color: #0f1729; cursor: pointer; transition: all 0.3s; font-family: 'Inter', sans-serif; margin-top: 8px; box-shadow: 0 4px 20px rgba(0, 255, 200, 0.3); }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 255, 200, 0.5); }
-        .submit-btn:active { transform: translateY(0); }
-        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-        .sso-btn { width: 100%; padding: 14px 20px; background: transparent; border: 1.5px solid rgba(255, 255, 255, 0.08); border-radius: 12px; font-size: 15px; font-weight: 600; color: rgba(255, 255, 255, 0.6); cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 16px; font-family: 'Inter', sans-serif; }
-        .sso-btn:hover { background: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.15); }
-        .terms { text-align: center; font-size: 13px; color: rgba(255, 255, 255, 0.4); margin-top: 40px; line-height: 1.6; }
-        .terms a { color: #00ffc8; text-decoration: none; font-weight: 600; transition: all 0.3s; }
-        .terms a:hover { color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 200, 0.5); }
-        .switch-auth { text-align: center; font-size: 15px; color: rgba(255, 255, 255, 0.5); margin-top: 28px; font-weight: 500; }
-        .switch-auth a { color: #00ffc8; text-decoration: none; font-weight: 700; transition: all 0.3s; }
-        .switch-auth a:hover { color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 200, 0.5); }
-        .message { padding: 14px 16px; border-radius: 12px; margin-bottom: 20px; font-size: 14px; font-weight: 600; display: none; border: 1.5px solid; }
-        .message.success { background: rgba(0, 255, 200, 0.1); color: #00ffc8; border-color: rgba(0, 255, 200, 0.3); }
-        .message.error { background: rgba(255, 100, 100, 0.1); color: #ff6464; border-color: rgba(255, 100, 100, 0.3); }
-        .auth-tabs { display: flex; gap: 10px; margin-bottom: 32px; background: rgba(255, 255, 255, 0.03); padding: 6px; border-radius: 12px; }
-        .auth-tab { flex: 1; padding: 10px 16px; background: transparent; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; color: rgba(255, 255, 255, 0.5); cursor: pointer; transition: all 0.3s; font-family: 'Inter', sans-serif; }
-        .auth-tab.active { background: rgba(0, 255, 200, 0.12); color: #00ffc8; }
-        .auth-tab:hover:not(.active) { color: rgba(255, 255, 255, 0.8); }
-        .auth-form { display: none; }
-        .auth-form.active { display: block; }
-        @media (max-width: 568px) {
-            .container { padding: 50px 35px; }
-            .page-title { font-size: 26px; }
-            .logo { font-size: 36px; }
-        }
-    </style>
+<!-- Open Graph -->
+<meta property="og:title" content="TradeLab | Free Trading Education">
+<meta property="og:description" content="Learn trading the right way. Free structured education on price action, SMC, risk management & strategy building.">
+<meta property="og:image" content="https://aneekpal01.github.io/Tradelab/og-banner.png">
+<meta property="og:url" content="https://aneekpal01.github.io/Tradelab/">
+<meta property="og:type" content="website">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TradeLab | Free Trading Education">
+<meta name="twitter:description" content="Learn trading the right way. Free structured education on price action, SMC, risk management & strategy building.">
+<meta name="twitter:image" content="https://aneekpal01.github.io/Tradelab/og-banner.png">
+<link rel="icon" type="image/png" href="logox.png">
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .hidden {
+      display: none !important;
+    }
+    
+    /* Loader Logo Styles */
+    .loader-logo {
+      width: 160px;
+      height: 120px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { 
+        transform: scale(1); 
+        opacity: 1; 
+      }
+      50% { 
+        transform: scale(1.15); 
+        opacity: 0.8; 
+      }
+    }
+  </style>
+  <script>
+  window.AI_LEVEL = "Beginner";   // default mode
+</script>
+
 </head>
-<body>
-    <div class="container">
-        <div class="logo-section">
-            <div class="logo-glow"></div>
-            <div class="logo-image">
-                <img src="https://aneekpal01.github.io/Tradelab/images/logo.png" alt="TradeLab Logo" onerror="this.style.display='none'">
-            </div>
-            <div class="particle-container">
-                <div class="orbit-particle"></div>
-                <div class="orbit-particle"></div>
-                <div class="orbit-particle"></div>
-                <div class="orbit-particle"></div>
-            </div>
-            <div class="logo">TradeLab</div>
-        </div>
+<body class="loading">
+  
 
-        <h1 class="page-title">Create a TradeLab account</h1>
-        <p class="page-subtitle">Start your trading education journey today</p>
+  <!-- TradingView Ticker -->
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+    "symbols": [
+      { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
+      { "proName": "BITSTAMP:ETHUSD", "title": "Ethereum" },
+      { "proName": "BINANCE:SOLUSDT", "title": "Solana" },
+      { "proName": "FX_IDC:USDINR", "title": "USD/INR" },
+      { "proName": "NASDAQ:TSLA", "title": "Tesla" }
+    ],
+    "showSymbolLogo": true,
+    "colorTheme": "dark",
+    "isTransparent": true,
+    "displayMode": "adaptive",
+    "locale": "en"
+    }
+    </script>
+  </div>
 
-        <div class="auth-tabs">
-            <button class="auth-tab active" id="signupTab">Sign Up</button>
-            <button class="auth-tab" id="loginTab">Log in</button>
-        </div>
+  <!-- Market Status Bar -->
+  <div class="market-status-bar" id="marketStatusBar">
+    <div class="market-status-inner">
+      <div class="market-status-left">
+        <span class="market-dot" id="marketDot"></span>
+        <span class="market-label" id="marketLabel">Checking markets...</span>
+        <span class="market-session" id="marketSession"></span>
+      </div>
+      <div class="market-status-right">
+        <span class="market-time-label">IST</span>
+        <span class="market-time" id="marketTime"></span>
+        <span class="market-divider">·</span>
+        <span class="market-nifty-label">NSE</span>
+        <span class="market-session-tag" id="niftyTag"></span>
+        <span class="market-divider">·</span>
+        <span class="market-nifty-label">CRYPTO</span>
+        <span class="market-session-tag open" id="cryptoTag">24/7</span>
+        <span class="market-divider">·</span>
+        <span class="market-nifty-label">FOREX</span>
+        <span class="market-session-tag" id="forexTag"></span>
+      </div>
+    </div>
+  </div>
 
-        <div id="message" class="message"></div>
+  <!-- Loader with Logo -->
+  <div class="loader-wrapper" id="loader">
+    <img src="logo.png" alt="TradeLab" class="loader-logo">
+    <div class="loader-text">
+      <span>T</span><span>r</span><span>a</span><span>d</span><span>e</span><span>L</span><span>a</span><span>b</span>
+    </div>
+  </div>
 
-        <form id="signupForm" class="auth-form active">
-            <div class="auth-buttons">
-                <button type="button" class="auth-btn" id="googleSignupBtn">
-                    <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
-                        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
-                        <path d="M9.003 18c2.43 0 4.467-.806 5.956-2.184l-2.909-2.258c-.806.54-1.836.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18z" fill="#34A853"/>
-                        <path d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707 0-.593.102-1.17.282-1.709V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.335z" fill="#FBBC05"/>
-                        <path d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.426 0 9.003 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71z" fill="#EA4335"/>
-                    </svg>
-                    Continue with Google
-                </button>
+  <!-- App Layout: Sidebar + Main Content -->
+  <div class="app-layout">
 
-                <button type="button" class="auth-btn" id="githubSignupBtn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    Continue with GitHub
-                </button>
-            </div>
+  <!-- Navbar -->
+  <!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
 
-            <div class="divider"><span>OR</span></div>
+  <!-- Sidebar Header / Controls (Checklist 1) -->
+  <div class="sidebar-logo">
+    <button class="sidebar-close-btn" type="button" id="sidebarCloseBtn" onclick="toggleMenu()" title="Close Menu" aria-label="Close Menu">✕</button>
+  </div>
 
-            <div class="form-group">
-                <label class="form-label" for="signupEmail">Email address</label>
-                <input type="email" id="signupEmail" class="form-input" placeholder="name@example.com" required>
-            </div>
+  <!-- Day 2 User Profile Card (Checklist 15) -->
+  <div class="profile-card" id="profileCard">
+    <div class="profile-card-top" onclick="openUserNamePrompt()" style="cursor: pointer;" title="Edit profile name">
+      <span class="profile-avatar">👤</span>
+      <div class="profile-meta">
+        <span class="profile-name" id="profileName">Aneek</span>
+        <span class="profile-level">Level 1 Trader</span>
+      </div>
+    </div>
+    <div class="profile-card-bottom">
+      <div class="profile-streak-line">
+        <span class="profile-streak-badge" id="profileStreak">🔥 Day 2</span>
+        <span class="profile-progress-pct" id="profileProgressPct">7%</span>
+      </div>
+      <div class="profile-progress-track">
+        <div class="profile-progress-bar" id="profileProgressBar" style="width: 7%;"></div>
+      </div>
+    </div>
+  </div>
 
-            <div class="form-group">
-                <label class="form-label" for="signupPassword">Password</label>
-                <div class="password-wrapper">
-                    <input type="password" id="signupPassword" class="form-input" placeholder="Create a password" required minlength="8">
-                    <span class="password-toggle" title="Toggle Password Visibility">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                    </span>
-                </div>
-                <p class="password-hint">Must be 8+ characters with 1 uppercase, 1 lowercase, and 1 number</p>
-            </div>
+  <!-- Continue Learning Card Container (Checklist 2) -->
+  <div id="continueLearningCard"></div>
 
-            <button type="submit" class="submit-btn" id="signupBtn">Create Account</button>
-        </form>
-
-        <form id="loginForm" class="auth-form">
-            <div class="auth-buttons">
-                <button type="button" class="auth-btn" id="googleLoginBtn">
-                    <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
-                        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
-                        <path d="M9.003 18c2.43 0 4.467-.806 5.956-2.184l-2.909-2.258c-.806.54-1.836.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18z" fill="#34A853"/>
-                        <path d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707 0-.593.102-1.17.282-1.709V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.335z" fill="#FBBC05"/>
-                        <path d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.426 0 9.003 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71z" fill="#EA4335"/>
-                    </svg>
-                    Continue with Google
-                </button>
-
-                <button type="button" class="auth-btn" id="githubLoginBtn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    Continue with GitHub
-                </button>
-            </div>
-
-            <div class="divider"><span>OR</span></div>
-
-            <div class="form-group">
-                <label class="form-label" for="loginEmail">Email address</label>
-                <input type="email" id="loginEmail" class="form-input" placeholder="name@example.com" required>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="loginPassword">Password</label>
-                <div class="password-wrapper">
-                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required>
-                    <span class="password-toggle" title="Toggle Password Visibility">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                    </span>
-                </div>
-            </div>
-
-            <div class="forgot-password">
-                <a href="#" id="forgotPasswordLink">Forgot Password?</a>
-            </div>
-
-            <button type="submit" class="submit-btn" id="loginBtn">Sign In</button>
-        </form>
-
-        <div class="terms">
-            By continuing, you agree to TradeLab's<br>
-            <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-        </div>
-
-        <div class="switch-auth">
-            <span id="switchText">Already have an account?</span> <a href="#" id="switchLink">Log in</a>
-        </div>
+  <!-- Sidebar Sections (Checklist 16) -->
+  <div class="sidebar-menu-wrapper">
+    
+    <div class="menu-section">
+      <h4 class="menu-section-title">LEARN</h4>
+      <ul class="menu-list">
+        <li>
+          <a href="#learn" class="menu-item" id="menuLearn" title="Learning Vault">
+            <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span class="menu-text">Learning Vault</span>
+          </a>
+        </li>
+        <li>
+          <a href="quiz.html" class="menu-item" id="menuQuiz" title="Quiz">
+            <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            <span class="menu-text">Quiz</span>
+          </a>
+        </li>
+      </ul>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <div class="menu-section">
+      <h4 class="menu-section-title">TOOLS</h4>
+      <ul class="menu-list">
+        <li>
+          <button onclick="toggleChat(); closeMobileMenuAfterNav();" class="menu-item" id="menuAIMentor" title="AI Mentor">
+            <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
+            <span class="menu-text">AI Mentor</span>
+          </button>
+        </li>
+        <li>
+          <a href="backtest.html" class="menu-item" id="menuBacktest" title="Backtesting">
+            <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 20-4-4-4 4-5-5M3 3v18h18"/></svg>
+            <span class="menu-text">Backtesting</span>
+          </a>
+        </li>
+        <li>
+          <a href="calculator.html" class="menu-item" id="menuCalculator" title="Risk Calculator">
+            <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+            <span class="menu-text">Risk Calculator</span>
+          </a>
+        </li>
+      </ul>
+    </div>
 
-    <script>
-        // 1. Firebase Configuration (USING YOUR NEW KEY)
-        var firebaseConfig = {
-            apiKey: "AIzaSyADSKrrnamZj2_jkfueTXempsNOZlT_nCw",
-            authDomain: "tradelab-36d73.firebaseapp.com",
-            projectId: "tradelab-36d73",
-            storageBucket: "tradelab-36d73.firebasestorage.app",
-            messagingSenderId: "29426653428",
-            appId: "1:29426653428:web:c6bce7c3d70ecd5be4bf51"
+    <div class="menu-section">
+      <h4 class="menu-section-title">HELP</h4>
+      <ul class="menu-list">
+        <li>
+          <a href="#faq" class="menu-item" id="menuFAQ" title="FAQ">
+            <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span class="menu-text">FAQ</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="menu-section" id="accountSection">
+      <h4 class="menu-section-title">ACCOUNT</h4>
+      <ul class="menu-list">
+        <li id="loginItem">
+          <a href="login.html" class="menu-item" id="menuLogin" title="Profile / Login">
+            <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="menu-text">Profile / Login</span>
+          </a>
+        </li>
+        <li id="profileItem" style="display:none;">
+          <button onclick="openUserNamePrompt()" class="menu-item" id="menuProfile" title="Profile">
+            <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="menu-text">Profile</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Logout Footer (Checklist 17) -->
+  <div class="sidebar-footer" id="logoutItem" style="display:none;">
+    <div class="sidebar-divider-line"></div>
+    <button onclick="logoutUser()" class="menu-item logout-btn" title="Logout">
+      <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span class="menu-text">Logout</span>
+    </button>
+  </div>
+
+</aside>
+
+<!-- Mobile overlay - tap to close sidebar -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+<div class="main-content" id="mainContent">
+
+<!-- TOP HEADER -->
+<header class="top-header">
+
+  <a href="#" class="topbar-logo" onclick="scrollToTop(); return false;" title="TradeLab">
+    <img src="logo.png" alt="TradeLab" class="topbar-logo-icon">
+    <span>TradeLab</span>
+  </a>
+
+  <div class="header-right">
+
+      <button class="topbar-user-btn"
+              id="topbarUserBtn"
+              onclick="openUserNamePrompt()"
+              title="Set your name">
+
+          <span id="topbarUserInitial">?</span>
+
+      </button>
+
+      <button class="nav-theme-toggle"
+              id="navThemeToggle"
+              onclick="toggleTheme()"
+              title="Switch theme">
+
+          🌙
+
+      </button>
+
+      <button class="hamburger"
+              id="hamburger"
+              onclick="toggleMenu()"
+              title="Toggle menu">
+
+          ☰
+
+      </button>
+
+  </div>
+
+</header>
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to Top">
+    ↑
+  </button>
+
+  <!-- Hero Section -->
+  <section class="hero">
+
+    <!-- Candlestick SVG Background -->
+    <div class="hero-chart-bg" aria-hidden="true">
+      <svg class="hero-candles-svg" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Bullish candles (green) -->
+        <g class="candle-group" opacity="0.18">
+          <!-- Wicks -->
+          <line x1="60" y1="60" x2="60" y2="200" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="120" y1="50" x2="120" y2="190" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="240" y1="70" x2="240" y2="220" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="360" y1="40" x2="360" y2="170" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="480" y1="80" x2="480" y2="210" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="600" y1="55" x2="600" y2="185" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="720" y1="65" x2="720" y2="200" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="840" y1="45" x2="840" y2="175" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="960" y1="75" x2="960" y2="215" stroke="#00ff9c" stroke-width="1.5"/>
+          <line x1="1080" y1="50" x2="1080" y2="180" stroke="#00ff9c" stroke-width="1.5"/>
+          <!-- Bearish candles -->
+          <line x1="180" y1="55" x2="180" y2="195" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="300" y1="65" x2="300" y2="205" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="420" y1="50" x2="420" y2="185" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="540" y1="70" x2="540" y2="210" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="660" y1="60" x2="660" y2="190" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="780" y1="55" x2="780" y2="200" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="900" y1="65" x2="900" y2="195" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="1020" y1="45" x2="1020" y2="185" stroke="#ff4d4d" stroke-width="1.5"/>
+          <line x1="1140" y1="60" x2="1140" y2="200" stroke="#ff4d4d" stroke-width="1.5"/>
+          <!-- Bullish bodies -->
+          <rect x="45" y="110" width="30" height="60" fill="#00ff9c" rx="2"/>
+          <rect x="105" y="100" width="30" height="65" fill="#00ff9c" rx="2"/>
+          <rect x="225" y="120" width="30" height="70" fill="#00ff9c" rx="2"/>
+          <rect x="345" y="90" width="30" height="55" fill="#00ff9c" rx="2"/>
+          <rect x="465" y="130" width="30" height="55" fill="#00ff9c" rx="2"/>
+          <rect x="585" y="105" width="30" height="60" fill="#00ff9c" rx="2"/>
+          <rect x="705" y="115" width="30" height="65" fill="#00ff9c" rx="2"/>
+          <rect x="825" y="95" width="30" height="55" fill="#00ff9c" rx="2"/>
+          <rect x="945" y="125" width="30" height="65" fill="#00ff9c" rx="2"/>
+          <rect x="1065" y="100" width="30" height="60" fill="#00ff9c" rx="2"/>
+          <!-- Bearish bodies -->
+          <rect x="165" y="100" width="30" height="65" fill="#ff4d4d" rx="2"/>
+          <rect x="285" y="110" width="30" height="70" fill="#ff4d4d" rx="2"/>
+          <rect x="405" y="95" width="30" height="60" fill="#ff4d4d" rx="2"/>
+          <rect x="525" y="115" width="30" height="68" fill="#ff4d4d" rx="2"/>
+          <rect x="645" y="105" width="30" height="62" fill="#ff4d4d" rx="2"/>
+          <rect x="765" y="100" width="30" height="70" fill="#ff4d4d" rx="2"/>
+          <rect x="885" y="110" width="30" height="60" fill="#ff4d4d" rx="2"/>
+          <rect x="1005" y="95" width="30" height="65" fill="#ff4d4d" rx="2"/>
+          <rect x="1125" y="105" width="30" height="68" fill="#ff4d4d" rx="2"/>
+        </g>
+        <!-- Trend line -->
+        <polyline points="45,170 165,165 225,190 345,145 465,185 585,165 705,180 825,150 945,190 1065,160" fill="none" stroke="#00ff9c" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.25"/>
+      </svg>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-tag">🚀 Free Trading Education Platform</div>
+      <h1>Learn Trading<br>the Right Way</h1>
+      <p>
+        TradeLab is a free educational platform focused on trading concepts,
+        risk management, and disciplined thinking — not signals.
+      </p>
+      <a href="#learn" class="btn" id="heroCTA" onclick="handleCTAClick(event)">Start Learning</a>
+    </div>
+
+    <!-- Stats Banner Grid (Checklist 21) -->
+    <div class="stats-cards-grid">
+      <div class="stat-card">
+        <div class="stat-card-icon">🎓</div>
+        <div class="stat-card-content">
+          <span class="stat-number" id="statEnrolled">1,523</span>
+          <span class="stat-label">Students Enrolled</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon">🔥</div>
+        <div class="stat-card-content">
+          <span class="stat-number" id="statLearning">0</span>
+          <span class="stat-label">Already Learning</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon">📺</div>
+        <div class="stat-card-content">
+          <span class="stat-number" id="statVideos">0</span>
+          <span class="stat-label">Video Lessons</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon">💚</div>
+        <div class="stat-card-content">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Free Forever</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Certificate Modal -->
+  <div class="modal-overlay" id="certificateModal">
+    <div class="modal-content certificate-modal">
+      <button class="modal-close" onclick="closeCertificateModal()">&times;</button>
+      <h2>🎉 Congratulations!</h2>
+      <p>You've completed the TradeLab Trading Course!</p>
+      <div class="certificate-preview" id="certificatePreview">
+        <div class="certificate">
+          <div class="certificate-border">
+            <div class="certificate-inner">
+              <!-- Logo Added Here -->
+              <div class="certificate-logo">
+                <img src="logo.png" alt="TradeLab Logo" class="cert-logo-img">
+              </div>
+              <div class="certificate-header">
+                <h1>Certificate of Completion</h1>
+                <p>TradeLab Trading Education</p>
+              </div>
+              <div class="certificate-body">
+                <p>This is to certify that</p>
+                <h2 id="certName">Student Name</h2>
+                <p>has successfully completed the</p>
+                <h3>Complete Trading Education Course</h3>
+                <p>covering Price Action, Smart Money Concepts, Risk Management & Strategy Building</p>
+              </div>
+              <div class="certificate-footer">
+                <div class="cert-date">
+                  <p>Date: <span id="certDate"></span></p>
+                </div>
+                <div class="cert-signature">
+                  <!-- Updated Signature -->
+                  <img src="signature.png" alt="Signature" class="signature-img">
+                  <p class="signature-name">Aneek Pal</p>
+                  <p class="signature-title">Founder, TradeLab</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="certificate-actions">
+        <input type="text" id="nameInput" placeholder="Enter your name" class="cert-input">
+        <button class="btn-primary" onclick="generateCertificate()">📥 Download Certificate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Learning Vault Section -->
+  <section id="learn" class="learning">
+    <h2>Learning Vault</h2>
+    <p class="section-intro">
+      Structured, free trading education — built for clarity, not hype.
+    </p>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker">
+      <div class="progress-info">
+        <span class="progress-text">Your Progress</span>
+        <span class="progress-count" id="progressCount">0/25 Completed</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progressBar"></div>
+        <!-- Milestone markers -->
+        <div class="progress-milestone" style="left: 25%" data-label="25%">
+          <span class="milestone-dot"></span>
+          <span class="milestone-label">25%</span>
+        </div>
+        <div class="progress-milestone" style="left: 50%" data-label="Halfway">
+          <span class="milestone-dot"></span>
+          <span class="milestone-label">50%</span>
+        </div>
+        <div class="progress-milestone" style="left: 75%" data-label="75%">
+          <span class="milestone-dot"></span>
+          <span class="milestone-label">75%</span>
+        </div>
+      </div>
+      <div style="text-align: right; margin-top: 10px;">
+        <button class="reset-btn" onclick="resetProgress()">🔄 Reset Progress</button>
+      </div>
+    </div>
+    
+    <!-- Search & Filter -->
+    <div class="search-filter-container">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search videos..." onkeyup="filterVideos()">
+      </div>
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterByLevel('all')">All</button>
+        <button class="filter-btn" onclick="filterByLevel('beginner')">Beginner</button>
+        <button class="filter-btn" onclick="filterByLevel('advanced')">Advanced</button>
+      </div>
+    </div>
+
+    <!-- Learning Grid -->
+    <div class="learning-grid">
+      
+      <!-- VIDEO 1 -->
+      <div class="learning-card step-one">
+        <span class="step-badge">STEP 1 · START HERE</span>
+        <h3>Trading Roadmap (0 → Advanced)</h3>
+        <div class="video-card"> 
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">33:13</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/hqXoZtC2sEU" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Complete beginner-to-advanced trading roadmap. Watch this first before learning anything else.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-1')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+      
+      <!-- VIDEO 2 -->
+      <div class="learning-card step-two">
+        <span class="step-badge step-two-badge">STEP 2 · CANDLESTICKS</span>
+        <h3>Learn Candlestick Patterns</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">13:30</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/AOz1YPOKvEs" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn candlestick basics, important patterns, and the psychology behind price movement.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-2')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 3 -->
+      <div class="learning-card step-two">
+        <span class="step-badge step-two-badge">STEP 2A · MARKET STRUCTURE</span>
+        <h3>Basics of Market Structure</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">20:45</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/sZAE_lqdeno" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Understand market structure: higher high, higher low, trend shifts, BOS, and structure-based thinking.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-3')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 4 -->
+      <div class="learning-card step-two">
+        <span class="step-badge step-two-badge">STEP 2B · TRENDLINES</span>
+        <h3>Learn Trendlines (Correct Way)</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">45:25</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/Y8efWZ2M1y8" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how to draw valid trendlines, common mistakes, and trend confirmation.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-4')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 5 -->
+      <div class="learning-card step-three">
+        <span class="step-badge step-three-badge">STEP 3 · SUPPORT & RESISTANCE</span>
+        <h3>Support & Resistance (Core Concept)</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">41:26</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/nuVv0ZWUfs4" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how institutions mark support & resistance, role-reversal, and supply–demand zones.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-5')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 6 -->
+      <div class="learning-card step-three">
+        <span class="step-badge step-three-badge">STEP 3A · ADVANCED S&R</span>
+        <h3>Support & Resistance (Advanced)</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">17:30</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/nujw5BabrWk" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Advanced support & resistance concepts including zone marking and fake breakouts.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-6')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 7 -->
+      <div class="learning-card step-three">
+        <span class="step-badge step-three-badge">STEP 3B · ENTRY & STOP-LOSS</span>
+        <h3>Entry & Stop-Loss Techniques</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">7:25</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/txXUUeMDos8" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn proper entry timing and stop-loss placement to protect capital.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-7')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 8 -->
+      <div class="learning-card step-four">
+        <span class="step-badge step-four-badge">STEP 4 · RISK MANAGEMENT</span>
+        <h3>Risk Management Fundamentals</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">12:38</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/VzMlFZbWA0Y" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn position sizing, risk per trade, stop-loss logic, and how professionals protect capital.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-8')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 9 -->
+      <div class="learning-card step-five">
+        <span class="step-badge step-five-badge">STEP 5 · TRADING PSYCHOLOGY</span>
+        <h3>Trading Psychology & Mindset</h3>
+        <div class="video-card">
+          <span class="level-tag beginner">BEGINNER</span>
+          <span class="duration">13:49</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/RzElN0uHsns" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>📘 <strong>Recommended:</strong> "Trading in the Zone" by Mark Douglas. <a href="https://www.amazon.in/dp/0735201447" target="_blank" style="color: #00d4ff;">Get it here</a></p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-9')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- ADVANCED SEPARATOR -->
+      <div class="advanced-separator-container">
+        <span class="advanced-separator-content">🚀 ADVANCED CONCEPTS</span>
+      </div> 
+
+      <!-- VIDEO 10 -->
+      <div class="learning-card step-five-a">
+        <span class="step-badge">STEP 5A · LIQUIDITY</span>
+        <h3>Liquidity (How Big Players Move Price)</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">25:26</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/YUUefUXeZwI" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Understand liquidity concepts like stop hunts, liquidity pools, and inducement.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-10')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 11 -->
+      <div class="learning-card step-five-a1">
+        <span class="step-badge">STEP 5A1 · LIQUIDITY PRO</span>
+        <h3>Liquidity Pro (Advanced)</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">1:49:36</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/DAnXM7C16h0" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Deep dive into advanced liquidity concepts including engineered liquidity and multi-timeframe mapping.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-11')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 12 -->
+      <div class="learning-card step-five-a2">
+        <span class="step-badge">STEP 5A2 · SUPPLY & DEMAND</span>
+        <h3>Supply & Demand Masterclass</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">40:02</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/yaCM_cr5BXo" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how supply and demand zones are formed and how to trade high-probability zones.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-12')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 13 -->
+      <div class="learning-card step-five-b1">
+        <span class="step-badge">STEP 5B1 · SMC</span>
+        <h3>Smart Money Concepts (SMC)</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">17:45</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/52m-dt1tDvw" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn core SMC concepts like BOS, CHoCH, order blocks, and inducement.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-13')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 14 -->
+      <div class="learning-card step-five-b2">
+        <span class="step-badge">STEP 5B2 · SMC CONTINUATION</span>
+        <h3>Smart Money Concepts (Continuation)</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">17:53</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/K1BuYD5KhQ8" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Advanced continuation of SMC concepts including refinement and confirmation logic.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-14')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 15 -->
+      <div class="learning-card step-six">
+        <span class="step-badge step-six-badge">STEP 6 · RSI ADVANCED</span>
+        <h3>RSI Advanced Techniques</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">8:51</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/EtRcYFhLSSM" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Advanced concepts of RSI: divergence, confirmation, and multi-timeframe signals.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-15')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 16 -->
+      <div class="learning-card step-six">
+        <span class="step-badge step-six-badge">STEP 6A · EMA / MOVING AVERAGE</span>
+        <h3>EMA & Moving Average Techniques</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">9:08</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/k_kSCjdf8D0" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn the logic behind EMA and moving averages, trend confirmation, and crossovers.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-16')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 17 -->
+      <div class="learning-card step-seven-a">
+        <span class="step-badge step-seven-badge">STEP 7A · PARTIAL BOOKING</span>
+        <h3>Partial Booking Techniques</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">18:02</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/PgRZw4omcC8" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how to book partial profits at key levels while letting the rest of the position run.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-17')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 18 -->
+      <div class="learning-card step-seven-b">
+        <span class="step-badge step-seven-badge">STEP 7B · TRAILING STOP-LOSS</span>
+        <h3>Trailing Stop-Loss (Protect Profits)</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">23:07</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/0kl47rZZ4SQ" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how to trail stop-loss using structure to lock profits while letting winning trades run.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-18')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 19 -->
+      <div class="learning-card step-seven-c">
+        <span class="step-badge step-seven-badge">STEP 7C · BREAKEVEN LOGIC</span>
+        <h3>Breakeven Logic (Protect Capital)</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">6:57</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/Khs1hwkIOiM" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn when and how to move stop-loss to breakeven without getting stopped out early.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-19')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 20 - Text Card -->
+      <div class="learning-card step-seven-d">
+        <span class="step-badge step-seven-badge">STEP 7D · SCALING IN & OUT</span>
+        <h3>Scaling In & Scaling Out</h3>
+        <div class="video-card text-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <div class="text-content">
+            <div class="concept-item">
+              <h4>📈 Scaling In</h4>
+              <p>Adding more position to a winning trade when market confirms direction.</p>
+              <ul>
+                <li>✅ Add only to winning trades</li>
+                <li>❌ Never add to losing trades</li>
+                <li>✅ Add after break & retest</li>
+              </ul>
+            </div>
+            <div class="concept-item">
+              <h4>📉 Scaling Out</h4>
+              <p>Booking profit in parts instead of closing entire trade at once.</p>
+            </div>
+            <div class="golden-rule">
+              🏆 <strong>Golden Rule:</strong> Scale In on winners. Scale Out to protect profits.
+            </div>
+          </div>
+        </div>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-20')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 21 -->
+      <div class="learning-card step-eight">
+        <span class="step-badge step-eight-badge">STEP 8 · MULTI-TIMEFRAME</span>
+        <h3>Multi-Timeframe Analysis</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">43:00</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/T6cW9vMIPPQ" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how to analyze higher and lower timeframes together to build strong trade bias.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-21')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 22 -->
+      <div class="learning-card step-eight-a">
+        <span class="step-badge step-eight-badge">STEP 8A · TOP DOWN ANALYSIS</span>
+        <h3>Top Down Analysis (HTF → LTF)</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">27:29</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/FmKJDOSUAUY" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how to analyze higher timeframes first and then move to lower timeframes for entries.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-22')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 23 -->
+      <div class="learning-card step-eight-b">
+        <span class="step-badge step-eight-badge">STEP 8B · FALSE BREAKOUTS</span>
+        <h3>Avoid False Breakouts</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">8:23</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/ZudTPpJCbbA" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how to avoid fake breakouts using higher-timeframe bias and confirmation rules.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-23')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 24 -->
+      <div class="learning-card step-nine">
+        <span class="step-badge step-nine-badge">STEP 9 · BACKTESTING</span>
+        <h3>Backtesting Your Strategy</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">18:35</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/R3T1zRyZdMc" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how to backtest properly to understand win-rate, drawdown, and build confidence.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-24')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+
+      <!-- VIDEO 25 -->
+      <div class="learning-card step-ten">
+        <span class="step-badge step-ten-badge">STEP 10 · STRATEGY BUILDING</span>
+        <h3>Build a Profitable Strategy</h3>
+        <div class="video-card">
+          <span class="level-tag advanced">ADVANCED</span>
+          <span class="duration">42:24</span>
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/wgY2k32gsVg" loading="lazy" allowfullscreen></iframe>
+          </div>
+        </div>
+        <p>Learn how to build a complete trading strategy using rules, confluence, and discipline.</p>
+        <button class="complete-btn" onclick="toggleComplete(this, 'video-25')">
+          <span class="check-icon">✓</span> Mark Complete
+        </button>
+      </div>
+      
+      <!-- No Results -->
+      <div id="noResults" class="hidden" style="text-align: center; width: 100%; padding: 40px; color: #888;">
+        <h3>😕 No videos found</h3>
+        <p>Try searching for "Candlestick", "RSI", or "SMC"</p>
+      </div>
+
+    </div>
+  </section>
+
+<!-- ========================================= -->
+<!--  PDF SECTION -->
+<!-- ========================================= -->
+
+<section id="resources" class="resources-section">
+
+  <!-- HEADER -->
+  <div class="resources-header">
+
+    <h2>
+      📚 PDF Notes &
+      <span>Resources</span>
+    </h2>
+
+    <p>
+      Download trading notes, strategy PDFs,
+      cheat sheets, and premium learning resources.
+    </p>
+
+    <div class="resources-line"></div>
+
+  </div>
+
+  <!-- GRID -->
+  <div class="resources-grid">
+
+    <!-- CARD 1 -->
+    <div class="resource-card">
+
+      <div class="resource-icon">📈</div>
+
+      <div class="resource-tag">
+        Popular
+      </div>
+
+      <h3>
+        <span>Trendline</span>
+        Masterclass
+      </h3>
+
+      <p>
+        Complete trendline concepts including
+        breakout, retest, angle concept,
+        best-fit trendlines, and trendline failure opportunities.
+      </p>
+
+      <div class="resource-divider"></div>
+
+      <ul class="resource-list">
+        <li>Trend Line Basics</li>
+        <li>Breakout & Retest</li>
+        <li>Best Fit vs Perfect Fit</li>
+        <li>Trendline Failure = Opportunity</li>
+      </ul>
+
+      <div class="resource-links">
+
+        <a href="https://drive.google.com/file/d/187gksLo4h0NINtRiWR7wn5vvotVmyaH7/view?usp=sharing"
+           class="resource-btn"
+           target="_blank">
+
+           Open Drive
+        </a>
+
+        <a href="trend-line-full-concept.pdf"
+           class="resource-btn secondary-btn"
+           target="_blank">
+
+           Open PDF
+        </a>
+
+      </div>
+</div>
+      <!-- CARD 2 -->
+<div class="resource-card">
+
+  <div class="resource-icon">🕯️</div>
+
+  <div class="resource-tag">
+    Beginner
+  </div>
+
+  <h3>
+    <span>Candlestick</span>
+    Masterclass
+  </h3>
+
+  <p>
+    Learn candle structure, market psychology,
+    bullish & bearish candles, Doji, Hammer,
+    Shooting Star, Engulfing, and confirmation logic.
+  </p>
+
+  <div class="resource-divider"></div>
+
+  <ul class="resource-list">
+    <li>Candle Structure</li>
+    <li>Market Psychology</li>
+    <li>Doji & Hammer</li>
+    <li>Confirmation Logic</li>
+  </ul>
+
+  <div class="resource-links">
+
+    <!-- GOOGLE DRIVE -->
+    <a href="https://drive.google.com/file/d/1Oc02mCI0QeUMcCRVLZQouFKPW4L_c0Jm/view?usp=sharing"
+       class="resource-btn"
+       target="_blank">
+
+       Open Drive
+    </a>
+
+    <!-- PDF -->
+    <a href="candlestick-basics-masterclass.pdf"
+       class="resource-btn secondary-btn"
+       target="_blank">
+
+       Open PDF
+    </a>
+
+  </div>
+
+
+    </div>
+
+  </div>
+
+</section>  
+
+
+</section>
+
+  
+  <!-- ===== EASY TO UNDERSTAND SECTION ===== -->
+  <section id="easy-concepts" class="easy-section">
+    <h2>📊 Easy to Understand</h2>
+    <p class="section-intro">
+      Visual guides to master Smart Money Concepts — simple images, powerful insights.
+    </p>
+
+    <div class="concepts-grid">
+      
+      <!-- Concept 1: Supply & Demand -->
+      <div class="concept-card">
+        <div class="concept-image" onclick="openLightbox(0)">
+          <img src="concepts/supply-demand.png" alt="Supply & Demand Entry Model" loading="lazy">
+        </div>
+        <div class="concept-info">
+          <span class="concept-number">01</span>
+          <h3>Supply & Demand Entry Model</h3>
+          <p>Price moves between zones of supply (resistance) and demand (support). Look for confirmation at these zones.</p>
+        </div>
+      </div>
+
+      <!-- Concept 2: AMD -->
+      <div class="concept-card">
+        <div class="concept-image" onclick="openLightbox(1)">
+          <img src="concepts/amd.png" alt="Accumulation Manipulation Distribution" loading="lazy">
+        </div>
+        <div class="concept-info">
+          <span class="concept-number">02</span>
+          <h3>Accumulation | Manipulation | Distribution</h3>
+          <p>Smart money buys in stealth, creates false breakouts to trap retail, then distributes at highs.</p>
+        </div>
+      </div>
+
+      <!-- Concept 3: Asia Range -->
+      <div class="concept-card">
+        <div class="concept-image" onclick="openLightbox(2)">
+          <img src="concepts/asia-range.png" alt="Asia Range Liquidity Sweep" loading="lazy">
+        </div>
+        <div class="concept-info">
+          <span class="concept-number">03</span>
+          <h3>Asia Range Liquidity Sweep</h3>
+          <p>Price ranges during Asian session, then sweeps liquidity during London open. Trade the reversal.</p>
+        </div>
+      </div>
+
+      <!-- Concept 4: CHOCH -->
+      <div class="concept-card">
+        <div class="concept-image" onclick="openLightbox(3)">
+          <img src="concepts/choch.png" alt="CHOCH & Retest Order Block" loading="lazy">
+        </div>
+        <div class="concept-info">
+          <span class="concept-number">04</span>
+          <h3>CHOCH & Retest Order Block</h3>
+          <p>Change of Character confirms trend reversal. Wait for retracement into the Order Block for sniper entries.</p>
+        </div>
+      </div>
+
+      <!-- Concept 5: Liquidity Sweep -->
+      <div class="concept-card">
+        <div class="concept-image" onclick="openLightbox(4)">
+          <img src="concepts/liquidity-sweep.png" alt="Liquidity Sweep + Grab" loading="lazy">
+        </div>
+        <div class="concept-info">
+          <span class="concept-number">05</span>
+          <h3>Liquidity Sweep + Grab</h3>
+          <p>Price "grabs" stop-loss clusters before moving in true direction. Trade the second move, not the fake-out.</p>
+        </div>
+      </div>
+
+      <!-- Concept 6: Breaker -->
+      <div class="concept-card">
+        <div class="concept-image" onclick="openLightbox(5)">
+          <img src="concepts/breaker.png" alt="Breaker Short Entry Model" loading="lazy">
+        </div>
+        <div class="concept-info">
+          <span class="concept-number">06</span>
+          <h3>Breaker Short Entry Model</h3>
+          <p>Former demand zone turns into resistance after being broken. Short when price retests the broken demand.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Image Lightbox Modal -->
+  <div class="image-lightbox" id="imageLightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
+    <button class="lightbox-nav lightbox-prev" onclick="navigateLightbox(event, -1)">&#10094;</button>
+    <img src="" alt="" id="lightboxImage">
+    <button class="lightbox-nav lightbox-next" onclick="navigateLightbox(event, 1)">&#10095;</button>
+    <div class="lightbox-title" id="lightboxTitle"></div>
+  </div>
+
+  <!-- Lightbox Script -->
+  <script>
+    const conceptImages = [
+      { src: 'concepts/supply-demand.png', title: 'Supply & Demand Entry Model' },
+      { src: 'concepts/amd.png', title: 'Accumulation | Manipulation | Distribution' },
+      { src: 'concepts/asia-range.png', title: 'Asia Range Liquidity Sweep' },
+      { src: 'concepts/choch.png', title: 'CHOCH & Retest Order Block' },
+      { src: 'concepts/liquidity-sweep.png', title: 'Liquidity Sweep + Grab' },
+      { src: 'concepts/breaker.png', title: 'Breaker Short Entry Model' }
+    ];
+    
+    let currentImageIndex = 0;
+
+    function openLightbox(index) {
+      currentImageIndex = index;
+      const lightbox = document.getElementById('imageLightbox');
+      const img = document.getElementById('lightboxImage');
+      const title = document.getElementById('lightboxTitle');
+      
+      img.src = conceptImages[index].src;
+      img.alt = conceptImages[index].title;
+      title.textContent = conceptImages[index].title;
+      
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(event) {
+      if (event.target.classList.contains('image-lightbox') || 
+          event.target.classList.contains('lightbox-close')) {
+        document.getElementById('imageLightbox').classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    function navigateLightbox(event, direction) {
+      event.stopPropagation();
+      currentImageIndex += direction;
+      
+      if (currentImageIndex < 0) currentImageIndex = conceptImages.length - 1;
+      if (currentImageIndex >= conceptImages.length) currentImageIndex = 0;
+      
+      const img = document.getElementById('lightboxImage');
+      const title = document.getElementById('lightboxTitle');
+      
+      img.src = conceptImages[currentImageIndex].src;
+      img.alt = conceptImages[currentImageIndex].title;
+      title.textContent = conceptImages[currentImageIndex].title;
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      const lightbox = document.getElementById('imageLightbox');
+      if (!lightbox.classList.contains('active')) return;
+      
+      if (e.key === 'Escape') {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+      if (e.key === 'ArrowLeft') navigateLightbox(e, -1);
+      if (e.key === 'ArrowRight') navigateLightbox(e, 1);
+    });
+  </script>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <div class="testimonials-header">
+      <div class="testimonials-tag">Student Reviews</div>
+      <h2>What Our Students Say</h2>
+      <p class="testimonials-sub">Real feedback from traders who started from zero</p>
+    </div>
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">RK</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Rahul K.</span>
+            <span class="testimonial-tag nse-tag">NSE Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"TradeLab ne mujhe SMC aur liquidity concepts itne clearly samjhaye jo koi paid course nahi kar paya. Ab main apne setups khud identify kar sakta hun."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">SMC</span>
+          <span class="learned-tag">Liquidity</span>
+          <span class="learned-tag">Order Blocks</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">PS</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Priya S.</span>
+            <span class="testimonial-tag crypto-tag">Crypto Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"The structured roadmap is exactly what I needed. Started from Step 1 and went all the way — the risk management module literally saved my account."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">Risk Mgmt</span>
+          <span class="learned-tag">Trendlines</span>
+          <span class="learned-tag">Backtesting</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">AM</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Arjun M.</span>
+            <span class="testimonial-tag forex-tag">Forex Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"AI Mentor feature is insane — 3 AM ko bhi trading psychology questions ke jawab mil jaate hain. Aur sab kuch free hai, yeh believe hi nahi hota."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">Psychology</span>
+          <span class="learned-tag">Multi-TF</span>
+          <span class="learned-tag">Strategy</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">NS</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Neha S.</span>
+            <span class="testimonial-tag nse-tag">Options Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"Backtesting Lab aur Risk Calculator tools ne mera confidence double kar diya. Pehle blindly trade karta tha, ab system ke saath trade karta hun."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">Backtesting</span>
+          <span class="learned-tag">S&R</span>
+          <span class="learned-tag">Entry Models</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">VT</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Vikram T.</span>
+            <span class="testimonial-tag crypto-tag">BankNifty Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"Concept cards aur PDF notes — best resource for quick revision before market opens. Ye platform genuinely traders ke liye traders ne banaya hai."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">AMD Model</span>
+          <span class="learned-tag">CHOCH</span>
+          <span class="learned-tag">Asia Range</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-top">
+          <div class="testimonial-avatar">DK</div>
+          <div class="testimonial-meta">
+            <span class="testimonial-name">Dev K.</span>
+            <span class="testimonial-tag forex-tag">Swing Trader</span>
+          </div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <p class="testimonial-text">"Maine 3 paid courses kiye the pehle. TradeLab ka free content unse better hai — no fluff, pure concepts, aur market status bar jaisi details show karte hain care."</p>
+        <div class="testimonial-learned">
+          <span class="learned-label">Learned:</span>
+          <span class="learned-tag">Supply/Demand</span>
+          <span class="learned-tag">EMA</span>
+          <span class="learned-tag">Top-Down</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="faq-section">
+    <h2>❓ Frequently Asked Questions</h2>
+    <div class="faq-container">
+      
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Is TradeLab really 100% free?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Yes. Our mission is to provide high-quality trading education without selling courses. We believe knowledge should be accessible to everyone.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Do you provide trading signals or calls?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>No. We are strictly against "tips" and "calls." We teach you how to trade so you don't have to depend on anyone else.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Which markets do these concepts apply to?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Price action is universal. The concepts (Support/Resistance, SMC, Liquidity) work on Crypto, Forex, Indian Stocks, and Indices (Nifty/BankNifty).</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>I am a complete beginner. Where do I start?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Start from Step 1 (Roadmap) and follow the numbers sequentially. Do not jump to advanced topics directly.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>My progress isn't saving. What should I do?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Progress is saved in your browser's local storage. Please do not clear your browser cache or history if you want to keep your progress data.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3 class="footer-logo">TradeLab</h3>
+        <p class="footer-desc">Free trading education platform focused on concepts, risk management, and disciplined thinking — not signals.</p>
+        <div class="footer-social">
+          <a href="#" class="social-link" title="YouTube">📺</a>
+          <a href="#" class="social-link" title="Twitter">🐦</a>
+          <a href="#" class="social-link" title="Discord">💬</a>
+          <a href="#" class="social-link" title="Telegram">✈️</a>
+        </div>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#learn">Learning Vault</a></li>
+          <li><a href="backtest.html">Backtesting Lab</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#community">Community</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Trading Books</a></li>
+          <li><a href="#">Candlestick Patterns</a></li>
+          <li><a href="#">Risk Calculator</a></li>
+          <li><a href="#">Glossary</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="/cdn-cgi/l/email-protection#5a2e283b3e3f363b38743f3e2f742e3f3b371a3d373b333674393537">📧 <span class="__cf_email__" data-cfemail="196d6b787d7c75787b377c7d6c376d7c7874597e74787075377a7674">[email&#160;protected]</span></a></li>
+          <li><a href="#">📍 India</a></li>
+          <li><a href="#">💼 Collaborate</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>© 2025 TradeLab. All rights reserved. | Education-first trading insights.</p>
+      <p class="disclaimer">Disclaimer: Trading involves risk. This is educational content only, not financial advice.</p>
+    </div>
+  </footer>
+
+  </div> <!-- /.main-content -->
+  </div> <!-- /.app-layout -->
+
+  <!-- Mobile Bottom Tab Bar -->
+  <nav class="mobile-tab-bar" id="mobileTabBar">
+    <a href="#" class="tab-item tab-ai" onclick="toggleChat(); return false;">
+      <span class="tab-icon">🤖</span>
+      <span class="tab-label">AI Mentor</span>
+    </a>
+    <a href="#learn" class="tab-item" id="tabLearn">
+      <span class="tab-icon">📚</span>
+      <span class="tab-label">Learn</span>
+    </a>
+    <a href="backtest.html" class="tab-item">
+      <span class="tab-icon">📊</span>
+      <span class="tab-label">Backtest</span>
+    </a>
+    <a href="calculator.html" class="tab-item">
+      <span class="tab-icon">🧮</span>
+      <span class="tab-label">Risk Calc</span>
+    </a>
+    <a href="quiz.html" class="tab-item">
+      <span class="tab-icon">🏆</span>
+      <span class="tab-label">Quiz</span>
+    </a>
+  </nav>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+  <script>
+    var firebaseConfig = {
+        apiKey: "AIzaSyADSKrrnamZj2_jkfueTXempsNOZlT_nCw",
+        authDomain: "tradelab-36d73.firebaseapp.com",
+        projectId: "tradelab-36d73",
+        storageBucket: "tradelab-36d73.firebasestorage.app",
+        messagingSenderId: "29426653428",
+        appId: "1:29426653428:web:c6bce7c3d70ecd5be4bf51"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const loginItem = document.getElementById('loginItem');
+    const logoutItem = document.getElementById('logoutItem');
+    const profileItem = document.getElementById('profileItem');
+    
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        document.body.style.opacity = "1";
+        if(loginItem) loginItem.style.display = 'none';
+        if(logoutItem) logoutItem.style.display = 'block';
+        if(profileItem) profileItem.style.display = 'block';
+        window.__emailUsername = user.email.split('@')[0];
+        updateUserNameDisplay();
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    function logoutUser() {
+      auth.signOut();
+    }
+
+    // ---- Display name (set via the 👤 icon, saved locally) ----
+    function getDisplayName() {
+      return localStorage.getItem('tradelab_display_name') || window.__emailUsername || 'Trader';
+    }
+
+    function setDisplayName(name) {
+      localStorage.setItem('tradelab_display_name', name);
+    }
+
+    function openUserNamePrompt() {
+      const current = localStorage.getItem('tradelab_display_name') || window.__emailUsername || '';
+      const name = prompt('Apna naam set karo:', current);
+      if (name && name.trim()) {
+        setDisplayName(name.trim());
+        updateUserNameDisplay();
+      }
+    }
+
+    function updateUserNameDisplay() {
+      const name = getDisplayName();
+      const topbarBtn = document.getElementById('topbarUserBtn');
+      if (topbarBtn) topbarBtn.title = name;
+      const initialEl = document.getElementById('topbarUserInitial');
+      if (initialEl) initialEl.textContent = name.trim().charAt(0).toUpperCase() || '?';
+      
+      const profileName = document.getElementById('profileName');
+      if (profileName) profileName.textContent = name;
+    }
+  </script>
+
+  <script>
+    function filterVideos() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.learning-card');
+      const noResults = document.getElementById('noResults');
+      let visibleCount = 0;
+      
+      cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const desc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
+        
+        if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      noResults.classList.toggle('hidden', visibleCount > 0);
+    }
+
+    function filterByLevel(level) {
+      const cards = document.querySelectorAll('.learning-card');
+      const buttons = document.querySelectorAll('.filter-btn');
+      
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      cards.forEach(card => {
+        const levelTag = card.querySelector('.level-tag');
+        const isAdvanced = levelTag && levelTag.classList.contains('advanced');
+        
+        if (level === 'all') {
+          card.classList.remove('hidden');
+        } else if (level === 'beginner' && !isAdvanced) {
+          card.classList.remove('hidden');
+        } else if (level === 'advanced' && isAdvanced) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+      document.getElementById('noResults').classList.add('hidden');
+    }
+  </script>
+
+  <script>
+    const TOTAL_VIDEOS = document.querySelectorAll('.complete-btn').length;
+
+    document.addEventListener('DOMContentLoaded', loadProgress);
+
+    function toggleComplete(button, videoId) {
+      const card = button.closest('.learning-card');
+      let completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      
+      if (completedVideos.includes(videoId)) {
+        completedVideos = completedVideos.filter(id => id !== videoId);
+        button.classList.remove('completed');
+        button.innerHTML = '<span class="check-icon">✓</span> Mark Complete';
+        card.classList.remove('completed');
+      } else {
+        completedVideos.push(videoId);
+        button.classList.add('completed');
+        button.innerHTML = '<span class="check-icon">✓</span> Completed!';
+        card.classList.add('completed');
+      }
+      
+      localStorage.setItem('completedVideos', JSON.stringify(completedVideos));
+      updateProgressBar();
+    }
+
+    function loadProgress() {
+      // Assign IDs to cards dynamically (Checklist 2)
+      const cards = document.querySelectorAll('.learning-grid .learning-card');
+      cards.forEach((card, index) => {
+        if (!card.id) {
+          card.id = 'lesson-' + (index + 1);
+        }
+      });
+
+      const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      
+      completedVideos.forEach(videoId => {
+        const button = document.querySelector('[onclick*="' + videoId + '"]');
+        if (button) {
+          const card = button.closest('.learning-card');
+          button.classList.add('completed');
+          button.innerHTML = '<span class="check-icon">✓</span> Completed!';
+          card.classList.add('completed');
+        }
+      });
+      
+      updateProgressBar();
+      initCTAButton();
+    }
+
+    function updateProgressBar() {
+      const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      const completed = completedVideos.length;
+      const percentage = (completed / TOTAL_VIDEOS) * 100;
+      
+      const pBar = document.getElementById('progressBar');
+      if (pBar) pBar.style.width = percentage + '%';
+      
+      const pCount = document.getElementById('progressCount');
+      if (pCount) pCount.textContent = completed + '/' + TOTAL_VIDEOS + ' Completed';
+
+      const roundedPct = Math.round(percentage);
+
+      // Update sidebar card progress (Checklist 15)
+      const sidebarPct = document.getElementById('profileProgressPct');
+      if (sidebarPct) sidebarPct.textContent = roundedPct + '%';
+
+      const sidebarBar = document.getElementById('profileProgressBar');
+      if (sidebarBar) sidebarBar.style.width = percentage + '%';
+
+      updateContinueLearningCard();
+      initCTAButton();
+    }
+
+    function scrollToLesson(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('card-highlight');
+        setTimeout(() => el.classList.remove('card-highlight'), 1500);
+      }
+    }
+
+    function updateContinueLearningCard() {
+      const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      const cards = document.querySelectorAll('.learning-grid .learning-card');
+      let nextLessonCard = null;
+      let nextLessonIndex = -1;
+      
+      for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        const btn = card.querySelector('.complete-btn');
+        if (btn) {
+          const onclickAttr = btn.getAttribute('onclick') || '';
+          const match = onclickAttr.match(/'([^']+)'/);
+          if (match && match[1]) {
+            const videoId = match[1];
+            if (!completedVideos.includes(videoId)) {
+              nextLessonCard = card;
+              nextLessonIndex = i + 1;
+              break;
+            }
+          }
+        }
+      }
+      
+      const container = document.getElementById('continueLearningCard');
+      if (!container) return;
+      
+      if (nextLessonCard && nextLessonIndex !== -1) {
+        const title = nextLessonCard.querySelector('h3').textContent.trim();
+        container.innerHTML = `
+          <div class="continue-card" onclick="scrollToLesson('${nextLessonCard.id}')" style="cursor: pointer;" title="Resume: ${title}">
+            <div class="continue-card-header">
+              <svg class="continue-play-icon" viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M8 5v14l11-7z"/></svg>
+              <span>Continue Learning</span>
+            </div>
+            <div class="continue-card-title">${title}</div>
+            <div class="continue-card-meta">Lesson ${nextLessonIndex} / ${cards.length}</div>
+          </div>
+        `;
+      } else {
+        if (completedVideos.length === cards.length && cards.length > 0) {
+          container.innerHTML = `
+            <div class="continue-card empty-state">
+              <div class="continue-card-header">
+                <span>Completed</span>
+              </div>
+              <div class="continue-card-title">🎉 All Completed!</div>
+              <div class="continue-card-meta">You've finished all lessons.</div>
+            </div>
+          `;
+        } else {
+          const firstCard = cards[0];
+          container.innerHTML = `
+            <div class="continue-card empty-state" onclick="scrollToLesson('${firstCard ? firstCard.id : ''}')" style="cursor: pointer;" title="Start roadmap">
+              <div class="continue-card-header">
+                <span>Start Here</span>
+              </div>
+              <div class="continue-card-title">No Progress Yet</div>
+              <div class="continue-card-meta">Start Your First Lesson →</div>
+            </div>
+          `;
+        }
+      }
+    }
+
+    function initCTAButton() {
+      const cta = document.getElementById('heroCTA');
+      if (!cta) return;
+      
+      const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      if (completedVideos.length > 0) {
+        cta.textContent = 'Continue Learning';
+      } else {
+        cta.textContent = 'Start Learning';
+      }
+    }
+
+    function handleCTAClick(e) {
+      const cta = document.getElementById('heroCTA');
+      if (!cta) return;
+      
+      e.preventDefault();
+      
+      const originalText = cta.textContent;
+      cta.textContent = 'Loading...';
+      cta.style.pointerEvents = 'none';
+      cta.style.opacity = '0.8';
+
+      setTimeout(() => {
+        cta.textContent = originalText;
+        cta.style.pointerEvents = 'auto';
+        cta.style.opacity = '1';
+        
+        const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+        const cards = document.querySelectorAll('.learning-grid .learning-card');
+        let targetId = '';
+        
+        for (let i = 0; i < cards.length; i++) {
+          const card = cards[i];
+          const btn = card.querySelector('.complete-btn');
+          if (btn) {
+            const onclickAttr = btn.getAttribute('onclick') || '';
+            const match = onclickAttr.match(/'([^']+)'/);
+            if (match && match[1] && !completedVideos.includes(match[1])) {
+              targetId = card.id;
+              break;
+            }
+          }
+        }
+        
+        if (!targetId && cards.length > 0) {
+          targetId = cards[0].id;
+        }
+        
+        if (targetId) {
+          scrollToLesson(targetId);
+        } else {
+          const learnSec = document.getElementById('learn');
+          if (learnSec) learnSec.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 600);
+    }
+
+    function resetProgress() {
+      if(confirm('Are you sure you want to reset all progress?')) {
+        localStorage.removeItem('completedVideos');
+        location.reload();
+      }
+    }
+  </script>
+
+  <script>
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      // Premium ripple overlay animation
+      const ripple = document.createElement('div');
+      ripple.className = 'theme-ripple';
+      ripple.style.cssText = `
+        position: fixed; inset: 0; z-index: 99999; pointer-events: none;
+        background: ${newTheme === 'light' ? 'radial-gradient(circle at 50% 0%, #dbeafe 0%, #e0fdf4 60%, #f0f4f8 100%)' : 'radial-gradient(circle at 50% 0%, #020d18 0%, #071525 60%, #0b0f14 100%)'};
+        opacity: 0; transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1);
+        clip-path: circle(0% at 50% 0%);
+      `;
+      document.body.appendChild(ripple);
+
+      // Trigger animation
+      requestAnimationFrame(() => {
+        ripple.style.transition = 'clip-path 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.55s ease';
+        ripple.style.opacity = '1';
+        ripple.style.clipPath = 'circle(150% at 50% 0%)';
+      });
+
+      // Apply theme halfway through
+      setTimeout(() => {
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateNavThemeToggle(newTheme);
+      }, 250);
+
+      // Remove ripple
+      setTimeout(() => {
+        ripple.style.opacity = '0';
+        setTimeout(() => ripple.remove(), 300);
+      }, 520);
+    }
+
+    function updateNavThemeToggle(theme) {
+      const btn = document.getElementById('navThemeToggle');
+      if (!btn) return;
+      if (theme === 'light') {
+        btn.classList.add('is-light');
+        btn.textContent = '☀️';
+      } else {
+        btn.classList.remove('is-light');
+        btn.textContent = '🌙';
+      }
+    }
+
+    // Set initial state
+    updateNavThemeToggle(savedTheme);
+  </script>
+
+  <script>
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, observerOptions);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.learning-card').forEach(card => observer.observe(card));
+      document.querySelectorAll('.concept-card').forEach(card => observer.observe(card));
+    });
+  </script>
+
+  <script>
+    const navbar = document.querySelector('.top-header');
+    const backToTopBtn = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+      if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 100);
+      backToTopBtn.classList.toggle('visible', window.scrollY > 500);
+    });
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+  <script>
+    let __loaderHidden = false;
+    function hideLoader() {
+      if (__loaderHidden) return;
+      __loaderHidden = true;
+      const loader = document.getElementById('loader');
+      if (loader) loader.classList.add('hidden');
+    }
+
+    window.addEventListener('load', () => setTimeout(hideLoader, 1500));
+
+    // Safety net: never let a slow/hanging third-party resource
+    // (ticker widget, Firebase, etc.) keep this full-screen loader
+    // blocking clicks forever.
+    setTimeout(hideLoader, 4000);
+  </script>
+
+  <script>
+    function isDesktopView() {
+      return window.matchMedia('(min-width: 901px)').matches;
+    }
+
+    function toggleMenu() {
+      const sidebar = document.getElementById('sidebar');
+      const hamburger = document.getElementById('hamburger');
+      const overlay = document.getElementById('menuOverlay');
+      if (sidebar) sidebar.classList.toggle('active');
+      if (hamburger) hamburger.classList.toggle('active');
+      if (overlay) overlay.classList.toggle('active');
+      document.body.classList.toggle('sidebar-open');
+    }
+
+    // Explicit close (✕ button / tapping the dark overlay) — always
+    // ends up closed, on both mobile and desktop. NOTE: the .active
+    // class means the OPPOSITE thing on each breakpoint (desktop:
+    // .active = collapsed, mobile: .active = drawer open), so
+    // "close" is add-active on desktop but remove-active on mobile.
+    function closeMenu() {
+      const sidebar = document.getElementById('sidebar');
+      const hamburger = document.getElementById('hamburger');
+      const overlay = document.getElementById('menuOverlay');
+      if (sidebar) {
+        if (isDesktopView()) {
+          sidebar.classList.add('active');
+        } else {
+          sidebar.classList.remove('active');
+        }
+      }
+      if (hamburger) hamburger.classList.remove('active');
+      if (overlay) overlay.classList.remove('active');
+      document.body.classList.remove('sidebar-open');
+    }
+
+    // After tapping a nav link, only auto-close the MOBILE drawer —
+    // the persistent desktop sidebar should stay open while browsing.
+    function closeMobileMenuAfterNav() {
+      if (isDesktopView()) return;
+      closeMenu();
+    }
+
+    // Redundant JS-level binding for the close button only — it's
+    // idempotent, so double-firing alongside its inline onclick is
+    // harmless. We do NOT do this for the hamburger, since that
+    // already has its own inline onclick=toggleMenu() and a second
+    // toggle would cancel it out.
+    const sidebarCloseBtnEl = document.getElementById('sidebarCloseBtn');
+    if (sidebarCloseBtnEl) sidebarCloseBtnEl.addEventListener('click', closeMenu);
+
+    document.querySelectorAll('.sidebar .menu-item').forEach(link => {
+      link.addEventListener('click', closeMobileMenuAfterNav);
+    });
+
+    // Active menu item handler (Checklist 11, 12)
+    const menuItems = document.querySelectorAll('.sidebar .menu-item');
+    const learnSec = document.getElementById('learn');
+    const faqSec = document.getElementById('faq');
+
+    function setActiveMenuItem() {
+      const hash = window.location.hash;
+      menuItems.forEach(item => item.classList.remove('active'));
+
+      if (hash === '#faq') {
+        const faqBtn = document.getElementById('menuFAQ');
+        if (faqBtn) faqBtn.classList.add('active');
+      } else if (hash === '#learn' || window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || !hash) {
+        const learnBtn = document.getElementById('menuLearn');
+        if (learnBtn) learnBtn.classList.add('active');
+      }
+    }
+
+    window.addEventListener('hashchange', setActiveMenuItem);
+    setActiveMenuItem();
+
+    // Scroll spy for menu sections
+    window.addEventListener('scroll', () => {
+      if (!learnSec || !faqSec) return;
+      const learnRect = learnSec.getBoundingClientRect();
+      const faqRect = faqSec.getBoundingClientRect();
+
+      if (faqRect.top <= 150 && faqRect.bottom > 0) {
+        menuItems.forEach(item => item.classList.remove('active'));
+        const faqBtn = document.getElementById('menuFAQ');
+        if (faqBtn) faqBtn.classList.add('active');
+      } else if (learnRect.top <= 150 && learnRect.bottom > 0) {
+        menuItems.forEach(item => item.classList.remove('active'));
+        const learnBtn = document.getElementById('menuLearn');
+        if (learnBtn) learnBtn.classList.add('active');
+      } else {
+        setActiveMenuItem();
+      }
+    }, { passive: true });
+  </script>
+
+  <script>
+    function toggleFaq(element) {
+      const faqItem = element.parentElement;
+      const isOpen = faqItem.classList.contains('open');
+      
+      document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('open'));
+      
+      if (!isOpen) faqItem.classList.add('open');
+    }
+  </script>
+
+  <!-- Stats Counter Animation with Fake Counter -->
+  <script>
+    // Fake Counter Logic
+    let studentsCount = parseInt(localStorage.getItem('studentsCount')) || 4990;
+    let learningCount = parseInt(localStorage.getItem('learningCount')) || 1790;
+    
+    // Increment only once per session
+    if (!sessionStorage.getItem('counted')) {
+      // Random increment: 1, 3, 4, 5, 6, or 7
+      let options = [1, 3, 4, 5, 6, 7];
+      let increment = options[Math.floor(Math.random() * options.length)];
+      
+      studentsCount += increment;
+      learningCount += increment;
+      
+      localStorage.setItem('studentsCount', studentsCount);
+      localStorage.setItem('learningCount', learningCount);
+      sessionStorage.setItem('counted', 'true');
+    }
+
+    function animateCounters() {
+      const counters = document.querySelectorAll('.stat-number');
+      
+      counters.forEach(counter => {
+        let target = parseInt(counter.getAttribute('data-target'));
+        
+        // Override with our fake counts
+        if (target === 5000) target = studentsCount;
+        if (target === 1800) target = learningCount;
+        
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+        
+        const updateCounter = () => {
+          current += step;
+          if (current < target) {
+            counter.textContent = Math.floor(current) + '+';
+            requestAnimationFrame(updateCounter);
+          } else {
+            counter.textContent = target + '+';
+          }
         };
+        
+        updateCounter();
+      });
+    }
 
-        // Initialize Firebase
-        try {
-            firebase.initializeApp(firebaseConfig);
-            var auth = firebase.auth();
-            console.log("Firebase Initialized Successfully");
-        } catch (error) {
-            console.error("Firebase Init Error:", error);
-            alert("Firebase Error: " + error.message);
+    // Trigger when stats section is visible
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          statsObserver.unobserve(entry.target);
         }
+      });
+    }, { threshold: 0.5 });
 
-        // Initialize providers
-        var googleProvider = new firebase.auth.GoogleAuthProvider();
-        var githubProvider = new firebase.auth.GithubAuthProvider();
+    document.addEventListener('DOMContentLoaded', () => {
+      const statsContainer = document.querySelector('.stats-container');
+      if (statsContainer) statsObserver.observe(statsContainer);
+    });
+  </script>
 
-        // 2. Tab switching Logic
-        document.getElementById('signupTab').addEventListener('click', function() {
-            switchTab('signup');
+  <!-- Confetti Animation -->
+  <script>
+    const confettiCanvas = document.getElementById('confettiCanvas');
+    const confettiCtx = confettiCanvas.getContext('2d');
+    let confettiParticles = [];
+    let confettiAnimationId;
+
+    function resizeConfettiCanvas() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeConfettiCanvas);
+    resizeConfettiCanvas();
+
+    function createConfetti() {
+      const colors = ['#00ff9c', '#00d4ff', '#ffb700', '#ff4d4d', '#9c00ff', '#ffffff'];
+      for (let i = 0; i < 150; i++) {
+        confettiParticles.push({
+          x: Math.random() * confettiCanvas.width,
+          y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+          size: Math.random() * 10 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speedY: Math.random() * 3 + 2,
+          speedX: Math.random() * 2 - 1,
+          rotation: Math.random() * 360,
+          rotationSpeed: Math.random() * 10 - 5
         });
+      }
+    }
 
-        document.getElementById('loginTab').addEventListener('click', function() {
-            switchTab('login');
+    function drawConfetti() {
+      confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      
+      confettiParticles.forEach((p, index) => {
+        confettiCtx.save();
+        confettiCtx.translate(p.x, p.y);
+        confettiCtx.rotate(p.rotation * Math.PI / 180);
+        confettiCtx.fillStyle = p.color;
+        confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size / 2);
+        confettiCtx.restore();
+
+        p.y += p.speedY;
+        p.x += p.speedX;
+        p.rotation += p.rotationSpeed;
+
+        if (p.y > confettiCanvas.height) {
+          confettiParticles.splice(index, 1);
+        }
+      });
+
+      if (confettiParticles.length > 0) {
+        confettiAnimationId = requestAnimationFrame(drawConfetti);
+      } else {
+        confettiCanvas.style.display = 'none';
+      }
+    }
+
+    function triggerConfetti() {
+      confettiCanvas.style.display = 'block';
+      confettiParticles = [];
+      createConfetti();
+      drawConfetti();
+    }
+
+    // Check if course is complete
+    function checkCourseCompletion() {
+      const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      const hasShownCelebration = localStorage.getItem('hasShownCelebration');
+      
+      if (completedVideos.length >= TOTAL_VIDEOS && !hasShownCelebration) {
+        setTimeout(() => {
+          triggerConfetti();
+          openCertificateModal();
+          localStorage.setItem('hasShownCelebration', 'true');
+        }, 500);
+      }
+    }
+  </script>
+
+  <!-- Certificate Generator -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    // Track video watch time
+    var videoWatchTime = JSON.parse(localStorage.getItem('videoWatchTime')) || {};
+    var activeVideo = null;
+    var watchInterval = null;
+
+    // Start tracking when video plays
+    function trackVideoWatch(videoId, duration) {
+      if (!videoWatchTime[videoId]) {
+        videoWatchTime[videoId] = 0;
+      }
+      activeVideo = videoId;
+      
+      // Clear existing interval
+      if (watchInterval) clearInterval(watchInterval);
+      
+      // Track every second
+      watchInterval = setInterval(() => {
+        if (activeVideo === videoId) {
+          videoWatchTime[videoId]++;
+          localStorage.setItem('videoWatchTime', JSON.stringify(videoWatchTime));
+        }
+      }, 1000);
+    }
+
+    // Stop tracking
+    function stopTracking() {
+      if (watchInterval) {
+        clearInterval(watchInterval);
+        watchInterval = null;
+      }
+      activeVideo = null;
+    }
+
+    // Check if video is watched enough (minimum 60 seconds or text content)
+    function isVideoWatched(videoId) {
+      // Text cards (like video-20) don't need watch time
+      const textCards = ['video-20'];
+      if (textCards.includes(videoId)) return true;
+      
+      const watchTime = videoWatchTime[videoId] || 0;
+      return watchTime >= 60; // Minimum 60 seconds watched
+    }
+
+    // Modified toggle complete with verification
+    function toggleCompleteWithVerification(button, videoId) {
+      const card = button.closest('.learning-card');
+      let completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      
+      // If trying to mark complete
+      if (!completedVideos.includes(videoId)) {
+        // Check if video was watched
+        if (!isVideoWatched(videoId)) {
+          alert('⚠️ Please watch the video for at least 1 minute before marking it complete!\n\nClick on the video and watch it first.');
+          return;
+        }
+      }
+      
+      // Toggle completion
+      if (completedVideos.includes(videoId)) {
+        completedVideos = completedVideos.filter(id => id !== videoId);
+        button.classList.remove('completed');
+        button.innerHTML = '<span class="check-icon">✓</span> Mark Complete';
+        card.classList.remove('completed');
+      } else {
+        completedVideos.push(videoId);
+        button.classList.add('completed');
+        button.innerHTML = '<span class="check-icon">✓</span> Completed!';
+        card.classList.add('completed');
+      }
+      
+      localStorage.setItem('completedVideos', JSON.stringify(completedVideos));
+      updateProgressBar();
+      setTimeout(checkCourseCompletion, 100);
+    }
+
+    // Override the original toggleComplete
+    toggleComplete = toggleCompleteWithVerification;
+
+    // Track iframe clicks/interactions
+    document.addEventListener('DOMContentLoaded', () => {
+      const iframes = document.querySelectorAll('.video-box iframe');
+      
+      iframes.forEach((iframe, index) => {
+        const videoId = 'video-' + (index + 1);
+        
+        // When user clicks on iframe area
+        iframe.parentElement.addEventListener('click', () => {
+          trackVideoWatch(videoId, 300);
         });
-
-        document.getElementById('switchLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            var signupActive = document.getElementById('signupForm').classList.contains('active');
-            switchTab(signupActive ? 'login' : 'signup');
+        
+        // Also track on mouseenter (when they hover to play)
+        iframe.parentElement.addEventListener('mouseenter', () => {
+          trackVideoWatch(videoId, 300);
         });
-
-        function switchTab(tab) {
-            var tabs = document.querySelectorAll('.auth-tab');
-            var forms = document.querySelectorAll('.auth-form');
-            var switchLink = document.getElementById('switchLink');
-            var switchText = document.getElementById('switchText');
-            
-            tabs.forEach(function(t) { t.classList.remove('active'); });
-            forms.forEach(function(f) { f.classList.remove('active'); });
-            
-            if (tab === 'signup') {
-                tabs[0].classList.add('active');
-                document.getElementById('signupForm').classList.add('active');
-                switchText.textContent = 'Already have an account?';
-                switchLink.textContent = 'Log in';
-            } else {
-                tabs[1].classList.add('active');
-                document.getElementById('loginForm').classList.add('active');
-                switchText.textContent = "Don't have an account?";
-                switchLink.textContent = 'Sign up';
+        
+        iframe.parentElement.addEventListener('mouseleave', () => {
+          // Don't stop immediately, give some buffer
+          setTimeout(() => {
+            if (activeVideo === videoId) {
+              stopTracking();
             }
-            hideMessage();
-        }
-
-        function showMessage(text, type) {
-            var messageDiv = document.getElementById('message');
-            messageDiv.textContent = text;
-            messageDiv.className = 'message ' + type;
-            messageDiv.style.display = 'block';
-            
-            if (type === 'error') {
-                setTimeout(function() {
-                    messageDiv.style.display = 'none';
-                }, 5000);
-            }
-        }
-
-        function hideMessage() {
-            document.getElementById('message').style.display = 'none';
-        }
-
-        // 3. LOGIC FOR SHOW/HIDE PASSWORD (NEW)
-        document.querySelectorAll('.password-toggle').forEach(function(toggle) {
-            toggle.addEventListener('click', function() {
-                var input = this.previousElementSibling;
-                var type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-                input.setAttribute('type', type);
-                
-                // Icon Change (Simple Opacity toggle for now)
-                this.style.color = type === 'text' ? '#00ffc8' : 'rgba(255,255,255,0.5)';
-            });
+          }, 5000);
         });
+      });
+    });
 
-        // 4. LOGIC FOR FORGOT PASSWORD (NEW)
-        document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            var email = prompt("Please enter your email address to reset your password:");
-            
-            if (email) {
-                auth.sendPasswordResetEmail(email)
-                    .then(function() {
-                        showMessage('✓ Password reset email sent! Check your inbox.', 'success');
-                    })
-                    .catch(function(error) {
-                        showMessage('⚠ Error: ' + error.message, 'error');
-                    });
-            }
-        });
+    function openCertificateModal() {
+      document.getElementById('certificateModal').classList.add('open');
+      document.getElementById('certDate').textContent = new Date().toLocaleDateString('en-IN', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      });
+    }
 
-        // 5. Social Sign-In Logic
-        function handleSocialSignIn(provider, providerName) {
-            console.log('Attempting ' + providerName + ' sign-in...');
-            
-            auth.signInWithPopup(provider)
-                .then(function(result) {
-                    showMessage('✓ Success! Redirecting...', 'success');
-                    console.log(providerName + ' user:', result.user);
-                    setTimeout(function() {
-                        window.location.href = 'index.html';
-                    }, 1500);
-                })
-                .catch(function(error) {
-                    console.error(providerName + ' error:', error);
-                    var errorMsg = providerName + ' sign-in failed.';
-                    showMessage('⚠ ' + errorMsg, 'error');
-                });
-        }
+    function closeCertificateModal() {
+      document.getElementById('certificateModal').classList.remove('open');
+    }
 
-        // Google Handlers
-        document.getElementById('googleSignupBtn').addEventListener('click', function() {
-            handleSocialSignIn(googleProvider, 'Google');
-        });
-        document.getElementById('googleLoginBtn').addEventListener('click', function() {
-            handleSocialSignIn(googleProvider, 'Google');
-        });
+    function generateCertificate() {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) {
+        alert('Please enter your name!');
+        return;
+      }
+      
+      document.getElementById('certName').textContent = name;
+      
+      const certificate = document.querySelector('.certificate');
+      
+      html2canvas(certificate, {
+        scale: 2,
+        backgroundColor: '#0b0f14',
+        logging: false,
+        useCORS: true,
+        allowTaint: true
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'TradeLab-Certificate-' + name.replace(/\s+/g, '-') + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
 
-        // GitHub Handlers
-        document.getElementById('githubSignupBtn').addEventListener('click', function() {
-            handleSocialSignIn(githubProvider, 'GitHub');
-        });
-        document.getElementById('githubLoginBtn').addEventListener('click', function() {
-            handleSocialSignIn(githubProvider, 'GitHub');
-        });
+    // Add certificate button to progress tracker
+    document.addEventListener('DOMContentLoaded', () => {
+      const progressTracker = document.querySelector('.progress-tracker');
+      if (progressTracker) {
+        const certBtn = document.createElement('button');
+        certBtn.className = 'cert-btn';
+        certBtn.innerHTML = '🎓 Get Certificate';
+        certBtn.onclick = () => {
+          const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+          if (completedVideos.length >= TOTAL_VIDEOS) {
+            openCertificateModal();
+          } else {
+            alert('Complete all ' + TOTAL_VIDEOS + ' videos to get your certificate!\n\n✅ Completed: ' + completedVideos.length + '/' + TOTAL_VIDEOS + '\n\n⚠️ Note: You must watch each video for at least 1 minute to mark it complete.');
+          }
+        };
+        progressTracker.appendChild(certBtn);
+      }
+    });
+  </script>
+<div class="chat-container" id="aiChatBox">
+  <div class="chat-header" id="aiChatHeader">
 
-        // Email/Password Signup
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            var email = document.getElementById('signupEmail').value;
-            var password = document.getElementById('signupPassword').value;
-            var btn = document.getElementById('signupBtn');
-            
-            var passwordPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
-            if (!passwordPattern.test(password)) {
-                showMessage('⚠ Password must be 8+ chars (1 Uppercase, 1 number)', 'error');
-                return;
-            }
-            
-            btn.disabled = true;
-            btn.textContent = 'Creating account...';
-            
-            auth.createUserWithEmailAndPassword(email, password)
-                .then(function() {
-                    showMessage('✓ Account created! Redirecting...', 'success');
-                    setTimeout(function() { window.location.href = 'index.html'; }, 1500);
-                })
-                .catch(function(error) {
-                    showMessage('⚠ ' + error.message, 'error');
-                    btn.disabled = false;
-                    btn.textContent = 'Create Account';
-                });
-        });
+  <div class="header-left">
+    <span class="brain">🧠</span>
+    <div>
+      <span class="title">TradeLab Mentor</span>
+      <span class="subtitle">Powered by AI</span>
+    </div>
+  </div>
 
-        // Email/Password Login
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            var email = document.getElementById('loginEmail').value;
-            var password = document.getElementById('loginPassword').value;
-            var btn = document.getElementById('loginBtn');
-            
-            btn.disabled = true;
-            btn.textContent = 'Signing in...';
-            
-            auth.signInWithEmailAndPassword(email, password)
-                .then(function() {
-                    showMessage('✓ Login successful! Redirecting...', 'success');
-                    setTimeout(function() { window.location.href = 'index.html'; }, 1500);
-                })
-                .catch(function(error) {
-                    showMessage('⚠ Login failed. Invalid email or password.', 'error');
-                    btn.disabled = false;
-                    btn.textContent = 'Sign In';
-                });
-        });
-    </script>
+  <div class="header-right">
+    <div class="ai-mode-mini">
+<button id="ai-beginner" class="active"
+  onclick="setAIMode('Beginner')">
+  Beginner
+</button>
+
+<button id="ai-pro"
+  onclick="setAIMode('Pro')">
+  Pro
+</button>
+
+
+</div>
+
+
+    <button onclick="toggleChat()" class="close-btn">✖</button>
+  </div>
+
+</div>
+ 
+  
+
+  
+<div class="chat-box" id="chat-box">
+  <div class="bot-message">
+    <strong>Hello! </strong><br>
+    I am TradeLab's AI Assistant.<br><br>
+    You can ask me anything about <b>Trading Psychology</b>, <b>Strategies</b>, or <b>Risk Management</b>.
+  </div>
+  <div id="typing-indicator" style="display:none;">
+    <span class="typing-text">TradeLab Mentor is typing</span>
+    <span class="dots">
+      <span>.</span><span>.</span><span>.</span>
+    </span>
+  </div>
+
+</div>
+
+  
+
+    <div class="quick-actions">
+        <button onclick="sendQuickMsg('Best Intraday Strategy?')">📈 Strategy</button>
+        <button onclick="sendQuickMsg('How to control emotions?')">🧠 Psychology</button>
+        <button onclick="sendQuickMsg('Explain RSI Divergence')">📉 RSI</button>
+    </div>
+
+    <div class="chat-input-area">
+        <input type="text" id="user-input" placeholder="Type your question..." onkeypress="handleEnter(event)">
+        <button onclick="sendMessage()">➤</button>
+    </div>
+</div>
+  <script src="script.js"></script>
+  <script>
+(function () {
+  const box = document.getElementById("aiChatBox");
+  const header = document.getElementById("aiChatHeader");
+
+  if (!box || !header) {
+    console.log("Chat box/header not found");
+    return;
+  }
+
+  let startX = 0, startY = 0;
+  let initialX = 0, initialY = 0;
+  let dragging = false;
+
+  header.addEventListener("mousedown", (e) => {
+    dragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+
+    const rect = box.getBoundingClientRect();
+    initialX = rect.left;
+    initialY = rect.top;
+
+    box.style.right = "auto";
+    box.style.bottom = "auto";
+
+    document.body.style.userSelect = "none";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!dragging) return;
+
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+
+    box.style.left = initialX + dx + "px";
+    box.style.top = initialY + dy + "px";
+  });
+
+  document.addEventListener("mouseup", () => {
+    dragging = false;
+    document.body.style.userSelect = "auto";
+  });
+})();
+</script>
 </body>
 </html>
