@@ -4815,13 +4815,13 @@ body.loading #backToTop {
   align-items: center;
 }
 
-/* Stats Cards Grid (Checklist 21) */
+/* Stats Cards Grid (Checklist 21, Checklist 8) */
 .stats-cards-grid {
   position: relative;
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 28px; /* Increased gap (Checklist 8) */
   width: 100%;
   max-width: 1100px;
   margin-top: 48px;
@@ -4834,7 +4834,7 @@ body.loading #backToTop {
   padding: 20px 24px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -4847,11 +4847,11 @@ body.loading #backToTop {
 }
 
 .stat-card-icon {
-  font-size: 28px;
+  font-size: 24px; /* Slightly smaller emoji font size */
   background: rgba(0, 255, 196, 0.06);
   border-radius: 12px;
-  width: 50px;
-  height: 50px;
+  width: 44px; /* Smaller icon background circles (Checklist 8) */
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4878,7 +4878,7 @@ body.loading #backToTop {
   font-size: 13px;
   color: #9ca3af;
   font-weight: 500;
-  margin-top: 4px;
+  margin-top: 8px; /* Increased spacing (Checklist 8) */
 }
 
 /* Light mode overrides */
@@ -5808,7 +5808,7 @@ body.loading #backToTop {
 
 .sidebar {
   order: 2;
-  width: 280px;
+  width: 250px;
   flex-shrink: 0;
   position: sticky;
   top: 0;
@@ -5818,7 +5818,7 @@ body.loading #backToTop {
   flex-direction: column;
   background: #111827;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 24px 20px;
+  padding: 24px 16px;
   overflow-y: auto;
   z-index: 999;
   transition: transform 0.35s ease, width 0.3s ease, background 0.3s ease, border-color 0.3s ease;
@@ -5830,28 +5830,28 @@ body.loading #backToTop {
   border-radius: 10px;
 }
 
-/* User Profile Card (Checklist 15) */
+/* User Profile Card (Checklist 15, Checklist 3) */
 .profile-card {
   background: #1b2430;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 24px;
+  padding: 14px 12px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .profile-card-top {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .profile-avatar {
-  font-size: 20px;
-  width: 40px;
-  height: 40px;
+  font-size: 22px;
+  width: 46px;
+  height: 46px;
   background: rgba(0, 255, 196, 0.1);
   border-radius: 50%;
   display: flex;
@@ -5864,11 +5864,11 @@ body.loading #backToTop {
 .profile-meta {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .profile-name {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: #ffffff;
   line-height: 1.2;
@@ -5903,13 +5903,13 @@ body.loading #backToTop {
 
 .profile-progress-pct {
   font-size: 11px;
-  font-weight: 600;
-  color: #00ffc8;
+  font-weight: 500;
+  color: #8892b0;
 }
 
 .profile-progress-track {
   width: 100%;
-  height: 6px;
+  height: 4px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 4px;
   overflow: hidden;
@@ -5923,27 +5923,27 @@ body.loading #backToTop {
   transition: width 0.3s ease;
 }
 
-/* Sidebar Menu Wrapper & Sections (Checklist 16) */
+/* Sidebar Menu Wrapper & Sections */
 .sidebar-menu-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
   flex: 1;
 }
 
 .menu-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .menu-section-title {
-  font-size: 11px;
-  font-weight: 700;
-  color: #64748b;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #4b5563;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-left: 12px;
+  letter-spacing: 0.12em;
+  margin-left: 8px;
   margin-bottom: 2px;
 }
 
@@ -5951,52 +5951,51 @@ body.loading #backToTop {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   padding: 0;
   margin: 0;
 }
 
-/* Menu Item Sizing & Styling (Checklist 1, 2, 3, 4, 6, 8, 9) */
+/* Menu Item Sizing & Styling (Checklist 2, 5, 6) */
 .menu-item {
   width: 100%;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 20px;
+  padding: 10px 16px;
   background: #1b2430;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.02);
   border-radius: 14px;
   color: #9ca3af;
   text-decoration: none;
   font-family: inherit;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   text-align: left;
   cursor: pointer;
   outline: none;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
-.menu-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.menu-icon-svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2px;
+  fill: none;
+  display: inline-block;
   flex-shrink: 0;
-  filter: grayscale(100%);
-  opacity: 0.7;
-  transition: filter 0.25s, opacity 0.25s;
+  opacity: 0.65;
+  transition: transform 0.25s, opacity 0.25s, stroke-width 0.25s;
 }
 
 .menu-text {
   flex: 1;
 }
 
-/* Hover Animation (Checklist 10) */
+/* Hover Animation (Checklist 10, Checklist 6) */
 .menu-item:hover {
   transform: translateY(-1px);
   background: #243041;
@@ -6005,25 +6004,27 @@ body.loading #backToTop {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.menu-item:hover .menu-icon {
-  filter: grayscale(0%);
+.menu-item:hover .menu-icon-svg {
   opacity: 1;
+  transform: scale(1.05);
 }
 
-/* Active Menu Styles (Checklist 11, 12, 14) */
+/* Active Menu Styles (Checklist 7, 11) */
 .menu-item.active {
-  background: rgba(0, 255, 196, 0.08) !important;
-  border-color: #00ffc8 !important;
+  background: rgba(0, 255, 196, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.02) !important;
+  border-left: 3px solid #00ffc8 !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
   color: #00ffc8 !important;
-  box-shadow: 0 0 12px rgba(0, 255, 196, 0.15) !important;
+  box-shadow: none !important;
 }
 
-.menu-item.active .menu-icon {
-  filter: grayscale(0%) !important;
+.menu-item.active .menu-icon-svg {
   opacity: 1 !important;
 }
 
-/* Logout Button styling (Checklist 17) */
+/* Logout Button styling */
 .sidebar-footer {
   margin-top: 16px;
   width: 100%;
@@ -6037,8 +6038,8 @@ body.loading #backToTop {
 }
 
 .menu-item.logout-btn {
-  background: rgba(239, 68, 68, 0.05);
-  border-color: rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.03);
+  border-color: rgba(239, 68, 68, 0.1);
   color: #ef4444;
 }
 
@@ -6216,7 +6217,7 @@ body.loading #backToTop {
     right: 0;
     left: auto;
     width: 78%;
-    max-width: 280px;
+    max-width: 250px;
     height: 100vh;
     height: 100dvh;
     transform: translateX(100%);
@@ -6353,7 +6354,7 @@ body.loading #backToTop {
 }
 
 [data-theme="light"] .profile-progress-pct {
-  color: #0d9488 !important;
+  color: #64748b !important;
 }
 
 [data-theme="light"] .profile-progress-track {
@@ -6371,23 +6372,26 @@ body.loading #backToTop {
 
 [data-theme="light"] .menu-item {
   background: #ffffff !important;
-  border: 1px solid #cbd5e1 !important;
+  border: 1px solid rgba(0, 0, 0, 0.04) !important;
   color: #475569 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .menu-item:hover {
   background: #f1f5f9 !important;
   color: #0f172a !important;
-  border-color: #94a3b8 !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
 }
 
 [data-theme="light"] .menu-item.active {
-  background: rgba(13, 148, 136, 0.08) !important;
-  border-color: #0d9488 !important;
+  background: rgba(13, 148, 136, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.04) !important;
+  border-left: 3px solid #0d9488 !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
   color: #0d9488 !important;
-  box-shadow: 0 0 12px rgba(13, 148, 136, 0.1) !important;
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .sidebar-divider-line {
@@ -6395,8 +6399,8 @@ body.loading #backToTop {
 }
 
 [data-theme="light"] .menu-item.logout-btn {
-  background: rgba(239, 68, 68, 0.04) !important;
-  border-color: rgba(239, 68, 68, 0.25) !important;
+  background: rgba(239, 68, 68, 0.03) !important;
+  border-color: rgba(239, 68, 68, 0.15) !important;
   color: #dc2626 !important;
 }
 
@@ -6507,4 +6511,14 @@ body.loading #backToTop {
   background: rgba(0, 145, 90, 0.1) !important;
   border-color: #00915a !important;
   box-shadow: none !important;
+}
+
+/* Day Mode CTA Button Glow reduction (Checklist 9) */
+[data-theme="light"] .btn {
+  box-shadow: 0 0 12px rgba(0, 255, 156, 0.25) !important;
+}
+[data-theme="light"] .btn:hover {
+  box-shadow: 
+    0 0 18px rgba(0, 255, 156, 0.35),
+    0 0 36px rgba(0, 212, 255, 0.2) !important;
 }
