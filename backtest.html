@@ -241,7 +241,7 @@
             color: var(--accent-blue);
         }
 
-        /* Custom marker buttons (Refinement 1, 2, 3) */
+        /* Custom marker buttons */
         .tool-btn.entry { border-color: var(--accent-blue); color: var(--accent-blue); }
         .tool-btn.entry.active { background: rgba(0, 212, 255, 0.12); }
         
@@ -416,7 +416,7 @@
             padding-bottom: 8px;
         }
 
-        /* Setup Card details (Refinement 5) */
+        /* Setup Card details */
         .setup-row {
             display: flex;
             justify-content: space-between;
@@ -450,7 +450,7 @@
             color: var(--text-primary);
         }
 
-        /* Replay Challenge Controls (Refinement 6) */
+        /* Replay Challenge Controls */
         .replay-controls {
             margin-top: 15px;
             display: flex;
@@ -504,7 +504,7 @@
             display: none;
         }
 
-        /* Setup Evaluation Rating Scorecard (Refinement 7 & 8) */
+        /* Setup Evaluation Rating Scorecard */
         .scorecard-metric {
             display: flex;
             justify-content: space-between;
@@ -541,7 +541,7 @@
             border-color: var(--accent-red);
         }
 
-        /* Mobile viewport responsiveness */
+        /* Responsive grid logic */
         @media (max-width: 950px) {
             .center-layout {
                 grid-template-columns: 1fr;
@@ -603,7 +603,7 @@
             <!-- Left Layout Column: Tools + Chart Canvas -->
             <div class="chart-container-block">
                 
-                <!-- Drawing Tools Header Bar (Refinement 1, 2, 3) -->
+                <!-- Drawing Tools Header Bar -->
                 <div class="drawing-tools">
                     <span class="tools-label">⚙️ Challenge Tools:</span>
                     <button class="tool-btn active" onclick="setMode('cursor')" id="cursorTool">🖱️ Cursor</button>
@@ -643,7 +643,7 @@
                     <!-- Loading Canvas Overlay -->
                     <div class="loading-overlay" id="loadingOverlay">
                         <div class="spinner"></div>
-                        <div class="loading-text">Loading historical simulation feed...</div>
+                        <div class="loading-text" id="loadingOverlayText">Loading historical simulation feed...</div>
                     </div>
 
                     <div class="status-bar">
@@ -658,7 +658,7 @@
             <!-- Right Layout Column: Current Trade Setup Card & Replay Challenge -->
             <div class="right-sidebar">
                 
-                <!-- Current Setup Card Widget (Refinement 4 & 5) -->
+                <!-- Current Setup Card Widget -->
                 <div class="sidebar-widget">
                     <div class="widget-title">📍 Current Setup Card</div>
                     
@@ -707,7 +707,7 @@
                     </div>
                 </div>
 
-                <!-- Setup Rating & Verdict Scorecard (Refinement 7 & 8) -->
+                <!-- Setup Rating & Verdict Scorecard -->
                 <div class="sidebar-widget" id="scorecardWidget" style="display: none;">
                     <div class="widget-title">🏆 Challenge Scorecard</div>
                     
@@ -830,6 +830,44 @@
             chartEl.addEventListener('click', onChartClick);
         }
 
+        // Offline Random Walk Generator Fallback
+        function generateDummyCandles(timeframe, count) {
+            var candles = [];
+            var now = Math.floor(Date.now() / 1000);
+            var intervalSeconds = 3600; // 1h default
+            if (timeframe === '15m') intervalSeconds = 15 * 60;
+            else if (timeframe === '30m') intervalSeconds = 30 * 60;
+            else if (timeframe === '4h') intervalSeconds = 4 * 3600;
+            else if (timeframe === '1d') intervalSeconds = 24 * 3600;
+
+            var coin = document.getElementById('coinSelect').value;
+            var price = 60000; // Default BTC
+            if (coin.includes('ETH')) price = 3200;
+            else if (coin.includes('SOL')) price = 145;
+            else if (coin.includes('XRP')) price = 0.55;
+            else if (coin.includes('BNB')) price = 520;
+
+            var startTime = now - (count * intervalSeconds);
+            for (var i = 0; i < count; i++) {
+                var open = price;
+                // Random price walks (volatility)
+                var change = (Math.random() - 0.485) * (price * 0.012);
+                var close = price + change;
+                var high = Math.max(open, close) + (Math.random() * (price * 0.004));
+                var low = Math.min(open, close) - (Math.random() * (price * 0.004));
+
+                candles.push({
+                    time: startTime + (i * intervalSeconds),
+                    open: parseFloat(open.toFixed(2)),
+                    high: parseFloat(high.toFixed(2)),
+                    low: parseFloat(low.toFixed(2)),
+                    close: parseFloat(close.toFixed(2))
+                });
+                price = close;
+            }
+            return candles;
+        }
+
         // Load historical feed
         async function loadChartData() {
             var coin = document.getElementById('coinSelect').value;
@@ -846,12 +884,12 @@
             replayRunning = false;
 
             try {
+                // Try fetching Binance API first
                 var url = 'https://api.binance.com/api/v3/klines?symbol=' + coin + '&interval=' + tf + '&limit=150';
                 var response = await fetch(url);
                 if (!response.ok) throw new Error('Binance feed failed');
                 
                 var data = await response.json();
-                
                 var candles = data.map(function(d) {
                     return {
                         time: Math.floor(d[0] / 1000),
@@ -862,7 +900,6 @@
                     };
                 });
 
-                // Split candles for replay challenge (hide last 35 candles)
                 var slicePoint = candles.length - 35;
                 fullCandlesFeed = candles;
                 visibleCandlesFeed = candles.slice(0, slicePoint);
@@ -874,9 +911,21 @@
                 updateTickerInfo(coin.replace('USDT', '/USDT'), visibleCandlesFeed);
                 setOnline(true);
             } catch (e) {
-                console.log(e);
+                console.warn('Binance API blocked or failed. Generating offline simulation kline data...', e);
                 setOnline(false);
-                alert("Could not load simulation feed. Attempting offline fallback.");
+                
+                // Offline fallback (Guarantees charts load instantly)
+                var candles = generateDummyCandles(tf, 150);
+
+                var slicePoint = candles.length - 35;
+                fullCandlesFeed = candles;
+                visibleCandlesFeed = candles.slice(0, slicePoint);
+                hiddenReplayQueue = candles.slice(slicePoint);
+
+                candleSeries.setData(visibleCandlesFeed);
+                chart.timeScale().fitContent();
+                
+                updateTickerInfo(coin.replace('USDT', '/USDT') + ' (Simulated)', visibleCandlesFeed);
             }
 
             showLoading(false);
@@ -889,7 +938,7 @@
                 document.getElementById('liveText').textContent = 'Simulation Feed Connected';
             } else {
                 ind.classList.add('offline');
-                document.getElementById('liveText').textContent = 'Feed Offline';
+                document.getElementById('liveText').textContent = 'Simulated Mode Active';
             }
         }
 
@@ -1031,7 +1080,7 @@
             }
         }
 
-        // Live calculation and Setup Card updates (Refinement 4 & 5)
+        // Live calculation and Setup Card updates
         function updateSetupCard() {
             const entryVal = document.getElementById('setupEntry');
             const slVal = document.getElementById('setupStopLoss');
@@ -1051,14 +1100,12 @@
             else tpVal.textContent = "Not Marked";
 
             if (entryPrice && stopLossPrice && targetPrice) {
-                // Ensure layout alignment checks
                 var risk = Math.abs(entryPrice - stopLossPrice);
                 var reward = Math.abs(targetPrice - entryPrice);
                 var ratio = reward / risk;
 
                 rrVal.textContent = `1 : ${ratio.toFixed(2)}`;
 
-                // Format trade warnings based on direction
                 let orderError = false;
                 if (direction === 'long') {
                     if (stopLossPrice >= entryPrice) {
@@ -1108,17 +1155,15 @@
             }
         }
 
-        // Replay Challenge Execution (Refinement 6)
+        // Replay Challenge Execution
         function toggleReplayChallenge() {
             if (replayRunning) {
-                // Pause replay
                 clearInterval(replayTimer);
                 replayTimer = null;
                 replayRunning = false;
                 document.getElementById('startReplayBtn').textContent = '▶ Continue Replay';
                 document.getElementById('replayStatusBanner').style.display = 'none';
             } else {
-                // Hide past scorecard
                 document.getElementById('scorecardWidget').style.display = 'none';
                 
                 replayRunning = true;
@@ -1135,7 +1180,6 @@
 
         function playNextReplayCandle() {
             if (hiddenReplayQueue.length === 0) {
-                // Queue finished, position closed at market close
                 endReplayChallenge('expire', visibleCandlesFeed[visibleCandlesFeed.length - 1].close);
                 return;
             }
@@ -1165,7 +1209,7 @@
             }
         }
 
-        // Setup scorecard and Mistake Analysis (Refinement 7 & 8)
+        // Setup scorecard and Mistake Analysis
         function endReplayChallenge(result, triggerPrice) {
             clearInterval(replayTimer);
             replayTimer = null;
@@ -1186,7 +1230,6 @@
                 banner.textContent = `⏰ Session Expired! Position closed at final candle price: ${formatP(triggerPrice)}.`;
             }
 
-            // Calculate score parameters
             let score = 50;
             let ratingStars = "★★★☆☆";
             let mistakeMsg = "";
@@ -1196,7 +1239,6 @@
             const reward = Math.abs(targetPrice - entryPrice);
             const ratio = reward / risk;
 
-            // Trend checks using a simple moving average of visible candles
             let trendAlign = "Good";
             let sumCloses = 0;
             const checkLength = Math.min(20, visibleCandlesFeed.length - 40);
@@ -1215,7 +1257,6 @@
                 mistakeMsg += "⚠️ <strong>Counter-Trend Entry:</strong> You entered a Short position while prices were trending upwards. Trade with the dominant trend for higher win rates. ";
             }
 
-            // Risk reward checks
             let rrCheck = "Good";
             if (ratio < 1.5) {
                 rrCheck = "Poor";
@@ -1226,7 +1267,6 @@
                 score += 10;
             }
 
-            // Hit outcome points
             if (result === 'win') {
                 score += 15;
                 ratingStars = "★★★★★";
@@ -1241,10 +1281,8 @@
                 }
             }
 
-            // Bound score 0-100
             score = Math.max(0, Math.min(score, 100));
 
-            // Render scorecard UI
             const card = document.getElementById('scorecardWidget');
             const scoreBadge = document.getElementById('scoreBadge');
             const stars = document.getElementById('scoreStars');
@@ -1302,11 +1340,22 @@
 
         // Init
         function init() {
-            initChart();
-            loadChartData();
+            try {
+                initChart();
+                loadChartData();
+            } catch (e) {
+                console.error("Simulation chart initialization failed:", e);
+                showLoading(false);
+                document.getElementById('loadingOverlayText').innerHTML = `
+                    <div style="padding: 10px; color: var(--accent-red);">
+                        <strong>⚠️ Charting engine failed to initialize</strong><br>
+                        Please check your network connection to unpkg.com and refresh the page.
+                    </div>
+                `;
+            }
             
             window.addEventListener('resize', function() {
-                chart.applyOptions({ width: chartEl.clientWidth });
+                if (chart) chart.applyOptions({ width: chartEl.clientWidth });
             });
         }
 
