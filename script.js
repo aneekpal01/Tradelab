@@ -1,15 +1,4 @@
-// --- NAVBAR HAMBURGER MENU LOGIC ---
-const navLinks = document.getElementById("navLinks");
-const hamburger = document.getElementById("hamburger");
-
-function toggleMenu() {
-  if (navLinks && hamburger) {
-    navLinks.classList.toggle("active");
-    hamburger.classList.toggle("active");
-  }
-}
-
-// --- CHAT ELEMENT REFERENCES (IMPORTANT) ---
+// --- AI CHAT ELEMENT REFERENCES (IMPORTANT) ---
 const chatContainer = document.getElementById("aiChatBox");
 const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
