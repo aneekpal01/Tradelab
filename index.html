@@ -2384,23 +2384,32 @@
   <div class="glass-divider"></div>
  
   <div class="chat-box" id="chat-box">
-    <!-- Dynamic welcome message and Course Assistant Helper card will be inserted here dynamically -->
+    <!-- Pinned Top Section (Welcome -> Streak -> Course -> Chips) -->
+    <div class="chat-pinned-top">
+      <div id="chatWelcome"></div>
+      <div id="chatStreak"></div>
+      <div id="chatCourseCard"></div>
+      <div id="chatChips" class="quick-actions">
+        <button class="chat-helper-action-btn" onclick="sendQuickMsg('How to draw trendlines?')">📈 Trendline</button>
+        <button class="chat-helper-action-btn" onclick="sendQuickMsg('How much risk per trade?')">💰 Risk</button>
+        <button class="chat-helper-action-btn" onclick="sendQuickMsg('How to control emotions?')">🧠 Psychology</button>
+        <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain RSI Divergence')">⚡ RSI</button>
+        <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is BOS?')">📊 BOS</button>
+        <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is CHoCH?')">🔄 CHoCH</button>
+        <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain EMA')">📉 EMA</button>
+        <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is market liquidity?')">💧 Liquidity</button>
+      </div>
+    </div>
+    
+    <!-- Dynamic Conversation History -->
+    <div class="chat-history" id="chatHistory" style="display: flex; flex-direction: column; gap: 14px;"></div>
+
+    <!-- Typing Indicator -->
     <div id="typing-indicator" style="display:none; align-self: flex-start; background: #18181b; border: 1px solid rgba(255, 255, 255, 0.06); padding: 13px 16px; border-radius: 14px 14px 14px 2px; max-width: 82%; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); z-index: 1;">
       <div class="typing-dots">
         <span></span><span></span><span></span>
       </div>
     </div>
-  </div>
-
-  <div class="quick-actions" id="chatQuickActions">
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('How to draw trendlines?')">📈 Trendline</button>
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('How much risk per trade?')">💰 Risk</button>
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('How to control emotions?')">🧠 Psychology</button>
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain RSI Divergence')">⚡ RSI</button>
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is BOS?')">📊 BOS</button>
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is CHoCH?')">🔄 CHoCH</button>
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain EMA')">📉 EMA</button>
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is market liquidity?')">💧 Liquidity</button>
   </div>
 
   <div class="chat-input-area">
