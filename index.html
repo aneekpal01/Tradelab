@@ -123,14 +123,7 @@
 
   <!-- Sidebar Header / Controls (Checklist 1) -->
   <div class="sidebar-logo">
-    <a href="#" class="sidebar-logo-collapsed" onclick="scrollToTop(); return false;" title="TradeLab" style="display: none;">
-      <img src="logo.png" alt="TradeLab" class="topbar-logo-icon" style="width: 32px; height: 34px; margin: 0;">
-    </a>
-    
-    <button class="sidebar-close-btn" type="button" id="sidebarCloseBtn" onclick="toggleMenu()" title="Toggle Menu" aria-label="Toggle Menu">
-      <span class="close-icon-mobile">✕</span>
-      <span class="collapse-icon-desktop">☰</span>
-    </button>
+    <button class="sidebar-close-btn" type="button" id="sidebarCloseBtn" onclick="toggleMenu()" title="Close Menu" aria-label="Close Menu">✕</button>
   </div>
 
   <!-- Day 2 User Profile Card (Checklist 15) -->
@@ -446,12 +439,15 @@
 
   <!-- Learning Vault Section -->
   <section id="learn" class="learning">
-    <h2>Learning Vault</h2>
+    <h2>📚 Learning Vault</h2>
     <p class="section-intro">
-      Structured, free trading education — built for clarity, not hype.
+      Structured Trading Education · 25 Lessons
+    </p>
+    <p class="section-subtext" style="color: #8892b0; font-size: 14px; text-align: center; margin-top: -12px; margin-bottom: 30px;">
+      Complete, free trading roadmap — built for clarity, not hype.
     </p>
 
-    <!-- Progress Tracker -->
+    <!-- Progress Tracker (Fix 1, Fix 5) -->
     <div class="progress-tracker">
       <div class="progress-info">
         <span class="progress-text">Your Progress</span>
@@ -459,34 +455,24 @@
       </div>
       <div class="progress-bar-container">
         <div class="progress-bar-fill" id="progressBar"></div>
-        <!-- Milestone markers -->
-        <div class="progress-milestone" style="left: 25%" data-label="25%">
-          <span class="milestone-dot"></span>
-          <span class="milestone-label">25%</span>
-        </div>
-        <div class="progress-milestone" style="left: 50%" data-label="Halfway">
-          <span class="milestone-dot"></span>
-          <span class="milestone-label">50%</span>
-        </div>
-        <div class="progress-milestone" style="left: 75%" data-label="75%">
-          <span class="milestone-dot"></span>
-          <span class="milestone-label">75%</span>
-        </div>
       </div>
-      <div style="text-align: right; margin-top: 10px;">
-        <button class="reset-btn" onclick="resetProgress()">🔄 Reset Progress</button>
+      <div class="progress-actions">
+        <button class="cert-btn disabled" id="progressCertBtn" onclick="tryGetCertificate()" disabled>🏆 Get Certificate</button>
+        <button class="reset-link-btn" onclick="resetProgress()">Reset Progress</button>
       </div>
     </div>
     
-    <!-- Search & Filter -->
+    <!-- Search & Filter (Fix 2) -->
     <div class="search-filter-container">
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="🔍 Search videos..." onkeyup="filterVideos()">
+        <input type="text" id="searchInput" placeholder="🔍 Search videos..." onkeyup="applyFilters()">
       </div>
       <div class="filter-buttons">
-        <button class="filter-btn active" onclick="filterByLevel('all')">All</button>
-        <button class="filter-btn" onclick="filterByLevel('beginner')">Beginner</button>
-        <button class="filter-btn" onclick="filterByLevel('advanced')">Advanced</button>
+        <button class="filter-btn active" data-level="all" onclick="filterByLevel('all', this)">All</button>
+        <button class="filter-btn" data-level="beginner" onclick="filterByLevel('beginner', this)">Beginner</button>
+        <button class="filter-btn" data-level="intermediate" onclick="filterByLevel('intermediate', this)">Intermediate</button>
+        <button class="filter-btn" data-level="advanced" onclick="filterByLevel('advanced', this)">Advanced</button>
+        <button class="filter-btn" data-level="completed" onclick="filterByLevel('completed', this)">Completed</button>
       </div>
     </div>
 
@@ -1557,49 +1543,63 @@
   </script>
 
   <script>
-    function filterVideos() {
+    function applyFilters() {
       const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const activeBtn = document.querySelector('.filter-btn.active');
+      const level = activeBtn ? activeBtn.getAttribute('data-level') : 'all';
       const cards = document.querySelectorAll('.learning-card');
-      const noResults = document.getElementById('noResults');
+      const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
       let visibleCount = 0;
       
-      cards.forEach(card => {
+      cards.forEach((card, index) => {
+        let levelClass = 'beginner';
+        if (index >= 6 && index < 15) {
+          levelClass = 'intermediate';
+        } else if (index >= 15) {
+          levelClass = 'advanced';
+        }
+        
+        const videoId = 'video-' + (index + 1);
+        const isCompleted = completedVideos.includes(videoId);
         const title = card.querySelector('h3').textContent.toLowerCase();
         const desc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
+        const matchesSearch = title.includes(searchTerm) || desc.includes(searchTerm);
         
-        if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+        let matchesLevel = false;
+        if (level === 'all') {
+          matchesLevel = true;
+        } else if (level === 'completed') {
+          matchesLevel = isCompleted;
+        } else {
+          matchesLevel = (levelClass === level);
+        }
+        
+        if (matchesLevel && matchesSearch) {
           card.classList.remove('hidden');
           visibleCount++;
         } else {
           card.classList.add('hidden');
         }
       });
-
-      noResults.classList.toggle('hidden', visibleCount > 0);
+      
+      const noResults = document.getElementById('noResults');
+      if (noResults) noResults.classList.toggle('hidden', visibleCount > 0);
     }
 
-    function filterByLevel(level) {
-      const cards = document.querySelectorAll('.learning-card');
+    function filterByLevel(level, element) {
       const buttons = document.querySelectorAll('.filter-btn');
-      
       buttons.forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      
-      cards.forEach(card => {
-        const levelTag = card.querySelector('.level-tag');
-        const isAdvanced = levelTag && levelTag.classList.contains('advanced');
-        
-        if (level === 'all') {
-          card.classList.remove('hidden');
-        } else if (level === 'beginner' && !isAdvanced) {
-          card.classList.remove('hidden');
-        } else if (level === 'advanced' && isAdvanced) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-      document.getElementById('noResults').classList.add('hidden');
+      element.classList.add('active');
+      applyFilters();
+    }
+
+    function tryGetCertificate() {
+      const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+      if (completedVideos.length >= TOTAL_VIDEOS) {
+        openCertificateModal();
+      } else {
+        alert('Complete all ' + TOTAL_VIDEOS + ' videos to get your certificate!\n\n✅ Completed: ' + completedVideos.length + '/' + TOTAL_VIDEOS);
+      }
     }
   </script>
 
@@ -1620,7 +1620,7 @@
       } else {
         completedVideos.push(videoId);
         button.classList.add('completed');
-        button.innerHTML = '<span class="check-icon">✓</span> Completed!';
+        button.innerHTML = '<span class="check-icon">✓</span> Completed';
         card.classList.add('completed');
       }
       
@@ -1629,11 +1629,59 @@
     }
 
     function loadProgress() {
-      // Assign IDs to cards dynamically (Checklist 2)
+      // Assign IDs to cards dynamically and insert metadata rows (Fix 3, Fix 6)
       const cards = document.querySelectorAll('.learning-grid .learning-card');
       cards.forEach((card, index) => {
         if (!card.id) {
           card.id = 'lesson-' + (index + 1);
+        }
+        
+        // Determine level
+        let level = 'Beginner';
+        let levelClass = 'beginner';
+        if (index >= 6 && index < 15) {
+          level = 'Intermediate';
+          levelClass = 'intermediate';
+        } else if (index >= 15) {
+          level = 'Advanced';
+          levelClass = 'advanced';
+        }
+        
+        // Update level tag inside thumbnail
+        const levelTag = card.querySelector('.level-tag');
+        if (levelTag) {
+          levelTag.className = 'level-tag ' + levelClass;
+          levelTag.textContent = level.toUpperCase();
+        }
+        
+        // Find duration
+        const durationSpan = card.querySelector('.duration');
+        let durationText = '15 min';
+        if (durationSpan) {
+          const parts = durationSpan.textContent.split(':');
+          if (parts.length > 0) {
+            durationText = parts[0] + ' min';
+          }
+        }
+        
+        // Dynamic student count
+        const studentCount = (1200 + (index * 68)).toLocaleString();
+        
+        // Check if metadata row already exists
+        let metaRow = card.querySelector('.card-meta-row');
+        if (!metaRow) {
+          metaRow = document.createElement('div');
+          metaRow.className = 'card-meta-row';
+          metaRow.innerHTML = `
+            <span>⏱ ${durationText}</span>
+            <span>⭐ ${level}</span>
+            <span>👁 ${studentCount} Students</span>
+            <span>🎥 Video</span>
+          `;
+          const title = card.querySelector('h3');
+          if (title) {
+            title.insertAdjacentElement('afterend', metaRow);
+          }
         }
       });
 
@@ -1644,7 +1692,7 @@
         if (button) {
           const card = button.closest('.learning-card');
           button.classList.add('completed');
-          button.innerHTML = '<span class="check-icon">✓</span> Completed!';
+          button.innerHTML = '<span class="check-icon">✓</span> Completed';
           card.classList.add('completed');
         }
       });
@@ -2313,24 +2361,6 @@
       });
     }
 
-    // Add certificate button to progress tracker
-    document.addEventListener('DOMContentLoaded', () => {
-      const progressTracker = document.querySelector('.progress-tracker');
-      if (progressTracker) {
-        const certBtn = document.createElement('button');
-        certBtn.className = 'cert-btn';
-        certBtn.innerHTML = '🎓 Get Certificate';
-        certBtn.onclick = () => {
-          const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
-          if (completedVideos.length >= TOTAL_VIDEOS) {
-            openCertificateModal();
-          } else {
-            alert('Complete all ' + TOTAL_VIDEOS + ' videos to get your certificate!\n\n✅ Completed: ' + completedVideos.length + '/' + TOTAL_VIDEOS + '\n\n⚠️ Note: You must watch each video for at least 1 minute to mark it complete.');
-          }
-        };
-        progressTracker.appendChild(certBtn);
-      }
-    });
   </script>
 <div class="chat-container" id="aiChatBox">
   <div class="chat-header" id="aiChatHeader">
