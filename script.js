@@ -40,33 +40,71 @@ function startPlaceholderRotation() {
 function initChatWelcome() {
   if (!chatBox) return;
   
-  // Clear everything except typing indicator
-  const indicator = document.getElementById("typing-indicator");
-  chatBox.innerHTML = "";
-  if (indicator) chatBox.appendChild(indicator);
+  // 1. Welcome Card (Transparent glass card, not a floating chat bubble)
+  const welcomeCard = document.getElementById("chatWelcome");
+  if (welcomeCard) {
+    welcomeCard.innerHTML = `
+      <div class="chat-welcome-card">
+        <strong>👋 Welcome back!</strong><br>
+        <span style="font-size: 13px; color: var(--text-secondary);">Choose a topic below or ask anything.</span>
+      </div>
+    `;
+  }
   
-  // 1. Welcome Message
-  const welcomeDiv = document.createElement("div");
-  welcomeDiv.className = "bot-message";
-  welcomeDiv.innerHTML = `
-    <strong>👋 Welcome back!</strong><br><br>
-    Choose a topic below<br>
-    or<br>
-    Ask anything.
-  `;
-  chatBox.appendChild(welcomeDiv);
+  // 2. Learning Streak & Daily Tip Card (fills the gap)
+  insertDailyStreakOrTip();
   
-  // 2. Course Assistant Helper Card
+  // 3. Course Assistant Helper Card
   insertCourseAssistantCard();
+  
+  // 4. Reset chip highlights
+  highlightActiveChip(null);
   
   chatInitialized = true;
   startPlaceholderRotation();
 }
 
+function insertDailyStreakOrTip() {
+  const container = document.getElementById("chatStreak");
+  if (!container) return;
+  
+  const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+  let streak = localStorage.getItem('tradelab_streak') || 1;
+  const lastVisit = localStorage.getItem('tradelab_last_visit');
+  const today = new Date().toDateString();
+  
+  if (lastVisit && lastVisit !== today) {
+    streak = parseInt(streak) + 1;
+    localStorage.setItem('tradelab_streak', streak);
+  }
+  localStorage.setItem('tradelab_last_visit', today);
+  
+  const tips = [
+    "Always plan your exit (stop loss & target) before placing a trade.",
+    "Cut your losses quickly. Let your winners run.",
+    "Risk only 1% to 2% of your capital per trade.",
+    "A high win rate is useless without good risk-to-reward ratio.",
+    "Keep a trading journal to review your mistakes.",
+    "Wait for candle body closes to confirm breakouts, wicks can lie!"
+  ];
+  const tip = tips[new Date().getDate() % tips.length];
+  
+  container.innerHTML = `
+    <div class="chat-streak-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 14px; margin-top: 12px; text-align: left;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+        <span style="font-size: 12.5px; font-weight: 700; color: #ff9f43; display: flex; align-items: center; gap: 4px;">🔥 ${streak}-Day Learning Streak</span>
+        <span style="font-size: 11px; color: #8892b0; font-weight: 500;">Goal: 1 Lesson</span>
+      </div>
+      <div style="font-size: 12px; color: #8892b0; line-height: 1.4;">💡 <strong>Daily Tip:</strong> ${tip}</div>
+    </div>
+  `;
+}
+
 function insertCourseAssistantCard() {
   const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
   const cards = document.querySelectorAll('.learning-grid .learning-card');
-  if (cards.length === 0) return;
+  const cardContainer = document.getElementById("chatCourseCard");
+  if (!cardContainer || cards.length === 0) return;
   
   let currentLessonTitle = "Trading Basics";
   let nextIndex = 1;
@@ -90,10 +128,7 @@ function insertCourseAssistantCard() {
     }
   }
   
-  const helperCard = document.createElement("div");
-  helperCard.className = "course-helper-card";
-  helperCard.style.cssText = "background: rgba(0, 212, 255, 0.04); border: 1px solid rgba(0, 212, 255, 0.15); border-radius: 12px; padding: 15px; margin: 15px 0; text-align: left;";
-  
+  const scrollId = nextCard ? nextCard.id : 'lesson-1';
   let quickActionsHTML = "";
   const lTitle = currentLessonTitle.toLowerCase();
   
@@ -114,22 +149,40 @@ function insertCourseAssistantCard() {
     `;
   }
   
-  const scrollId = nextCard ? nextCard.id : 'lesson-1';
-  
-  helperCard.innerHTML = `
-    <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #00d4ff; letter-spacing: 0.5px; margin-bottom: 6px;">📘 Course Assistant</div>
-    <div style="font-size: 14px; font-weight: 600; color: #ffffff; margin-bottom: 4px;">You're currently learning:<br><span style="color:#00ff9c;">${currentLessonTitle}</span></div>
-    <div style="font-size: 12px; color: #8892b0; margin-bottom: 12px;">Lesson ${nextIndex} / dots ${cards.length}</div>
-    
-    <div class="chat-helper-actions" style="display: flex; flex-wrap: wrap; gap: 8px;">
-      ${quickActionsHTML}
-      <button class="chat-helper-action-btn" onclick="scrollToLesson('${scrollId}'); toggleChat();">🎯 Scroll to Lesson</button>
-      <button class="chat-helper-action-btn" onclick="window.location.href='quiz.html'">✍️ Start Quiz</button>
+  cardContainer.innerHTML = `
+    <div class="course-helper-card" style="background: rgba(0, 212, 255, 0.04); border: 1px solid rgba(0, 212, 255, 0.15); border-radius: 12px; padding: 14px; margin-top: 12px; text-align: left;">
+      <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #00d4ff; letter-spacing: 0.5px; margin-bottom: 5px;">📘 Course Assistant</div>
+      <div style="font-size: 13.5px; font-weight: 600; color: #ffffff; margin-bottom: 3px;">You're currently learning:<br><span style="color:#00ff9c;">${currentLessonTitle}</span></div>
+      <div style="font-size: 11.5px; color: #8892b0; margin-bottom: 10px;">Lesson ${nextIndex} / ${cards.length}</div>
+      
+      <div class="chat-helper-actions" style="display: flex; flex-wrap: wrap; gap: 8px;">
+        ${quickActionsHTML}
+        <button class="chat-helper-action-btn" onclick="scrollToLesson('${scrollId}'); toggleChat();">🎯 Scroll</button>
+        <button class="chat-helper-action-btn" onclick="window.location.href='quiz.html'">✍️ Quiz</button>
+      </div>
     </div>
   `;
+}
+
+// --- HIGHLIGHT ACTIVE CHIP ---
+function highlightActiveChip(key) {
+  const container = document.getElementById("chatChips");
+  if (!container) return;
   
-  chatBox.appendChild(helperCard);
-  chatBox.scrollTop = chatBox.scrollHeight;
+  const buttons = container.querySelectorAll(".chat-helper-action-btn");
+  buttons.forEach(btn => {
+    const text = btn.textContent.toLowerCase();
+    if (key && text.includes(key.toLowerCase())) {
+      btn.classList.add("active");
+      btn.classList.remove("inactive");
+    } else if (key) {
+      btn.classList.add("inactive");
+      btn.classList.remove("active");
+    } else {
+      btn.classList.remove("active");
+      btn.classList.remove("inactive");
+    }
+  });
 }
 
 // --- TOGGLE CHAT (OPEN / CLOSE WITH ANIMATION) ---
@@ -139,13 +192,11 @@ function toggleChat() {
   const isOpen = chatContainer.classList.contains("show");
 
   if (isOpen) {
-    // CLOSE
     chatContainer.classList.remove("show");
     setTimeout(() => {
       chatContainer.style.display = "none";
     }, 300);
   } else {
-    // OPEN
     chatContainer.style.display = "flex";
     requestAnimationFrame(() => {
       chatContainer.classList.add("show");
@@ -178,17 +229,20 @@ function formatResponse(text) {
     .replace(/• (.*?)(<br>|$)/g, "• $1$2");
 }
 
-// --- APPEND MESSAGE SAFELY ---
+// --- APPEND MESSAGE SAFELY (TO HISTORY ELEMENT) ---
 function appendMessage(text, className, isHTML = false) {
+  const history = document.getElementById("chatHistory");
+  if (!history) return;
+  
   const div = document.createElement("div");
   div.className = className;
   isHTML ? (div.innerHTML = text) : (div.textContent = text);
-  chatBox.appendChild(div);
+  history.appendChild(div);
   chatBox.scrollTop = chatBox.scrollHeight;
   return div;
 }
 
-// --- MAIN SEND MESSAGE FUNCTION (LOCAL DEFINITIONS SEARCH ONLY - NO API) ---
+// --- MAIN SEND MESSAGE FUNCTION (LOCAL SEARCH ONLY) ---
 async function sendMessage() {
   if (!userInput || !chatBox) return;
 
@@ -219,13 +273,18 @@ async function sendMessage() {
   else if (query.includes("risk") || query.includes("money management") || query.includes("position size") || query.includes("risk per trade")) matchedKey = "risk";
   else if (query.includes("candlestick") || query.includes("candle") || query.includes("wick")) matchedKey = "candlestick";
   else if (query.includes("r:r") || query.includes("risk-reward") || query.includes("risk to reward")) matchedKey = "r:r";
-  else if (query.includes("psychology") || query.includes("emotion") || query.includes("control")) matchedKey = "risk"; // Psychology resolves to risk/mindset advice or local faq. We will match risk rules.
+  else if (query.includes("psychology") || query.includes("emotion") || query.includes("control")) matchedKey = "psychology";
+
+  // Match chip highlights
+  highlightActiveChip(matchedKey);
 
   setTimeout(() => {
     if (indicator) indicator.style.display = "none";
     
     if (matchedKey) {
-      const reply = localTradingFAQ[matchedKey];
+      // Map psychology query to risk advice or key definition
+      const lookupKey = matchedKey === "psychology" ? "risk" : matchedKey;
+      const reply = localTradingFAQ[lookupKey];
       appendMessage(formatResponse(reply), "bot-message", true);
     } else {
       appendMessage("This topic isn't available yet. Try asking about **BOS**, **CHoCH**, **Trendlines**, **Risk**, or **RSI**.", "bot-message", true);
