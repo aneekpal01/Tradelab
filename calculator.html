@@ -3,140 +3,272 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TradeLab | Risk Calculator</title>
+  <title>TradeLab | Trading Risk Center</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* CSS Variables & Global Resets */
+    :root {
+      --bg-primary: #0b0f14;
+      --bg-secondary: #0f141b;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --text-primary: #eaeaea;
+      --text-secondary: #8892b0;
+      --border-color: #1e2a3a;
+      --accent-green: #00ff9c;
+      --accent-blue: #00d4ff;
+      --accent-yellow: #ffb700;
+      --accent-red: #ff4d4d;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f5f5f7;
+      --bg-secondary: #ffffff;
+      --bg-card: #f9f9fb;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --border-color: rgba(0, 0, 0, 0.05);
+      --accent-green: #0d9488;
+      --accent-blue: #0071e3;
+      --accent-yellow: #ea580c;
+      --accent-red: #dc2626;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
 
     body {
-      background: #0b0f14;
-      color: #eaeaea;
+      background: var(--bg-primary);
+      color: var(--text-primary);
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
     }
 
-    /* Navbar */
+    /* Navbar styling */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 15px 40px;
-      background: rgba(11, 15, 20, 0.95);
-      border-bottom: 1px solid #1e2a3a;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
 
     .logo {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
-      background: linear-gradient(90deg, #00ff9c, #00d4ff);
+      text-decoration: none;
+      background: linear-gradient(95deg, var(--accent-green), var(--accent-blue));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-decoration: none;
+      letter-spacing: 0.5px;
     }
 
     .back-btn {
-      padding: 10px 20px;
-      background: rgba(0, 255, 156, 0.1);
-      border: 1px solid #00ff9c;
-      color: #00ff9c;
+      padding: 8px 16px;
+      background: rgba(0, 212, 255, 0.08);
+      border: 1px solid var(--accent-blue);
+      color: var(--accent-blue);
       text-decoration: none;
       border-radius: 8px;
-      font-weight: 500;
-      transition: all 0.3s ease;
+      font-weight: 600;
+      font-size: 13px;
+      transition: all 0.2s ease;
     }
 
     .back-btn:hover {
-      background: #00ff9c;
-      color: #000;
+      background: var(--accent-blue);
+      color: #fff;
     }
 
-    /* Container */
+    /* Outer layout container */
     .container {
       max-width: 1200px;
+      width: 100%;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 30px 20px 60px 20px;
     }
 
-    .page-title {
+    /* Hero section styling */
+    .hero-banner {
       text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .page-title h1 {
-      font-size: 36px;
-      margin-bottom: 10px;
-      background: linear-gradient(90deg, #00ff9c, #00d4ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .page-title p {
-      color: #888;
-      font-size: 16px;
-    }
-
-    /* Calculator Grid */
-    .calc-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 25px;
-    }
-
-    .calc-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid #1e2a3a;
+      margin-bottom: 35px;
+      background: linear-gradient(185deg, var(--bg-secondary) 0%, rgba(10,15,25,0.05) 100%);
+      padding: 30px;
       border-radius: 16px;
-      padding: 25px;
+      border: 1px solid var(--border-color);
     }
 
-    .calc-card h2 {
-      font-size: 20px;
-      margin-bottom: 20px;
+    .hero-banner h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .hero-banner p {
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+
+    .hero-badge-row {
       display: flex;
-      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
       gap: 10px;
     }
 
-    .calc-card h2 .icon {
-      font-size: 24px;
+    .hero-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      color: var(--text-secondary);
     }
 
-    /* Input Groups */
+    /* Dual Column Layout Grid */
+    .center-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 30px;
+      align-items: start;
+    }
+
+    /* Top switcher tabs */
+    .tab-navigation {
+      display: flex;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 6px;
+      margin-bottom: 25px;
+      gap: 6px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .tab-btn.active {
+      background: rgba(0, 255, 156, 0.08);
+      color: var(--accent-green);
+      border: 1px solid rgba(0, 255, 156, 0.15);
+    }
+
+    [data-theme="light"] .tab-btn.active {
+      background: rgba(13, 148, 136, 0.08);
+      color: var(--accent-green);
+      border: 1px solid rgba(13, 148, 136, 0.15);
+    }
+
+    /* Tab Panes */
+    .tab-pane {
+      display: none;
+      animation: tabFadeIn 0.35s ease forwards;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes tabFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Calculator Cards */
+    .calc-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.05);
+    }
+
+    .calc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 15px;
+    }
+
+    .calc-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .calc-step-badge {
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(0, 212, 255, 0.08);
+      color: var(--accent-blue);
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    /* Inputs */
     .input-group {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .input-group label {
       display: block;
-      font-size: 13px;
-      color: #888;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
       margin-bottom: 6px;
     }
 
     .input-group input,
     .input-group select {
       width: 100%;
-      padding: 12px 15px;
-      background: #161b22;
-      border: 1px solid #30363d;
+      padding: 12px 14px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
       border-radius: 8px;
-      color: #fff;
-      font-size: 15px;
+      color: var(--text-primary);
+      font-size: 14.5px;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .input-group input:focus,
     .input-group select:focus {
       outline: none;
-      border-color: #00ff9c;
-      box-shadow: 0 0 10px rgba(0, 255, 156, 0.2);
+      border-color: var(--accent-green);
+      box-shadow: 0 0 0 3px rgba(0, 255, 156, 0.1);
     }
 
     .input-row {
@@ -145,174 +277,399 @@
       gap: 15px;
     }
 
-    /* Buttons */
+    /* Presets row */
+    .preset-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .preset-btn {
+      flex: 1;
+      padding: 6px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 11.5px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    /* Calculate CTA buttons */
     .calc-btn {
       width: 100%;
       padding: 14px;
-      background: linear-gradient(90deg, #00ff9c, #00d4ff);
+      background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
       border: none;
       border-radius: 8px;
       color: #000;
-      font-weight: 600;
-      font-size: 15px;
+      font-weight: 700;
+      font-size: 14.5px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s;
       margin-top: 10px;
     }
 
     .calc-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 20px rgba(0, 255, 156, 0.4);
+      transform: translateY(-1.5px);
+      box-shadow: 0 4px 15px rgba(0, 255, 156, 0.25);
     }
 
-    /* Results */
-    .result-box {
-      margin-top: 20px;
-      padding: 20px;
-      background: rgba(0, 255, 156, 0.05);
-      border: 1px solid rgba(0, 255, 156, 0.2);
-      border-radius: 12px;
-    }
-
-    .result-item {
+    /* Navigation flow footer button */
+    .step-flow-footer {
       display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      justify-content: flex-end;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
     }
 
-    .result-item:last-child {
-      border-bottom: none;
-    }
-
-    .result-label {
-      color: #888;
-      font-size: 14px;
-    }
-
-    .result-value {
+    .next-step-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 12.5px;
       font-weight: 600;
-      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
-    .result-value.green { color: #00ff9c; }
-    .result-value.red { color: #ff4d4d; }
-    .result-value.blue { color: #00d4ff; }
-    .result-value.yellow { color: #ffb700; }
-
-    /* Info Box */
-    .info-box {
-      background: rgba(0, 212, 255, 0.05);
-      border: 1px solid rgba(0, 212, 255, 0.2);
-      border-radius: 10px;
-      padding: 15px;
-      margin-top: 20px;
+    .next-step-btn:hover {
+      border-color: var(--accent-green);
+      color: var(--accent-green);
     }
 
-    .info-box h4 {
-      color: #00d4ff;
-      font-size: 14px;
-      margin-bottom: 8px;
+    /* Interactive Verdict Result Panel */
+    .premium-result-card {
+      margin-top: 25px;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      display: none;
+      animation: tabFadeIn 0.3s ease;
     }
 
-    .info-box p {
-      color: #888;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    /* Risk Meter */
-    .risk-meter {
-      margin-top: 20px;
-    }
-
-    .risk-meter-label {
+    .verdict-header {
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 8px;
+      align-items: center;
+      margin-bottom: 16px;
     }
 
-    .risk-meter-bar {
-      height: 10px;
-      background: linear-gradient(90deg, #00ff9c, #ffb700, #ff4d4d);
-      border-radius: 5px;
+    .verdict-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .verdict-badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .badge-green {
+      background: rgba(0, 255, 156, 0.08);
+      color: #00ffc8;
+      border: 1px solid rgba(0, 255, 156, 0.2);
+    }
+    .badge-yellow {
+      background: rgba(255, 183, 0, 0.08);
+      color: #ffb700;
+      border: 1px solid rgba(255, 183, 0, 0.2);
+    }
+    .badge-red {
+      background: rgba(255, 77, 77, 0.08);
+      color: #ff4d4d;
+      border: 1px solid rgba(255, 77, 77, 0.2);
+    }
+
+    /* Verdict Metrics Grid */
+    .verdict-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .verdict-metric-item {
+      background: var(--bg-primary);
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .verdict-metric-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .verdict-metric-value {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .verdict-recommendation-box {
+      background: rgba(0, 212, 255, 0.04);
+      border-left: 3px solid var(--accent-blue);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--text-primary);
+    }
+
+    /* Risk Gauge */
+    .gauge-wrapper {
+      margin-top: 15px;
+    }
+    .gauge-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .gauge-track {
+      height: 6px;
+      background: var(--bg-primary);
+      border-radius: 3px;
       position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+    .gauge-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-green), var(--accent-yellow), var(--accent-red));
+      width: 0%;
+      transition: width 0.4s ease;
     }
 
-    .risk-meter-indicator {
-      position: absolute;
-      top: -5px;
+    /* Educational dropdown cards */
+    .learn-expander {
+      margin-top: 20px;
+      border: 1px dashed var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .learn-expander-header {
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.01);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+    .learn-expander-header:hover {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .learn-expander-content {
+      padding: 16px;
+      border-top: 1px solid var(--border-color);
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      display: none;
+      background: var(--bg-primary);
+    }
+
+    /* Rotating tip panel */
+    .pro-tip-banner {
+      background: rgba(255, 183, 0, 0.03);
+      border: 1px solid rgba(255, 183, 0, 0.1);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .pro-tip-content {
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--text-primary);
+    }
+    .tip-refresh-btn {
+      background: none;
+      border: none;
+      color: var(--accent-yellow);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 4px;
+    }
+
+    /* RIGHT SIDE PANEL STYLES (decluttering empty black space) */
+    .right-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .sidebar-widget {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .widget-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--accent-green);
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    /* Checklist widget */
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+    .checklist-item:last-child {
+      margin-bottom: 0;
+    }
+    .checklist-checkbox {
+      width: 15px;
+      height: 15px;
+      border-radius: 3px;
+      border: 1.5px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: #000;
+      background: var(--bg-primary);
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: all 0.2s;
+    }
+    .checklist-item.checked .checklist-checkbox {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      color: #000;
+    }
+    .checklist-item.checked .checklist-checkbox::after {
+      content: "✓";
+    }
+    .checklist-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      transition: color 0.2s;
+    }
+    .checklist-item.checked .checklist-text {
+      color: var(--text-primary);
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    /* Psychology reminder card */
+    .psych-checkpoint {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .psych-num {
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.05);
       width: 20px;
       height: 20px;
-      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 50%;
-      transform: translateX(-50%);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-      transition: left 0.3s ease;
+      flex-shrink: 0;
+      color: var(--accent-blue);
+    }
+    .psych-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.45;
     }
 
-    /* Quick Tips */
-    .tips-section {
-      margin-top: 40px;
+    /* FAQ accordion styling */
+    .faq-item {
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 0;
+    }
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+    .faq-question {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-answer {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      padding-top: 6px;
+      display: none;
     }
 
-    .tips-section h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      text-align: center;
+    /* Responsive grid logic */
+    @media (max-width: 950px) {
+      .center-layout {
+        grid-template-columns: 1fr;
+      }
     }
 
-    .tips-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .tip-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid #1e2a3a;
-      border-radius: 12px;
-      padding: 20px;
-    }
-
-    .tip-card .tip-icon {
-      font-size: 30px;
-      margin-bottom: 10px;
-    }
-
-    .tip-card h3 {
-      font-size: 16px;
-      margin-bottom: 8px;
-      color: #fff;
-    }
-
-    .tip-card p {
-      font-size: 13px;
-      color: #888;
-      line-height: 1.6;
-    }
-
-    /* Mobile */
     @media (max-width: 768px) {
       .navbar {
         padding: 12px 20px;
       }
-
       .container {
-        padding: 25px 15px;
+        padding: 20px 15px;
       }
-
-      .page-title h1 {
-        font-size: 28px;
+      .hero-banner {
+        padding: 20px 15px;
       }
-
-      .calc-grid {
-        grid-template-columns: 1fr;
+      .hero-banner h1 {
+        font-size: 26px;
       }
-
+      .tab-navigation {
+        flex-direction: column;
+      }
       .input-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .verdict-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -323,287 +680,650 @@
   <!-- Navbar -->
   <nav class="navbar">
     <a href="index.html" class="logo">TradeLab</a>
-    <a href="index.html" class="back-btn">← Back to Learning</a>
+    <a href="index.html" class="back-btn">← Back to Learning Dashboard</a>
   </nav>
 
   <div class="container">
-    <!-- Page Title -->
-    <div class="page-title">
-      <h1>📊 Risk Calculator</h1>
-      <p>Calculate position size, risk-reward, and manage your trades like a pro</p>
-    </div>
-
-    <!-- Calculator Cards -->
-    <div class="calc-grid">
-
-      <!-- Position Size Calculator -->
-      <div class="calc-card">
-        <h2><span class="icon">📐</span> Position Size Calculator</h2>
-        
-        <div class="input-group">
-          <label>Account Balance ($)</label>
-          <input type="number" id="accountBalance" value="10000" placeholder="Enter account balance">
-        </div>
-        
-        <div class="input-group">
-          <label>Risk Per Trade (%)</label>
-          <input type="number" id="riskPercent" value="2" step="0.5" placeholder="1-5% recommended">
-        </div>
-        
-        <div class="input-row">
-          <div class="input-group">
-            <label>Entry Price ($)</label>
-            <input type="number" id="entryPrice" value="100" placeholder="Entry price">
-          </div>
-          <div class="input-group">
-            <label>Stop Loss ($)</label>
-            <input type="number" id="stopLoss" value="95" placeholder="Stop loss price">
-          </div>
-        </div>
-
-        <button class="calc-btn" onclick="calculatePosition()">Calculate Position Size</button>
-
-        <div class="result-box" id="positionResult" style="display: none;">
-          <div class="result-item">
-            <span class="result-label">Risk Amount</span>
-            <span class="result-value red" id="riskAmount">$0</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">Stop Loss Distance</span>
-            <span class="result-value yellow" id="slDistance">0%</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">Position Size</span>
-            <span class="result-value green" id="positionSize">0 units</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">Position Value</span>
-            <span class="result-value blue" id="positionValue">$0</span>
-          </div>
-        </div>
-
-        <div class="info-box">
-          <h4>💡 Pro Tip</h4>
-          <p>Never risk more than 1-2% of your account on a single trade. This ensures you can survive a losing streak.</p>
-        </div>
-      </div>
-
-      <!-- Risk Reward Calculator -->
-      <div class="calc-card">
-        <h2><span class="icon">⚖️</span> Risk : Reward Calculator</h2>
-        
-        <div class="input-group">
-          <label>Entry Price ($)</label>
-          <input type="number" id="rrEntry" value="100" placeholder="Entry price">
-        </div>
-        
-        <div class="input-row">
-          <div class="input-group">
-            <label>Stop Loss ($)</label>
-            <input type="number" id="rrStopLoss" value="95" placeholder="Stop loss">
-          </div>
-          <div class="input-group">
-            <label>Take Profit ($)</label>
-            <input type="number" id="rrTakeProfit" value="115" placeholder="Take profit">
-          </div>
-        </div>
-        
-        <div class="input-group">
-          <label>Trade Direction</label>
-          <select id="tradeDirection">
-            <option value="long">Long (Buy)</option>
-            <option value="short">Short (Sell)</option>
-          </select>
-        </div>
-
-        <button class="calc-btn" onclick="calculateRR()">Calculate R:R</button>
-
-        <div class="result-box" id="rrResult" style="display: none;">
-          <div class="result-item">
-            <span class="result-label">Risk (SL Distance)</span>
-            <span class="result-value red" id="rrRisk">$0 (0%)</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">Reward (TP Distance)</span>
-            <span class="result-value green" id="rrReward">$0 (0%)</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">Risk : Reward Ratio</span>
-            <span class="result-value blue" id="rrRatio">1:0</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">Required Win Rate</span>
-            <span class="result-value yellow" id="requiredWinRate">0%</span>
-          </div>
-        </div>
-
-        <div class="risk-meter" id="rrMeter" style="display: none;">
-          <div class="risk-meter-label">
-            <span>Poor (1:1)</span>
-            <span>Good (1:2)</span>
-            <span>Excellent (1:3+)</span>
-          </div>
-          <div class="risk-meter-bar">
-            <div class="risk-meter-indicator" id="rrIndicator" style="left: 0%;"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Profit/Loss Calculator -->
-      <div class="calc-card">
-        <h2><span class="icon">💰</span> Profit / Loss Calculator</h2>
-        
-        <div class="input-row">
-          <div class="input-group">
-            <label>Entry Price ($)</label>
-            <input type="number" id="plEntry" value="100" placeholder="Entry">
-          </div>
-          <div class="input-group">
-            <label>Exit Price ($)</label>
-            <input type="number" id="plExit" value="110" placeholder="Exit">
-          </div>
-        </div>
-        
-        <div class="input-row">
-          <div class="input-group">
-            <label>Quantity / Units</label>
-            <input type="number" id="plQuantity" value="10" placeholder="Units">
-          </div>
-          <div class="input-group">
-            <label>Direction</label>
-            <select id="plDirection">
-              <option value="long">Long</option>
-              <option value="short">Short</option>
-            </select>
-          </div>
-        </div>
-
-        <button class="calc-btn" onclick="calculatePL()">Calculate P/L</button>
-
-        <div class="result-box" id="plResult" style="display: none;">
-          <div class="result-item">
-            <span class="result-label">Price Change</span>
-            <span class="result-value" id="plChange">$0 (0%)</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">Investment</span>
-            <span class="result-value blue" id="plInvestment">$0</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">Profit / Loss</span>
-            <span class="result-value" id="plPnL">$0</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">ROI</span>
-            <span class="result-value" id="plROI">0%</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Breakeven Calculator -->
-      <div class="calc-card">
-        <h2><span class="icon">🎯</span> Breakeven Calculator</h2>
-        
-        <div class="input-group">
-          <label>Your Win Rate (%)</label>
-          <input type="number" id="winRate" value="50" placeholder="Enter win rate">
-        </div>
-        
-        <div class="input-group">
-          <label>Average Win ($)</label>
-          <input type="number" id="avgWin" value="200" placeholder="Avg winning trade">
-        </div>
-        
-        <div class="input-group">
-          <label>Average Loss ($)</label>
-          <input type="number" id="avgLoss" value="100" placeholder="Avg losing trade">
-        </div>
-
-        <button class="calc-btn" onclick="calculateExpectancy()">Calculate Expectancy</button>
-
-        <div class="result-box" id="expectancyResult" style="display: none;">
-          <div class="result-item">
-            <span class="result-label">Risk : Reward</span>
-            <span class="result-value blue" id="expRR">1:0</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">Expectancy per Trade</span>
-            <span class="result-value" id="expValue">$0</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">After 100 Trades</span>
-            <span class="result-value" id="exp100">$0</span>
-          </div>
-          <div class="result-item">
-            <span class="result-label">Breakeven Win Rate</span>
-            <span class="result-value yellow" id="breakevenWR">0%</span>
-          </div>
-        </div>
-
-        <div class="info-box">
-          <h4>📈 Expectancy Formula</h4>
-          <p>(Win Rate × Avg Win) - (Loss Rate × Avg Loss) = Expected profit per trade</p>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Quick Tips Section -->
-    <div class="tips-section">
-      <h2>💡 Risk Management Tips</h2>
-      <div class="tips-grid">
-        <div class="tip-card">
-          <div class="tip-icon">🛡️</div>
-          <h3>The 2% Rule</h3>
-          <p>Never risk more than 2% of your account on a single trade. This protects your capital during losing streaks.</p>
-        </div>
-        <div class="tip-card">
-          <div class="tip-icon">⚖️</div>
-          <h3>Minimum 1:2 R:R</h3>
-          <p>Always aim for at least 1:2 risk-reward ratio. This means you can be wrong 50% of the time and still be profitable.</p>
-        </div>
-        <div class="tip-card">
-          <div class="tip-icon">📊</div>
-          <h3>Track Every Trade</h3>
-          <p>Maintain a trading journal. Track entry, exit, R:R, and emotions. Review weekly to improve.</p>
-        </div>
-        <div class="tip-card">
-          <div class="tip-icon">🧠</div>
-          <h3>Plan Before Entry</h3>
-          <p>Know your entry, stop loss, and target BEFORE entering. Never move stop loss further away.</p>
-        </div>
+    <!-- Hero Banner (Refinement 1) -->
+    <div class="hero-banner">
+      <h1>🛡️ Trading Risk Center</h1>
+      <p>Protect your capital before every trade. 4 Professional Trading Calculators</p>
+      <div class="hero-badge-row">
+        <span class="hero-badge">📐 Position Size</span>
+        <span class="hero-badge">⚖️ Risk Reward</span>
+        <span class="hero-badge">💰 Profit / Loss</span>
+        <span class="hero-badge">🎯 Breakeven Expectancy</span>
       </div>
     </div>
 
+    <!-- Main Dual Column Layout (Refinement 15) -->
+    <div class="center-layout">
+      <!-- LEFT COLUMN: Tabs & Calculator Panels -->
+      <div class="main-calculator-pane">
+        
+        <!-- Top Switcher Tabs (Refinement 13) -->
+        <div class="tab-navigation">
+          <button class="tab-btn active" onclick="switchTab(0)" id="tabBtn0">
+            <span>📐</span> Position Size
+          </button>
+          <button class="tab-btn" onclick="switchTab(1)" id="tabBtn1">
+            <span>⚖️</span> Risk : Reward
+          </button>
+          <button class="tab-btn" onclick="switchTab(2)" id="tabBtn2">
+            <span>💰</span> Profit / Loss
+          </button>
+          <button class="tab-btn" onclick="switchTab(3)" id="tabBtn3">
+            <span>🎯</span> Expectancy
+          </button>
+        </div>
+
+        <!-- TAB 1: Position Size Calculator -->
+        <div class="tab-pane active" id="tabPane0">
+          <div class="calc-card">
+            <div class="calc-header">
+              <h2>📐 Position Size Calculator</h2>
+              <span class="calc-step-badge">Step 1</span>
+            </div>
+            
+            <div class="input-group">
+              <label>Account Balance ($)</label>
+              <input type="number" id="accountBalance" value="10000" placeholder="Enter account balance" oninput="calculatePosition()">
+            </div>
+            
+            <div class="input-group">
+              <label>Risk Per Trade (%)</label>
+              <input type="number" id="riskPercent" value="2" step="0.5" placeholder="1-5% recommended" oninput="calculatePosition()">
+              <!-- Preset Row (Refinement 8) -->
+              <div class="preset-row">
+                <button type="button" class="preset-btn" onclick="applyRiskPreset(0.5)">0.5%</button>
+                <button type="button" class="preset-btn" onclick="applyRiskPreset(1.0)">1.0%</button>
+                <button type="button" class="preset-btn" onclick="applyRiskPreset(2.0)">2.0%</button>
+                <button type="button" class="preset-btn" onclick="applyRiskPreset(3.0)">3.0%</button>
+              </div>
+            </div>
+            
+            <div class="input-row">
+              <div class="input-group">
+                <label>Entry Price ($)</label>
+                <input type="number" id="entryPrice" value="100" placeholder="Entry price" oninput="calculatePosition()">
+              </div>
+              <div class="input-group">
+                <label>Stop Loss ($)</label>
+                <input type="number" id="stopLoss" value="95" placeholder="Stop loss price" oninput="calculatePosition()">
+              </div>
+            </div>
+
+            <button class="calc-btn" onclick="calculatePosition()">Calculate Allocation</button>
+
+            <!-- Premium Result Box (Refinement 3 & 14) -->
+            <div class="premium-result-card" id="positionResult">
+              <div class="verdict-header">
+                <span class="verdict-title">Trading Verdict</span>
+                <span class="verdict-badge badge-green" id="posRiskBadge">Safe Risk</span>
+              </div>
+              
+              <div class="verdict-grid">
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Risk Amount</span>
+                  <span class="verdict-metric-value text-red" id="posRiskAmount" style="color: var(--accent-red);">$200.00</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Position Size</span>
+                  <span class="verdict-metric-value text-green" id="posFinalUnits" style="color: var(--accent-green);">40 Shares</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Capital Allocated</span>
+                  <span class="verdict-metric-value" id="posAllocatedVal">$4,000.00</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Account Exposure</span>
+                  <span class="verdict-metric-value" id="posExposurePct" style="color: var(--accent-blue);">40.0%</span>
+                </div>
+              </div>
+
+              <!-- Recommendation Text -->
+              <div class="verdict-recommendation-box" id="posRecommendation">
+                ✅ Low Risk - This allocation complies with standard capital preservation models.
+              </div>
+
+              <!-- Risk Meter Gauge (Refinement 7) -->
+              <div class="gauge-wrapper">
+                <div class="gauge-label">
+                  <span>Risk Scale</span>
+                  <span id="posGaugeText">2.0% Moderate</span>
+                </div>
+                <div class="gauge-track">
+                  <div class="gauge-fill" id="posGaugeFill" style="width: 40%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Learn Why Integration (Refinement 11) -->
+            <div class="learn-expander">
+              <div class="learn-expander-header" onclick="toggleExpander(this)">
+                <span>🎓 Learn: Why does Position Sizing matter? (5 min read)</span>
+                <span>▼</span>
+              </div>
+              <div class="learn-expander-content">
+                <strong>Position sizing</strong> is the absolute secret of trading longevity. If you risk a fixed percentage (e.g. 1%) of your account, you would need to lose 100 trades in a row to wipe out your capital. But if you trade random sizes, a short streak of losses will deplete your account. Always adjust your share count based on how wide your stop loss is.
+              </div>
+            </div>
+
+            <div class="step-flow-footer">
+              <button class="next-step-btn" onclick="switchTab(1)">Next Step: Calculate Risk Reward ➔</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: Risk Reward Calculator -->
+        <div class="tab-pane" id="tabPane1">
+          <div class="calc-card">
+            <div class="calc-header">
+              <h2>⚖️ Risk : Reward Calculator</h2>
+              <span class="calc-step-badge">Step 2</span>
+            </div>
+            
+            <div class="input-group">
+              <label>Entry Price ($)</label>
+              <input type="number" id="rrEntry" value="100" placeholder="Entry price" oninput="calculateRR()">
+            </div>
+            
+            <div class="input-row">
+              <div class="input-group">
+                <label>Stop Loss ($)</label>
+                <input type="number" id="rrStopLoss" value="95" placeholder="Stop loss price" oninput="calculateRR()">
+              </div>
+              <div class="input-group">
+                <label>Take Profit ($)</label>
+                <input type="number" id="rrTakeProfit" value="115" placeholder="Target profit price" oninput="calculateRR()">
+              </div>
+            </div>
+            
+            <div class="input-group">
+              <label>Trade Direction</label>
+              <select id="tradeDirection" onchange="calculateRR()">
+                <option value="long">Long (Buy)</option>
+                <option value="short">Short (Sell)</option>
+              </select>
+            </div>
+
+            <button class="calc-btn" onclick="calculateRR()">Calculate R:R Ratio</button>
+
+            <!-- Premium Result Box (Refinement 6 & 12) -->
+            <div class="premium-result-card" id="rrResultCard">
+              <div class="verdict-header">
+                <span class="verdict-title">R:R Verdict</span>
+                <span class="verdict-badge badge-green" id="rrQualityBadge">Excellent</span>
+              </div>
+              
+              <div class="verdict-grid">
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Max Risk Per Share</span>
+                  <span class="verdict-metric-value text-red" id="rrRiskSpan" style="color: var(--accent-red);">$5.00</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Max Reward Per Share</span>
+                  <span class="verdict-metric-value text-green" id="rrRewardSpan" style="color: var(--accent-green);">$15.00</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Risk : Reward Ratio</span>
+                  <span class="verdict-metric-value" id="rrRatioSpan" style="color: var(--accent-blue);">1 : 3.00</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Breakeven Win Rate</span>
+                  <span class="verdict-metric-value" id="rrBreakevenSpan">25.0%</span>
+                </div>
+              </div>
+
+              <!-- Recommendation Text -->
+              <div class="verdict-recommendation-box" id="rrRecommendation" style="border-left-color: var(--accent-green);">
+                ✅ Excellent Trade - Risk-to-reward ratio is highly favorable. Worth considering setup.
+              </div>
+
+              <!-- Risk Meter Gauge -->
+              <div class="gauge-wrapper">
+                <div class="gauge-label">
+                  <span>Target Value</span>
+                  <span id="rrGaugeText">Favorable (1:3)</span>
+                </div>
+                <div class="gauge-track">
+                  <div class="gauge-fill" id="rrGaugeFill" style="width: 80%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Learn Why Integration -->
+            <div class="learn-expander">
+              <div class="learn-expander-header" onclick="toggleExpander(this)">
+                <span>🎓 Learn: Why is 1:2 R:R the holy grail? (5 min read)</span>
+                <span>▼</span>
+              </div>
+              <div class="learn-expander-content">
+                If your risk-reward ratio is **1:2**, you only need to win **34%** of your trades to break even. If your ratio is **1:3**, you only need to win **25%** of your trades! This means you can be wrong most of the time and still grow your account. Poor risk-reward setups (like 1:0.5) require extremely high win rates (67%+) which are almost impossible to maintain.
+              </div>
+            </div>
+
+            <div class="step-flow-footer">
+              <button class="next-step-btn" onclick="switchTab(2)">Next Step: Calculate Profit & Loss ➔</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: Profit / Loss Calculator -->
+        <div class="tab-pane" id="tabPane2">
+          <div class="calc-card">
+            <div class="calc-header">
+              <h2>💰 Profit / Loss Calculator</h2>
+              <span class="calc-step-badge">Step 3</span>
+            </div>
+            
+            <div class="input-row">
+              <div class="input-group">
+                <label>Entry Price ($)</label>
+                <input type="number" id="plEntry" value="100" placeholder="Entry" oninput="calculatePL()">
+              </div>
+              <div class="input-group">
+                <label>Exit Price ($)</label>
+                <input type="number" id="plExit" value="110" placeholder="Exit" oninput="calculatePL()">
+              </div>
+            </div>
+            
+            <div class="input-row">
+              <div class="input-group">
+                <label>Quantity / Units</label>
+                <input type="number" id="plQuantity" value="10" placeholder="Units" oninput="calculatePL()">
+              </div>
+              <div class="input-group">
+                <label>Direction</label>
+                <select id="plDirection" onchange="calculatePL()">
+                  <option value="long">Long</option>
+                  <option value="short">Short</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="calc-btn" onclick="calculatePL()">Calculate ROI</button>
+
+            <!-- Premium Result Box -->
+            <div class="premium-result-card" id="plResultCard">
+              <div class="verdict-header">
+                <span class="verdict-title">P/L Estimate</span>
+                <span class="verdict-badge badge-green" id="plStatusBadge">Profit Setup</span>
+              </div>
+              
+              <div class="verdict-grid">
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Price Move</span>
+                  <span class="verdict-metric-value" id="plChangeSpan">$10.00 (10.0%)</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Total Capital Required</span>
+                  <span class="verdict-metric-value" id="plInvestmentSpan" style="color: var(--accent-blue);">$1,000.00</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Net Gain / Loss</span>
+                  <span class="verdict-metric-value" id="plPnLSpan" style="color: var(--accent-green);">+$100.00</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Return on Investment (ROI)</span>
+                  <span class="verdict-metric-value" id="plROISpan">+10.0%</span>
+                </div>
+              </div>
+
+              <!-- Recommendation Text -->
+              <div class="verdict-recommendation-box" id="plRecommendation">
+                📊 Returns represent gross performance without brokerage costs or slippages.
+              </div>
+            </div>
+
+            <!-- Learn Why Integration -->
+            <div class="learn-expander">
+              <div class="learn-expander-header" onclick="toggleExpander(this)">
+                <span>🎓 Learn: What is ROI vs account gain? (5 min read)</span>
+                <span>▼</span>
+              </div>
+              <div class="learn-expander-content">
+                <strong>Return on Investment (ROI)</strong> calculates how much money you made relative to the amount you deployed. But it is different from your **Account Gain**. For instance, if you make a 10% ROI on a trade using 20% of your account size, your overall account grows by 2% (which is the actual growth). Good traders focus on account exposure relative to ROI.
+              </div>
+            </div>
+
+            <div class="step-flow-footer">
+              <button class="next-step-btn" onclick="switchTab(3)">Next Step: Calculate Expectancy ➔</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: Expectancy / Breakeven Calculator -->
+        <div class="tab-pane" id="tabPane3">
+          <div class="calc-card">
+            <div class="calc-header">
+              <h2>🎯 Breakeven Expectancy Calculator</h2>
+              <span class="calc-step-badge">Step 4</span>
+            </div>
+            
+            <div class="input-group">
+              <label>Your Historical Win Rate (%)</label>
+              <input type="number" id="winRate" value="50" placeholder="Enter win rate" oninput="calculateExpectancy()">
+            </div>
+            
+            <div class="input-row">
+              <div class="input-group">
+                <label>Average Win Size ($)</label>
+                <input type="number" id="avgWin" value="200" placeholder="Avg win amount" oninput="calculateExpectancy()">
+              </div>
+              <div class="input-group">
+                <label>Average Loss Size ($)</label>
+                <input type="number" id="avgLoss" value="100" placeholder="Avg loss amount" oninput="calculateExpectancy()">
+              </div>
+            </div>
+
+            <button class="calc-btn" onclick="calculateExpectancy()">Calculate Trade Expectancy</button>
+
+            <!-- Premium Result Box -->
+            <div class="premium-result-card" id="expectancyResultCard">
+              <div class="verdict-header">
+                <span class="verdict-title">System Edge</span>
+                <span class="verdict-badge badge-green" id="expQualityBadge">Bullish Edge</span>
+              </div>
+              
+              <div class="verdict-grid">
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Average System R:R</span>
+                  <span class="verdict-metric-value" id="expRRSpan" style="color: var(--accent-blue);">1 : 2.00</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Expected P/L per Trade</span>
+                  <span class="verdict-metric-value" id="expValueSpan" style="color: var(--accent-green);">+$50.00</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Growth (100 Trades)</span>
+                  <span class="verdict-metric-value" id="exp100Span">+$5,000.00</span>
+                </div>
+                <div class="verdict-metric-item">
+                  <span class="verdict-metric-label">Breakeven Win Rate</span>
+                  <span class="verdict-metric-value" id="expBreakevenSpan">33.3%</span>
+                </div>
+              </div>
+
+              <!-- Recommendation Text -->
+              <div class="verdict-recommendation-box" id="expRecommendation">
+                ✅ Bullish Edge - Your trading system holds positive expectancy. Pushing volume will scale profits.
+              </div>
+            </div>
+
+            <!-- Learn Why Integration -->
+            <div class="learn-expander">
+              <div class="learn-expander-header" onclick="toggleExpander(this)">
+                <span>🎓 Learn: What is Trading Expectancy? (5 min read)</span>
+                <span>▼</span>
+              </div>
+              <div class="learn-expander-content">
+                <strong>Expectancy</strong> is the mathematical edge of your system. If your expectancy is **+$50.00**, it means that even if you lose some trades, over a sample size of hundreds of trades you average a profit of $50.00 per trade. If your expectancy is negative, no amount of psychology or journaling will save your account; you must increase your average win size or win rate.
+              </div>
+            </div>
+
+            <div class="step-flow-footer">
+              <button class="next-step-btn" onclick="resetFlow()">Reset Flow ⟲</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rotating Pro Tips banner (Refinement 10) -->
+        <div class="pro-tip-banner">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">💡</span>
+            <div class="pro-tip-content">
+              <strong>Risk Tip:</strong> <span id="rotatingTipText">Never average down on a losing position. Cut losses quickly to protect capital.</span>
+            </div>
+          </div>
+          <button onclick="rotateTip()" class="tip-refresh-btn" title="Next Tip">⟲</button>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Checklist & Psychology widgets (Refinement 15) -->
+      <div class="right-sidebar">
+        <!-- Checklist Card -->
+        <div class="sidebar-widget">
+          <div class="widget-title">📋 Pre-Trade Checklist</div>
+          
+          <div class="checklist-item" onclick="toggleChecklist(this)">
+            <div class="checklist-checkbox"></div>
+            <span class="checklist-text">Checked major high-impact news releases today?</span>
+          </div>
+          <div class="checklist-item" onclick="toggleChecklist(this)">
+            <div class="checklist-checkbox"></div>
+            <span class="checklist-text">Is this trade aligned with the high-timeframe trend?</span>
+          </div>
+          <div class="checklist-item" onclick="toggleChecklist(this)">
+            <div class="checklist-checkbox"></div>
+            <span class="checklist-text">Determined entry, stop loss, and target before buying?</span>
+          </div>
+          <div class="checklist-item" onclick="toggleChecklist(this)">
+            <div class="checklist-checkbox"></div>
+            <span class="checklist-text">Emotional state is calm, neutral, and objective?</span>
+          </div>
+          <div class="checklist-item" onclick="toggleChecklist(this)">
+            <div class="checklist-checkbox"></div>
+            <span class="checklist-text">Acceptable capital risk size calculated?</span>
+          </div>
+        </div>
+
+        <!-- Psychology reminder -->
+        <div class="sidebar-widget">
+          <div class="widget-title">🧠 Mindset Checkpoints</div>
+          
+          <div class="psych-checkpoint">
+            <div class="psych-num">1</div>
+            <div class="psych-text">Accept that every single trade has a completely random outcome. You can only control your risk size.</div>
+          </div>
+          <div class="psych-checkpoint">
+            <div class="psych-num">2</div>
+            <div class="psych-text">Never increase risk parameters after a loss to "make it back." That is revenge trading.</div>
+          </div>
+          <div class="psych-checkpoint">
+            <div class="psych-num">3</div>
+            <div class="psych-text">A missed trade is better than a losing trade. Capital preservation is always job #1.</div>
+          </div>
+        </div>
+
+        <!-- FAQs widgets -->
+        <div class="sidebar-widget">
+          <div class="widget-title">❓ Quick Risk FAQs</div>
+          
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span>What is the 2% rule?</span>
+              <span>+</span>
+            </div>
+            <div class="faq-answer">
+              The 2% rule states you should never risk more than 2% of your account capital on a single trade. If you have a $10,000 account, your maximum loss should never exceed $200.
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span>What is Slippage?</span>
+              <span>+</span>
+            </div>
+            <div class="faq-answer">
+              Slippage occurs when your order is filled at a price different from the expected price (often due to high volatility). Keep stop losses wide enough to tolerate minor slippages.
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span>What is expectancy?</span>
+              <span>+</span>
+            </div>
+            <div class="faq-answer">
+              Expectancy is the average amount of money you expect to make (or lose) per trade over a large number of trades, taking win rates and size ratios into account.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    // Position Size Calculator
+    // Theme sync logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      document.body.className = currentTheme;
+      
+      // Calculate active defaults
+      calculatePosition();
+      calculateRR();
+      calculatePL();
+      calculateExpectancy();
+    });
+
+    // Tab Switcher Logic
+    let currentActiveTab = 0;
+    function switchTab(index) {
+      currentActiveTab = index;
+      
+      // Update tab buttons
+      for(let i=0; i<4; i++) {
+        const btn = document.getElementById('tabBtn' + i);
+        const pane = document.getElementById('tabPane' + i);
+        if (btn && pane) {
+          if (i === index) {
+            btn.classList.add('active');
+            pane.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+            pane.classList.remove('active');
+          }
+        }
+      }
+    }
+
+    function resetFlow() {
+      switchTab(0);
+    }
+
+    // Preset buttons trigger
+    function applyRiskPreset(val) {
+      const input = document.getElementById('riskPercent');
+      if (input) {
+        input.value = val;
+        calculatePosition();
+      }
+    }
+
+    // Toggle expander cards
+    function toggleExpander(header) {
+      const content = header.nextElementSibling;
+      if (content.style.display === 'block') {
+        content.style.display = 'none';
+        header.querySelector('span:last-child').textContent = '▼';
+      } else {
+        content.style.display = 'block';
+        header.querySelector('span:last-child').textContent = '▲';
+      }
+    }
+
+    // Toggle checklists
+    function toggleChecklist(item) {
+      item.classList.toggle('checked');
+    }
+
+    // Toggle FAQ accordion items
+    function toggleFaq(header) {
+      const answer = header.nextElementSibling;
+      const indicator = header.querySelector('span:last-child');
+      if (answer.style.display === 'block') {
+        answer.style.display = 'none';
+        indicator.textContent = '+';
+      } else {
+        answer.style.display = 'block';
+        indicator.textContent = '−';
+      }
+    }
+
+    // Rotating tips
+    const tips = [
+      "Never average down on a losing position. Cut losses quickly.",
+      "Risk only what you are emotionally and financially comfortable losing.",
+      "Capital preservation is Job #1. Making profits comes second.",
+      "A good trading setup with bad risk management will always lose money.",
+      "Always know your exit plan (both stop loss and target) BEFORE entering a trade.",
+      "Do not let a winning trade turn into a losing trade. Lock in profits."
+    ];
+    let currentTipIndex = 0;
+    function rotateTip() {
+      currentTipIndex = (currentTipIndex + 1) % tips.length;
+      document.getElementById('rotatingTipText').textContent = tips[currentTipIndex];
+    }
+
+    // --- Core Calculation Logic ---
+
+    // 1. Position Sizing
     function calculatePosition() {
-      const balance = parseFloat(document.getElementById('accountBalance').value);
-      const riskPercent = parseFloat(document.getElementById('riskPercent').value);
-      const entry = parseFloat(document.getElementById('entryPrice').value);
-      const sl = parseFloat(document.getElementById('stopLoss').value);
+      const balance = parseFloat(document.getElementById('accountBalance').value) || 0;
+      const riskPercent = parseFloat(document.getElementById('riskPercent').value) || 0;
+      const entry = parseFloat(document.getElementById('entryPrice').value) || 0;
+      const sl = parseFloat(document.getElementById('stopLoss').value) || 0;
+
+      if (balance <= 0 || riskPercent <= 0 || entry <= 0 || sl <= 0 || entry === sl) {
+        return;
+      }
 
       const riskAmount = (balance * riskPercent) / 100;
       const slDistance = Math.abs(entry - sl);
       const slPercent = (slDistance / entry) * 100;
       const positionSize = riskAmount / slDistance;
       const positionValue = positionSize * entry;
+      const exposurePct = (positionValue / balance) * 100;
 
-      document.getElementById('riskAmount').textContent = '$' + riskAmount.toFixed(2);
-      document.getElementById('slDistance').textContent = slPercent.toFixed(2) + '%';
-      document.getElementById('positionSize').textContent = positionSize.toFixed(2) + ' units';
-      document.getElementById('positionValue').textContent = '$' + positionValue.toFixed(2);
+      // Update labels
+      document.getElementById('posRiskAmount').textContent = '$' + riskAmount.toFixed(2);
+      document.getElementById('posFinalUnits').textContent = positionSize.toFixed(1) + ' Shares';
+      document.getElementById('posAllocatedVal').textContent = '$' + positionValue.toFixed(2);
+      document.getElementById('posExposurePct').textContent = exposurePct.toFixed(1) + '%';
+
+      // Dynamic Verdict Badge & Color Rules (Refinement 14 & 12)
+      const badge = document.getElementById('posRiskBadge');
+      const rec = document.getElementById('posRecommendation');
+      const gaugeFill = document.getElementById('posGaugeFill');
+      const gaugeText = document.getElementById('posGaugeText');
+
+      gaugeText.textContent = `${riskPercent.toFixed(1)}% Exposure`;
+      gaugeFill.style.width = Math.min((riskPercent / 5) * 100, 100) + '%';
+
+      badge.className = "verdict-badge";
+      if (riskPercent <= 1.0) {
+        badge.classList.add('badge-green');
+        badge.textContent = "Safe Risk (Conservative)";
+        rec.innerHTML = "✅ <strong>Low Risk:</strong> Excellent asset sizing. Capital protection score is high (98%).";
+        rec.style.borderLeftColor = "var(--accent-green)";
+      } else if (riskPercent <= 2.5) {
+        badge.classList.add('badge-yellow');
+        badge.textContent = "Moderate Risk (Balanced)";
+        rec.innerHTML = "🟡 <strong>Moderate Risk:</strong> Standard model. Recommended for high-probability setups.";
+        rec.style.borderLeftColor = "var(--accent-yellow)";
+      } else {
+        badge.classList.add('badge-red');
+        badge.textContent = "Aggressive Risk (Dangerous)";
+        rec.innerHTML = "⚠️ <strong>Dangerous Risk Size:</strong> Over-exposure risk. A brief losing streak will cause severe drawdown.";
+        rec.style.borderLeftColor = "var(--accent-red)";
+      }
+
       document.getElementById('positionResult').style.display = 'block';
     }
 
-    // Risk Reward Calculator
+    // 2. Risk Reward ratio
     function calculateRR() {
-      const entry = parseFloat(document.getElementById('rrEntry').value);
-      const sl = parseFloat(document.getElementById('rrStopLoss').value);
-      const tp = parseFloat(document.getElementById('rrTakeProfit').value);
+      const entry = parseFloat(document.getElementById('rrEntry').value) || 0;
+      const sl = parseFloat(document.getElementById('rrStopLoss').value) || 0;
+      const tp = parseFloat(document.getElementById('rrTakeProfit').value) || 0;
       const direction = document.getElementById('tradeDirection').value;
+
+      if (entry <= 0 || sl <= 0 || tp <= 0 || entry === sl || entry === tp) {
+        return;
+      }
 
       let risk, reward;
       if (direction === 'long') {
@@ -614,66 +1334,109 @@
         reward = entry - tp;
       }
 
-      const riskPercent = (Math.abs(risk) / entry) * 100;
-      const rewardPercent = (Math.abs(reward) / entry) * 100;
-      const ratio = Math.abs(reward) / Math.abs(risk);
+      const absRisk = Math.abs(risk);
+      const absReward = Math.abs(reward);
+      const riskPercent = (absRisk / entry) * 100;
+      const rewardPercent = (absReward / entry) * 100;
+      const ratio = absReward / absRisk;
       const requiredWinRate = (1 / (1 + ratio)) * 100;
 
-      document.getElementById('rrRisk').textContent = '$' + Math.abs(risk).toFixed(2) + ' (' + riskPercent.toFixed(1) + '%)';
-      document.getElementById('rrReward').textContent = '$' + Math.abs(reward).toFixed(2) + ' (' + rewardPercent.toFixed(1) + '%)';
-      document.getElementById('rrRatio').textContent = '1 : ' + ratio.toFixed(2);
-      document.getElementById('requiredWinRate').textContent = requiredWinRate.toFixed(1) + '%';
-      
-      // Update risk meter
-      const meterPosition = Math.min(ratio / 3 * 100, 100);
-      document.getElementById('rrIndicator').style.left = meterPosition + '%';
-      
-      document.getElementById('rrResult').style.display = 'block';
-      document.getElementById('rrMeter').style.display = 'block';
-    }
+      // Update text
+      document.getElementById('rrRiskSpan').textContent = '$' + absRisk.toFixed(2) + ' (' + riskPercent.toFixed(1) + '%)';
+      document.getElementById('rrRewardSpan').textContent = '$' + absReward.toFixed(2) + ' (' + rewardPercent.toFixed(1) + '%)';
+      document.getElementById('rrRatioSpan').textContent = '1 : ' + ratio.toFixed(2);
+      document.getElementById('rrBreakevenSpan').textContent = requiredWinRate.toFixed(1) + '%';
 
-    // Profit/Loss Calculator
-    function calculatePL() {
-      const entry = parseFloat(document.getElementById('plEntry').value);
-      const exit = parseFloat(document.getElementById('plExit').value);
-      const qty = parseFloat(document.getElementById('plQuantity').value);
-      const direction = document.getElementById('plDirection').value;
+      // Dynamic Verdict
+      const badge = document.getElementById('rrQualityBadge');
+      const rec = document.getElementById('rrRecommendation');
+      const gaugeFill = document.getElementById('rrGaugeFill');
+      const gaugeText = document.getElementById('rrGaugeText');
 
-      let pnl, priceChange;
-      if (direction === 'long') {
-        priceChange = exit - entry;
-        pnl = priceChange * qty;
+      gaugeText.textContent = `Ratio 1:${ratio.toFixed(1)}`;
+      gaugeFill.style.width = Math.min((ratio / 3) * 100, 100) + '%';
+
+      badge.className = "verdict-badge";
+      if (ratio < 1.5) {
+        badge.classList.add('badge-red');
+        badge.textContent = "Poor R:R Ratio";
+        rec.innerHTML = "⚠️ <strong>Poor Trade Quality:</strong> Risk exceeds target reward. Win rate needs to stay extremely high (" + requiredWinRate.toFixed(0) + "%+) to avoid losing account equity.";
+        rec.style.borderLeftColor = "var(--accent-red)";
+      } else if (ratio < 2.5) {
+        badge.classList.add('badge-yellow');
+        badge.textContent = "Moderate R:R Ratio";
+        rec.innerHTML = "🟡 <strong>Acceptable Trade Quality:</strong> Favorable setup, but attempt to scale entries or adjust take profits for a better ratio.";
+        rec.style.borderLeftColor = "var(--accent-yellow)";
       } else {
-        priceChange = entry - exit;
-        pnl = priceChange * qty;
+        badge.classList.add('badge-green');
+        badge.textContent = "Excellent R:R Ratio";
+        rec.innerHTML = "✅ <strong>Favorable Trade Quality:</strong> Strong edge. Breakeven win rate is extremely low (" + requiredWinRate.toFixed(0) + "%). Good setup.";
+        rec.style.borderLeftColor = "var(--accent-green)";
       }
 
+      document.getElementById('rrResultCard').style.display = 'block';
+    }
+
+    // 3. Profit / Loss
+    function calculatePL() {
+      const entry = parseFloat(document.getElementById('plEntry').value) || 0;
+      const exit = parseFloat(document.getElementById('plExit').value) || 0;
+      const qty = parseFloat(document.getElementById('plQuantity').value) || 0;
+      const direction = document.getElementById('plDirection').value;
+
+      if (entry <= 0 || exit <= 0 || qty <= 0) {
+        return;
+      }
+
+      let priceChange;
+      if (direction === 'long') {
+        priceChange = exit - entry;
+      } else {
+        priceChange = entry - exit;
+      }
+
+      const pnl = priceChange * qty;
       const changePercent = (priceChange / entry) * 100;
       const investment = entry * qty;
       const roi = (pnl / investment) * 100;
 
-      const changeEl = document.getElementById('plChange');
-      changeEl.textContent = '$' + priceChange.toFixed(2) + ' (' + changePercent.toFixed(2) + '%)';
-      changeEl.className = 'result-value ' + (priceChange >= 0 ? 'green' : 'red');
-
-      document.getElementById('plInvestment').textContent = '$' + investment.toFixed(2);
+      // Update text
+      document.getElementById('plChangeSpan').textContent = '$' + priceChange.toFixed(2) + ' (' + (changePercent >= 0 ? '+' : '') + changePercent.toFixed(1) + '%)';
+      document.getElementById('plInvestmentSpan').textContent = '$' + investment.toFixed(2);
       
-      const pnlEl = document.getElementById('plPnL');
-      pnlEl.textContent = (pnl >= 0 ? '+$' : '-$') + Math.abs(pnl).toFixed(2);
-      pnlEl.className = 'result-value ' + (pnl >= 0 ? 'green' : 'red');
+      const pnlSpan = document.getElementById('plPnLSpan');
+      pnlSpan.textContent = (pnl >= 0 ? '+$' : '-$') + Math.abs(pnl).toFixed(2);
+      
+      const roiSpan = document.getElementById('plROISpan');
+      roiSpan.textContent = (roi >= 0 ? '+' : '') + roi.toFixed(1) + '%';
 
-      const roiEl = document.getElementById('plROI');
-      roiEl.textContent = (roi >= 0 ? '+' : '') + roi.toFixed(2) + '%';
-      roiEl.className = 'result-value ' + (roi >= 0 ? 'green' : 'red');
+      // Colors
+      const badge = document.getElementById('plStatusBadge');
+      badge.className = "verdict-badge";
+      if (pnl >= 0) {
+        badge.classList.add('badge-green');
+        badge.textContent = "Profit Setup";
+        pnlSpan.style.color = "var(--accent-green)";
+        roiSpan.style.color = "var(--accent-green)";
+      } else {
+        badge.classList.add('badge-red');
+        badge.textContent = "Loss Setup";
+        pnlSpan.style.color = "var(--accent-red)";
+        roiSpan.style.color = "var(--accent-red)";
+      }
 
-      document.getElementById('plResult').style.display = 'block';
+      document.getElementById('plResultCard').style.display = 'block';
     }
 
-    // Expectancy Calculator
+    // 4. Expectancy
     function calculateExpectancy() {
-      const winRate = parseFloat(document.getElementById('winRate').value) / 100;
-      const avgWin = parseFloat(document.getElementById('avgWin').value);
-      const avgLoss = parseFloat(document.getElementById('avgLoss').value);
+      const winRate = parseFloat(document.getElementById('winRate').value) / 100 || 0;
+      const avgWin = parseFloat(document.getElementById('avgWin').value) || 0;
+      const avgLoss = parseFloat(document.getElementById('avgLoss').value) || 0;
+
+      if (winRate <= 0 || avgWin <= 0 || avgLoss <= 0) {
+        return;
+      }
 
       const lossRate = 1 - winRate;
       const expectancy = (winRate * avgWin) - (lossRate * avgLoss);
@@ -681,18 +1444,39 @@
       const rr = avgWin / avgLoss;
       const breakevenWR = (1 / (1 + rr)) * 100;
 
-      document.getElementById('expRR').textContent = '1 : ' + rr.toFixed(2);
+      // Update text
+      document.getElementById('expRRSpan').textContent = '1 : ' + rr.toFixed(2);
       
-      const expEl = document.getElementById('expValue');
-      expEl.textContent = (expectancy >= 0 ? '+$' : '-$') + Math.abs(expectancy).toFixed(2);
-      expEl.className = 'result-value ' + (expectancy >= 0 ? 'green' : 'red');
+      const expSpan = document.getElementById('expValueSpan');
+      expSpan.textContent = (expectancy >= 0 ? '+$' : '-$') + Math.abs(expectancy).toFixed(2);
+      
+      const exp100Span = document.getElementById('exp100Span');
+      exp100Span.textContent = (after100 >= 0 ? '+$' : '-$') + Math.abs(after100).toFixed(2);
+      
+      document.getElementById('expBreakevenSpan').textContent = breakevenWR.toFixed(1) + '%';
 
-      const exp100El = document.getElementById('exp100');
-      exp100El.textContent = (after100 >= 0 ? '+$' : '-$') + Math.abs(after100).toFixed(2);
-      exp100El.className = 'result-value ' + (after100 >= 0 ? 'green' : 'red');
+      // Colors & Verdict
+      const badge = document.getElementById('expQualityBadge');
+      const rec = document.getElementById('expRecommendation');
+      
+      badge.className = "verdict-badge";
+      if (expectancy > 0) {
+        badge.classList.add('badge-green');
+        badge.textContent = "System Bullish Edge";
+        expSpan.style.color = "var(--accent-green)";
+        exp100Span.style.color = "var(--accent-green)";
+        rec.innerHTML = "✅ <strong>Positive Expectancy:</strong> System is mathematically profitable over time. Scale and stick to rules.";
+        rec.style.borderLeftColor = "var(--accent-green)";
+      } else {
+        badge.classList.add('badge-red');
+        badge.textContent = "Negative Edge (Losses)";
+        expSpan.style.color = "var(--accent-red)";
+        exp100Span.style.color = "var(--accent-red)";
+        rec.innerHTML = "⚠️ <strong>Negative Expectancy:</strong> System holds a long-term mathematical loss. You must increase average win sizes or stop loss efficiency.";
+        rec.style.borderLeftColor = "var(--accent-red)";
+      }
 
-      document.getElementById('breakevenWR').textContent = breakevenWR.toFixed(1) + '%';
-      document.getElementById('expectancyResult').style.display = 'block';
+      document.getElementById('expectancyResultCard').style.display = 'block';
     }
   </script>
 
