@@ -628,22 +628,6 @@ function updateMarketStatus() {
     else nyDot.className = "weather-dot red-dot";
   }
 
-  // Live Sync Simulation
-  lastUpdateSeconds++;
-  if (lastUpdateSeconds > 5) {
-    lastUpdateSeconds = 0;
-    const syncEl = document.getElementById("syncText");
-    if (syncEl) {
-      syncEl.textContent = "Data synced";
-      syncEl.style.color = "#00ff9c";
-      setTimeout(() => {
-        if (syncEl) {
-          syncEl.textContent = "Receiving live data";
-          syncEl.style.color = "";
-        }
-      }, 1000);
-    }
-  }
 }
 
 // Run immediately + every second for live clock
