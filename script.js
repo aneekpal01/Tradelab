@@ -377,7 +377,7 @@ window.addEventListener("load", updateMilestones);
 function initStreak() {
   const badge  = document.getElementById("streakBadge");
   const countEl = document.getElementById("streakCount");
-  if (!badge || !countEl) return;
+  const profileStreak = document.getElementById("profileStreak");
 
   const today     = new Date().toDateString();
   const lastVisit = localStorage.getItem("tl_last_visit");
@@ -403,14 +403,21 @@ function initStreak() {
   }
 
   // Show badge only if streak >= 1
-  if (streak >= 1) {
-    countEl.textContent = `Day ${streak}`;
-    badge.classList.remove("hidden");
-    // Hot glow if 7+ day streak
-    if (streak >= 7) badge.classList.add("hot");
-    else badge.classList.remove("hot");
-  } else {
-    badge.classList.add("hidden");
+  if (badge && countEl) {
+    if (streak >= 1) {
+      countEl.textContent = `Day ${streak}`;
+      badge.classList.remove("hidden");
+      // Hot glow if 7+ day streak
+      if (streak >= 7) badge.classList.add("hot");
+      else badge.classList.remove("hot");
+    } else {
+      badge.classList.add("hidden");
+    }
+  }
+
+  if (profileStreak) {
+    profileStreak.textContent = `🔥 Day ${streak}`;
+    if (streak >= 7) profileStreak.classList.add("hot");
   }
 }
 
