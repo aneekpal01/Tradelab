@@ -383,21 +383,25 @@ document.addEventListener('DOMContentLoaded', () => {
   conceptCards.forEach(card => conceptObserver.observe(card));
 });
 
-
-
-
+// MARKET STATUS BAR — IST TIME + NSE HOURS + terminal info
 // =============================================
-// MARKET STATUS BAR — IST TIME + NSE HOURS
-// =============================================
+let lastUpdateSeconds = 0;
+
+function openAlertsDrawer() {
+  const panel = document.getElementById("alertsPanel");
+  if (panel) panel.classList.add("show");
+}
+
+function closeAlertsDrawer() {
+  const panel = document.getElementById("alertsPanel");
+  if (panel) panel.classList.remove("show");
+}
 
 function updateMarketStatus() {
   const dot      = document.getElementById("marketDot");
   const label    = document.getElementById("marketLabel");
   const session  = document.getElementById("marketSession");
   const timeEl   = document.getElementById("marketTime");
-  const niftyTag = document.getElementById("niftyTag");
-  const forexTag = document.getElementById("forexTag");
-  const cryptoTag = document.getElementById("cryptoTag");
 
   if (!dot || !label || !timeEl) return;
 
@@ -411,11 +415,12 @@ function updateMarketStatus() {
   const totalMins = h * 60 + m;
   const day = ist.getDay(); // 0=Sun, 6=Sat
 
-  // Format time
+  // Format time with blinking colon
   const hh = String(h).padStart(2, '0');
   const mm = String(m).padStart(2, '0');
   const ss = String(ist.getSeconds()).padStart(2, '0');
-  timeEl.textContent = `${hh}:${mm}:${ss}`;
+  const col = '<span class="clock-colon-blink">:</span>';
+  timeEl.innerHTML = `${hh}${col}${mm}${col}${ss}`;
 
   const isWeekend = (day === 0 || day === 6);
 
@@ -432,77 +437,109 @@ function updateMarketStatus() {
     else if (totalMins >= MARKET_CLOSE && totalMins < POST_CLOSE) nseStatus = "post";
   }
 
-  // ── Forex Hours (IST) ──
-  // Forex: Mon 6:30 AM IST → Sat 4:30 AM IST (24/5)
-  // Closed: Sat 4:30 AM → Mon 6:30 AM IST
-  // Sessions in IST:
-  //   Sydney:  5:30 AM – 2:30 PM
-  //   Tokyo:   6:30 AM – 3:30 PM
-  //   London:  1:30 PM – 10:30 PM  ← best liquidity
-  //   NY:      6:30 PM – 1:30 AM
-  let forexStatus = "closed";
-  let forexSession = "";
-  if (!(day === 6 && totalMins >= 4*60+30) && !(day === 0) && !(day === 1 && totalMins < 6*60+30)) {
-    forexStatus = "open";
-    // Show current active session
-    if (totalMins >= 5*60+30 && totalMins < 6*60+30)       forexSession = "Sydney";
-    else if (totalMins >= 6*60+30 && totalMins < 13*60+30)  forexSession = "Tokyo";
-    else if (totalMins >= 13*60+30 && totalMins < 18*60+30) forexSession = "London ⚡";
-    else if (totalMins >= 18*60+30 && totalMins < 22*60)    forexSession = "NY+London";
-    else if (totalMins >= 22*60 || totalMins < 1*60+30)     forexSession = "New York";
-    else forexSession = "Open";
+  // Calculate live countdown text
+  let countdownText = "";
+  if (isWeekend) {
+    countdownText = "Opens Monday 9:15 AM";
+  } else {
+    if (totalMins < PRE_OPEN_START) {
+      const diffMins = PRE_OPEN_START - totalMins;
+      const hrs = Math.floor(diffMins / 60);
+      const mins = diffMins % 60;
+      countdownText = `Opens in ${hrs}h ${mins}m`;
+    } else if (totalMins >= PRE_OPEN_START && totalMins < MARKET_OPEN) {
+      const diffMins = MARKET_OPEN - totalMins;
+      countdownText = `Trading opens in ${diffMins}m`;
+    } else if (totalMins >= MARKET_OPEN && totalMins < MARKET_CLOSE) {
+      const diffMins = MARKET_CLOSE - totalMins;
+      const hrs = Math.floor(diffMins / 60);
+      const mins = diffMins % 60;
+      countdownText = `Closes in ${hrs}h ${mins}m`;
+    } else {
+      let diffMins = (24 * 60 - totalMins) + PRE_OPEN_START;
+      const hrs = Math.floor(diffMins / 60);
+      const mins = diffMins % 60;
+      countdownText = `Opens Tomorrow 9:00 AM`;
+    }
   }
 
-  // ── NSE tag update ──
-  dot.className = "market-dot";
-  label.className = "market-label";
-  niftyTag.className = "market-session-tag";
+  // Update Left side
+  dot.className = "status-indicator-dot";
+  label.className = "status-main-label";
 
   if (nseStatus === "open") {
     dot.classList.add("open");
     label.classList.add("open");
     label.textContent = "NSE OPEN";
-    session.textContent = "· Live Trading";
-    niftyTag.classList.add("open");
-    niftyTag.textContent = "LIVE";
+    session.textContent = "Live Trading";
+    
+    // Update NSE weather dot
+    const nseDot = document.getElementById("nseDot");
+    if (nseDot) { nseDot.className = "weather-dot green-dot"; }
   } else if (nseStatus === "pre") {
     dot.classList.add("pre");
     label.classList.add("pre");
     label.textContent = "PRE-OPEN";
-    session.textContent = "· 9:00–9:15 AM";
-    niftyTag.classList.add("pre");
-    niftyTag.textContent = "PRE";
-  } else if (nseStatus === "post") {
-    dot.classList.add("pre");
-    label.classList.add("pre");
-    label.textContent = "POST-MARKET";
-    session.textContent = "· Closing session";
-    niftyTag.classList.add("pre");
-    niftyTag.textContent = "POST";
+    session.textContent = countdownText;
+    
+    const nseDot = document.getElementById("nseDot");
+    if (nseDot) { nseDot.className = "weather-dot yellow-dot"; }
   } else {
     dot.classList.add("closed");
     label.classList.add("closed");
-    label.textContent = isWeekend ? "MARKET CLOSED" : "NSE CLOSED";
-    session.textContent = isWeekend ? "· Weekend" : "· Opens 9:15 AM";
-    niftyTag.classList.add("closed");
-    niftyTag.textContent = "CLOSED";
+    label.textContent = "NSE CLOSED";
+    session.textContent = countdownText;
+    
+    const nseDot = document.getElementById("nseDot");
+    if (nseDot) { nseDot.className = "weather-dot red-dot"; }
   }
 
-  // ── Crypto tag (always 24/7) ──
-  if (cryptoTag) {
-    cryptoTag.className = "market-session-tag open";
-    cryptoTag.textContent = "24/7";
+  // ── Forex Hours (IST) ──
+  let forexStatus = "closed";
+  let forexSession = "Closed";
+  if (!(day === 6 && totalMins >= 4*60+30) && !(day === 0) && !(day === 1 && totalMins < 6*60+30)) {
+    forexStatus = "open";
+    if (totalMins >= 5*60+30 && totalMins < 6*60+30)       forexSession = "Sydney";
+    else if (totalMins >= 6*60+30 && totalMins < 13*60+30)  forexSession = "Tokyo";
+    else if (totalMins >= 13*60+30 && totalMins < 18*60+30) forexSession = "London";
+    else if (totalMins >= 18*60+30 && totalMins < 22*60)    forexSession = "London+NY";
+    else if (totalMins >= 22*60 || totalMins < 1*60+30)     forexSession = "New York";
+    else forexSession = "Active";
   }
 
-  // ── Forex tag update ──
-  if (forexTag) {
-    forexTag.className = "market-session-tag";
+  const forexDot = document.getElementById("forexDot");
+  const forexName = document.getElementById("forexName");
+  const forexTooltipText = document.getElementById("forexTooltipText");
+  if (forexDot && forexName) {
     if (forexStatus === "open") {
-      forexTag.classList.add("open");
-      forexTag.textContent = forexSession || "OPEN";
+      forexDot.className = "weather-dot green-dot";
+      forexName.textContent = `Forex (${forexSession})`;
+      if (forexTooltipText) {
+        forexTooltipText.innerHTML = `Forex Session Live<br>Active: ${forexSession}<br>Volatility: Medium-High`;
+      }
     } else {
-      forexTag.classList.add("closed");
-      forexTag.textContent = "CLOSED";
+      forexDot.className = "weather-dot red-dot";
+      forexName.textContent = "Forex (Closed)";
+      if (forexTooltipText) {
+        forexTooltipText.innerHTML = `Forex Session Closed<br>Opens: Mon 5:30 AM IST`;
+      }
+    }
+  }
+
+  // Live Sync Simulation
+  lastUpdateSeconds++;
+  if (lastUpdateSeconds > 5) {
+    lastUpdateSeconds = 0;
+    const syncEl = document.getElementById("syncText");
+    if (syncEl) {
+      syncEl.textContent = "Data synced";
+      syncEl.style.color = "#00ff9c";
+      setTimeout(() => {
+        if (syncEl) {
+          syncEl.textContent = "Receiving live data";
+          syncEl.style.color = "";
+        }
+      }, 1000);
     }
   }
 }
