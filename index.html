@@ -174,9 +174,9 @@
       <h4 class="menu-section-title">TOOLS</h4>
       <ul class="menu-list">
         <li>
-          <button onclick="toggleChat(); closeMobileMenuAfterNav();" class="menu-item" id="menuAIMentor" title="AI Mentor">
+          <button onclick="toggleChat(); closeMobileMenuAfterNav();" class="menu-item" id="menuAIMentor" title="Trading Mentor">
             <svg class="menu-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
-            <span class="menu-text">AI Mentor</span>
+            <span class="menu-text">Trading Mentor</span>
           </button>
         </li>
         <li>
@@ -1275,7 +1275,7 @@
           </div>
           <div class="testimonial-stars">★★★★★</div>
         </div>
-        <p class="testimonial-text">"AI Mentor feature is insane — 3 AM ko bhi trading psychology questions ke jawab mil jaate hain. Aur sab kuch free hai, yeh believe hi nahi hota."</p>
+        <p class="testimonial-text">"Trading Mentor feature is insane — 3 AM ko bhi trading psychology questions ke jawab mil jaate hain. Aur sab kuch free hai, yeh believe hi nahi hota."</p>
         <div class="testimonial-learned">
           <span class="learned-label">Learned:</span>
           <span class="learned-tag">Psychology</span>
@@ -1455,8 +1455,8 @@
   <!-- Mobile Bottom Tab Bar -->
   <nav class="mobile-tab-bar" id="mobileTabBar">
     <a href="#" class="tab-item tab-ai" onclick="toggleChat(); return false;">
-      <span class="tab-icon">🤖</span>
-      <span class="tab-label">AI Mentor</span>
+      <span class="tab-icon">💬</span>
+      <span class="tab-label">Trading Mentor</span>
     </a>
     <a href="#learn" class="tab-item" id="tabLearn">
       <span class="tab-icon">📚</span>
@@ -1501,7 +1501,7 @@
         if(loginItem) loginItem.style.display = 'none';
         if(logoutItem) logoutItem.style.display = 'block';
         if(profileItem) profileItem.style.display = 'block';
-        window.__emailUsername = user.email.split('@')[0];
+        window.__emailUsername = user.email ? user.email.split('@')[0] : 'Trader';
         updateUserNameDisplay();
       } else {
         window.location.href = "login.html";
@@ -1509,7 +1509,12 @@
     });
 
     function logoutUser() {
-      auth.signOut();
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      }).catch((error) => {
+        console.error("Logout error:", error);
+        window.location.href = "login.html";
+      });
     }
 
     // ---- Display name (set via the 👤 icon, saved locally) ----
@@ -2366,64 +2371,43 @@
   <div class="chat-header" id="aiChatHeader">
 
   <div class="header-left">
-    <span class="brain">🧠</span>
+    <span class="brain">🎓</span>
     <div>
       <span class="title">TradeLab Mentor</span>
-      <span class="subtitle">Powered by AI</span>
+      <span class="subtitle">Learning Assistant</span>
     </div>
   </div>
 
   <div class="header-right">
-    <div class="ai-mode-mini">
-<button id="ai-beginner" class="active"
-  onclick="setAIMode('Beginner')">
-  Beginner
-</button>
-
-<button id="ai-pro"
-  onclick="setAIMode('Pro')">
-  Pro
-</button>
-
-
-</div>
-
-
     <button onclick="toggleChat()" class="close-btn">✖</button>
   </div>
 
 </div>
  
-  
-
-  
 <div class="chat-box" id="chat-box">
-  <div class="bot-message">
-    <strong>Hello! </strong><br>
-    I am TradeLab's AI Assistant.<br><br>
-    You can ask me anything about <b>Trading Psychology</b>, <b>Strategies</b>, or <b>Risk Management</b>.
-  </div>
+  <!-- Dynamic welcome message and Course Assistant Helper card will be inserted here dynamically -->
   <div id="typing-indicator" style="display:none;">
     <span class="typing-text">TradeLab Mentor is typing</span>
     <span class="dots">
       <span>.</span><span>.</span><span>.</span>
     </span>
   </div>
-
 </div>
 
-  
+<div class="quick-actions" style="display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 15px; background: rgba(0,0,0,0.15); border-top: 1px solid rgba(255,255,255,0.03);">
+    <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is BOS?')">BOS</button>
+    <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is CHoCH?')">CHoCH</button>
+    <button class="chat-helper-action-btn" onclick="sendQuickMsg('How much risk per trade?')">Risk</button>
+    <button class="chat-helper-action-btn" onclick="sendQuickMsg('How to draw trendlines?')">Trendline</button>
+    <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain Candlesticks')">Candlestick</button>
+    <button class="chat-helper-action-btn" onclick="sendQuickMsg('How to control emotions?')">Psychology</button>
+    <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain RSI Divergence')">RSI</button>
+</div>
 
-    <div class="quick-actions">
-        <button onclick="sendQuickMsg('Best Intraday Strategy?')">📈 Strategy</button>
-        <button onclick="sendQuickMsg('How to control emotions?')">🧠 Psychology</button>
-        <button onclick="sendQuickMsg('Explain RSI Divergence')">📉 RSI</button>
-    </div>
-
-    <div class="chat-input-area">
-        <input type="text" id="user-input" placeholder="Type your question..." onkeypress="handleEnter(event)">
-        <button onclick="sendMessage()">➤</button>
-    </div>
+<div class="chat-input-area">
+    <input type="text" id="user-input" placeholder="Type your question..." onkeypress="handleEnter(event)">
+    <button onclick="sendMessage()">➤</button>
+</div>
 </div>
   <script src="script.js"></script>
   <script>
