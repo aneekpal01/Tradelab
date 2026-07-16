@@ -4925,6 +4925,971 @@ body.loading #backToTop {
 =============================================== */
 
 .market-status-bar {
+  background: linear-gradient(90deg, #050d1a 0%, #071525 50%, #050d1a 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 6px 20px;
+  font-size: 11.5px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  position: relative;
+  z-index: 998;
+}
+
+.market-status-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Groups styling */
+.market-status-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.market-status-group.left {
+  flex: 1.2;
+  justify-content: flex-start;
+}
+
+.market-status-group.center {
+  flex: 0.8;
+  justify-content: center;
+  font-weight: 600;
+  gap: 6px;
+  color: #eaeaea;
+}
+
+.market-status-group.right {
+  flex: 2;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+/* LEFT SIDE DETAILS */
+.status-indicator-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px currentColor;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.status-indicator-dot.open { color: #00ff9c; background-color: #00ff9c; }
+.status-indicator-dot.pre { color: #ffb700; background-color: #ffb700; }
+.status-indicator-dot.closed { color: #ff6b6b; background-color: #ff6b6b; }
+.status-indicator-dot.weekend { color: #94a3b8; background-color: #94a3b8; }
+
+.status-text-block {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  text-align: left;
+}
+.status-main-label {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+.status-main-label.open { color: #00ff9c; }
+.status-main-label.pre { color: #ffb700; }
+.status-main-label.closed { color: #ff6b6b; }
+.status-main-label.weekend { color: #94a3b8; }
+
+.status-sub-label {
+  font-size: 10px;
+  color: #8892b0;
+}
+
+/* CENTER SIDE DETAILS (INDIAN CLOCK) */
+.flag-icon {
+  font-size: 12px;
+  margin-left: 2px;
+}
+.clock-icon {
+  font-size: 13px;
+  animation: clockRotate 60s infinite linear;
+}
+@keyframes clockRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.clock-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  color: #8892b0;
+  letter-spacing: 0.5px;
+}
+.clock-time {
+  font-family: monospace;
+  font-size: 12.5px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+.clock-colon-blink {
+  animation: colonBlink 1s infinite step-end;
+}
+@keyframes colonBlink {
+  50% { opacity: 0; }
+}
+
+/* Clock selector dropdown card */
+.clock-dropdown {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  background: rgba(10, 15, 25, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 6px 0;
+  width: 140px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 10000;
+  text-align: left;
+}
+.clock-dropdown.show {
+  display: block;
+}
+.clock-dropdown-item {
+  padding: 8px 12px;
+  color: #8892b0;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.clock-dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+.check-mark {
+  width: 12px;
+  color: #00ff9c;
+  font-weight: bold;
+}
+
+/* RIGHT SIDE DETAILS (WEATHER SESSIONS & PULSE) */
+.market-pulse-block {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #8892b0;
+  font-size: 11px;
+}
+.pulse-value {
+  font-weight: 600;
+}
+.pulse-value.text-green { color: #00ff9c; }
+.pulse-value.text-blue { color: #00d4ff; }
+.pulse-divider {
+  color: rgba(255,255,255,0.08);
+  margin: 0 4px;
+}
+
+.weather-sessions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.weather-session-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  position: relative;
+}
+.weather-dot {
+  font-size: 8px;
+}
+.weather-dot.green-dot { color: #00ff9c; }
+.weather-dot.yellow-dot { color: #ffb700; }
+.weather-dot.red-dot { color: #ff6b6b; }
+.weather-dot.white-dot { color: #94a3b8; }
+.weather-name {
+  font-weight: 600;
+  color: #8892b0;
+}
+.weather-session-item:hover .weather-name {
+  color: #ffffff;
+}
+
+.status-divider-bar {
+  color: rgba(255,255,255,0.08);
+}
+
+.interactive-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.news-indicator, .alert-indicator {
+  cursor: pointer;
+  color: #8892b0;
+  font-weight: 600;
+  font-size: 11px;
+  transition: color 0.2s ease;
+}
+.news-indicator:hover, .alert-indicator:hover {
+  color: #00d4ff;
+}
+
+.data-sync-block {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #8892b0;
+  font-size: 10px;
+}
+.sync-dot {
+  color: #00d4ff;
+  font-size: 8px;
+}
+
+/* PREMIUM TOOLTIP STYLING */
+.tooltip-trigger {
+  position: relative;
+}
+.tooltip-text {
+  visibility: hidden;
+  width: 190px;
+  background-color: #050b14;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #eaeaea;
+  text-align: left;
+  border-radius: 8px;
+  padding: 10px 12px;
+  position: absolute;
+  z-index: 10000;
+  bottom: 140%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  font-size: 11px;
+  line-height: 1.45;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+.tooltip-trigger:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* Slide-out alerts panel */
+.alerts-panel {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100vh;
+  background: rgba(10, 15, 25, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.alerts-panel.show {
+  right: 0;
+}
+.alerts-panel-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.close-panel-btn {
+  background: none;
+  border: none;
+  color: #8892b0;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+}
+.close-panel-btn:hover {
+  color: #ffffff;
+}
+.alerts-panel-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+[data-theme="light"] .market-status-bar {
+  background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .clock-time {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .clock-dropdown {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+}
+[data-theme="light"] .clock-dropdown-item {
+  color: #475569 !important;
+}
+[data-theme="light"] .clock-dropdown-item:hover {
+  background: rgba(0, 0, 0, 0.03) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .alerts-panel {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15) !important;
+}
+[data-theme="light"] .alerts-panel-header h3 {
+  color: #0f172a !important;
+}
+[data-theme="light"] .alert-desc, [data-theme="light"] .news-headline {
+  color: #334155 !important;
+}
+[data-theme="light"] .alert-item, [data-theme="light"] .news-item {
+  background: #ffffff !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+}
+
+/* MOBILE RESPONSIVE ADAPTATIONS */
+@media (max-width: 768px) {
+  .market-status-group.right {
+    display: none !important;
+  }
+  .market-status-group.center .clock-icon,
+  .market-status-group.center .flag-icon,
+  .market-status-group.center .clock-label {
+    display: none !important;
+  }
+  .market-status-inner {
+    justify-content: space-between !important;
+  }
+  .status-sub-label {
+    display: none !important;
+  }
+  .status-main-label {
+    font-size: 11px !important;
+  }
+  .status-main-label::after {
+    content: " • " attr(data-countdown);
+  }
+}
+
+/* =============================================
+   EASY WIN 2: STEP BADGE COLORS — PROFIT/LOSS
+   COLOR SYSTEM (green=begin, red=danger, etc.)
+=============================================== */
+
+/* Base badge reset — consistent sizing */
+.step-badge,
+.step-three-badge {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+}
+
+/* STEP 1 — Entry Signal Green */
+.step-one .step-badge {
+  background: linear-gradient(90deg, #00ff9c, #00e187) !important;
+  color: #002b1a !important;
+  box-shadow: 0 2px 8px rgba(0, 255, 156, 0.35) !important;
+}
+
+/* STEP 2, 2A, 2B — Learning Blue */
+.step-two .step-badge {
+  background: linear-gradient(90deg, #00d4ff, #00b8e0) !important;
+  color: #002a36 !important;
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.35) !important;
+}
+
+/* STEP 3, 3A, 3B — Support/Resistance Teal */
+.step-three .step-badge,
+.step-three-badge {
+  background: linear-gradient(90deg, #00ffa5, #00d98c) !important;
+  color: #002b1a !important;
+  box-shadow: 0 2px 8px rgba(0, 255, 165, 0.35) !important;
+}
+
+/* STEP 4 — Risk Management Amber */
+.step-four .step-badge {
+  background: linear-gradient(90deg, #ffb700, #e0a000) !important;
+  color: #2b1f00 !important;
+  box-shadow: 0 2px 8px rgba(255, 183, 0, 0.35) !important;
+}
+
+/* STEP 5 — Psychology Purple */
+.step-five .step-badge {
+  background: linear-gradient(90deg, #b060ff, #9c00ff) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(156, 0, 255, 0.35) !important;
+}
+
+/* STEP 5A, 5A1, 5A2 — Liquidity Cyan */
+.step-five-a .step-badge,
+.step-five-a1 .step-badge,
+.step-five-a2 .step-badge {
+  background: linear-gradient(90deg, #00e5ff, #00c5de) !important;
+  color: #002a36 !important;
+  box-shadow: 0 2px 8px rgba(0, 229, 255, 0.35) !important;
+}
+
+/* STEP 5B1, 5B2 — SMC Magenta */
+.step-five-b1 .step-badge,
+.step-five-b2 .step-badge {
+  background: linear-gradient(90deg, #ff40ff, #d400d4) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 0, 255, 0.35) !important;
+}
+
+/* STEP 6, 6A — Indicator Orange */
+.step-six .step-badge {
+  background: linear-gradient(90deg, #ff6b35, #e85520) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.35) !important;
+}
+
+/* STEP 7A, 7B, 7C, 7D — Profit/Exit Gold */
+.step-seven-a .step-badge,
+.step-seven-b .step-badge,
+.step-seven-c .step-badge,
+.step-seven-d .step-badge {
+  background: linear-gradient(90deg, #ffd700, #f0c000) !important;
+  color: #2b2000 !important;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.35) !important;
+}
+
+/* STEP 8, 8A, 8B — Multi-TF Teal-Green */
+.step-eight .step-badge,
+.step-eight-a .step-badge,
+.step-eight-b .step-badge {
+  background: linear-gradient(90deg, #00e5b0, #00bf96) !important;
+  color: #002b22 !important;
+  box-shadow: 0 2px 8px rgba(0, 229, 176, 0.35) !important;
+}
+
+/* STEP 9 — Backtesting Red (danger/testing) */
+.step-nine .step-badge {
+  background: linear-gradient(90deg, #ff3b3b, #e02020) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 59, 59, 0.35) !important;
+}
+
+/* STEP 10 — Strategy Build Fire Orange */
+.step-ten .step-badge {
+  background: linear-gradient(90deg, #ff8c00, #ff6b00) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 140, 0, 0.35) !important;
+}
+
+/* ADVANCED badge on separator */
+.advanced-separator-content {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  letter-spacing: 3px !important;
+}
+
+
+/* =============================================
+   EASY WIN 3: HERO HEADING — BARLOW CONDENSED
+   Premium financial/trading terminal font feel
+=============================================== */
+
+.hero h1 {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 64px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
+  line-height: 1.1 !important;
+  text-transform: uppercase !important;
+}
+
+/* Light mode heading stays dark gradient */
+[data-theme="light"] .hero h1 {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 64px !important;
+}
+
+/* Mobile size fix */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 40px !important;
+  }
+}
+
+/* Stat numbers also get Barlow for terminal feel */
+.stat-number {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 48px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+}
+
+
+/* =============================================
+   MEDIUM WIN 1: MARKET STATUS BAR
+=============================================== */
+
+.market-status-bar {
+  background: linear-gradient(90deg, #050d1a 0%, #071525 50%, #050d1a 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 6px 20px;
+  font-size: 11.5px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  position: relative;
+  z-index: 998;
+}
+
+.market-status-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Groups styling */
+.market-status-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.market-status-group.left {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.market-status-group.center {
+  flex: 1;
+  justify-content: center;
+  font-weight: 600;
+  gap: 6px;
+  color: #eaeaea;
+}
+
+.market-status-group.right {
+  flex: 2;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+/* LEFT SIDE DETAILS */
+.status-indicator-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px currentColor;
+}
+.status-indicator-dot.open { color: #00ff9c; background-color: #00ff9c; }
+.status-indicator-dot.pre { color: #ffb700; background-color: #ffb700; }
+.status-indicator-dot.closed { color: #ff6b6b; background-color: #ff6b6b; }
+
+.status-text-block {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  text-align: left;
+}
+.status-main-label {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+.status-main-label.open { color: #00ff9c; }
+.status-main-label.pre { color: #ffb700; }
+.status-main-label.closed { color: #ff6b6b; }
+
+.status-sub-label {
+  font-size: 10px;
+  color: #8892b0;
+}
+
+/* CENTER SIDE DETAILS (INDIAN CLOCK) */
+.flag-icon {
+  font-size: 12px;
+  margin-left: 2px;
+}
+.clock-icon {
+  font-size: 13px;
+  animation: clockRotate 60s infinite linear;
+}
+@keyframes clockRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.clock-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  color: #8892b0;
+  letter-spacing: 0.5px;
+}
+.clock-time {
+  font-family: monospace;
+  font-size: 12.5px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+.clock-colon-blink {
+  animation: colonBlink 1s infinite step-end;
+}
+@keyframes colonBlink {
+  50% { opacity: 0; }
+}
+
+/* RIGHT SIDE DETAILS (WEATHER SESSIONS & PULSE) */
+.market-pulse-block {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #8892b0;
+  font-size: 11px;
+}
+.pulse-value {
+  font-weight: 600;
+}
+.pulse-value.text-green { color: #00ff9c; }
+.pulse-value.text-blue { color: #00d4ff; }
+.pulse-divider {
+  color: rgba(255,255,255,0.08);
+  margin: 0 4px;
+}
+
+.weather-sessions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.weather-session-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  position: relative;
+}
+.weather-dot {
+  font-size: 8px;
+}
+.weather-dot.green-dot { color: #00ff9c; }
+.weather-dot.yellow-dot { color: #ffb700; }
+.weather-dot.red-dot { color: #ff6b6b; }
+.weather-name {
+  font-weight: 600;
+  color: #8892b0;
+}
+.weather-session-item:hover .weather-name {
+  color: #ffffff;
+}
+
+.status-divider-bar {
+  color: rgba(255,255,255,0.08);
+}
+
+.interactive-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.news-indicator, .alert-indicator {
+  cursor: pointer;
+  color: #8892b0;
+  font-weight: 600;
+  font-size: 11px;
+  transition: color 0.2s ease;
+}
+.news-indicator:hover, .alert-indicator:hover {
+  color: #00d4ff;
+}
+
+.data-sync-block {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #8892b0;
+  font-size: 10px;
+}
+.sync-dot {
+  color: #00d4ff;
+  font-size: 8px;
+}
+
+/* PREMIUM TOOLTIP STYLING */
+.tooltip-trigger {
+  position: relative;
+}
+.tooltip-text {
+  visibility: hidden;
+  width: 190px;
+  background-color: #050b14;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #eaeaea;
+  text-align: left;
+  border-radius: 8px;
+  padding: 10px 12px;
+  position: absolute;
+  z-index: 10000;
+  bottom: 140%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  font-size: 11px;
+  line-height: 1.45;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+.tooltip-trigger:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* Slide-out alerts panel */
+.alerts-panel {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100vh;
+  background: rgba(10, 15, 25, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.alerts-panel.show {
+  right: 0;
+}
+.alerts-panel-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.close-panel-btn {
+  background: none;
+  border: none;
+  color: #8892b0;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+}
+.close-panel-btn:hover {
+  color: #ffffff;
+}
+.alerts-panel-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+[data-theme="light"] .market-status-bar {
+  background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .clock-time {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .alerts-panel {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15) !important;
+}
+[data-theme="light"] .alerts-panel-header h3 {
+  color: #0f172a !important;
+}
+[data-theme="light"] .alert-desc, [data-theme="light"] .news-headline {
+  color: #334155 !important;
+}
+[data-theme="light"] .alert-item, [data-theme="light"] .news-item {
+  background: #ffffff !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+}
+
+/* =============================================
+   EASY WIN 2: STEP BADGE COLORS — PROFIT/LOSS
+   COLOR SYSTEM (green=begin, red=danger, etc.)
+=============================================== */
+
+/* Base badge reset — consistent sizing */
+.step-badge,
+.step-three-badge {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+}
+
+/* STEP 1 — Entry Signal Green */
+.step-one .step-badge {
+  background: linear-gradient(90deg, #00ff9c, #00e187) !important;
+  color: #002b1a !important;
+  box-shadow: 0 2px 8px rgba(0, 255, 156, 0.35) !important;
+}
+
+/* STEP 2, 2A, 2B — Learning Blue */
+.step-two .step-badge {
+  background: linear-gradient(90deg, #00d4ff, #00b8e0) !important;
+  color: #002a36 !important;
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.35) !important;
+}
+
+/* STEP 3, 3A, 3B — Support/Resistance Teal */
+.step-three .step-badge,
+.step-three-badge {
+  background: linear-gradient(90deg, #00ffa5, #00d98c) !important;
+  color: #002b1a !important;
+  box-shadow: 0 2px 8px rgba(0, 255, 165, 0.35) !important;
+}
+
+/* STEP 4 — Risk Management Amber */
+.step-four .step-badge {
+  background: linear-gradient(90deg, #ffb700, #e0a000) !important;
+  color: #2b1f00 !important;
+  box-shadow: 0 2px 8px rgba(255, 183, 0, 0.35) !important;
+}
+
+/* STEP 5 — Psychology Purple */
+.step-five .step-badge {
+  background: linear-gradient(90deg, #b060ff, #9c00ff) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(156, 0, 255, 0.35) !important;
+}
+
+/* STEP 5A, 5A1, 5A2 — Liquidity Cyan */
+.step-five-a .step-badge,
+.step-five-a1 .step-badge,
+.step-five-a2 .step-badge {
+  background: linear-gradient(90deg, #00e5ff, #00c5de) !important;
+  color: #002a36 !important;
+  box-shadow: 0 2px 8px rgba(0, 229, 255, 0.35) !important;
+}
+
+/* STEP 5B1, 5B2 — SMC Magenta */
+.step-five-b1 .step-badge,
+.step-five-b2 .step-badge {
+  background: linear-gradient(90deg, #ff40ff, #d400d4) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 0, 255, 0.35) !important;
+}
+
+/* STEP 6, 6A — Indicator Orange */
+.step-six .step-badge {
+  background: linear-gradient(90deg, #ff6b35, #e85520) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.35) !important;
+}
+
+/* STEP 7A, 7B, 7C, 7D — Profit/Exit Gold */
+.step-seven-a .step-badge,
+.step-seven-b .step-badge,
+.step-seven-c .step-badge,
+.step-seven-d .step-badge {
+  background: linear-gradient(90deg, #ffd700, #f0c000) !important;
+  color: #2b2000 !important;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.35) !important;
+}
+
+/* STEP 8, 8A, 8B — Multi-TF Teal-Green */
+.step-eight .step-badge,
+.step-eight-a .step-badge,
+.step-eight-b .step-badge {
+  background: linear-gradient(90deg, #00e5b0, #00bf96) !important;
+  color: #002b22 !important;
+  box-shadow: 0 2px 8px rgba(0, 229, 176, 0.35) !important;
+}
+
+/* STEP 9 — Backtesting Red (danger/testing) */
+.step-nine .step-badge {
+  background: linear-gradient(90deg, #ff3b3b, #e02020) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 59, 59, 0.35) !important;
+}
+
+/* STEP 10 — Strategy Build Fire Orange */
+.step-ten .step-badge {
+  background: linear-gradient(90deg, #ff8c00, #ff6b00) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(255, 140, 0, 0.35) !important;
+}
+
+/* ADVANCED badge on separator */
+.advanced-separator-content {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  letter-spacing: 3px !important;
+}
+
+
+/* =============================================
+   EASY WIN 3: HERO HEADING — BARLOW CONDENSED
+   Premium financial/trading terminal font feel
+=============================================== */
+
+.hero h1 {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 64px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
+  line-height: 1.1 !important;
+  text-transform: uppercase !important;
+}
+
+/* Light mode heading stays dark gradient */
+[data-theme="light"] .hero h1 {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 64px !important;
+}
+
+/* Mobile size fix */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 40px !important;
+  }
+}
+
+/* Stat numbers also get Barlow for terminal feel */
+.stat-number {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
+  font-size: 48px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+}
+
+
+/* =============================================
+   MEDIUM WIN 1: MARKET STATUS BAR
+=============================================== */
+
+.market-status-bar {
   background: linear-gradient(90deg, #020b16 0%, #041020 50%, #020b16 100%);
   border-bottom: 1px solid rgba(0, 255, 156, 0.12);
   padding: 6px 24px;
