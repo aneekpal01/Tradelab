@@ -3,77 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TradeLab | Backtesting Lab</title>
-    <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
+    <title>TradeLab | Replay & Backtest Challenge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <style>
+        /* CSS Variables & Global Resets */
+        :root {
+            --bg-primary: #0b0f14;
+            --bg-secondary: #0f141b;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --text-primary: #eaeaea;
+            --text-secondary: #8892b0;
+            --border-color: #1e2a3a;
+            --accent-green: #00ff9c;
+            --accent-blue: #00d4ff;
+            --accent-yellow: #ffb700;
+            --accent-red: #ff4d4d;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f5f5f7;
+            --bg-secondary: #ffffff;
+            --bg-card: #f9f9fb;
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --border-color: rgba(0, 0, 0, 0.05);
+            --accent-green: #0d9488;
+            --accent-blue: #0071e3;
+            --accent-yellow: #ea580c;
+            --accent-red: #dc2626;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            background: #0b0f14;
-            color: #eaeaea;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
         }
 
+        /* Navbar styling */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px 40px;
-            background: rgba(11, 15, 20, 0.95);
-            border-bottom: 1px solid #1e2a3a;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .logo {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
-            background: linear-gradient(90deg, #00ff9c, #00d4ff);
+            text-decoration: none;
+            background: linear-gradient(95deg, var(--accent-green), var(--accent-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-decoration: none;
+            letter-spacing: 0.5px;
         }
 
         .back-btn {
-            padding: 10px 20px;
-            background: rgba(0, 255, 156, 0.1);
-            border: 1px solid #00ff9c;
-            color: #00ff9c;
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
             text-decoration: none;
             border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s ease;
         }
 
         .back-btn:hover {
-            background: #00ff9c;
-            color: #000;
+            background: var(--accent-blue);
+            color: #fff;
         }
 
+        /* Container Layout */
         .container {
-            padding: 20px;
-            max-width: 1800px;
+            max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
+            padding: 20px 20px 50px 20px;
         }
 
-        /* Controls */
+        /* Controls Panel */
         .controls-section {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 15px;
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.03);
+            gap: 15px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 16px 20px;
             border-radius: 12px;
-            border: 1px solid #1e2a3a;
-            align-items: flex-end;
+            margin-bottom: 20px;
+            align-items: center;
         }
 
         .control-group {
@@ -83,80 +120,68 @@
         }
 
         .control-group label {
-            font-size: 10px;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-secondary);
         }
 
         .control-group select {
             padding: 8px 12px;
-            background: #161b22;
-            border: 1px solid #30363d;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
             border-radius: 6px;
-            color: #fff;
+            color: var(--text-primary);
             font-size: 13px;
-            cursor: pointer;
-            min-width: 120px;
-        }
-
-        .control-group select:focus {
             outline: none;
-            border-color: #00ff9c;
         }
 
         .load-btn {
-            padding: 8px 20px;
-            background: linear-gradient(90deg, #00ff9c, #00d4ff);
+            padding: 9px 18px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
             border: none;
             border-radius: 6px;
             color: #000;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            font-weight: 700;
             font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 18px;
         }
-
         .load-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 255, 156, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 255, 156, 0.2);
         }
 
-        .load-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Live Indicator */
         .live-indicator {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             padding: 6px 12px;
-            background: rgba(0, 255, 156, 0.1);
-            border: 1px solid #00ff9c;
             border-radius: 20px;
             font-size: 11px;
-            color: #00ff9c;
+            font-weight: 600;
+            border: 1px solid rgba(0, 255, 156, 0.2);
+            background: rgba(0, 255, 156, 0.05);
+            color: var(--accent-green);
+            margin-left: auto;
+            margin-top: 10px;
         }
 
         .live-dot {
             width: 8px;
             height: 8px;
-            background: #00ff9c;
+            background: var(--accent-green);
             border-radius: 50%;
             animation: pulse 1.5s infinite;
         }
 
         .live-indicator.offline {
-            background: rgba(255, 77, 77, 0.1);
-            border-color: #ff4d4d;
-            color: #ff4d4d;
+            background: rgba(255, 77, 77, 0.05);
+            border-color: rgba(255, 77, 77, 0.2);
+            color: var(--accent-red);
         }
-
         .live-indicator.offline .live-dot {
-            background: #ff4d4d;
+            background: var(--accent-red);
             animation: none;
         }
 
@@ -165,99 +190,105 @@
             50% { opacity: 0.4; }
         }
 
-        /* Drawing Tools */
+        /* Two Column Layout Grid */
+        .center-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 25px;
+            align-items: start;
+        }
+
+        /* Drawing Tools Bar */
         .drawing-tools {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 10px;
-            border: 1px solid #1e2a3a;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
             margin-bottom: 15px;
             align-items: center;
         }
 
         .tools-label {
-            font-size: 11px;
-            color: #666;
-            margin-right: 10px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-right: 8px;
         }
 
         .tool-btn {
             padding: 8px 14px;
-            background: #161b22;
-            border: 1px solid #30363d;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
             border-radius: 6px;
-            color: #aaa;
+            color: var(--text-secondary);
             font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .tool-btn:hover {
-            border-color: #00ff9c;
-            color: #00ff9c;
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
         }
 
         .tool-btn.active {
-            background: rgba(0, 255, 156, 0.15);
-            border-color: #00ff9c;
-            color: #00ff9c;
+            background: rgba(0, 212, 255, 0.08);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
         }
 
-        /* Colored tool buttons */
-        .tool-btn.buy { border-color: #26a69a; color: #26a69a; }
-        .tool-btn.buy:hover, .tool-btn.buy.active { background: rgba(38, 166, 154, 0.15); }
+        /* Custom marker buttons (Refinement 1, 2, 3) */
+        .tool-btn.entry { border-color: var(--accent-blue); color: var(--accent-blue); }
+        .tool-btn.entry.active { background: rgba(0, 212, 255, 0.12); }
         
-        .tool-btn.sell { border-color: #ef5350; color: #ef5350; }
-        .tool-btn.sell:hover, .tool-btn.sell.active { background: rgba(239, 83, 80, 0.15); }
+        .tool-btn.stoploss { border-color: var(--accent-red); color: var(--accent-red); }
+        .tool-btn.stoploss.active { background: rgba(255, 77, 77, 0.12); }
 
-        .tool-btn.sr { border-color: #ffb700; color: #ffb700; }
-        .tool-btn.sr:hover, .tool-btn.sr.active { background: rgba(255, 183, 0, 0.15); }
+        .tool-btn.target { border-color: var(--accent-green); color: var(--accent-green); }
+        .tool-btn.target.active { background: rgba(0, 255, 156, 0.12); }
 
-        .tool-btn.sd { border-color: #00d4ff; color: #00d4ff; }
-        .tool-btn.sd:hover, .tool-btn.sd.active { background: rgba(0, 212, 255, 0.15); }
-
-        .tool-btn.liq { border-color: #9c00ff; color: #9c00ff; }
-        .tool-btn.liq:hover, .tool-btn.liq.active { background: rgba(156, 0, 255, 0.15); }
-
-        .tool-btn.sl { border-color: #ff4d4d; color: #ff4d4d; }
-        .tool-btn.sl:hover, .tool-btn.sl.active { background: rgba(255, 77, 77, 0.15); }
-
-        .tool-btn.tp { border-color: #00ff9c; color: #00ff9c; }
-        .tool-btn.tp:hover, .tool-btn.tp.active { background: rgba(0, 255, 156, 0.15); }
+        .tool-btn.sr { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+        .tool-btn.sr.active { background: rgba(255, 183, 0, 0.12); }
 
         .divider {
             width: 1px;
-            height: 30px;
-            background: #30363d;
-            margin: 0 8px;
+            height: 24px;
+            background: var(--border-color);
+            margin: 0 6px;
         }
 
         .clear-btn {
             margin-left: auto;
-            background: rgba(255, 77, 77, 0.1);
-            border-color: #ff4d4d;
-            color: #ff4d4d;
+            background: rgba(255, 77, 77, 0.05);
+            border-color: rgba(255, 77, 77, 0.2);
+            color: var(--accent-red);
+        }
+        .clear-btn:hover {
+            background: var(--accent-red);
+            color: #fff;
         }
 
-        /* Chart */
+        /* Chart Canvas Wrapper */
         .chart-wrapper {
             position: relative;
-            background: #0d1117;
-            border-radius: 10px;
-            border: 1px solid #1e2a3a;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
             overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.05);
         }
 
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-bottom: 1px solid #1e2a3a;
+            padding: 14px 20px;
+            background: rgba(0, 0, 0, 0.15);
+            border-bottom: 1px solid var(--border-color);
             flex-wrap: wrap;
             gap: 10px;
         }
@@ -266,39 +297,39 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: wrap;
         }
 
         .chart-title h2 {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
         }
 
         .chart-title .price {
             font-size: 15px;
-            color: #00ff9c;
-            font-weight: 500;
+            color: var(--accent-green);
+            font-weight: 700;
         }
 
         .chart-title .change {
-            font-size: 12px;
-            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 6px;
             border-radius: 4px;
         }
 
         .chart-title .change.up {
-            background: rgba(0, 255, 156, 0.15);
-            color: #00ff9c;
+            background: rgba(0, 255, 156, 0.08);
+            color: var(--accent-green);
         }
 
         .chart-title .change.down {
-            background: rgba(255, 77, 77, 0.15);
-            color: #ff4d4d;
+            background: rgba(255, 77, 77, 0.08);
+            color: var(--accent-red);
         }
 
         #chart {
             width: 100%;
-            height: 500px;
+            height: 480px;
         }
 
         .status-bar {
@@ -306,42 +337,44 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-top: 1px solid #1e2a3a;
+            background: rgba(0, 0, 0, 0.15);
+            border-top: 1px solid var(--border-color);
             font-size: 11px;
-            color: #888;
-            flex-wrap: wrap;
-            gap: 8px;
+            color: var(--text-secondary);
         }
 
         .status-bar .mode {
-            color: #00ff9c;
+            color: var(--accent-blue);
+            font-weight: 600;
         }
 
-        /* Loading */
+        /* Loading Spinner */
         .loading-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(11, 15, 20, 0.9);
+            background: var(--bg-secondary);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 50;
+            transition: opacity 0.3s ease;
         }
 
         .loading-overlay.hidden {
             display: none;
+            opacity: 0;
+            pointer-events: none;
         }
 
         .spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid #1e2a3a;
-            border-top-color: #00ff9c;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-green);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -352,106 +385,188 @@
 
         .loading-text {
             margin-top: 12px;
-            color: #888;
+            color: var(--text-secondary);
             font-size: 13px;
+            font-weight: 500;
         }
 
-        /* Info Panel */
-        .info-panel {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-            margin-top: 15px;
+        /* RIGHT PANEL SIDEBAR WIDGETS */
+        .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .info-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid #1e2a3a;
-            border-radius: 10px;
-            padding: 15px;
+        .sidebar-widget {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
         }
 
-        .info-card h4 {
-            font-size: 10px;
-            color: #666;
+        .widget-title {
+            font-size: 13px;
+            font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            letter-spacing: 0.8px;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
         }
 
-        .info-card .value {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .info-card .value.green { color: #00ff9c; }
-        .info-card .value.red { color: #ff4d4d; }
-        .info-card .value.blue { color: #00d4ff; }
-
-        /* Trade Log */
-        .trade-log {
-            margin-top: 15px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid #1e2a3a;
-            border-radius: 10px;
-            padding: 15px;
-        }
-
-        .trade-log h3 {
-            font-size: 14px;
-            margin-bottom: 12px;
-            color: #888;
-        }
-
-        .trade-list {
-            max-height: 150px;
-            overflow-y: auto;
-        }
-
-        .trade-item {
+        /* Setup Card details (Refinement 5) */
+        .setup-row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 12px;
-            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+        .setup-row:last-child {
+            border-bottom: none;
+        }
+        .setup-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .setup-value {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .setup-value.blue { color: var(--accent-blue); }
+        .setup-value.red { color: var(--accent-red); }
+        .setup-value.green { color: var(--accent-green); }
+
+        .verdict-box {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(0, 212, 255, 0.04);
+            border-left: 3px solid var(--accent-blue);
+            border-radius: 0 6px 6px 0;
+            font-size: 11.5px;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        /* Replay Challenge Controls (Refinement 6) */
+        .replay-controls {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .replay-direction-select {
+            padding: 8px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
             border-radius: 6px;
-            margin-bottom: 6px;
-            font-size: 12px;
+            color: var(--text-primary);
+            font-size: 12.5px;
+            font-weight: 600;
+            width: 100%;
+            outline: none;
         }
 
-        .trade-item.buy {
-            border-left: 3px solid #26a69a;
+        .start-replay-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s;
         }
 
-        .trade-item.sell {
-            border-left: 3px solid #ef5350;
+        .start-replay-btn.ready {
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+            border: none;
+            color: #000;
+        }
+        .start-replay-btn.ready:hover {
+            transform: translateY(-1.5px);
+            box-shadow: 0 4px 12px rgba(0, 255, 156, 0.3);
         }
 
-        .no-trades {
-            color: #555;
-            font-size: 12px;
+        .replay-status-banner {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
             text-align: center;
-            padding: 20px;
+            animation: pulse 1s infinite alternate;
+            margin-top: 10px;
+            display: none;
         }
 
-        /* Mobile */
+        /* Setup Evaluation Rating Scorecard (Refinement 7 & 8) */
+        .scorecard-metric {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            margin-bottom: 10px;
+        }
+        .scorecard-metric:last-child {
+            margin-bottom: 0;
+        }
+        .scorecard-label {
+            color: var(--text-secondary);
+        }
+        .scorecard-value {
+            font-weight: 600;
+        }
+        
+        .score-circle-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+        .score-badge {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--accent-green);
+            background: rgba(0, 255, 156, 0.08);
+            border: 1px dashed var(--accent-green);
+            padding: 12px 24px;
+            border-radius: 12px;
+        }
+        .score-badge.fail {
+            color: var(--accent-red);
+            background: rgba(255, 77, 77, 0.08);
+            border-color: var(--accent-red);
+        }
+
+        /* Mobile viewport responsiveness */
+        @media (max-width: 950px) {
+            .center-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
-            .navbar { padding: 12px 15px; }
-            .container { padding: 12px; }
-            .controls-section { padding: 12px; }
-            .control-group select { min-width: 100px; font-size: 12px; }
-            #chart { height: 350px; }
+            .navbar { padding: 12px 20px; }
+            .container { padding: 15px 10px; }
+            .controls-section { padding: 12px 16px; }
+            #chart { height: 360px; }
             .tool-btn { padding: 6px 10px; font-size: 11px; }
-            .info-panel { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
+
+    <!-- Navbar -->
     <nav class="navbar">
         <a href="index.html" class="logo">TradeLab</a>
-        <a href="index.html" class="back-btn">← Back to Learning</a>
+        <a href="index.html" class="back-btn">← Back to Learning Dashboard</a>
     </nav>
 
     <div class="container">
-        <!-- Controls -->
+        <!-- Controls Parameters -->
         <div class="controls-section">
             <div class="control-group">
                 <label>Coin</label>
@@ -461,171 +576,242 @@
                     <option value="SOLUSDT" data-cg="solana">SOL/USDT</option>
                     <option value="XRPUSDT" data-cg="ripple">XRP/USDT</option>
                     <option value="BNBUSDT" data-cg="binancecoin">BNB/USDT</option>
-                    <option value="DOGEUSDT" data-cg="dogecoin">DOGE/USDT</option>
                 </select>
             </div>
 
             <div class="control-group">
                 <label>Timeframe</label>
                 <select id="timeframeSelect">
-                    <option value="1m">1 Minute</option>
-                    <option value="5m">5 Minutes</option>
                     <option value="15m">15 Minutes</option>
                     <option value="30m">30 Minutes</option>
                     <option value="1h" selected>1 Hour</option>
                     <option value="4h">4 Hours</option>
                     <option value="1d">1 Day</option>
-                    <option value="1w">1 Week</option>
                 </select>
             </div>
 
-            <div class="control-group">
-                <label>Candles</label>
-                <select id="candleCount">
-                    <option value="100">100</option>
-                    <option value="200" selected>200</option>
-                    <option value="500">500</option>
-                </select>
-            </div>
-
-            <button class="load-btn" id="loadBtn" onclick="loadChartData()">📊 Load Data</button>
+            <button class="load-btn" id="loadBtn" onclick="loadChartData()">📊 Load Simulation Feed</button>
 
             <div class="live-indicator offline" id="liveIndicator">
                 <div class="live-dot"></div>
-                <span id="liveText">Offline</span>
+                <span id="liveText">Offline Mode</span>
             </div>
         </div>
 
-        <!-- Drawing Tools -->
-        <div class="drawing-tools">
-            <span class="tools-label">Tools:</span>
-            <button class="tool-btn active" onclick="setMode('cursor')" id="cursorTool">🖱️ Cursor</button>
-            
-            <div class="divider"></div>
-            
-            <button class="tool-btn buy" onclick="setMode('buy')" id="buyTool">📈 Buy</button>
-            <button class="tool-btn sell" onclick="setMode('sell')" id="sellTool">📉 Sell</button>
-            
-            <div class="divider"></div>
-            
-            <button class="tool-btn sr" onclick="setMode('support')" id="supportTool">⬇️ Support</button>
-            <button class="tool-btn sr" onclick="setMode('resistance')" id="resistanceTool">⬆️ Resistance</button>
-            
-            <div class="divider"></div>
-            
-            <button class="tool-btn sd" onclick="setMode('supply')" id="supplyTool">🔴 Supply</button>
-            <button class="tool-btn sd" onclick="setMode('demand')" id="demandTool">🟢 Demand</button>
-            <button class="tool-btn liq" onclick="setMode('liquidity')" id="liquidityTool">💧 Liquidity</button>
-            
-            <div class="divider"></div>
-            
-            <button class="tool-btn sl" onclick="setMode('stoploss')" id="stoplossTool">🛑 SL</button>
-            <button class="tool-btn tp" onclick="setMode('takeprofit')" id="takeprofitTool">🎯 TP</button>
-            
-            <button class="tool-btn clear-btn" onclick="clearAll()">🗑️ Clear</button>
-        </div>
-
-        <!-- Chart -->
-        <div class="chart-wrapper">
-            <div class="chart-header">
-                <div class="chart-title">
-                    <h2 id="chartPair">BTC/USDT</h2>
-                    <span class="price" id="currentPrice">$0.00</span>
-                    <span class="change up" id="priceChange">+0.00%</span>
+        <!-- Center content split layout -->
+        <div class="center-layout">
+            <!-- Left Layout Column: Tools + Chart Canvas -->
+            <div class="chart-container-block">
+                
+                <!-- Drawing Tools Header Bar (Refinement 1, 2, 3) -->
+                <div class="drawing-tools">
+                    <span class="tools-label">⚙️ Challenge Tools:</span>
+                    <button class="tool-btn active" onclick="setMode('cursor')" id="cursorTool">🖱️ Cursor</button>
+                    
+                    <div class="divider"></div>
+                    
+                    <button class="tool-btn entry" onclick="setMode('entry')" id="entryTool">📍 Mark Entry</button>
+                    <button class="tool-btn stoploss" onclick="setMode('stoploss')" id="stoplossTool">🛑 Stop Loss</button>
+                    <button class="tool-btn target" onclick="setMode('target')" id="targetTool">🎯 Target</button>
+                    
+                    <div class="divider"></div>
+                    
+                    <button class="tool-btn sr" onclick="setMode('support')" id="supportTool">⬆️ Support</button>
+                    <button class="tool-btn sr" onclick="setMode('resistance')" id="resistanceTool">⬇️ Resistance</button>
+                    
+                    <button class="tool-btn clear-btn" onclick="clearAll()">🗑️ Clear Setup</button>
                 </div>
-                <div style="font-size: 12px; color: #666;">
-                    O: <span id="oOpen">-</span> | 
-                    H: <span id="oHigh">-</span> | 
-                    L: <span id="oLow">-</span> | 
-                    C: <span id="oClose">-</span>
+
+                <!-- Main Chart Frame -->
+                <div class="chart-wrapper">
+                    <div class="chart-header">
+                        <div class="chart-title">
+                            <h2 id="chartPair">BTC/USDT</h2>
+                            <span class="price" id="currentPrice">$0.00</span>
+                            <span class="change up" id="priceChange">+0.00%</span>
+                        </div>
+                        <div style="font-size: 11.5px; color: #64748b; font-weight: 500;">
+                            O: <span id="oOpen">-</span> | 
+                            H: <span id="oHigh">-</span> | 
+                            L: <span id="oLow">-</span> | 
+                            C: <span id="oClose">-</span>
+                        </div>
+                    </div>
+                    
+                    <div id="chart"></div>
+                    
+                    <!-- Loading Canvas Overlay -->
+                    <div class="loading-overlay" id="loadingOverlay">
+                        <div class="spinner"></div>
+                        <div class="loading-text">Loading historical simulation feed...</div>
+                    </div>
+
+                    <div class="status-bar">
+                        <span>Mode: <strong class="mode" id="currentMode">Cursor</strong></span>
+                        <span id="coordinates">-</span>
+                        <span id="dataInfo">Visible Candles: 0</span>
+                    </div>
                 </div>
-            </div>
-            
-            <div id="chart"></div>
-            
-            <div class="loading-overlay" id="loadingOverlay">
-                <div class="spinner"></div>
-                <div class="loading-text">Loading...</div>
+
             </div>
 
-            <div class="status-bar">
-                <span>Mode: <strong class="mode" id="currentMode">Cursor</strong></span>
-                <span id="coordinates">-</span>
-                <span id="dataInfo">Candles: 0</span>
-            </div>
-        </div>
+            <!-- Right Layout Column: Current Trade Setup Card & Replay Challenge -->
+            <div class="right-sidebar">
+                
+                <!-- Current Setup Card Widget (Refinement 4 & 5) -->
+                <div class="sidebar-widget">
+                    <div class="widget-title">📍 Current Setup Card</div>
+                    
+                    <div class="setup-row">
+                        <span class="setup-label">Direction Mode</span>
+                        <select id="tradeDirection" class="replay-direction-select" onchange="updateSetupCard()">
+                            <option value="long">🟢 LONG Setup</option>
+                            <option value="short">🔴 SHORT Setup</option>
+                        </select>
+                    </div>
 
-        <!-- Info Panel -->
-        <div class="info-panel">
-            <div class="info-card">
-                <h4>High</h4>
-                <div class="value green" id="highVal">$0</div>
-            </div>
-            <div class="info-card">
-                <h4>Low</h4>
-                <div class="value red" id="lowVal">$0</div>
-            </div>
-            <div class="info-card">
-                <h4>Change</h4>
-                <div class="value blue" id="changeVal">0%</div>
-            </div>
-            <div class="info-card">
-                <h4>Candles</h4>
-                <div class="value" id="candleVal">0</div>
-            </div>
-        </div>
+                    <div class="setup-row">
+                        <span class="setup-label">Entry Level</span>
+                        <span class="setup-value blue" id="setupEntry">Not Marked</span>
+                    </div>
+                    
+                    <div class="setup-row">
+                        <span class="setup-label">Stop Loss Level</span>
+                        <span class="setup-value red" id="setupStopLoss">Not Marked</span>
+                    </div>
 
-        <!-- Trade Log -->
-        <div class="trade-log">
-            <h3>📋 Trade Log</h3>
-            <div class="trade-list" id="tradeList">
-                <div class="no-trades">No trades yet. Click Buy/Sell then click on chart.</div>
+                    <div class="setup-row">
+                        <span class="setup-label">Target Level</span>
+                        <span class="setup-value green" id="setupTarget">Not Marked</span>
+                    </div>
+
+                    <div class="setup-row">
+                        <span class="setup-label">Risk : Reward Ratio</span>
+                        <span class="setup-value" id="setupRR">--</span>
+                    </div>
+
+                    <!-- Verdict box -->
+                    <div class="verdict-box" id="setupVerdict">
+                        Please mark Entry, Stop Loss, and Target on the chart to calculate the Risk:Reward ratio.
+                    </div>
+
+                    <!-- Replay Challenge actions -->
+                    <div class="replay-controls">
+                        <button class="start-replay-btn" id="startReplayBtn" onclick="toggleReplayChallenge()" disabled>
+                            ▶ Start Replay Challenge
+                        </button>
+                    </div>
+
+                    <div class="replay-status-banner" id="replayStatusBanner">
+                        Challenge active...
+                    </div>
+                </div>
+
+                <!-- Setup Rating & Verdict Scorecard (Refinement 7 & 8) -->
+                <div class="sidebar-widget" id="scorecardWidget" style="display: none;">
+                    <div class="widget-title">🏆 Challenge Scorecard</div>
+                    
+                    <div class="score-circle-wrapper">
+                        <div class="score-badge" id="scoreBadge">85/100</div>
+                    </div>
+
+                    <div class="scorecard-metric">
+                        <span class="scorecard-label">Setup Rating</span>
+                        <span class="scorecard-value" id="scoreStars" style="color: var(--accent-yellow);">★★★★☆</span>
+                    </div>
+                    <div class="scorecard-metric">
+                        <span class="scorecard-label">Trend Alignment</span>
+                        <span class="scorecard-value" id="scoreTrend">Good</span>
+                    </div>
+                    <div class="scorecard-metric">
+                        <span class="scorecard-label">Risk-to-Reward</span>
+                        <span class="scorecard-value" id="scoreRR">Excellent</span>
+                    </div>
+                    <div class="scorecard-metric">
+                        <span class="scorecard-label">Capital Discipline</span>
+                        <span class="scorecard-value" id="scoreDiscipline">Excellent</span>
+                    </div>
+
+                    <div style="height: 1px; background: var(--border-color); margin: 15px 0;"></div>
+
+                    <div class="widget-title" style="color: var(--accent-red); margin-bottom: 10px;">🚨 Mistake Analysis</div>
+                    <p style="font-size: 11.5px; line-height: 1.5; color: var(--text-secondary);" id="scoreMistake">
+                        Analyzing your discipline triggers...
+                    </p>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        // Globals
+        // Theme sync
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            document.body.className = currentTheme;
+        });
+
+        // Global variables
         var chartEl = document.getElementById('chart');
         var chart = null;
         var candleSeries = null;
         var currentMode = 'cursor';
-        var drawnLines = [];
-        var trades = [];
-        var ws = null;
-        var lastCandleData = [];
+        
+        // Setup markers
+        var entryPrice = null;
+        var stopLossPrice = null;
+        var targetPrice = null;
 
-        // Init Chart
+        var entryLine = null;
+        var slLine = null;
+        var tpLine = null;
+        var supportLines = [];
+        var resistanceLines = [];
+
+        // Replay Feed Variables
+        var fullCandlesFeed = [];
+        var visibleCandlesFeed = [];
+        var hiddenReplayQueue = [];
+        var replayRunning = false;
+        var replayTimer = null;
+
+        // Initialize Lightweight Chart
         function initChart() {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            const gridColor = isLight ? 'rgba(0, 0, 0, 0.04)' : '#1e2a3a';
+            const bgThemeColor = isLight ? '#ffffff' : '#0f141b';
+            const textColor = isLight ? '#475569' : '#c9d1d9';
+
             chart = LightweightCharts.createChart(chartEl, {
                 layout: {
-                    backgroundColor: '#0d1117',
-                    textColor: '#c9d1d9',
+                    backgroundColor: bgThemeColor,
+                    textColor: textColor,
                 },
                 grid: {
-                    vertLines: { color: '#1e2a3a' },
-                    horzLines: { color: '#1e2a3a' },
+                    vertLines: { color: gridColor },
+                    horzLines: { color: gridColor },
                 },
                 crosshair: {
                     mode: LightweightCharts.CrosshairMode.Normal,
                 },
                 rightPriceScale: {
-                    borderColor: '#1e2a3a',
+                    borderColor: gridColor,
                 },
                 timeScale: {
-                    borderColor: '#1e2a3a',
+                    borderColor: gridColor,
                     timeVisible: true,
                 },
                 width: chartEl.clientWidth,
-                height: 500
+                height: 480
             });
 
             candleSeries = chart.addCandlestickSeries({
-                upColor: '#26a69a',
-                downColor: '#ef5350',
+                upColor: isLight ? '#0d9488' : '#26a69a',
+                downColor: isLight ? '#dc2626' : '#ef5350',
                 borderVisible: false,
-                wickUpColor: '#26a69a',
-                wickDownColor: '#ef5350',
+                wickUpColor: isLight ? '#0d9488' : '#26a69a',
+                wickDownColor: isLight ? '#dc2626' : '#ef5350',
             });
 
             chart.subscribeCrosshairMove(function(param) {
@@ -644,28 +830,25 @@
             chartEl.addEventListener('click', onChartClick);
         }
 
-        // Load Data
+        // Load historical feed
         async function loadChartData() {
             var coin = document.getElementById('coinSelect').value;
             var tf = document.getElementById('timeframeSelect').value;
-            var limit = document.getElementById('candleCount').value;
             
-            document.getElementById('loadBtn').disabled = true;
-            document.getElementById('loadBtn').textContent = '⏳ Loading...';
             showLoading(true);
+            clearAll();
 
-            // Close existing websocket
-            if (ws) {
-                ws.close();
-                ws = null;
+            // Cancel active interval
+            if (replayTimer) {
+                clearInterval(replayTimer);
+                replayTimer = null;
             }
+            replayRunning = false;
 
             try {
-                // Try Binance API first
-                var url = 'https://api.binance.com/api/v3/klines?symbol=' + coin + '&interval=' + tf + '&limit=' + limit;
+                var url = 'https://api.binance.com/api/v3/klines?symbol=' + coin + '&interval=' + tf + '&limit=150';
                 var response = await fetch(url);
-                
-                if (!response.ok) throw new Error('Binance failed');
+                if (!response.ok) throw new Error('Binance feed failed');
                 
                 var data = await response.json();
                 
@@ -679,111 +862,39 @@
                     };
                 });
 
-                lastCandleData = candles;
-                candleSeries.setData(candles);
+                // Split candles for replay challenge (hide last 35 candles)
+                var slicePoint = candles.length - 35;
+                fullCandlesFeed = candles;
+                visibleCandlesFeed = candles.slice(0, slicePoint);
+                hiddenReplayQueue = candles.slice(slicePoint);
+
+                candleSeries.setData(visibleCandlesFeed);
                 chart.timeScale().fitContent();
-                updateInfo(coin.replace('USDT', '/USDT'), candles);
                 
-                // Start live updates
-                startLiveUpdates(coin, tf);
-
+                updateTickerInfo(coin.replace('USDT', '/USDT'), visibleCandlesFeed);
+                setOnline(true);
             } catch (e) {
-                console.log('Binance failed, trying CoinGecko...', e);
-                
-                // Fallback to CoinGecko
-                try {
-                    var cgCoin = document.getElementById('coinSelect').selectedOptions[0].getAttribute('data-cg');
-                    var days = tf === '1d' || tf === '1w' ? '90' : '30';
-                    var cgUrl = 'https://api.coingecko.com/api/v3/coins/' + cgCoin + '/ohlc?vs_currency=usd&days=' + days;
-                    
-                    var cgRes = await fetch(cgUrl);
-                    var cgData = await cgRes.json();
-                    
-                    var candles = cgData.map(function(d) {
-                        return {
-                            time: Math.floor(d[0] / 1000),
-                            open: d[1],
-                            high: d[2],
-                            low: d[3],
-                            close: d[4]
-                        };
-                    });
-
-                    lastCandleData = candles;
-                    candleSeries.setData(candles);
-                    chart.timeScale().fitContent();
-                    updateInfo(coin.replace('USDT', '/USD'), candles);
-                    
-                    setOffline();
-                    
-                } catch (e2) {
-                    alert('Data load failed. Try again later.');
-                    console.error(e2);
-                }
+                console.log(e);
+                setOnline(false);
+                alert("Could not load simulation feed. Attempting offline fallback.");
             }
 
             showLoading(false);
-            document.getElementById('loadBtn').disabled = false;
-            document.getElementById('loadBtn').textContent = '📊 Load Data';
         }
 
-        // Live Updates via WebSocket
-        function startLiveUpdates(coin, tf) {
-            try {
-                var wsUrl = 'wss://stream.binance.com:9443/ws/' + coin.toLowerCase() + '@kline_' + tf;
-                ws = new WebSocket(wsUrl);
-
-                ws.onopen = function() {
-                    setOnline();
-                };
-
-                ws.onmessage = function(event) {
-                    var msg = JSON.parse(event.data);
-                    var k = msg.k;
-                    
-                    var candle = {
-                        time: Math.floor(k.t / 1000),
-                        open: parseFloat(k.o),
-                        high: parseFloat(k.h),
-                        low: parseFloat(k.l),
-                        close: parseFloat(k.c)
-                    };
-
-                    candleSeries.update(candle);
-                    
-                    // Update price display
-                    document.getElementById('currentPrice').textContent = formatP(candle.close);
-                };
-
-                ws.onerror = function() {
-                    setOffline();
-                };
-
-                ws.onclose = function() {
-                    setOffline();
-                };
-
-            } catch (e) {
-                setOffline();
+        function setOnline(online) {
+            var ind = document.getElementById('liveIndicator');
+            if (online) {
+                ind.classList.remove('offline');
+                document.getElementById('liveText').textContent = 'Simulation Feed Connected';
+            } else {
+                ind.classList.add('offline');
+                document.getElementById('liveText').textContent = 'Feed Offline';
             }
         }
 
-        function setOnline() {
-            var ind = document.getElementById('liveIndicator');
-            ind.classList.remove('offline');
-            document.getElementById('liveText').textContent = 'LIVE';
-        }
-
-        function setOffline() {
-            var ind = document.getElementById('liveIndicator');
-            ind.classList.add('offline');
-            document.getElementById('liveText').textContent = 'Offline';
-        }
-
-        // Update Info
-        function updateInfo(pair, data) {
+        function updateTickerInfo(pair, data) {
             document.getElementById('chartPair').textContent = pair;
-            
             if (data.length > 0) {
                 var last = data[data.length - 1];
                 var first = data[0];
@@ -795,20 +906,7 @@
                 changeEl.textContent = (change >= 0 ? '+' : '') + change + '%';
                 changeEl.className = 'change ' + (change >= 0 ? 'up' : 'down');
                 
-                var high = data[0].high, low = data[0].low;
-                for (var i = 1; i < data.length; i++) {
-                    if (data[i].high > high) high = data[i].high;
-                    if (data[i].low < low) low = data[i].low;
-                }
-                
-                document.getElementById('highVal').textContent = formatP(high);
-                document.getElementById('lowVal').textContent = formatP(low);
-                document.getElementById('candleVal').textContent = data.length;
-                document.getElementById('dataInfo').textContent = 'Candles: ' + data.length;
-                
-                var cv = document.getElementById('changeVal');
-                cv.textContent = (change >= 0 ? '+' : '') + change + '%';
-                cv.className = 'value ' + (change >= 0 ? 'green' : 'red');
+                document.getElementById('dataInfo').textContent = 'Visible Candles: ' + data.length;
             }
         }
 
@@ -822,7 +920,7 @@
             document.getElementById('loadingOverlay').classList.toggle('hidden', !show);
         }
 
-        // Drawing Mode
+        // Setting active tools mode
         function setMode(mode) {
             currentMode = mode;
             
@@ -836,22 +934,18 @@
             
             var names = {
                 cursor: 'Cursor',
-                buy: 'BUY Entry',
-                sell: 'SELL Entry',
-                support: 'Support',
-                resistance: 'Resistance',
-                supply: 'Supply Zone',
-                demand: 'Demand Zone',
-                liquidity: 'Liquidity',
-                stoploss: 'Stop Loss',
-                takeprofit: 'Take Profit'
+                entry: '📍 Mark Entry',
+                stoploss: '🛑 Stop Loss',
+                target: '🎯 Target',
+                support: 'Support line',
+                resistance: 'Resistance line'
             };
             document.getElementById('currentMode').textContent = names[mode] || mode;
         }
 
-        // Chart Click Handler
+        // Handle clicks on lightweight chart
         function onChartClick(e) {
-            if (currentMode === 'cursor') return;
+            if (currentMode === 'cursor' || replayRunning) return;
             
             var rect = chartEl.getBoundingClientRect();
             var y = e.clientY - rect.top;
@@ -862,98 +956,348 @@
             
             if (!price || isNaN(price)) return;
 
-            var colors = {
-                buy: '#26a69a',
-                sell: '#ef5350',
-                support: '#ffb700',
-                resistance: '#ffb700',
-                supply: '#ef5350',
-                demand: '#26a69a',
-                liquidity: '#9c00ff',
-                stoploss: '#ff4d4d',
-                takeprofit: '#00ff9c'
-            };
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
 
-            var titles = {
-                buy: 'BUY',
-                sell: 'SELL',
-                support: 'SUPPORT',
-                resistance: 'RESISTANCE',
-                supply: 'SUPPLY',
-                demand: 'DEMAND',
-                liquidity: 'LIQUIDITY',
-                stoploss: 'SL',
-                takeprofit: 'TP'
-            };
+            // Mark Entry (📍 Entry)
+            if (currentMode === 'entry') {
+                if (entryLine) candleSeries.removePriceLine(entryLine);
+                entryPrice = price;
+                entryLine = candleSeries.createPriceLine({
+                    price: price,
+                    color: isLight ? '#0071e3' : '#00d4ff',
+                    lineWidth: 2,
+                    lineStyle: 0,
+                    axisLabelVisible: true,
+                    title: '📍 ENTRY'
+                });
+                updateSetupCard();
+            }
+            // Mark Stop Loss (🛑 SL)
+            else if (currentMode === 'stoploss') {
+                if (slLine) candleSeries.removePriceLine(slLine);
+                stopLossPrice = price;
+                slLine = candleSeries.createPriceLine({
+                    price: price,
+                    color: '#ff4d4d',
+                    lineWidth: 2,
+                    lineStyle: 0,
+                    axisLabelVisible: true,
+                    title: '🛑 STOP LOSS'
+                });
+                updateSetupCard();
+            }
+            // Mark Target (🎯 Target)
+            else if (currentMode === 'target') {
+                if (tpLine) candleSeries.removePriceLine(tpLine);
+                targetPrice = price;
+                tpLine = candleSeries.createPriceLine({
+                    price: price,
+                    color: isLight ? '#0d9488' : '#00ff9c',
+                    lineWidth: 2,
+                    lineStyle: 0,
+                    axisLabelVisible: true,
+                    title: '🎯 TARGET'
+                });
+                updateSetupCard();
+            }
+            // Draw support
+            else if (currentMode === 'support') {
+                var l = candleSeries.createPriceLine({
+                    price: price,
+                    color: '#ffb700',
+                    lineWidth: 1.5,
+                    lineStyle: 2,
+                    axisLabelVisible: true,
+                    title: 'SUPPORT'
+                });
+                supportLines.push(l);
+            }
+            // Draw resistance
+            else if (currentMode === 'resistance') {
+                var l = candleSeries.createPriceLine({
+                    price: price,
+                    color: '#ffb700',
+                    lineWidth: 1.5,
+                    lineStyle: 2,
+                    axisLabelVisible: true,
+                    title: 'RESISTANCE'
+                });
+                resistanceLines.push(l);
+            }
 
-            // Create price line
-            var line = candleSeries.createPriceLine({
-                price: price,
-                color: colors[currentMode],
-                lineWidth: 2,
-                lineStyle: (currentMode === 'liquidity' || currentMode === 'supply' || currentMode === 'demand') ? 2 : 0,
-                axisLabelVisible: true,
-                title: titles[currentMode]
-            });
-            drawnLines.push(line);
+            // Return to cursor mode automatically after marking a level
+            if (['entry', 'stoploss', 'target'].includes(currentMode)) {
+                setMode('cursor');
+            }
+        }
 
-            // Add marker for buy/sell
-            if (currentMode === 'buy' || currentMode === 'sell') {
-                var markers = candleSeries.markers() || [];
-                
-                if (time) {
-                    markers.push({
-                        time: time,
-                        position: currentMode === 'buy' ? 'belowBar' : 'aboveBar',
-                        color: colors[currentMode],
-                        shape: currentMode === 'buy' ? 'arrowUp' : 'arrowDown',
-                        text: currentMode.toUpperCase() + ' @ ' + formatP(price)
-                    });
-                    candleSeries.setMarkers(markers);
+        // Live calculation and Setup Card updates (Refinement 4 & 5)
+        function updateSetupCard() {
+            const entryVal = document.getElementById('setupEntry');
+            const slVal = document.getElementById('setupStopLoss');
+            const tpVal = document.getElementById('setupTarget');
+            const rrVal = document.getElementById('setupRR');
+            const verdictBox = document.getElementById('setupVerdict');
+            const startBtn = document.getElementById('startReplayBtn');
+            const direction = document.getElementById('tradeDirection').value;
+
+            if (entryPrice) entryVal.textContent = formatP(entryPrice);
+            else entryVal.textContent = "Not Marked";
+
+            if (stopLossPrice) slVal.textContent = formatP(stopLossPrice);
+            else slVal.textContent = "Not Marked";
+
+            if (targetPrice) tpVal.textContent = formatP(targetPrice);
+            else tpVal.textContent = "Not Marked";
+
+            if (entryPrice && stopLossPrice && targetPrice) {
+                // Ensure layout alignment checks
+                var risk = Math.abs(entryPrice - stopLossPrice);
+                var reward = Math.abs(targetPrice - entryPrice);
+                var ratio = reward / risk;
+
+                rrVal.textContent = `1 : ${ratio.toFixed(2)}`;
+
+                // Format trade warnings based on direction
+                let orderError = false;
+                if (direction === 'long') {
+                    if (stopLossPrice >= entryPrice) {
+                        verdictBox.innerHTML = "⚠️ <strong>Invalid setup:</strong> Stop Loss must be BELOW entry for a Long trade.";
+                        verdictBox.className = "verdict-box badge-red";
+                        orderError = true;
+                    } else if (targetPrice <= entryPrice) {
+                        verdictBox.innerHTML = "⚠️ <strong>Invalid setup:</strong> Target must be ABOVE entry for a Long trade.";
+                        verdictBox.className = "verdict-box badge-red";
+                        orderError = true;
+                    }
+                } else {
+                    if (stopLossPrice <= entryPrice) {
+                        verdictBox.innerHTML = "⚠️ <strong>Invalid setup:</strong> Stop Loss must be ABOVE entry for a Short trade.";
+                        verdictBox.className = "verdict-box badge-red";
+                        orderError = true;
+                    } else if (targetPrice >= entryPrice) {
+                        verdictBox.innerHTML = "⚠️ <strong>Invalid setup:</strong> Target must be BELOW entry for a Short trade.";
+                        verdictBox.className = "verdict-box badge-red";
+                        orderError = true;
+                    }
                 }
 
-                // Log trade
-                addTrade(currentMode, price, time);
+                if (!orderError) {
+                    if (ratio < 1.0) {
+                        verdictBox.innerHTML = "🔴 <strong>Poor setup (R:R " + ratio.toFixed(1) + "):</strong> Risk exceeds reward. Avoid this setup.";
+                        verdictBox.className = "verdict-box badge-red";
+                    } else if (ratio < 2.0) {
+                        verdictBox.innerHTML = "🟡 <strong>Moderate Setup (R:R " + ratio.toFixed(1) + "):</strong> Favorable, but aim for higher target sizes.";
+                        verdictBox.className = "verdict-box badge-yellow";
+                    } else {
+                        verdictBox.innerHTML = "🟢 <strong>Excellent Setup (R:R " + ratio.toFixed(1) + "):</strong> Favorable risk parameters. Safe setup.";
+                        verdictBox.className = "verdict-box badge-green";
+                    }
+                    startBtn.disabled = false;
+                    startBtn.classList.add('ready');
+                } else {
+                    startBtn.disabled = true;
+                    startBtn.classList.remove('ready');
+                }
+            } else {
+                rrVal.textContent = "--";
+                verdictBox.innerHTML = "Please mark Entry, Stop Loss, and Target on the chart to calculate the Risk:Reward ratio.";
+                verdictBox.className = "verdict-box";
+                startBtn.disabled = true;
+                startBtn.classList.remove('ready');
             }
         }
 
-        // Trade Log
-        function addTrade(type, price, time) {
-            trades.push({
-                type: type,
-                price: price,
-                time: time ? new Date(time * 1000).toLocaleString() : new Date().toLocaleString()
-            });
-            renderTrades();
+        // Replay Challenge Execution (Refinement 6)
+        function toggleReplayChallenge() {
+            if (replayRunning) {
+                // Pause replay
+                clearInterval(replayTimer);
+                replayTimer = null;
+                replayRunning = false;
+                document.getElementById('startReplayBtn').textContent = '▶ Continue Replay';
+                document.getElementById('replayStatusBanner').style.display = 'none';
+            } else {
+                // Hide past scorecard
+                document.getElementById('scorecardWidget').style.display = 'none';
+                
+                replayRunning = true;
+                document.getElementById('startReplayBtn').textContent = '⏸ Pause Replay';
+                
+                const banner = document.getElementById('replayStatusBanner');
+                banner.style.display = 'block';
+                banner.className = 'replay-status-banner badge-yellow';
+                banner.textContent = 'Challenge running... Watching target feeds';
+
+                replayTimer = setInterval(playNextReplayCandle, 250);
+            }
         }
 
-        function renderTrades() {
-            var list = document.getElementById('tradeList');
-            if (trades.length === 0) {
-                list.innerHTML = '<div class="no-trades">No trades yet.</div>';
+        function playNextReplayCandle() {
+            if (hiddenReplayQueue.length === 0) {
+                // Queue finished, position closed at market close
+                endReplayChallenge('expire', visibleCandlesFeed[visibleCandlesFeed.length - 1].close);
                 return;
             }
-            
-            var html = '';
-            for (var i = trades.length - 1; i >= 0; i--) {
-                var t = trades[i];
-                html += '<div class="trade-item ' + t.type + '">';
-                html += '<span>' + t.type.toUpperCase() + ' @ ' + formatP(t.price) + '</span>';
-                html += '<span>' + t.time + '</span>';
-                html += '</div>';
+
+            var nextCandle = hiddenReplayQueue.shift();
+            visibleCandlesFeed.push(nextCandle);
+            candleSeries.update(nextCandle);
+            document.getElementById('currentPrice').textContent = formatP(nextCandle.close);
+            document.getElementById('dataInfo').textContent = 'Visible Candles: ' + visibleCandlesFeed.length;
+
+            const direction = document.getElementById('tradeDirection').value;
+            const high = nextCandle.high;
+            const low = nextCandle.low;
+
+            if (direction === 'long') {
+                if (low <= stopLossPrice) {
+                    endReplayChallenge('loss', stopLossPrice);
+                } else if (high >= targetPrice) {
+                    endReplayChallenge('win', targetPrice);
+                }
+            } else { // short
+                if (high >= stopLossPrice) {
+                    endReplayChallenge('loss', stopLossPrice);
+                } else if (low <= targetPrice) {
+                    endReplayChallenge('win', targetPrice);
+                }
             }
-            list.innerHTML = html;
         }
 
-        // Clear All
-        function clearAll() {
-            for (var i = 0; i < drawnLines.length; i++) {
-                candleSeries.removePriceLine(drawnLines[i]);
+        // Setup scorecard and Mistake Analysis (Refinement 7 & 8)
+        function endReplayChallenge(result, triggerPrice) {
+            clearInterval(replayTimer);
+            replayTimer = null;
+            replayRunning = false;
+            
+            document.getElementById('startReplayBtn').disabled = true;
+            document.getElementById('startReplayBtn').classList.remove('ready');
+            document.getElementById('startReplayBtn').textContent = 'Challenge Completed';
+
+            const banner = document.getElementById('replayStatusBanner');
+            banner.className = 'replay-status-banner ' + (result === 'win' ? 'badge-green' : 'badge-red');
+            
+            if (result === 'win') {
+                banner.textContent = `🎯 Target Hit! Price reached ${formatP(triggerPrice)}.`;
+            } else if (result === 'loss') {
+                banner.textContent = `🛑 Stop Loss Hit! Exit price filled at ${formatP(triggerPrice)}.`;
+            } else {
+                banner.textContent = `⏰ Session Expired! Position closed at final candle price: ${formatP(triggerPrice)}.`;
             }
-            drawnLines = [];
+
+            // Calculate score parameters
+            let score = 50;
+            let ratingStars = "★★★☆☆";
+            let mistakeMsg = "";
+            
+            const direction = document.getElementById('tradeDirection').value;
+            const risk = Math.abs(entryPrice - stopLossPrice);
+            const reward = Math.abs(targetPrice - entryPrice);
+            const ratio = reward / risk;
+
+            // Trend checks using a simple moving average of visible candles
+            let trendAlign = "Good";
+            let sumCloses = 0;
+            const checkLength = Math.min(20, visibleCandlesFeed.length - 40);
+            for(let i = visibleCandlesFeed.length - checkLength; i < visibleCandlesFeed.length; i++) {
+                sumCloses += visibleCandlesFeed[i].close;
+            }
+            const sma = sumCloses / checkLength;
+            
+            if (direction === 'long' && entryPrice < sma) {
+                trendAlign = "Weak";
+                score -= 10;
+                mistakeMsg += "⚠️ <strong>Counter-Trend Entry:</strong> You entered a Long position while prices were trading below the short-term moving average. Wait for trend reversals before placing entry flags. ";
+            } else if (direction === 'short' && entryPrice > sma) {
+                trendAlign = "Weak";
+                score -= 10;
+                mistakeMsg += "⚠️ <strong>Counter-Trend Entry:</strong> You entered a Short position while prices were trending upwards. Trade with the dominant trend for higher win rates. ";
+            }
+
+            // Risk reward checks
+            let rrCheck = "Good";
+            if (ratio < 1.5) {
+                rrCheck = "Poor";
+                score -= 15;
+                mistakeMsg += "⚠️ <strong>Low Risk:Reward Ratio:</strong> Entering trades with R:R below 1.5 forces you to maintain win rates above 40% to survive. Look for higher targets. ";
+            } else if (ratio >= 2.5) {
+                rrCheck = "Excellent";
+                score += 10;
+            }
+
+            // Hit outcome points
+            if (result === 'win') {
+                score += 15;
+                ratingStars = "★★★★★";
+                if (mistakeMsg === "") {
+                    mistakeMsg = "✅ <strong>Flawless Execution:</strong> Perfect trade sizing, trend alignment, and execution. Capital preserved and targets achieved.";
+                }
+            } else {
+                score -= 10;
+                ratingStars = "★★★☆☆";
+                if (mistakeMsg === "") {
+                    mistakeMsg = "ℹ️ <strong>Stop Out Triggered:</strong> Although the trade hit stop loss, your risk parameters were correct. Getting stopped out is a natural part of professional trading. Stay disciplined!";
+                }
+            }
+
+            // Bound score 0-100
+            score = Math.max(0, Math.min(score, 100));
+
+            // Render scorecard UI
+            const card = document.getElementById('scorecardWidget');
+            const scoreBadge = document.getElementById('scoreBadge');
+            const stars = document.getElementById('scoreStars');
+            const trend = document.getElementById('scoreTrend');
+            const scoreRR = document.getElementById('scoreRR');
+            const mistakeText = document.getElementById('scoreMistake');
+
+            scoreBadge.textContent = `${score}/100`;
+            if (score >= 70) {
+                scoreBadge.className = "score-badge";
+                stars.textContent = "★★★★☆";
+                if (score >= 85) stars.textContent = "★★★★★";
+            } else {
+                scoreBadge.className = "score-badge fail";
+                stars.textContent = "★★☆☆☆";
+            }
+
+            trend.textContent = trendAlign;
+            trend.style.color = trendAlign === 'Good' ? 'var(--accent-green)' : 'var(--accent-red)';
+
+            scoreRR.textContent = rrCheck;
+            scoreRR.style.color = rrCheck === 'Excellent' ? 'var(--accent-green)' : (rrCheck === 'Good' ? 'var(--accent-yellow)' : 'var(--accent-red)');
+
+            mistakeText.innerHTML = mistakeMsg;
+            card.style.display = 'block';
+        }
+
+        // Clear all elements
+        function clearAll() {
+            entryPrice = null;
+            stopLossPrice = null;
+            targetPrice = null;
+
+            if (entryLine) { candleSeries.removePriceLine(entryLine); entryLine = null; }
+            if (slLine) { candleSeries.removePriceLine(slLine); slLine = null; }
+            if (tpLine) { candleSeries.removePriceLine(tpLine); tpLine = null; }
+
+            for (var i = 0; i < supportLines.length; i++) {
+                candleSeries.removePriceLine(supportLines[i]);
+            }
+            supportLines = [];
+
+            for (var i = 0; i < resistanceLines.length; i++) {
+                candleSeries.removePriceLine(resistanceLines[i]);
+            }
+            resistanceLines = [];
+
             candleSeries.setMarkers([]);
-            trades = [];
-            renderTrades();
+            
+            document.getElementById('scorecardWidget').style.display = 'none';
+            document.getElementById('replayStatusBanner').style.display = 'none';
+            
+            updateSetupCard();
         }
 
         // Init
