@@ -17,6 +17,24 @@ const localTradingFAQ = {
 };
 
 let chatInitialized = false;
+let placeholderInterval = null;
+
+// --- INPUT PLACEHOLDER ROTATION ---
+function startPlaceholderRotation() {
+  if (!userInput) return;
+  const placeholders = [
+    "Ask anything...",
+    "• How to draw trendline?",
+    "• Risk management",
+    "• Psychology"
+  ];
+  let idx = 0;
+  clearInterval(placeholderInterval);
+  placeholderInterval = setInterval(() => {
+    idx = (idx + 1) % placeholders.length;
+    userInput.placeholder = placeholders[idx];
+  }, 3000);
+}
 
 // --- DYNAMIC WELCOME MESSAGE & COURSE ASSISTANT HELPER CARD ---
 function initChatWelcome() {
@@ -31,15 +49,10 @@ function initChatWelcome() {
   const welcomeDiv = document.createElement("div");
   welcomeDiv.className = "bot-message";
   welcomeDiv.innerHTML = `
-    <strong>👋 Welcome!</strong><br><br>
-    Ask me about:<br>
-    • <strong>Candlesticks</strong><br>
-    • <strong>Trendlines</strong><br>
-    • <strong>BOS</strong><br>
-    • <strong>CHoCH</strong><br>
-    • <strong>Risk Management</strong><br>
-    • <strong>Psychology</strong><br><br>
-    or type your own question.
+    <strong>👋 Welcome back!</strong><br><br>
+    Choose a topic below<br>
+    or<br>
+    Ask anything.
   `;
   chatBox.appendChild(welcomeDiv);
   
@@ -47,6 +60,7 @@ function initChatWelcome() {
   insertCourseAssistantCard();
   
   chatInitialized = true;
+  startPlaceholderRotation();
 }
 
 function insertCourseAssistantCard() {
@@ -85,18 +99,18 @@ function insertCourseAssistantCard() {
   
   if (lTitle.includes('structure') || lTitle.includes('bos') || lTitle.includes('trend')) {
     quickActionsHTML = `
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is BOS?')">💡 Explain BOS</button>
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is CHoCH?')">💡 Explain CHoCH</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is BOS?')">📊 Explain BOS</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is CHoCH?')">🔄 Explain CHoCH</button>
     `;
   } else if (lTitle.includes('candle') || lTitle.includes('pattern') || lTitle.includes('basics')) {
     quickActionsHTML = `
       <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain Candlesticks')">🕯️ Explain Candlesticks</button>
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is dynamic support?')">📈 Support/Resistance</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('How to draw trendlines?')">📈 Trendlines</button>
     `;
   } else {
     quickActionsHTML = `
       <button class="chat-helper-action-btn" onclick="sendQuickMsg('How much risk per trade?')">🛡️ Risk Rules</button>
-      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is R:R?')">📊 Explain R:R</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain R:R')">📊 Explain R:R</button>
     `;
   }
   
@@ -105,7 +119,7 @@ function insertCourseAssistantCard() {
   helperCard.innerHTML = `
     <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #00d4ff; letter-spacing: 0.5px; margin-bottom: 6px;">📘 Course Assistant</div>
     <div style="font-size: 14px; font-weight: 600; color: #ffffff; margin-bottom: 4px;">You're currently learning:<br><span style="color:#00ff9c;">${currentLessonTitle}</span></div>
-    <div style="font-size: 12px; color: #8892b0; margin-bottom: 12px;">Lesson ${nextIndex} / ${cards.length}</div>
+    <div style="font-size: 12px; color: #8892b0; margin-bottom: 12px;">Lesson ${nextIndex} / dots ${cards.length}</div>
     
     <div class="chat-helper-actions" style="display: flex; flex-wrap: wrap; gap: 8px;">
       ${quickActionsHTML}
@@ -174,7 +188,7 @@ function appendMessage(text, className, isHTML = false) {
   return div;
 }
 
-// --- MAIN SEND MESSAGE FUNCTION (LOCAL DEFINITIONS SEARCH + API FALLBACK) ---
+// --- MAIN SEND MESSAGE FUNCTION (LOCAL DEFINITIONS SEARCH ONLY - NO API) ---
 async function sendMessage() {
   if (!userInput || !chatBox) return;
 
@@ -184,74 +198,39 @@ async function sendMessage() {
   appendMessage(text, "user-message");
   userInput.value = "";
 
-  const loading = appendMessage("Thinking...", "bot-message");
+  // Show dynamic typing indicator (smooth 1-second delay)
+  const indicator = document.getElementById("typing-indicator");
+  if (indicator) {
+    chatBox.appendChild(indicator);
+    indicator.style.display = "block";
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
 
-  // 1. Check local search FAQs first (Instant Response)
+  // 1. Search knowledge base locally
   const query = text.toLowerCase();
   let matchedKey = null;
   
   if (query.includes("bos") || query.includes("break of structure")) matchedKey = "bos";
   else if (query.includes("choch") || query.includes("change of character")) matchedKey = "choch";
-  else if (query.includes("trendline") || query.includes("trend line")) matchedKey = "trendline";
+  else if (query.includes("trendline") || query.includes("trend line") || query.includes("draw trendline")) matchedKey = "trendline";
   else if (query.includes("rsi") || query.includes("relative strength")) matchedKey = "rsi";
   else if (query.includes("ema") || query.includes("moving average")) matchedKey = "ema";
   else if (query.includes("liquidity") || query.includes("sweep")) matchedKey = "liquidity";
-  else if (query.includes("risk") || query.includes("money management") || query.includes("position size")) matchedKey = "risk";
+  else if (query.includes("risk") || query.includes("money management") || query.includes("position size") || query.includes("risk per trade")) matchedKey = "risk";
   else if (query.includes("candlestick") || query.includes("candle") || query.includes("wick")) matchedKey = "candlestick";
   else if (query.includes("r:r") || query.includes("risk-reward") || query.includes("risk to reward")) matchedKey = "r:r";
+  else if (query.includes("psychology") || query.includes("emotion") || query.includes("control")) matchedKey = "risk"; // Psychology resolves to risk/mindset advice or local faq. We will match risk rules.
 
-  if (matchedKey) {
-    setTimeout(() => {
-      loading.remove();
+  setTimeout(() => {
+    if (indicator) indicator.style.display = "none";
+    
+    if (matchedKey) {
       const reply = localTradingFAQ[matchedKey];
       appendMessage(formatResponse(reply), "bot-message", true);
-    }, 450);
-    return;
-  }
-
-  // 2. Fallback to API if not matched locally
-  try {
-    const finalMessage = `
-You are TradeLab Mentor.
-
-LANGUAGE RULES (STRICT):
-- If the user writes in pure English → reply ONLY in English.
-- If the user writes in pure Hindi → reply ONLY in Hindi.
-- If the user mixes Hindi + English → reply ONLY in Hinglish.
-- Do NOT mix languages unless the user mixes them first.
-
-ANSWER RULES (VERY IMPORTANT):
-- Do NOT repeat previous explanations.
-- If the same topic is asked again, explain it from a DIFFERENT angle.
-- Use a new example, analogy, or structure every time.
-- Be concise and practical, not generic.
-User message:
-${text}
-`;
-
-    const response = await fetch(
-      "https://late-wood-8220.aneekpal199400.workers.dev",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: finalMessage })
-      }
-    );
-
-    const data = await response.json();
-    loading.remove();
-
-    if (data && data.reply) {
-      appendMessage(formatResponse(data.reply), "bot-message", true);
     } else {
-      appendMessage("⚠️ No reply found from Mentor server.", "bot-message");
+      appendMessage("This topic isn't available yet. Try asking about **BOS**, **CHoCH**, **Trendlines**, **Risk**, or **RSI**.", "bot-message", true);
     }
-
-  } catch (err) {
-    console.error(err);
-    loading.remove();
-    appendMessage("❌ Offline or server unavailable. Ask about BOS, CHoCH, Risk, Trendline, or RSI to get local answers!", "bot-message");
-  }
+  }, 1000);
 }
 
 function showTyping() {
@@ -272,6 +251,7 @@ if (aiFloatBtn) {
 
 window.addEventListener("load", () => {
   document.body.classList.remove("loading");
+  startPlaceholderRotation();
 });
 
 // ===== CONNECT FLOATING AI BUTTON =====
