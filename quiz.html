@@ -38,9 +38,13 @@
     .quiz-card .meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #64748b; font-weight: 500; }
     
     /* Progress Badges (Fix 6) */
-    .quiz-card .badge { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; transition: all 0.2s; }
+    .quiz-card .badge { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #ffffff; padding: 5px 14px; border-radius: 20px; font-size: 11.5px; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 4px; }
+    .quiz-card:hover:not(.locked) .badge { background: linear-gradient(90deg, #00ff9c, #00d4ff) !important; border-color: transparent !important; color: #000000 !important; box-shadow: 0 0 10px rgba(0, 255, 156, 0.3); }
     .quiz-card .badge.passed { background: rgba(0, 255, 156, 0.08) !important; border-color: rgba(0, 255, 156, 0.25) !important; color: #00ffc8 !important; }
     .quiz-card .badge.failed { background: rgba(255, 183, 0, 0.08) !important; border-color: rgba(255, 183, 0, 0.25) !important; color: #ffb700 !important; }
+    .quiz-card .badge.locked { background: rgba(239, 68, 68, 0.06) !important; border-color: rgba(239, 68, 68, 0.2) !important; color: #ef4444 !important; }
+    .quiz-card.locked { opacity: 0.55; cursor: not-allowed; }
+    .quiz-card.locked:hover { border-color: #1e2a3a !important; transform: none !important; background: rgba(255,255,255,0.02) !important; }
     
     .quiz-card.reality-card { grid-column: 1 / -1; background: linear-gradient(135deg, rgba(255,77,77,0.05), rgba(255,150,50,0.03)); border-color: rgba(255,77,77,0.22); }
     .quiz-card.reality-card:hover { border-color: rgba(255, 77, 77, 0.4); }
@@ -371,12 +375,58 @@
     let currentQuiz = null, currentQuestion = 0, score = 0, answered = false;
 
     function startQuiz(id) {
+      const lockStatus = checkQuizLock(id);
+      if (!lockStatus.unlocked) {
+        alert(`🔒 Quiz Locked!\n\n${lockStatus.message} with 80%+ to unlock this test.`);
+        return;
+      }
       currentQuiz = id; currentQuestion = 0; score = 0; answered = false;
       document.getElementById('quizSelection').style.display = 'none';
       document.getElementById('quizContainer').classList.add('active');
       document.getElementById('resultsScreen').classList.remove('active');
       document.getElementById('currentScore').textContent = '0';
       loadQuestion();
+    }
+
+    function checkQuizLock(id) {
+      const c = JSON.parse(localStorage.getItem('quizCompleted')) || {};
+      
+      if (id === 'basics') return { unlocked: true };
+      
+      if (id === 'snr' || id === 'risk') {
+        const basicsPassed = (c['basics'] || 0) >= 8;
+        return {
+          unlocked: basicsPassed,
+          message: 'Complete Beginner First'
+        };
+      }
+      
+      if (id === 'smc') {
+        const snrPassed = (c['snr'] || 0) >= 8;
+        const riskPassed = (c['risk'] || 0) >= 8;
+        return {
+          unlocked: snrPassed && riskPassed,
+          message: 'Complete Intermediate First'
+        };
+      }
+      
+      if (id === 'reality') {
+        const smcPassed = (c['smc'] || 0) >= 8;
+        return {
+          unlocked: smcPassed,
+          message: 'Complete Advanced First'
+        };
+      }
+      
+      if (id === 'deep') {
+        const realityPassed = (c['reality'] || 0) >= 24;
+        return {
+          unlocked: realityPassed,
+          message: 'Complete Reality Check First'
+        };
+      }
+      
+      return { unlocked: true };
     }
 
     function loadQuestion() {
@@ -494,110 +544,54 @@
 
     function updateBadges() {
       const c = JSON.parse(localStorage.getItem('quizCompleted'))||{};
-      Object.keys(quizData).forEach(q => {
-        const b = document.getElementById('badge-'+q);
-        if(b) {
+      const quizIds = ['basics', 'snr', 'risk', 'smc', 'reality', 'deep'];
+      
+      quizIds.forEach(q => {
+        const card = document.querySelector(`.quiz-card[onclick*="'${q}'"]`);
+        if (!card) return;
+        
+        const badge = card.querySelector('.badge');
+        const metaSpan = card.querySelector('.meta span:first-child');
+        
+        const total = quizData[q] ? quizData[q].length : 10;
+        const timeEstimate = q === 'basics' || q === 'snr' ? '~7 min' : q === 'risk' ? '~8 min' : q === 'smc' ? '~10 min' : q === 'reality' ? '~20 min' : '~15 min';
+        
+        const lockStatus = checkQuizLock(q);
+        
+        if (!lockStatus.unlocked) {
+          card.classList.add('locked');
+          if (metaSpan) {
+            metaSpan.textContent = `${total} Questions • ${timeEstimate}`;
+          }
+          if (badge) {
+            badge.innerHTML = `🔒 ${lockStatus.message}`;
+            badge.className = 'badge locked';
+          }
+        } else {
+          card.classList.remove('locked');
+          if (metaSpan) {
+            metaSpan.textContent = `${total} Questions • ${timeEstimate}`;
+          }
+          
           if (c[q] !== undefined) {
-            const total = quizData[q].length;
             const score = c[q];
             const pct = (score / total) * 100;
-            if (pct >= 80) {
-              b.textContent = `Passed ${score}/${total}`;
-              b.className = 'badge passed';
-            } else {
-              b.textContent = `Retry ${score}/${total}`;
-              b.className = 'badge failed';
+            if (badge) {
+              if (pct >= 80) {
+                badge.innerHTML = `Passed ${score}/${total}`;
+                badge.className = 'badge passed';
+              } else {
+                badge.innerHTML = `Retry ${score}/${total}`;
+                badge.className = 'badge failed';
+              }
             }
           } else {
-            b.textContent = 'Start';
-            b.className = 'badge';
+            if (badge) {
+              badge.innerHTML = `▶ Start Quiz`;
+              badge.className = 'badge';
+            }
           }
         }
-      });
-    }
-    updateBadges();o - proves discipline fear-based. Real discipline = rules without reward", "No effect"], hi: ["हां - true discipline internal", "और strictly", "नहीं - prove करता discipline fear-based। Real discipline = बिना reward rules", "कोई effect नहीं"] }, correct: 2, explanation: { en: "No. Proves discipline externally enforced by fear. Real discipline = rules without reward. Most aren't disciplined - just afraid.", hi: "नहीं। Prove करता discipline fear से। Real discipline = बिना reward rules। Most disciplined नहीं - बस डरे हुए।" }, reality: { en: "🔥 Think you're disciplined? Would you follow same rules in demo with nothing at stake?", hi: "🔥 Disciplined हो? Demo में बिना stake same rules follow करोगे?" } }
-      ]
-    };
-
-    let currentQuiz = null, currentQuestion = 0, score = 0, answered = false;
-
-    function startQuiz(id) {
-      currentQuiz = id; currentQuestion = 0; score = 0; answered = false;
-      document.getElementById('quizSelection').style.display = 'none';
-      document.getElementById('quizContainer').classList.add('active');
-      document.getElementById('resultsScreen').classList.remove('active');
-      document.getElementById('currentScore').textContent = '0';
-      loadQuestion();
-    }
-
-    function loadQuestion() {
-      const quiz = quizData[currentQuiz], q = quiz[currentQuestion];
-      document.getElementById('questionText').textContent = q.q[currentLang] || q.q.en;
-      document.getElementById('questionCounter').textContent = (currentQuestion + 1) + '/' + quiz.length;
-      document.getElementById('progressFill').style.width = ((currentQuestion + 1) / quiz.length * 100) + '%';
-      const list = document.getElementById('optionsList');
-      list.innerHTML = '';
-      (q.options[currentLang] || q.options.en).forEach((opt, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn'; btn.textContent = opt;
-        btn.onclick = () => selectAnswer(i);
-        list.appendChild(btn);
-      });
-      document.getElementById('explanation').classList.remove('show','correct-exp','wrong-exp');
-      document.getElementById('realityBox').classList.remove('show');
-      document.getElementById('nextBtn').disabled = true;
-      document.getElementById('nextBtn').textContent = 'Next Question →';
-      answered = false;
-    }
-
-    function selectAnswer(index) {
-      if (answered) return;
-      answered = true;
-      const quiz = quizData[currentQuiz], q = quiz[currentQuestion], opts = document.querySelectorAll('.option-btn'), exp = document.getElementById('explanation');
-      opts.forEach((o,i) => { o.classList.add('disabled'); if (i===q.correct) o.classList.add('correct'); else if (i===index) o.classList.add('wrong'); });
-      if (index === q.correct) { score++; document.getElementById('currentScore').textContent = score; exp.classList.add('correct-exp'); document.getElementById('expTitle').textContent = currentLang==='hi'?'✅ सही!':'✅ Correct!'; }
-      else { exp.classList.add('wrong-exp'); document.getElementById('expTitle').textContent = currentLang==='hi'?'❌ गलत!':'❌ Wrong!'; }
-      document.getElementById('explanationText').textContent = q.explanation[currentLang] || q.explanation.en;
-      exp.classList.add('show');
-      if (q.reality) { document.getElementById('realityText').textContent = q.reality[currentLang] || q.reality.en; document.getElementById('realityBox').classList.add('show'); }
-      document.getElementById('nextBtn').disabled = false;
-      if (currentQuestion === quiz.length - 1) document.getElementById('nextBtn').textContent = currentLang==='hi'?'Results →':'See Results →';
-    }
-
-    function nextQuestion() {
-      if (currentQuestion < quizData[currentQuiz].length - 1) { currentQuestion++; loadQuestion(); }
-      else showResults();
-    }
-
-    function showResults() {
-      document.getElementById('quizContainer').classList.remove('active');
-      document.getElementById('resultsScreen').classList.add('active');
-      const quiz = quizData[currentQuiz], pct = (score/quiz.length)*100, isReality = currentQuiz==='reality';
-      document.getElementById('resultsScore').textContent = score+'/'+quiz.length;
-      const sEl = document.getElementById('resultsScore'), iEl = document.getElementById('resultsIcon'), mEl = document.getElementById('resultsMessage'), rEl = document.getElementById('resultsReality'), rTxt = document.getElementById('resultsRealityText');
-      if (pct >= 80) { sEl.className='results-score great'; iEl.textContent='🎉'; mEl.textContent=currentLang==='hi'?'बढ़िया!':'Excellent!'; if(isReality){rEl.classList.add('show'); rTxt.textContent=currentLang==='hi'?"Overconfident मत हो। Paper trade 3 months पहले।":"Don't get cocky. Paper trade 3 months first.";} }
-      else if (pct >= 60) { sEl.className='results-score good'; iEl.textContent='👍'; mEl.textContent=currentLang==='hi'?'ठीक है, gaps हैं।':'Good, but gaps exist.'; if(isReality){rEl.classList.add('show'); rTxt.textContent=currentLang==='hi'?"Real money ready नहीं। 80%+ तक study करो।":"Not ready for real money. Study until 80%+.";} }
-      else { sEl.className='results-score poor'; iEl.textContent='📚'; mEl.textContent=currentLang==='hi'?'Practice करो!':'Review material!'; if(isReality){rEl.classList.add('show'); rTxt.textContent=currentLang==='hi'?"Real money से trade किया तो LOSE करोगे। Learning Vault जाओ।":"You WILL lose real money. Go back to Learning Vault.";} }
-      const c = JSON.parse(localStorage.getItem('quizCompleted'))||{};
-      c[currentQuiz] = Math.max(c[currentQuiz]||0, score);
-      localStorage.setItem('quizCompleted', JSON.stringify(c));
-      updateBadges();
-    }
-
-    function backToSelection() {
-      document.getElementById('quizSelection').style.display = 'grid';
-      document.getElementById('quizContainer').classList.remove('active');
-      document.getElementById('resultsScreen').classList.remove('active');
-      document.getElementById('resultsReality').classList.remove('show');
-    }
-
-    function retryQuiz() { startQuiz(currentQuiz); }
-
-    function updateBadges() {
-      const c = JSON.parse(localStorage.getItem('quizCompleted'))||{};
-      Object.keys(c).forEach(q => {
-        const b = document.getElementById('badge-'+q);
-        if(b) { b.textContent = c[q]+'/'+(quizData[q]?quizData[q].length:10)+' ✓'; b.classList.add('completed'); }
       });
     }
     updateBadges();
