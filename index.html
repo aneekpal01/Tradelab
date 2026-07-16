@@ -2369,45 +2369,44 @@
   </script>
 <div class="chat-container" id="aiChatBox">
   <div class="chat-header" id="aiChatHeader">
-
-  <div class="header-left">
-    <span class="brain">🎓</span>
-    <div>
-      <span class="title">TradeLab Mentor</span>
-      <span class="subtitle">Learning Assistant</span>
+    <div class="header-left">
+      <div class="avatar-gradient">TL</div>
+      <div>
+        <span class="title">TradeLab AI <span class="beta-badge">Beta</span></span>
+        <span class="subtitle"><span class="pulse-indicator"></span> Offline Learning Mode</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <button onclick="toggleChat()" class="close-btn" title="Close">×</button>
+    </div>
+  </div>
+  
+  <div class="glass-divider"></div>
+ 
+  <div class="chat-box" id="chat-box">
+    <!-- Dynamic welcome message and Course Assistant Helper card will be inserted here dynamically -->
+    <div id="typing-indicator" style="display:none; align-self: flex-start; background: #18181b; border: 1px solid rgba(255, 255, 255, 0.06); padding: 13px 16px; border-radius: 14px 14px 14px 2px; max-width: 82%; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); z-index: 1;">
+      <div class="typing-dots">
+        <span></span><span></span><span></span>
+      </div>
     </div>
   </div>
 
-  <div class="header-right">
-    <button onclick="toggleChat()" class="close-btn">✖</button>
+  <div class="quick-actions" id="chatQuickActions">
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('How to draw trendlines?')">📈 Trendline</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('How much risk per trade?')">💰 Risk</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('How to control emotions?')">🧠 Psychology</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain RSI Divergence')">⚡ RSI</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is BOS?')">📊 BOS</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is CHoCH?')">🔄 CHoCH</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain EMA')">📉 EMA</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is market liquidity?')">💧 Liquidity</button>
   </div>
 
-</div>
- 
-<div class="chat-box" id="chat-box">
-  <!-- Dynamic welcome message and Course Assistant Helper card will be inserted here dynamically -->
-  <div id="typing-indicator" style="display:none;">
-    <span class="typing-text">TradeLab Mentor is typing</span>
-    <span class="dots">
-      <span>.</span><span>.</span><span>.</span>
-    </span>
+  <div class="chat-input-area">
+      <input type="text" id="user-input" placeholder="Ask anything..." onkeypress="handleEnter(event)">
+      <button onclick="sendMessage()" class="send-msg-btn">➤</button>
   </div>
-</div>
-
-<div class="quick-actions" style="display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 15px; background: rgba(0,0,0,0.15); border-top: 1px solid rgba(255,255,255,0.03);">
-    <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is BOS?')">BOS</button>
-    <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is CHoCH?')">CHoCH</button>
-    <button class="chat-helper-action-btn" onclick="sendQuickMsg('How much risk per trade?')">Risk</button>
-    <button class="chat-helper-action-btn" onclick="sendQuickMsg('How to draw trendlines?')">Trendline</button>
-    <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain Candlesticks')">Candlestick</button>
-    <button class="chat-helper-action-btn" onclick="sendQuickMsg('How to control emotions?')">Psychology</button>
-    <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain RSI Divergence')">RSI</button>
-</div>
-
-<div class="chat-input-area">
-    <input type="text" id="user-input" placeholder="Type your question..." onkeypress="handleEnter(event)">
-    <button onclick="sendMessage()">➤</button>
-</div>
 </div>
   <script src="script.js"></script>
   <script>
