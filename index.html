@@ -121,46 +121,113 @@
   <!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
 
-  <div class="sidebar-logo">
-    <div class="streak-badge" id="streakBadge" title="Your learning streak">
-      <span class="streak-fire">🔥</span>
-      <span class="streak-count" id="streakCount">0</span>
+  <!-- Day 2 User Profile Card (Checklist 15) -->
+  <div class="profile-card" id="profileCard">
+    <div class="profile-card-top" onclick="openUserNamePrompt()" style="cursor: pointer;" title="Edit profile name">
+      <span class="profile-avatar">👤</span>
+      <div class="profile-meta">
+        <span class="profile-name" id="profileName">Aneek</span>
+        <span class="profile-level">Level 1 Trader</span>
+      </div>
     </div>
-
-    <button class="sidebar-close-btn" type="button" id="sidebarCloseBtn" onclick="closeMenu()" title="Close menu" aria-label="Close menu">✕</button>
+    <div class="profile-card-bottom">
+      <div class="profile-streak-line">
+        <span class="profile-streak-badge" id="profileStreak">🔥 Day 2</span>
+        <span class="profile-progress-pct" id="profileProgressPct">7%</span>
+      </div>
+      <div class="profile-progress-track">
+        <div class="profile-progress-bar" id="profileProgressBar" style="width: 7%;"></div>
+      </div>
+    </div>
   </div>
 
-  <ul class="nav-links" id="navLinks">
+  <button class="sidebar-close-btn" type="button" id="sidebarCloseBtn" onclick="closeMenu()" title="Close menu" aria-label="Close menu">✕</button>
 
-    <li>
-      <button onclick="toggleChat()" class="nav-btn ai-mentor-btn">
-        🤖 AI Mentor
-      </button>
-    </li>
+  <!-- Sidebar Sections (Checklist 16) -->
+  <div class="sidebar-menu-wrapper">
+    
+    <div class="menu-section">
+      <h4 class="menu-section-title">LEARN</h4>
+      <ul class="menu-list">
+        <li>
+          <a href="#learn" class="menu-item" id="menuLearn">
+            <span class="menu-icon">📚</span>
+            <span class="menu-text">Learning Vault</span>
+          </a>
+        </li>
+        <li>
+          <a href="quiz.html" class="menu-item" id="menuQuiz">
+            <span class="menu-icon">🏆</span>
+            <span class="menu-text">Quiz</span>
+          </a>
+        </li>
+      </ul>
+    </div>
 
-    <li><a href="#learn"> Learning Vault</a></li>
+    <div class="menu-section">
+      <h4 class="menu-section-title">TOOLS</h4>
+      <ul class="menu-list">
+        <li>
+          <button onclick="toggleChat(); closeMobileMenuAfterNav();" class="menu-item" id="menuAIMentor">
+            <span class="menu-icon">🤖</span>
+            <span class="menu-text">AI Mentor</span>
+          </button>
+        </li>
+        <li>
+          <a href="backtest.html" class="menu-item" id="menuBacktest">
+            <span class="menu-icon">📈</span>
+            <span class="menu-text">Backtesting</span>
+          </a>
+        </li>
+        <li>
+          <a href="calculator.html" class="menu-item" id="menuCalculator">
+            <span class="menu-icon">🧮</span>
+            <span class="menu-text">Risk Calculator</span>
+          </a>
+        </li>
+      </ul>
+    </div>
 
-    <li><a href="backtest.html"> Backtesting Lab</a></li>
+    <div class="menu-section">
+      <h4 class="menu-section-title">HELP</h4>
+      <ul class="menu-list">
+        <li>
+          <a href="#faq" class="menu-item" id="menuFAQ">
+            <span class="menu-icon">❓</span>
+            <span class="menu-text">FAQ</span>
+          </a>
+        </li>
+      </ul>
+    </div>
 
-    <li><a href="calculator.html"> Risk Calculator</a></li>
+    <div class="menu-section" id="accountSection">
+      <h4 class="menu-section-title">ACCOUNT</h4>
+      <ul class="menu-list">
+        <li id="loginItem">
+          <a href="login.html" class="menu-item" id="menuLogin">
+            <span class="menu-icon">👤</span>
+            <span class="menu-text">Profile / Login</span>
+          </a>
+        </li>
+        <li id="profileItem" style="display:none;">
+          <button onclick="openUserNamePrompt()" class="menu-item" id="menuProfile">
+            <span class="menu-icon">👤</span>
+            <span class="menu-text">Profile</span>
+          </button>
+        </li>
+      </ul>
+    </div>
 
-    <li><a href="quiz.html"> Quiz</a></li>
+  </div>
 
-    <li><a href="#faq">❓ FAQ</a></li>
-
-    <li id="loginItem">
-      <a href="login.html">👤 Login</a>
-    </li>
-
-    <li id="userItem"
-        style="display:none;color:#00ffc8;font-weight:600;font-size:14px;">
-    </li>
-
-    <li id="logoutItem" style="display:none;">
-      <a href="#" onclick="logoutUser()">🚪 Logout</a>
-    </li>
-
-  </ul>
+  <!-- Logout Footer (Checklist 17) -->
+  <div class="sidebar-footer" id="logoutItem" style="display:none;">
+    <div class="sidebar-divider-line"></div>
+    <button onclick="logoutUser()" class="menu-item logout-btn">
+      <span class="menu-icon">🚪</span>
+      <span class="menu-text">Logout</span>
+    </button>
+  </div>
 
 </aside>
 
@@ -280,26 +347,35 @@
       <a href="#learn" class="btn">Start Learning</a>
     </div>
 
-    <!-- Stats Banner Strip -->
-    <div class="stats-strip">
-      <div class="stat-strip-item">
-        <span class="stat-number" id="statEnrolled">1,523</span>
-        <span class="stat-label">Students Enrolled</span>
+    <!-- Stats Banner Grid (Checklist 21) -->
+    <div class="stats-cards-grid">
+      <div class="stat-card">
+        <div class="stat-card-icon">🎓</div>
+        <div class="stat-card-content">
+          <span class="stat-number" id="statEnrolled">1,523</span>
+          <span class="stat-label">Students Enrolled</span>
+        </div>
       </div>
-      <div class="stat-strip-divider"></div>
-      <div class="stat-strip-item">
-        <span class="stat-number" id="statLearning">0</span>
-        <span class="stat-label">Already Learning</span>
+      <div class="stat-card">
+        <div class="stat-card-icon">🔥</div>
+        <div class="stat-card-content">
+          <span class="stat-number" id="statLearning">0</span>
+          <span class="stat-label">Already Learning</span>
+        </div>
       </div>
-      <div class="stat-strip-divider"></div>
-      <div class="stat-strip-item">
-        <span class="stat-number" id="statVideos">0</span>
-        <span class="stat-label">Video Lessons</span>
+      <div class="stat-card">
+        <div class="stat-card-icon">📺</div>
+        <div class="stat-card-content">
+          <span class="stat-number" id="statVideos">0</span>
+          <span class="stat-label">Video Lessons</span>
+        </div>
       </div>
-      <div class="stat-strip-divider"></div>
-      <div class="stat-strip-item">
-        <span class="stat-number">100%</span>
-        <span class="stat-label">Free Forever</span>
+      <div class="stat-card">
+        <div class="stat-card-icon">💚</div>
+        <div class="stat-card-content">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Free Forever</span>
+        </div>
       </div>
     </div>
 
@@ -1418,17 +1494,15 @@
 
     const loginItem = document.getElementById('loginItem');
     const logoutItem = document.getElementById('logoutItem');
-    const userItem = document.getElementById('userItem');
+    const profileItem = document.getElementById('profileItem');
     
     auth.onAuthStateChanged((user) => {
       if (user) {
         document.body.style.opacity = "1";
         if(loginItem) loginItem.style.display = 'none';
         if(logoutItem) logoutItem.style.display = 'block';
+        if(profileItem) profileItem.style.display = 'block';
         window.__emailUsername = user.email.split('@')[0];
-        if(userItem) {
-          userItem.style.display = 'block';
-        }
         updateUserNameDisplay();
       } else {
         window.location.href = "login.html";
@@ -1463,8 +1537,9 @@
       if (topbarBtn) topbarBtn.title = name;
       const initialEl = document.getElementById('topbarUserInitial');
       if (initialEl) initialEl.textContent = name.trim().charAt(0).toUpperCase() || '?';
-      const userItem = document.getElementById('userItem');
-      if (userItem) userItem.textContent = 'Hi, ' + name;
+      
+      const profileName = document.getElementById('profileName');
+      if (profileName) profileName.textContent = name;
     }
   </script>
 
@@ -1561,8 +1636,20 @@
       const completed = completedVideos.length;
       const percentage = (completed / TOTAL_VIDEOS) * 100;
       
-      document.getElementById('progressBar').style.width = percentage + '%';
-      document.getElementById('progressCount').textContent = completed + '/' + TOTAL_VIDEOS + ' Completed';
+      const pBar = document.getElementById('progressBar');
+      if (pBar) pBar.style.width = percentage + '%';
+      
+      const pCount = document.getElementById('progressCount');
+      if (pCount) pCount.textContent = completed + '/' + TOTAL_VIDEOS + ' Completed';
+
+      const roundedPct = Math.round(percentage);
+
+      // Update sidebar card progress (Checklist 15)
+      const sidebarPct = document.getElementById('profileProgressPct');
+      if (sidebarPct) sidebarPct.textContent = roundedPct + '%';
+
+      const sidebarBar = document.getElementById('profileProgressBar');
+      if (sidebarBar) sidebarBar.style.width = percentage + '%';
     }
 
     function resetProgress() {
@@ -1618,8 +1705,10 @@
       if (!btn) return;
       if (theme === 'light') {
         btn.classList.add('is-light');
+        btn.textContent = '☀️';
       } else {
         btn.classList.remove('is-light');
+        btn.textContent = '🌙';
       }
     }
 
@@ -1723,9 +1812,49 @@
     const sidebarCloseBtnEl = document.getElementById('sidebarCloseBtn');
     if (sidebarCloseBtnEl) sidebarCloseBtnEl.addEventListener('click', closeMenu);
 
-    document.querySelectorAll('.nav-links a, .nav-links button').forEach(link => {
+    document.querySelectorAll('.sidebar .menu-item').forEach(link => {
       link.addEventListener('click', closeMobileMenuAfterNav);
     });
+
+    // Active menu item handler (Checklist 11, 12)
+    const menuItems = document.querySelectorAll('.sidebar .menu-item');
+    const learnSec = document.getElementById('learn');
+    const faqSec = document.getElementById('faq');
+
+    function setActiveMenuItem() {
+      const hash = window.location.hash;
+      menuItems.forEach(item => item.classList.remove('active'));
+
+      if (hash === '#faq') {
+        const faqBtn = document.getElementById('menuFAQ');
+        if (faqBtn) faqBtn.classList.add('active');
+      } else if (hash === '#learn' || window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || !hash) {
+        const learnBtn = document.getElementById('menuLearn');
+        if (learnBtn) learnBtn.classList.add('active');
+      }
+    }
+
+    window.addEventListener('hashchange', setActiveMenuItem);
+    setActiveMenuItem();
+
+    // Scroll spy for menu sections
+    window.addEventListener('scroll', () => {
+      if (!learnSec || !faqSec) return;
+      const learnRect = learnSec.getBoundingClientRect();
+      const faqRect = faqSec.getBoundingClientRect();
+
+      if (faqRect.top <= 150 && faqRect.bottom > 0) {
+        menuItems.forEach(item => item.classList.remove('active'));
+        const faqBtn = document.getElementById('menuFAQ');
+        if (faqBtn) faqBtn.classList.add('active');
+      } else if (learnRect.top <= 150 && learnRect.bottom > 0) {
+        menuItems.forEach(item => item.classList.remove('active'));
+        const learnBtn = document.getElementById('menuLearn');
+        if (learnBtn) learnBtn.classList.add('active');
+      } else {
+        setActiveMenuItem();
+      }
+    }, { passive: true });
   </script>
 
   <script>
@@ -2148,3 +2277,13 @@
 
     box.style.left = initialX + dx + "px";
     box.style.top = initialY + dy + "px";
+  });
+
+  document.addEventListener("mouseup", () => {
+    dragging = false;
+    document.body.style.userSelect = "auto";
+  });
+})();
+</script>
+</body>
+</html>
