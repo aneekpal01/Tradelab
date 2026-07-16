@@ -676,10 +676,10 @@ body {
 
 @keyframes titleGlow {
   0%, 100% {
-    filter: drop-shadow(0 0 10px rgba(0, 255, 156, 0.3));
+    filter: drop-shadow(0 0 7px rgba(0, 255, 156, 0.22));
   }
   50% {
-    filter: drop-shadow(0 0 20px rgba(0, 255, 156, 0.6));
+    filter: drop-shadow(0 0 14px rgba(0, 255, 156, 0.45));
   }
 }
 
@@ -6521,4 +6521,223 @@ body.loading #backToTop {
   box-shadow: 
     0 0 18px rgba(0, 255, 156, 0.35),
     0 0 36px rgba(0, 212, 255, 0.2) !important;
+}
+
+/* Highlight card animation (Checklist 2) */
+@keyframes cardFlash {
+  0%, 100% { border-color: rgba(255, 255, 255, 0.08); box-shadow: none; }
+  50% { border-color: #00ffc8; box-shadow: 0 0 20px rgba(0, 255, 196, 0.2); }
+}
+
+.learning-card.card-highlight {
+  animation: cardFlash 1.5s ease-in-out;
+}
+
+[data-theme="light"] .learning-card.card-highlight {
+  animation: cardFlashLight 1.5s ease-in-out;
+}
+
+@keyframes cardFlashLight {
+  0%, 100% { border-color: #cbd5e1; box-shadow: none; }
+  50% { border-color: #0d9488; box-shadow: 0 0 20px rgba(13, 148, 136, 0.2); }
+}
+
+/* Continue Learning Card (Checklist 2) */
+.continue-card {
+  background: rgba(0, 255, 196, 0.02);
+  border: 1px dashed rgba(0, 255, 196, 0.25);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.25s ease;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.continue-card:hover {
+  background: rgba(0, 255, 196, 0.05);
+  border-color: #00ffc8;
+  transform: translateY(-1px);
+}
+
+.continue-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #00ffc8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.continue-play-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.continue-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.continue-card-meta {
+  font-size: 11px;
+  color: #8892b0;
+}
+
+/* Light Mode Overrides for Continue Learning Card */
+[data-theme="light"] .continue-card {
+  background: rgba(13, 148, 136, 0.02) !important;
+  border: 1px dashed rgba(13, 148, 136, 0.25) !important;
+}
+
+[data-theme="light"] .continue-card:hover {
+  background: rgba(13, 148, 136, 0.05) !important;
+  border-color: #0d9488 !important;
+}
+
+[data-theme="light"] .continue-card-header {
+  color: #0d9488 !important;
+}
+
+[data-theme="light"] .continue-card-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .continue-card-meta {
+  color: #64748b !important;
+}
+
+/* Stats Cards Hover Tweaks (Checklist 4) */
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.stat-card:hover .stat-card-icon {
+  filter: brightness(1.2);
+}
+
+[data-theme="light"] .stat-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme="light"] .stat-card:hover .stat-card-icon {
+  filter: brightness(1.08) !important;
+}
+
+/* Desktop Collapse Animation / Mini-Sidebar (Checklist 1) */
+.close-icon-mobile {
+  display: block;
+}
+
+.collapse-icon-desktop {
+  display: none;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.sidebar-logo-collapsed {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  .close-icon-mobile {
+    display: none !important;
+  }
+  .collapse-icon-desktop {
+    display: block !important;
+  }
+  
+  .sidebar.active {
+    width: 78px !important;
+    min-width: 78px !important;
+    padding: 24px 12px !important;
+    align-items: center;
+  }
+  
+  .sidebar.active .sidebar-logo {
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 16px;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  
+  .sidebar.active .sidebar-close-btn {
+    position: static;
+    margin: 0;
+  }
+
+  .sidebar.active .profile-card {
+    padding: 10px 4px !important;
+    align-items: center;
+    border-color: rgba(255, 255, 255, 0.04);
+    background: transparent;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+
+  .sidebar.active .profile-card-top {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .sidebar.active .profile-meta,
+  .sidebar.active .profile-card-bottom {
+    display: none !important;
+  }
+
+  .sidebar.active #continueLearningCard {
+    display: none !important;
+  }
+
+  .sidebar.active .menu-section-title {
+    display: none !important;
+  }
+
+  .sidebar.active .menu-item {
+    justify-content: center;
+    padding: 10px 0 !important;
+    border-radius: 10px;
+    border-left: none !important;
+  }
+  
+  .sidebar.active .menu-item.active {
+    background: rgba(0, 255, 196, 0.08) !important;
+    color: #00ffc8 !important;
+    border-color: rgba(0, 255, 196, 0.15) !important;
+  }
+
+  [data-theme="light"] .sidebar.active .menu-item.active {
+    background: rgba(13, 148, 136, 0.08) !important;
+    color: #0d9488 !important;
+    border-color: rgba(13, 148, 136, 0.15) !important;
+  }
+
+  .sidebar.active .menu-text {
+    display: none !important;
+  }
+
+  .sidebar.active .sidebar-footer {
+    display: none !important;
+  }
+
+  .sidebar.active .sidebar-logo-collapsed {
+    display: block !important;
+  }
 }
