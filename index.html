@@ -64,22 +64,6 @@
   <!-- TradingView Ticker -->
   <div class="tradingview-widget-container">
     <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    {
-    "symbols": [
-      { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
-      { "proName": "BITSTAMP:ETHUSD", "title": "Ethereum" },
-      { "proName": "BINANCE:SOLUSDT", "title": "Solana" },
-      { "proName": "FX_IDC:USDINR", "title": "USD/INR" },
-      { "proName": "NASDAQ:TSLA", "title": "Tesla" }
-    ],
-    "showSymbolLogo": true,
-    "colorTheme": "dark",
-    "isTransparent": true,
-    "displayMode": "adaptive",
-    "locale": "en"
-    }
-    </script>
   </div>
 
   <!-- Market Status Bar -->
@@ -1873,6 +1857,35 @@
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
+    function updateTradingViewTicker(theme) {
+      const container = document.querySelector('.tradingview-widget-container');
+      if (!container) return;
+      
+      container.innerHTML = '<div class="tradingview-widget-container__widget"></div>';
+      
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
+      script.async = true;
+      
+      script.text = JSON.stringify({
+        "symbols": [
+          { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
+          { "proName": "BITSTAMP:ETHUSD", "title": "Ethereum" },
+          { "proName": "BINANCE:SOLUSDT", "title": "Solana" },
+          { "proName": "FX_IDC:USDINR", "title": "USD/INR" },
+          { "proName": "NASDAQ:TSLA", "title": "Tesla" }
+        ],
+        "showSymbolLogo": true,
+        "colorTheme": theme === 'light' ? 'light' : 'dark',
+        "isTransparent": true,
+        "displayMode": "adaptive",
+        "locale": "en"
+      });
+      
+      container.appendChild(script);
+    }
+
     function toggleTheme() {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -1900,6 +1913,7 @@
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
         updateNavThemeToggle(newTheme);
+        updateTradingViewTicker(newTheme);
       }, 250);
 
       // Remove ripple
@@ -1923,6 +1937,7 @@
 
     // Set initial state
     updateNavThemeToggle(savedTheme);
+    updateTradingViewTicker(savedTheme);
   </script>
 
   <script>
