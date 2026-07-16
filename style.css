@@ -4059,9 +4059,9 @@ body.loading #backToTop {
 /* ── HERO ─────────────────────────────── */
 [data-theme="light"] .hero {
     background:
-        linear-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.035) 1px, transparent 1px),
-        linear-gradient(160deg, #dbeafe 0%, #e0fdf4 50%, #ede9fe 100%) !important;
+        linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px),
+        linear-gradient(160deg, #f0f6ff 0%, #f0fdfa 50%, #f5f3ff 100%) !important;
     background-size: 44px 44px, 44px 44px, auto !important;
 }
 
@@ -4815,46 +4815,113 @@ body.loading #backToTop {
   align-items: center;
 }
 
-/* Stats strip */
-.stats-strip {
+/* Stats Cards Grid (Checklist 21) */
+.stats-cards-grid {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 48px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 255, 196, 0.2);
+  box-shadow: 0 8px 30px rgba(0, 255, 196, 0.08);
+}
+
+.stat-card-icon {
+  font-size: 28px;
+  background: rgba(0, 255, 196, 0.06);
+  border-radius: 12px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
-  margin-top: 48px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 20px 40px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  flex-wrap: wrap;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 255, 196, 0.15);
 }
 
-[data-theme="light"] .stats-strip {
-  background: rgba(255, 255, 255, 0.80);
-  border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
-}
-
-.stat-strip-item {
+.stat-card-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 0 36px;
+  align-items: flex-start;
+  text-align: left;
 }
 
-.stat-strip-divider {
-  width: 1px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.10);
-  flex-shrink: 0;
+.stat-card .stat-number {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent-primary, #00ffc8);
+  line-height: 1.1;
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
 }
 
-[data-theme="light"] .stat-strip-divider {
-  background: rgba(0, 0, 0, 0.10);
+.stat-card .stat-label {
+  font-size: 13px;
+  color: #9ca3af;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* Light mode overrides */
+[data-theme="light"] .stats-cards-grid {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+[data-theme="light"] .stat-card {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .stat-card:hover {
+  border-color: #0d9488 !important;
+  box-shadow: 0 8px 24px rgba(13, 148, 136, 0.08) !important;
+}
+
+[data-theme="light"] .stat-card-icon {
+  background: rgba(13, 148, 136, 0.06) !important;
+  border-color: rgba(13, 148, 136, 0.15) !important;
+}
+
+[data-theme="light"] .stat-card .stat-number {
+  color: #0d9488 !important;
+}
+
+[data-theme="light"] .stat-card .stat-label {
+  color: #475569 !important;
+}
+
+/* Responsive Grid */
+@media (max-width: 900px) {
+  .stats-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 500px) {
+  .stats-cards-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* hide old stats-container if still exists */
@@ -5741,7 +5808,7 @@ body.loading #backToTop {
 
 .sidebar {
   order: 2;
-  width: 250px;
+  width: 280px;
   flex-shrink: 0;
   position: sticky;
   top: 0;
@@ -5749,70 +5816,237 @@ body.loading #backToTop {
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: var(--bg-secondary);
-  border-left: 1px solid var(--border-color);
-  padding: 20px 16px 24px;
+  background: #111827;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px 20px;
   overflow-y: auto;
   z-index: 999;
-  transition: transform 0.35s ease, width 0.3s ease, opacity 0.3s ease,
-    padding 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.35s ease, width 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
 .sidebar::-webkit-scrollbar { width: 6px; }
 .sidebar::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
 }
 
-.sidebar-logo {
+/* User Profile Card (Checklist 15) */
+.profile-card {
+  background: #1b2430;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 24px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  padding-bottom: 16px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-/* Smaller streak/"Day N" badge, as requested */
-.sidebar-logo .streak-badge {
-  margin-left: 0;
-  padding: 2px 9px;
-  gap: 3px;
-}
-
-.sidebar-logo .streak-badge .streak-fire {
-  font-size: 11px;
-}
-
-.sidebar-logo .streak-badge .streak-count {
-  font-size: 11px;
-}
-
-/* Nav links: vertical stack inside the sidebar (overrides the
-   old horizontal .nav-links flex-row rule via higher specificity) */
-.sidebar .nav-links {
   flex-direction: column;
-  align-items: stretch;
-  gap: 6px;
-  width: 100%;
+  gap: 12px;
 }
 
-.sidebar .nav-links li {
-  width: 100%;
-}
-
-.sidebar .nav-links li a,
-.sidebar .nav-links li .ai-mentor-btn {
+.profile-card-top {
   display: flex;
   align-items: center;
-  width: 100%;
-  text-align: left;
-  justify-content: flex-start;
+  gap: 12px;
 }
 
-.sidebar .nav-links li .ai-mentor-btn {
-  margin-left: 0;
+.profile-avatar {
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 255, 196, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 255, 196, 0.25);
+  flex-shrink: 0;
+}
+
+.profile-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.profile-level {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.profile-card-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-streak-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-streak-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffb700;
+  background: rgba(255, 183, 0, 0.1);
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 183, 0, 0.2);
+}
+
+.profile-progress-pct {
+  font-size: 11px;
+  font-weight: 600;
+  color: #00ffc8;
+}
+
+.profile-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.profile-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00ffc8, #00d4ff);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Sidebar Menu Wrapper & Sections (Checklist 16) */
+.sidebar-menu-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: 12px;
+  margin-bottom: 2px;
+}
+
+.menu-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+
+/* Menu Item Sizing & Styling (Checklist 1, 2, 3, 4, 6, 8, 9) */
+.menu-item {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: #1b2430;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  color: #9ca3af;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.menu-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  filter: grayscale(100%);
+  opacity: 0.7;
+  transition: filter 0.25s, opacity 0.25s;
+}
+
+.menu-text {
+  flex: 1;
+}
+
+/* Hover Animation (Checklist 10) */
+.menu-item:hover {
+  transform: translateY(-1px);
+  background: #243041;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.menu-item:hover .menu-icon {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+/* Active Menu Styles (Checklist 11, 12, 14) */
+.menu-item.active {
+  background: rgba(0, 255, 196, 0.08) !important;
+  border-color: #00ffc8 !important;
+  color: #00ffc8 !important;
+  box-shadow: 0 0 12px rgba(0, 255, 196, 0.15) !important;
+}
+
+.menu-item.active .menu-icon {
+  filter: grayscale(0%) !important;
+  opacity: 1 !important;
+}
+
+/* Logout Button styling (Checklist 17) */
+.sidebar-footer {
+  margin-top: 16px;
+  width: 100%;
+}
+
+.sidebar-divider-line {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.menu-item.logout-btn {
+  background: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.menu-item.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.12) !important;
+  border-color: #ef4444 !important;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
 }
 
 /* ---------- MAIN CONTENT ---------- */
@@ -6083,108 +6317,92 @@ body.loading #backToTop {
 }
 
 /* =============================================================
-   LIGHT MODE — consistent, colorful sidebar buttons.
-   Scoped to `.sidebar` specifically so it wins over the earlier
-   (partially inconsistent) light-mode nav-link rules without
-   touching or deleting them.
+   LIGHT MODE — consistent, professional menu (Checklist 13)
 ============================================================= */
 
 [data-theme="light"] .sidebar {
-  background: #ffffff;
-  border-left: 1px solid #e2e8f0;
-  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
+  background: #ffffff !important;
+  border-left: 1px solid #cbd5e1 !important;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.03) !important;
 }
 
-[data-theme="light"] .sidebar-logo {
-  border-bottom-color: #e2e8f0;
+[data-theme="light"] .profile-card {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
 }
 
-/* AI Mentor — blue */
-[data-theme="light"] .sidebar .nav-links li .ai-mentor-btn {
-  background: rgba(0, 114, 255, 0.08) !important;
-  border: 1px solid #3b82f6 !important;
-  color: #1d4ed8 !important;
-  box-shadow: none !important;
-}
-[data-theme="light"] .sidebar .nav-links li .ai-mentor-btn:hover {
-  background: rgba(0, 114, 255, 0.15) !important;
+[data-theme="light"] .profile-avatar {
+  background: rgba(13, 148, 136, 0.08) !important;
+  border-color: rgba(13, 148, 136, 0.2) !important;
+  color: #0d9488 !important;
 }
 
-/* Learning Vault — green */
-[data-theme="light"] .sidebar .nav-links li a[href="#learn"] {
-  background: rgba(0, 180, 120, 0.08) !important;
-  border: 1px solid #00915a !important;
-  color: #00724a !important;
-}
-[data-theme="light"] .sidebar .nav-links li a[href="#learn"]:hover {
-  background: rgba(0, 180, 120, 0.16) !important;
+[data-theme="light"] .profile-name {
+  color: #0f172a !important;
 }
 
-/* Backtesting Lab — blue */
-[data-theme="light"] .sidebar .nav-links li a[href="backtest.html"] {
-  background: rgba(59, 130, 246, 0.08) !important;
-  border: 1px solid #3b82f6 !important;
-  color: #1d4ed8 !important;
-}
-[data-theme="light"] .sidebar .nav-links li a[href="backtest.html"]:hover {
-  background: rgba(59, 130, 246, 0.16) !important;
+[data-theme="light"] .profile-level {
+  color: #64748b !important;
 }
 
-/* Risk Calculator — orange */
-[data-theme="light"] .sidebar .nav-links li a[href="calculator.html"] {
-  background: rgba(245, 158, 11, 0.10) !important;
-  border: 1px solid #d97706 !important;
-  color: #92400e !important;
-}
-[data-theme="light"] .sidebar .nav-links li a[href="calculator.html"]:hover {
-  background: rgba(245, 158, 11, 0.18) !important;
+[data-theme="light"] .profile-streak-badge {
+  background: rgba(245, 158, 11, 0.08) !important;
+  color: #b45309 !important;
+  border-color: rgba(245, 158, 11, 0.2) !important;
 }
 
-/* Quiz — purple */
-[data-theme="light"] .sidebar .nav-links li a[href="quiz.html"] {
-  background: rgba(139, 92, 246, 0.08) !important;
-  border: 1px solid #7c3aed !important;
-  color: #5b21b6 !important;
-}
-[data-theme="light"] .sidebar .nav-links li a[href="quiz.html"]:hover {
-  background: rgba(139, 92, 246, 0.16) !important;
+[data-theme="light"] .profile-progress-pct {
+  color: #0d9488 !important;
 }
 
-/* FAQ — neutral teal outline */
-[data-theme="light"] .sidebar .nav-links li a[href="#faq"] {
-  background: rgba(0, 0, 0, 0.03) !important;
+[data-theme="light"] .profile-progress-track {
+  background: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .profile-progress-bar {
+  background: linear-gradient(90deg, #0d9488, #0ea5e9) !important;
+}
+
+[data-theme="light"] .menu-section-title {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .menu-item {
+  background: #ffffff !important;
   border: 1px solid #cbd5e1 !important;
-  color: #1e293b !important;
-}
-[data-theme="light"] .sidebar .nav-links li a[href="#faq"]:hover {
-  background: rgba(0, 0, 0, 0.06) !important;
+  color: #475569 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
 }
 
-/* Login — neutral outline */
-[data-theme="light"] .sidebar .nav-links li a[href="login.html"] {
-  background: rgba(0, 0, 0, 0.03) !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #1e293b !important;
-}
-[data-theme="light"] .sidebar .nav-links li a[href="login.html"]:hover {
-  background: rgba(0, 0, 0, 0.06) !important;
+[data-theme="light"] .menu-item:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
 }
 
-/* User greeting pill — green */
-[data-theme="light"] .sidebar #userItem {
-  background: rgba(0, 180, 120, 0.08) !important;
-  border: 1px solid rgba(0, 180, 120, 0.35) !important;
-  color: #00724a !important;
+[data-theme="light"] .menu-item.active {
+  background: rgba(13, 148, 136, 0.08) !important;
+  border-color: #0d9488 !important;
+  color: #0d9488 !important;
+  box-shadow: 0 0 12px rgba(13, 148, 136, 0.1) !important;
 }
 
-/* Logout — red */
-[data-theme="light"] .sidebar #logoutItem a {
+[data-theme="light"] .sidebar-divider-line {
+  background: #cbd5e1 !important;
+}
+
+[data-theme="light"] .menu-item.logout-btn {
+  background: rgba(239, 68, 68, 0.04) !important;
+  border-color: rgba(239, 68, 68, 0.25) !important;
+  color: #dc2626 !important;
+}
+
+[data-theme="light"] .menu-item.logout-btn:hover {
   background: rgba(239, 68, 68, 0.08) !important;
-  border: 1px solid #ef4444 !important;
-  color: #b91c1c !important;
-}
-[data-theme="light"] .sidebar #logoutItem a:hover {
-  background: rgba(239, 68, 68, 0.16) !important;
+  border-color: #dc2626 !important;
   color: #991b1b !important;
 }
 
@@ -6268,10 +6486,10 @@ body.loading #backToTop {
 /* Hero: make the candlestick background actually visible on a
    light page (it was tuned for a near-black background) */
 [data-theme="light"] .hero-candles-svg .candle-group {
-  opacity: 0.45 !important;
+  opacity: 0.12 !important;
 }
 [data-theme="light"] .hero-candles-svg polyline {
-  opacity: 0.4 !important;
+  opacity: 0.08 !important;
 }
 
 /* Streak badge border reads a bit crisper on white */
