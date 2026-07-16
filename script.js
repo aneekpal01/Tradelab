@@ -376,8 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }, { 
-    threshold: 0.1, 
-    rootMargin: '0px 0px -50px 0px' 
+    threshold: 0.1 
   });
 
   conceptCards.forEach(card => conceptObserver.observe(card));
@@ -386,6 +385,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // MARKET STATUS BAR — IST TIME + NSE HOURS + terminal info
 // =============================================
 let lastUpdateSeconds = 0;
+let lastNseStatus = null;
+let nseTransitioning = false;
 
 function openAlertsDrawer() {
   const panel = document.getElementById("alertsPanel");
@@ -396,6 +397,46 @@ function closeAlertsDrawer() {
   const panel = document.getElementById("alertsPanel");
   if (panel) panel.classList.remove("show");
 }
+
+function toggleClockDropdown(e) {
+  e.stopPropagation();
+  const dropdown = document.getElementById("clockDropdown");
+  if (dropdown) dropdown.classList.toggle("show");
+}
+
+function changeClockFormat(e, format) {
+  e.stopPropagation();
+  localStorage.setItem('clockFormat', format);
+  
+  const dropdown = document.getElementById("clockDropdown");
+  if (dropdown) dropdown.classList.remove("show");
+  
+  const c24 = document.getElementById("check24");
+  const c12 = document.getElementById("check12");
+  if (c24 && c12) {
+    c24.textContent = format === '24h' ? '✓' : '';
+    c12.textContent = format === '12h' ? '✓' : '';
+  }
+  
+  updateMarketStatus();
+}
+
+// Close clock dropdown on window clicks
+document.addEventListener('click', () => {
+  const dropdown = document.getElementById("clockDropdown");
+  if (dropdown) dropdown.classList.remove("show");
+});
+
+// Initialize format checkmarks on window load
+window.addEventListener('load', () => {
+  const format = localStorage.getItem('clockFormat') || '24h';
+  const c24 = document.getElementById("check24");
+  const c12 = document.getElementById("check12");
+  if (c24 && c12) {
+    c24.textContent = format === '24h' ? '✓' : '';
+    c12.textContent = format === '12h' ? '✓' : '';
+  }
+});
 
 function updateMarketStatus() {
   const dot      = document.getElementById("marketDot");
@@ -415,12 +456,26 @@ function updateMarketStatus() {
   const totalMins = h * 60 + m;
   const day = ist.getDay(); // 0=Sun, 6=Sat
 
-  // Format time with blinking colon
-  const hh = String(h).padStart(2, '0');
+  // Format clock time based on user format preference
+  const format = localStorage.getItem('clockFormat') || '24h';
+  let timeStr = "";
+  const col = '<span class="clock-colon-blink">:</span>';
+  
   const mm = String(m).padStart(2, '0');
   const ss = String(ist.getSeconds()).padStart(2, '0');
-  const col = '<span class="clock-colon-blink">:</span>';
-  timeEl.innerHTML = `${hh}${col}${mm}${col}${ss}`;
+
+  if (format === '12h') {
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    let displayH = h % 12;
+    displayH = displayH ? displayH : 12; // 0 becomes 12
+    const hh = String(displayH).padStart(2, '0');
+    timeStr = `${hh}${col}${mm}${col}${ss} ${ampm}`;
+  } else {
+    const hh = String(h).padStart(2, '0');
+    timeStr = `${hh}${col}${mm}${col}${ss}`;
+  }
+  
+  timeEl.innerHTML = timeStr;
 
   const isWeekend = (day === 0 || day === 6);
 
@@ -437,10 +492,35 @@ function updateMarketStatus() {
     else if (totalMins >= MARKET_CLOSE && totalMins < POST_CLOSE) nseStatus = "post";
   }
 
+  // Handle state-transition animation (Closed -> Opening... -> LIVE)
+  if (lastNseStatus === "closed" && nseStatus === "open" && !nseTransitioning) {
+    nseTransitioning = true;
+    setTimeout(() => {
+      nseTransitioning = false;
+      updateMarketStatus();
+    }, 300);
+  }
+  
+  // Save current state for next tick comparison
+  if (!nseTransitioning) {
+    lastNseStatus = nseStatus;
+  }
+
   // Calculate live countdown text
   let countdownText = "";
+  
   if (isWeekend) {
-    countdownText = "Opens Monday 9:15 AM";
+    // Weekend countdown
+    let hrsLeft = (24 - h) + 9; // Hours till Mon 9:00 AM
+    let daysLeft = 0;
+    if (day === 6) { // Sat
+      hrsLeft += 24; // Add Sun
+      daysLeft = 1;
+      const displayHours = hrsLeft - 24;
+      countdownText = `Opens Monday in ${daysLeft}d ${displayHours}h`;
+    } else { // Sun
+      countdownText = `Opens Monday in ${hrsLeft}h`;
+    }
   } else {
     if (totalMins < PRE_OPEN_START) {
       const diffMins = PRE_OPEN_START - totalMins;
@@ -449,81 +529,103 @@ function updateMarketStatus() {
       countdownText = `Opens in ${hrs}h ${mins}m`;
     } else if (totalMins >= PRE_OPEN_START && totalMins < MARKET_OPEN) {
       const diffMins = MARKET_OPEN - totalMins;
-      countdownText = `Trading opens in ${diffMins}m`;
+      const secLeft = 60 - ist.getSeconds();
+      const secStr = String(secLeft).padStart(2, '0');
+      const minStr = String(diffMins - 1).padStart(2, '0');
+      countdownText = `Trading starts in ${minStr}m ${secStr}s`;
     } else if (totalMins >= MARKET_OPEN && totalMins < MARKET_CLOSE) {
       const diffMins = MARKET_CLOSE - totalMins;
       const hrs = Math.floor(diffMins / 60);
       const mins = diffMins % 60;
-      countdownText = `Closes in ${hrs}h ${mins}m`;
+      const hrStr = String(hrs).padStart(2, '0');
+      const minStr = String(mins).padStart(2, '0');
+      countdownText = `Closes in ${hrStr}h ${minStr}m`;
     } else {
       let diffMins = (24 * 60 - totalMins) + PRE_OPEN_START;
       const hrs = Math.floor(diffMins / 60);
       const mins = diffMins % 60;
-      countdownText = `Opens Tomorrow 9:00 AM`;
+      const hrStr = String(hrs).padStart(2, '0');
+      const minStr = String(mins).padStart(2, '0');
+      countdownText = `Opens in ${hrStr}h ${minStr}m`;
     }
   }
 
-  // Update Left side
+  // Update classes and text based on transition and active statuses
   dot.className = "status-indicator-dot";
   label.className = "status-main-label";
 
-  if (nseStatus === "open") {
+  if (nseTransitioning) {
+    dot.classList.add("pre");
+    label.classList.add("pre");
+    label.textContent = "🟡 NSE OPENING...";
+    session.textContent = "Readying order books";
+    label.setAttribute('data-countdown', "Opening...");
+  } else if (nseStatus === "open") {
     dot.classList.add("open");
     label.classList.add("open");
-    label.textContent = "NSE OPEN";
-    session.textContent = "Live Trading";
+    label.textContent = "🟢 NSE LIVE";
+    session.textContent = `Closes in ${countdownText.replace("Closes in ", "")}`;
+    label.setAttribute('data-countdown', countdownText.replace("Closes in ", ""));
     
-    // Update NSE weather dot
     const nseDot = document.getElementById("nseDot");
-    if (nseDot) { nseDot.className = "weather-dot green-dot"; }
+    if (nseDot) nseDot.className = "weather-dot green-dot";
   } else if (nseStatus === "pre") {
     dot.classList.add("pre");
     label.classList.add("pre");
-    label.textContent = "PRE-OPEN";
+    label.textContent = "🟡 PRE-OPEN";
     session.textContent = countdownText;
+    label.setAttribute('data-countdown', countdownText.replace("Trading starts in ", ""));
     
     const nseDot = document.getElementById("nseDot");
-    if (nseDot) { nseDot.className = "weather-dot yellow-dot"; }
+    if (nseDot) nseDot.className = "weather-dot yellow-dot";
+  } else if (isWeekend) {
+    dot.classList.add("weekend");
+    label.classList.add("weekend");
+    label.textContent = "⚪ WEEKEND";
+    session.textContent = countdownText;
+    label.setAttribute('data-countdown', countdownText.replace("Opens Monday in ", ""));
+    
+    const nseDot = document.getElementById("nseDot");
+    if (nseDot) nseDot.className = "weather-dot white-dot";
   } else {
     dot.classList.add("closed");
     label.classList.add("closed");
-    label.textContent = "NSE CLOSED";
+    label.textContent = "🔴 NSE CLOSED";
     session.textContent = countdownText;
+    label.setAttribute('data-countdown', countdownText.replace("Opens in ", ""));
     
     const nseDot = document.getElementById("nseDot");
-    if (nseDot) { nseDot.className = "weather-dot red-dot"; }
+    if (nseDot) nseDot.className = "weather-dot red-dot";
   }
 
-  // ── Forex Hours (IST) ──
-  let forexStatus = "closed";
-  let forexSession = "Closed";
-  if (!(day === 6 && totalMins >= 4*60+30) && !(day === 0) && !(day === 1 && totalMins < 6*60+30)) {
-    forexStatus = "open";
-    if (totalMins >= 5*60+30 && totalMins < 6*60+30)       forexSession = "Sydney";
-    else if (totalMins >= 6*60+30 && totalMins < 13*60+30)  forexSession = "Tokyo";
-    else if (totalMins >= 13*60+30 && totalMins < 18*60+30) forexSession = "London";
-    else if (totalMins >= 18*60+30 && totalMins < 22*60)    forexSession = "London+NY";
-    else if (totalMins >= 22*60 || totalMins < 1*60+30)     forexSession = "New York";
-    else forexSession = "Active";
+  // ── London Forex Session (Mon-Fri 1:30 PM - 10:30 PM IST) ──
+  const londonStart = 13 * 60 + 30;
+  const londonEnd = 22 * 60 + 30;
+  let londonStatus = "closed";
+  if (!isWeekend) {
+    if (totalMins >= (londonStart - 30) && totalMins < londonStart) londonStatus = "pre";
+    else if (totalMins >= londonStart && totalMins < londonEnd) londonStatus = "open";
+  }
+  const londonDot = document.getElementById("londonDot");
+  if (londonDot) {
+    if (londonStatus === "open") londonDot.className = "weather-dot green-dot";
+    else if (londonStatus === "pre") londonDot.className = "weather-dot yellow-dot";
+    else if (isWeekend) londonDot.className = "weather-dot white-dot";
+    else londonDot.className = "weather-dot red-dot";
   }
 
-  const forexDot = document.getElementById("forexDot");
-  const forexName = document.getElementById("forexName");
-  const forexTooltipText = document.getElementById("forexTooltipText");
-  if (forexDot && forexName) {
-    if (forexStatus === "open") {
-      forexDot.className = "weather-dot green-dot";
-      forexName.textContent = `Forex (${forexSession})`;
-      if (forexTooltipText) {
-        forexTooltipText.innerHTML = `Forex Session Live<br>Active: ${forexSession}<br>Volatility: Medium-High`;
-      }
-    } else {
-      forexDot.className = "weather-dot red-dot";
-      forexName.textContent = "Forex (Closed)";
-      if (forexTooltipText) {
-        forexTooltipText.innerHTML = `Forex Session Closed<br>Opens: Mon 5:30 AM IST`;
-      }
-    }
+  // ── New York Forex Session (Mon-Fri 6:30 PM - 1:30 AM IST) ──
+  let nyStatus = "closed";
+  if (!isWeekend) {
+    if (totalMins >= 18*60 && totalMins < 18*60+30) nyStatus = "pre";
+    else if (totalMins >= 18*60+30 || totalMins < 1*60+30) nyStatus = "open";
+  }
+  const nyDot = document.getElementById("nyDot");
+  if (nyDot) {
+    if (nyStatus === "open") nyDot.className = "weather-dot green-dot";
+    else if (nyStatus === "pre") nyDot.className = "weather-dot yellow-dot";
+    else if (isWeekend) nyDot.className = "weather-dot white-dot";
+    else nyDot.className = "weather-dot red-dot";
   }
 
   // Live Sync Simulation
