@@ -1,9 +1,124 @@
-// --- AI CHAT ELEMENT REFERENCES (IMPORTANT) ---
+// --- CHAT ELEMENT REFERENCES (IMPORTANT) ---
 const chatContainer = document.getElementById("aiChatBox");
 const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
 
-// --- TOGGLE AI MENTOR CHAT (OPEN / CLOSE WITH ANIMATION) ---
+// --- LOCAL SEARCH / FAQ DEFINITIONS (OFFLINE BEST FEATURE) ---
+const localTradingFAQ = {
+  "bos": "**BOS (Break of Structure)** happens when the market is in a trend (uptrend or downtrend) and the price breaks and closes past the previous swing high or low. This confirms the trend is continuing.\\n\\nKey points:\\n• In an uptrend, breaking the previous higher high is a bullish BOS.\\n• In a downtrend, breaking the previous lower low is a bearish BOS.\\n• Always wait for a candle body close past the level, not just a wick sweep.",
+  "choch": "**CHoCH (Change of Character)** is the first sign of a potential trend change. It occurs when price breaks structural points in the opposite direction of the current trend.\\n\\nKey points:\\n• In an uptrend, a break below the last Higher Low is a bearish CHoCH.\\n• In a downtrend, a break above the last Lower High is a bullish CHoCH.\\n• It signals that order flow is shifting from buyers to sellers (or vice versa).",
+  "trendline": "A **Trendline** is a diagonal boundary drawn to track structural direction.\\n\\nHow to draw:\\n1. Connect at least 2 key swing highs (in a downtrend) or swing lows (in an uptrend).\\n2. Do not force lines to fit - if it cuts through candle bodies, it's invalid.\\n3. The more times price touches a trendline without breaking, the stronger it becomes.",
+  "rsi": "**RSI (Relative Strength Index)** is a popular momentum indicator:\\n• **Overbought (>70):** Indicates buying momentum is stretched, potential reversal or pullback.\\n• **Oversold (<30):** Indicates selling momentum is stretched, potential bounce.\\n• **Divergence:** If price makes a higher high but RSI makes a lower high, it signals weakening momentum and a highly probable reversal setup.",
+  "ema": "**EMA (Exponential Moving Average)** reacts faster to recent price fluctuations than Simple Moving Averages (SMA). It is commonly used to identify dynamic support/resistance levels and track current trend momentum (e.g., 20 EMA, 50 EMA, 200 EMA).",
+  "liquidity": "**Liquidity** represents zones where clusters of stop losses reside (commonly just above swing highs or below swing lows). Institutions target these areas to build their large positions without slippage before driving the price in the intended direction.",
+  "risk": "**Risk Management** is the single most important rule in trading:\\n1. Never risk more than **1% to 2%** of your total account balance per trade.\\n2. Set your Stop Loss first, then calculate your position/lot size accordingly.\\n3. Always target a minimum of **1:2 Risk-to-Reward Ratio** (meaning you stand to make twice what you risk).",
+  "candlestick": "**Candlesticks** display the Open, High, Low, and Close prices for a specific time period:\\n• **Body:** Shows the range between the Open and Close.\\n• **Wicks:** Show price rejection at the highs and lows.\\n• Key patterns to look for include **Pinbars / Hammers** (rejection at lows) and **Engulfing candles** (strong momentum shift).",
+  "r:r": "**R:R (Risk-to-Reward Ratio)** compares the potential loss of a trade to its potential profit. A 1:2 R:R means you risk ₹1,000 to make ₹2,000. Under this structure, even a 40% win rate keeps you profitable over time."
+};
+
+let chatInitialized = false;
+
+// --- DYNAMIC WELCOME MESSAGE & COURSE ASSISTANT HELPER CARD ---
+function initChatWelcome() {
+  if (!chatBox) return;
+  
+  // Clear everything except typing indicator
+  const indicator = document.getElementById("typing-indicator");
+  chatBox.innerHTML = "";
+  if (indicator) chatBox.appendChild(indicator);
+  
+  // 1. Welcome Message
+  const welcomeDiv = document.createElement("div");
+  welcomeDiv.className = "bot-message";
+  welcomeDiv.innerHTML = `
+    <strong>👋 Welcome!</strong><br><br>
+    Ask me about:<br>
+    • <strong>Candlesticks</strong><br>
+    • <strong>Trendlines</strong><br>
+    • <strong>BOS</strong><br>
+    • <strong>CHoCH</strong><br>
+    • <strong>Risk Management</strong><br>
+    • <strong>Psychology</strong><br><br>
+    or type your own question.
+  `;
+  chatBox.appendChild(welcomeDiv);
+  
+  // 2. Course Assistant Helper Card
+  insertCourseAssistantCard();
+  
+  chatInitialized = true;
+}
+
+function insertCourseAssistantCard() {
+  const completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || [];
+  const cards = document.querySelectorAll('.learning-grid .learning-card');
+  if (cards.length === 0) return;
+  
+  let currentLessonTitle = "Trading Basics";
+  let nextIndex = 1;
+  let nextCard = null;
+  
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    const btn = card.querySelector('.complete-btn');
+    if (btn) {
+      const onclickAttr = btn.getAttribute('onclick') || '';
+      const match = onclickAttr.match(/'([^']+)'/);
+      if (match && match[1]) {
+        const videoId = match[1];
+        if (!completedVideos.includes(videoId)) {
+          currentLessonTitle = card.querySelector('h3').textContent.trim();
+          nextIndex = i + 1;
+          nextCard = card;
+          break;
+        }
+      }
+    }
+  }
+  
+  const helperCard = document.createElement("div");
+  helperCard.className = "course-helper-card";
+  helperCard.style.cssText = "background: rgba(0, 212, 255, 0.04); border: 1px solid rgba(0, 212, 255, 0.15); border-radius: 12px; padding: 15px; margin: 15px 0; text-align: left;";
+  
+  let quickActionsHTML = "";
+  const lTitle = currentLessonTitle.toLowerCase();
+  
+  if (lTitle.includes('structure') || lTitle.includes('bos') || lTitle.includes('trend')) {
+    quickActionsHTML = `
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is BOS?')">💡 Explain BOS</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is CHoCH?')">💡 Explain CHoCH</button>
+    `;
+  } else if (lTitle.includes('candle') || lTitle.includes('pattern') || lTitle.includes('basics')) {
+    quickActionsHTML = `
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('Explain Candlesticks')">🕯️ Explain Candlesticks</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is dynamic support?')">📈 Support/Resistance</button>
+    `;
+  } else {
+    quickActionsHTML = `
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('How much risk per trade?')">🛡️ Risk Rules</button>
+      <button class="chat-helper-action-btn" onclick="sendQuickMsg('What is R:R?')">📊 Explain R:R</button>
+    `;
+  }
+  
+  const scrollId = nextCard ? nextCard.id : 'lesson-1';
+  
+  helperCard.innerHTML = `
+    <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #00d4ff; letter-spacing: 0.5px; margin-bottom: 6px;">📘 Course Assistant</div>
+    <div style="font-size: 14px; font-weight: 600; color: #ffffff; margin-bottom: 4px;">You're currently learning:<br><span style="color:#00ff9c;">${currentLessonTitle}</span></div>
+    <div style="font-size: 12px; color: #8892b0; margin-bottom: 12px;">Lesson ${nextIndex} / ${cards.length}</div>
+    
+    <div class="chat-helper-actions" style="display: flex; flex-wrap: wrap; gap: 8px;">
+      ${quickActionsHTML}
+      <button class="chat-helper-action-btn" onclick="scrollToLesson('${scrollId}'); toggleChat();">🎯 Scroll to Lesson</button>
+      <button class="chat-helper-action-btn" onclick="window.location.href='quiz.html'">✍️ Start Quiz</button>
+    </div>
+  `;
+  
+  chatBox.appendChild(helperCard);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// --- TOGGLE CHAT (OPEN / CLOSE WITH ANIMATION) ---
 function toggleChat() {
   if (!chatContainer) return;
 
@@ -21,10 +136,10 @@ function toggleChat() {
     requestAnimationFrame(() => {
       chatContainer.classList.add("show");
       userInput?.focus();
+      initChatWelcome();
     });
   }
 }
-
 
 // --- QUICK BUTTONS ---
 function sendQuickMsg(text) {
@@ -45,7 +160,8 @@ function handleEnter(e) {
 function formatResponse(text) {
   return text
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\n/g, "<br>");
+    .replace(/\n/g, "<br>")
+    .replace(/• (.*?)(<br>|$)/g, "• $1$2");
 }
 
 // --- APPEND MESSAGE SAFELY ---
@@ -58,7 +174,7 @@ function appendMessage(text, className, isHTML = false) {
   return div;
 }
 
-// --- MAIN SEND MESSAGE FUNCTION (MULTI-LANGUAGE ENABLED) ---
+// --- MAIN SEND MESSAGE FUNCTION (LOCAL DEFINITIONS SEARCH + API FALLBACK) ---
 async function sendMessage() {
   if (!userInput || !chatBox) return;
 
@@ -70,8 +186,31 @@ async function sendMessage() {
 
   const loading = appendMessage("Thinking...", "bot-message");
 
+  // 1. Check local search FAQs first (Instant Response)
+  const query = text.toLowerCase();
+  let matchedKey = null;
+  
+  if (query.includes("bos") || query.includes("break of structure")) matchedKey = "bos";
+  else if (query.includes("choch") || query.includes("change of character")) matchedKey = "choch";
+  else if (query.includes("trendline") || query.includes("trend line")) matchedKey = "trendline";
+  else if (query.includes("rsi") || query.includes("relative strength")) matchedKey = "rsi";
+  else if (query.includes("ema") || query.includes("moving average")) matchedKey = "ema";
+  else if (query.includes("liquidity") || query.includes("sweep")) matchedKey = "liquidity";
+  else if (query.includes("risk") || query.includes("money management") || query.includes("position size")) matchedKey = "risk";
+  else if (query.includes("candlestick") || query.includes("candle") || query.includes("wick")) matchedKey = "candlestick";
+  else if (query.includes("r:r") || query.includes("risk-reward") || query.includes("risk to reward")) matchedKey = "r:r";
+
+  if (matchedKey) {
+    setTimeout(() => {
+      loading.remove();
+      const reply = localTradingFAQ[matchedKey];
+      appendMessage(formatResponse(reply), "bot-message", true);
+    }, 450);
+    return;
+  }
+
+  // 2. Fallback to API if not matched locally
   try {
-    // ✅ MULTI-LANGUAGE + SAME LANGUAGE REPLY
     const finalMessage = `
 You are TradeLab Mentor.
 
@@ -100,24 +239,20 @@ ${text}
     );
 
     const data = await response.json();
-    console.log("AI DATA 👉", data);
-
     loading.remove();
 
     if (data && data.reply) {
       appendMessage(formatResponse(data.reply), "bot-message", true);
     } else {
-      appendMessage("⚠️ AI replied but no text found", "bot-message");
+      appendMessage("⚠️ No reply found from Mentor server.", "bot-message");
     }
 
   } catch (err) {
     console.error(err);
     loading.remove();
-    appendMessage("❌ Server error. Try again.", "bot-message");
+    appendMessage("❌ Offline or server unavailable. Ask about BOS, CHoCH, Risk, Trendline, or RSI to get local answers!", "bot-message");
   }
 }
-
-
 
 function showTyping() {
   const t = document.getElementById("typing-indicator");
