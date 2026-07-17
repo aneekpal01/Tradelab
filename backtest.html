@@ -135,6 +135,7 @@
             color: var(--text-primary);
             font-size: 13px;
             outline: none;
+            cursor: pointer;
         }
 
         .load-btn {
@@ -198,6 +199,11 @@
             grid-template-columns: 1fr 340px;
             gap: 25px;
             align-items: start;
+            transition: grid-template-columns 0.3s ease;
+        }
+
+        .center-layout.expanded {
+            grid-template-columns: 1fr;
         }
 
         /* Drawing Tools Bar */
@@ -265,7 +271,6 @@
         }
 
         .clear-btn {
-            margin-left: auto;
             background: rgba(255, 77, 77, 0.05);
             border-color: rgba(255, 77, 77, 0.2);
             color: var(--accent-red);
@@ -333,6 +338,7 @@
         #chart {
             width: 100%;
             height: 480px;
+            transition: height 0.3s ease;
         }
 
         .status-bar {
@@ -632,19 +638,18 @@
             border-color: var(--accent-red);
         }
 
-        /* Responsive grid logic */
-        @media (max-width: 950px) {
-            .center-layout {
-                grid-template-columns: 1fr;
-            }
+        /* Clock formatting styles */
+        #navClockColon {
+            animation: clock-blink 1.5s infinite;
+        }
+        @keyframes clock-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
         }
 
-        @media (max-width: 768px) {
-            .navbar { padding: 12px 20px; }
-            .container { padding: 15px 10px; }
-            .controls-section { padding: 12px 16px; }
-            #chart { height: 360px; }
-            .tool-btn { padding: 6px 10px; font-size: 11px; }
+        /* Responsive clock style */
+        @media (max-width: 600px) {
+            #navClockWrapper { display: none !important; }
         }
     </style>
 </head>
@@ -653,26 +658,56 @@
     <!-- Navbar -->
     <nav class="navbar">
         <a href="index.html" class="logo">TradeLab</a>
+        
+        <!-- Live Clock Format Toggle (Top Right Area) -->
+        <div style="display: flex; align-items: center; gap: 15px; margin-left: auto; margin-right: 15px;">
+            <div id="navClockWrapper" style="position: relative; font-size: 13px; font-weight: 600; color: var(--text-primary); cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 8px; transition: border-color 0.2s;" onclick="toggleClockDropdown(event)">
+                <span id="navClockColon" style="font-weight: 700; color: var(--accent-blue);">●</span>
+                <span id="navClockTime">--:--:--</span>
+                
+                <!-- Format Toggle Dropdown -->
+                <div id="navClockDropdown" style="display: none; position: absolute; top: 38px; right: 0; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); width: 130px; z-index: 1000; padding: 4px 0;">
+                    <div style="padding: 8px 12px; font-size: 10.5px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); margin-bottom: 4px; font-weight: 700;">Format</div>
+                    <button onclick="changeClockFormat(event, '24h')" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 12px; border: none; background: transparent; color: var(--text-primary); font-size: 12px; font-weight: 600; cursor: pointer; text-align: left;">
+                        <span>24 Hour</span>
+                        <span id="navCheck24" style="color: var(--accent-blue); font-weight: 700;"></span>
+                    </button>
+                    <button onclick="changeClockFormat(event, '12h')" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 12px; border: none; background: transparent; color: var(--text-primary); font-size: 12px; font-weight: 600; cursor: pointer; text-align: left;">
+                        <span>12 Hour</span>
+                        <span id="navCheck12" style="color: var(--accent-blue); font-weight: 700;"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <a href="index.html" class="back-btn">← Back to Learning Dashboard</a>
     </nav>
+
+    <!-- Live Price Ticker widget container (matching Home Page) -->
+    <div class="tradingview-widget-container" style="min-height: 46px; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); overflow: hidden;">
+        <div class="tradingview-widget-container__widget"></div>
+    </div>
 
     <div class="container">
         <!-- Controls Parameters -->
         <div class="controls-section">
             <div class="control-group">
                 <label>Coin</label>
-                <select id="coinSelect">
+                <select id="coinSelect" onchange="loadChartData()">
                     <option value="BTCUSDT" data-cg="bitcoin">BTC/USDT</option>
                     <option value="ETHUSDT" data-cg="ethereum">ETH/USDT</option>
                     <option value="SOLUSDT" data-cg="solana">SOL/USDT</option>
                     <option value="XRPUSDT" data-cg="ripple">XRP/USDT</option>
                     <option value="BNBUSDT" data-cg="binancecoin">BNB/USDT</option>
+                    <option value="XAUUSD" data-cg="gold">XAU/USD (Gold)</option>
                 </select>
             </div>
 
             <div class="control-group">
                 <label>Timeframe</label>
-                <select id="timeframeSelect">
+                <select id="timeframeSelect" onchange="loadChartData()">
+                    <option value="1m">1 Minute</option>
+                    <option value="5m">5 Minutes</option>
                     <option value="15m">15 Minutes</option>
                     <option value="30m">30 Minutes</option>
                     <option value="1h" selected>1 Hour</option>
@@ -681,7 +716,7 @@
                 </select>
             </div>
 
-            <button class="load-btn" id="loadBtn" onclick="loadChartData()">📊 Load Simulation Feed</button>
+            <button class="load-btn" id="loadBtn" onclick="loadChartData()">Load Simulation Feed</button>
 
             <div class="live-indicator offline" id="liveIndicator">
                 <div class="live-dot"></div>
@@ -696,21 +731,22 @@
                 
                 <!-- Drawing Tools Header Bar -->
                 <div class="drawing-tools">
-                    <span class="tools-label">⚙️ Challenge Tools:</span>
-                    <button class="tool-btn active" onclick="setMode('cursor')" id="cursorTool">🖱️ Cursor</button>
+                    <span class="tools-label">Challenge Tools:</span>
+                    <button class="tool-btn active" onclick="setMode('cursor')" id="cursorTool">Cursor</button>
                     
                     <div class="divider"></div>
                     
-                    <button class="tool-btn entry" onclick="setMode('entry')" id="entryTool">📍 Mark Entry</button>
-                    <button class="tool-btn stoploss" onclick="setMode('stoploss')" id="stoplossTool">🛑 Stop Loss</button>
-                    <button class="tool-btn target" onclick="setMode('target')" id="targetTool">🎯 Target</button>
+                    <button class="tool-btn entry" onclick="setMode('entry')" id="entryTool">Mark Entry</button>
+                    <button class="tool-btn stoploss" onclick="setMode('stoploss')" id="stoplossTool">Stop Loss</button>
+                    <button class="tool-btn target" onclick="setMode('target')" id="targetTool">Target</button>
                     
                     <div class="divider"></div>
                     
-                    <button class="tool-btn sr" onclick="setMode('support')" id="supportTool">⬆️ Support</button>
-                    <button class="tool-btn sr" onclick="setMode('resistance')" id="resistanceTool">⬇️ Resistance</button>
+                    <button class="tool-btn sr" onclick="setMode('support')" id="supportTool">Support</button>
+                    <button class="tool-btn sr" onclick="setMode('resistance')" id="resistanceTool">Resistance</button>
                     
-                    <button class="tool-btn clear-btn" onclick="clearAll()">🗑️ Clear Setup</button>
+                    <button class="tool-btn clear-btn" onclick="clearAll()" style="margin-left: auto;">Clear Setup</button>
+                    <button class="tool-btn" id="expandLayoutBtn" onclick="toggleExpandLayout()" style="border-color: var(--accent-blue); color: var(--accent-blue); background: transparent;">Expand Chart</button>
                 </div>
 
                 <!-- Main Chart Frame -->
@@ -751,7 +787,7 @@
                 
                 <!-- Current Setup Card Widget -->
                 <div class="sidebar-widget">
-                    <div class="widget-title">📍 Current Setup Card</div>
+                    <div class="widget-title">Current Setup Card</div>
                     
                     <!-- Segmented Step Tracker (Refinement) -->
                     <div class="setup-progress-tracker">
@@ -761,14 +797,14 @@
                     </div>
 
                     <div id="stepInstruction" style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 16px; font-weight: 500; min-height: 48px; display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                        <span>📍</span> <span>Step 1: Click <strong>Mark Entry</strong> above, then click anywhere on the chart.</span>
+                        <span>Entry:</span> <span>Step 1: Click <strong>Mark Entry</strong> above, then click anywhere on the chart.</span>
                     </div>
                     
                     <div class="setup-row" style="padding: 12px 0;">
                         <span class="setup-label">Direction Mode</span>
                         <div class="segmented-control">
-                            <button id="dirLongBtn" class="seg-btn active long" onclick="setDirection('long')">🟢 Long</button>
-                            <button id="dirShortBtn" class="seg-btn" onclick="setDirection('short')">🔴 Short</button>
+                            <button id="dirLongBtn" class="seg-btn active long" onclick="setDirection('long')">Long</button>
+                            <button id="dirShortBtn" class="seg-btn" onclick="setDirection('short')">Short</button>
                         </div>
                     </div>
 
@@ -795,9 +831,9 @@
                     <div class="setup-row">
                         <span class="setup-label">Replay Speed</span>
                         <select id="replaySpeed" class="replay-direction-select" style="padding: 5px 8px; font-size: 11.5px; border-radius: 4px;" onchange="updateReplaySpeed()">
-                            <option value="500">🐌 Slow (0.5s)</option>
-                            <option value="250" selected>⚡ Normal (0.25s)</option>
-                            <option value="100">🚀 Fast (0.1s)</option>
+                            <option value="500">Slow (0.5s)</option>
+                            <option value="250" selected>Normal (0.25s)</option>
+                            <option value="100">Fast (0.1s)</option>
                         </select>
                     </div>
 
@@ -809,7 +845,7 @@
                     <!-- Replay Challenge actions -->
                     <div class="replay-controls">
                         <button class="start-replay-btn" id="startReplayBtn" onclick="toggleReplayChallenge()" disabled>
-                            ▶ Start Replay Challenge
+                            Start Replay Challenge
                         </button>
                     </div>
 
@@ -820,7 +856,7 @@
 
                 <!-- Setup Rating & Verdict Scorecard -->
                 <div class="sidebar-widget" id="scorecardWidget" style="display: none;">
-                    <div class="widget-title">🏆 Challenge Scorecard</div>
+                    <div class="widget-title">Challenge Scorecard</div>
                     
                     <div class="score-circle-wrapper">
                         <div class="score-badge" id="scoreBadge">85/100</div>
@@ -845,7 +881,7 @@
 
                     <div style="height: 1px; background: var(--border-color); margin: 15px 0;"></div>
 
-                    <div class="widget-title" style="color: var(--accent-red); margin-bottom: 10px;">🚨 Mistake Analysis</div>
+                    <div class="widget-title" style="color: var(--accent-red); margin-bottom: 10px;">Mistake Analysis</div>
                     <p style="font-size: 11.5px; line-height: 1.5; color: var(--text-secondary);" id="scoreMistake">
                         Analyzing your discipline triggers...
                     </p>
@@ -888,12 +924,6 @@
             document.body.className = theme;
         })();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const theme = getSafeTheme();
-            document.documentElement.setAttribute('data-theme', theme);
-            document.body.className = theme;
-        });
-
         // Global variables
         var chartEl = document.getElementById('chart');
         var chart = null;
@@ -918,6 +948,90 @@
         var hiddenReplayQueue = [];
         var replayRunning = false;
         var replayTimer = null;
+
+        // Ticker Tape Loader Helper
+        function updateTradingViewTicker(theme) {
+            const container = document.querySelector('.tradingview-widget-container');
+            if (!container) return;
+            
+            container.innerHTML = '<div class="tradingview-widget-container__widget"></div>';
+            
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
+            script.async = true;
+            
+            script.text = JSON.stringify({
+                "symbols": [
+                    { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
+                    { "proName": "BITSTAMP:ETHUSD", "title": "Ethereum" },
+                    { "proName": "BINANCE:SOLUSDT", "title": "Solana" },
+                    { "proName": "OANDA:XAUUSD", "title": "Gold (XAU)" },
+                    { "proName": "FX_IDC:USDINR", "title": "USD/INR" }
+                ],
+                "showSymbolLogo": true,
+                "colorTheme": theme === 'light' ? 'light' : 'dark',
+                "isTransparent": true,
+                "displayMode": "adaptive",
+                "locale": "en"
+            });
+            container.appendChild(script);
+        }
+
+        // Navbar Clock Controls
+        function toggleClockDropdown(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('navClockDropdown');
+            if (dropdown) {
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+        
+        function changeClockFormat(e, format) {
+            e.stopPropagation();
+            localStorage.setItem('clockFormat', format);
+            
+            const dropdown = document.getElementById('navClockDropdown');
+            if (dropdown) dropdown.style.display = 'none';
+            
+            updateClockCheckmarks(format);
+            updateClock();
+        }
+        
+        function updateClockCheckmarks(format) {
+            const c24 = document.getElementById('navCheck24');
+            const c12 = document.getElementById('navCheck12');
+            if (c24 && c12) {
+                c24.textContent = format === '24h' ? '✓' : '';
+                c12.textContent = format === '12h' ? '✓' : '';
+            }
+        }
+        
+        function updateClock() {
+            const timeEl = document.getElementById('navClockTime');
+            if (!timeEl) return;
+            
+            const format = localStorage.getItem('clockFormat') || '24h';
+            const now = new Date();
+            
+            let timeStr = "";
+            if (format === '24h') {
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                timeStr = `${hours}:${minutes}:${seconds}`;
+            } else {
+                let hours = now.getHours();
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                const hoursStr = String(hours).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                timeStr = `${hoursStr}:${minutes}:${seconds} ${ampm}`;
+            }
+            timeEl.textContent = timeStr;
+        }
 
         // Initialize Lightweight Chart
         function initChart() {
@@ -985,15 +1099,19 @@
         function generateDummyCandles(timeframe, count) {
             var candles = [];
             var now = Math.floor(Date.now() / 1000);
+            
             var intervalSeconds = 3600; // 1h default
-            if (timeframe === '15m') intervalSeconds = 15 * 60;
+            if (timeframe === '1m') intervalSeconds = 60;
+            else if (timeframe === '5m') intervalSeconds = 5 * 60;
+            else if (timeframe === '15m') intervalSeconds = 15 * 60;
             else if (timeframe === '30m') intervalSeconds = 30 * 60;
             else if (timeframe === '4h') intervalSeconds = 4 * 3600;
             else if (timeframe === '1d') intervalSeconds = 24 * 3600;
 
             var coin = document.getElementById('coinSelect').value;
             var price = 60000; // Default BTC
-            if (coin.includes('ETH')) price = 3200;
+            if (coin === 'XAUUSD') price = 2350.00;
+            else if (coin.includes('ETH')) price = 3200;
             else if (coin.includes('SOL')) price = 145;
             else if (coin.includes('XRP')) price = 0.55;
             else if (coin.includes('BNB')) price = 520;
@@ -1002,7 +1120,8 @@
             for (var i = 0; i < count; i++) {
                 var open = price;
                 // Random price walks (volatility)
-                var change = (Math.random() - 0.485) * (price * 0.012);
+                var scaleMultiplier = coin === 'XAUUSD' ? 0.003 : 0.012;
+                var change = (Math.random() - 0.485) * (price * scaleMultiplier);
                 var close = price + change;
                 var high = Math.max(open, close) + (Math.random() * (price * 0.004));
                 var low = Math.min(open, close) - (Math.random() * (price * 0.004));
@@ -1033,6 +1152,27 @@
                 replayTimer = null;
             }
             replayRunning = false;
+
+            // Handle Gold offline generation directly
+            if (coin === 'XAUUSD') {
+                setOnline(false);
+                setTimeout(() => {
+                    var candles = generateDummyCandles(tf, 150);
+
+                    var slicePoint = candles.length - 35;
+                    fullCandlesFeed = candles;
+                    visibleCandlesFeed = candles.slice(0, slicePoint);
+                    hiddenReplayQueue = candles.slice(slicePoint);
+
+                    candleSeries.setData(visibleCandlesFeed);
+                    chart.timeScale().fitContent();
+                    
+                    updateTickerInfo('XAU/USD (Gold Simulated)', visibleCandlesFeed);
+                    showLoading(false);
+                    updateProgressTracker();
+                }, 200);
+                return;
+            }
 
             try {
                 // Try fetching Binance API first
@@ -1135,9 +1275,9 @@
             
             var names = {
                 cursor: 'Cursor',
-                entry: '📍 Mark Entry',
-                stoploss: '🛑 Stop Loss',
-                target: '🎯 Target',
+                entry: 'Mark Entry',
+                stoploss: 'Stop Loss',
+                target: 'Target',
                 support: 'Support line',
                 resistance: 'Resistance line'
             };
@@ -1158,6 +1298,31 @@
                 shortBtn.className = 'seg-btn active short';
             }
             updateSetupCard();
+        }
+
+        // Expand / Collapse Chart Canvas layout
+        var layoutExpanded = false;
+        function toggleExpandLayout() {
+            layoutExpanded = !layoutExpanded;
+            const container = document.querySelector('.center-layout');
+            const btn = document.getElementById('expandLayoutBtn');
+            
+            if (layoutExpanded) {
+                container.classList.add('expanded');
+                chartEl.style.height = '560px';
+                btn.textContent = 'Collapse Chart';
+                btn.classList.add('active');
+            } else {
+                container.classList.remove('expanded');
+                chartEl.style.height = '480px';
+                btn.textContent = 'Expand Chart';
+                btn.classList.remove('active');
+            }
+            
+            // Trigger canvas resize wrapper
+            if (chart) {
+                chart.resize(chartEl.clientWidth, layoutExpanded ? 560 : 480);
+            }
         }
 
         // Handle clicks on lightweight chart
@@ -1185,7 +1350,7 @@
                     lineWidth: 2,
                     lineStyle: 0,
                     axisLabelVisible: true,
-                    title: '📍 ENTRY'
+                    title: 'ENTRY'
                 });
                 updateSetupCard();
             }
@@ -1199,7 +1364,7 @@
                     lineWidth: 2,
                     lineStyle: 0,
                     axisLabelVisible: true,
-                    title: '🛑 STOP LOSS'
+                    title: 'STOP LOSS'
                 });
                 updateSetupCard();
             }
@@ -1213,7 +1378,7 @@
                     lineWidth: 2,
                     lineStyle: 0,
                     axisLabelVisible: true,
-                    title: '🎯 TARGET'
+                    title: 'TARGET'
                 });
                 updateSetupCard();
             }
@@ -1270,7 +1435,7 @@
                 step1.style.background = completeColor;
                 step2.style.background = completeColor;
                 step3.style.background = activeColor;
-                instruction.innerHTML = '<span>⏳</span> <span>Replay active... Watching candle feeds. Will stop on Target or Stop Loss hit.</span>';
+                instruction.innerHTML = '<span>Replay:</span> <span>Replay active... Watching candle feeds. Will stop on Target or Stop Loss hit.</span>';
                 return;
             }
 
@@ -1284,28 +1449,28 @@
                 step1.style.background = completeColor;
                 step2.style.background = completeColor;
                 step3.style.background = completeColor;
-                instruction.innerHTML = '<span>🏆</span> <span>Challenge completed! Check your Scorecard below for mistake analysis.</span>';
+                instruction.innerHTML = '<span>Score:</span> <span>Challenge completed! Check your Scorecard below for mistake analysis.</span>';
                 return;
             }
 
             if (!hasEntry) {
                 step1.style.background = activeColor;
-                instruction.innerHTML = '<span>📍</span> <span>Step 1: Click <strong>Mark Entry</strong> above, then click anywhere on the chart.</span>';
+                instruction.innerHTML = '<span>Entry:</span> <span>Step 1: Click <strong>Mark Entry</strong> above, then click anywhere on the chart.</span>';
             } else if (!hasSL || !hasTP) {
                 step1.style.background = completeColor;
                 step2.style.background = activeColor;
                 if (!hasSL && !hasTP) {
-                    instruction.innerHTML = '<span>🛑</span> <span>Step 2: Click <strong>Stop Loss</strong> & <strong>Target</strong> above, then click on the chart.</span>';
+                    instruction.innerHTML = '<span>Stop Loss:</span> <span>Step 2: Click <strong>Stop Loss</strong> & <strong>Target</strong> above, then click on the chart.</span>';
                 } else if (!hasSL) {
-                    instruction.innerHTML = '<span>🛑</span> <span>Step 2: Click <strong>Stop Loss</strong> above, then click on the chart below/above your entry.</span>';
+                    instruction.innerHTML = '<span>Stop Loss:</span> <span>Step 2: Click <strong>Stop Loss</strong> above, then click on the chart below/above your entry.</span>';
                 } else {
-                    instruction.innerHTML = '<span>🎯</span> <span>Step 2: Click <strong>Target</strong> above, then click on the chart to set profit goal.</span>';
+                    instruction.innerHTML = '<span>Target:</span> <span>Step 2: Click <strong>Target</strong> above, then click on the chart to set profit goal.</span>';
                 }
             } else {
                 step1.style.background = completeColor;
                 step2.style.background = completeColor;
                 step3.style.background = activeColor;
-                instruction.innerHTML = '<span>⚡</span> <span>Step 3: Setup complete! Verify R:R and click <strong>Start Replay Challenge</strong> below.</span>';
+                instruction.innerHTML = '<span>Setup:</span> <span>Step 3: Setup complete! Verify R:R and click <strong>Start Replay Challenge</strong> below.</span>';
             }
         }
 
@@ -1338,21 +1503,21 @@
                 let orderError = false;
                 if (direction === 'long') {
                     if (stopLossPrice >= entryPrice) {
-                        verdictBox.innerHTML = "⚠️ <strong>Invalid setup:</strong> Stop Loss must be BELOW entry for a Long trade.";
+                        verdictBox.innerHTML = "<strong>Invalid setup:</strong> Stop Loss must be BELOW entry for a Long trade.";
                         verdictBox.className = "verdict-box badge-red";
                         orderError = true;
                     } else if (targetPrice <= entryPrice) {
-                        verdictBox.innerHTML = "⚠️ <strong>Invalid setup:</strong> Target must be ABOVE entry for a Long trade.";
+                        verdictBox.innerHTML = "<strong>Invalid setup:</strong> Target must be ABOVE entry for a Long trade.";
                         verdictBox.className = "verdict-box badge-red";
                         orderError = true;
                     }
                 } else {
                     if (stopLossPrice <= entryPrice) {
-                        verdictBox.innerHTML = "⚠️ <strong>Invalid setup:</strong> Stop Loss must be ABOVE entry for a Short trade.";
+                        verdictBox.innerHTML = "<strong>Invalid setup:</strong> Stop Loss must be ABOVE entry for a Short trade.";
                         verdictBox.className = "verdict-box badge-red";
                         orderError = true;
                     } else if (targetPrice >= entryPrice) {
-                        verdictBox.innerHTML = "⚠️ <strong>Invalid setup:</strong> Target must be BELOW entry for a Short trade.";
+                        verdictBox.innerHTML = "<strong>Invalid setup:</strong> Target must be BELOW entry for a Short trade.";
                         verdictBox.className = "verdict-box badge-red";
                         orderError = true;
                     }
@@ -1360,13 +1525,13 @@
 
                 if (!orderError) {
                     if (ratio < 1.0) {
-                        verdictBox.innerHTML = "🔴 <strong>Poor setup (R:R " + ratio.toFixed(1) + "):</strong> Risk exceeds reward. Avoid this setup.";
+                        verdictBox.innerHTML = "<strong>Poor setup (R:R " + ratio.toFixed(1) + "):</strong> Risk exceeds reward. Avoid this setup.";
                         verdictBox.className = "verdict-box badge-red";
                     } else if (ratio < 2.0) {
-                        verdictBox.innerHTML = "🟡 <strong>Moderate Setup (R:R " + ratio.toFixed(1) + "):</strong> Favorable, but aim for higher target sizes.";
+                        verdictBox.innerHTML = "<strong>Moderate Setup (R:R " + ratio.toFixed(1) + "):</strong> Favorable, but aim for higher target sizes.";
                         verdictBox.className = "verdict-box badge-yellow";
                     } else {
-                        verdictBox.innerHTML = "🟢 <strong>Excellent Setup (R:R " + ratio.toFixed(1) + "):</strong> Favorable risk parameters. Safe setup.";
+                        verdictBox.innerHTML = "<strong>Excellent Setup (R:R " + ratio.toFixed(1) + "):</strong> Favorable risk parameters. Safe setup.";
                         verdictBox.className = "verdict-box badge-green";
                     }
                     startBtn.disabled = false;
@@ -1401,14 +1566,14 @@
                 clearInterval(replayTimer);
                 replayTimer = null;
                 replayRunning = false;
-                document.getElementById('startReplayBtn').textContent = '▶ Continue Replay';
+                document.getElementById('startReplayBtn').textContent = 'Continue Replay';
                 document.getElementById('replayStatusBanner').style.display = 'none';
                 updateProgressTracker();
             } else {
                 document.getElementById('scorecardWidget').style.display = 'none';
                 
                 replayRunning = true;
-                document.getElementById('startReplayBtn').textContent = '⏸ Pause Replay';
+                document.getElementById('startReplayBtn').textContent = 'Pause Replay';
                 
                 const banner = document.getElementById('replayStatusBanner');
                 banner.style.display = 'block';
@@ -1466,11 +1631,11 @@
             banner.className = 'replay-status-banner ' + (result === 'win' ? 'badge-green' : 'badge-red');
             
             if (result === 'win') {
-                banner.textContent = `🎯 Target Hit! Price reached ${formatP(triggerPrice)}.`;
+                banner.textContent = `Target Hit! Price reached ${formatP(triggerPrice)}.`;
             } else if (result === 'loss') {
-                banner.textContent = `🛑 Stop Loss Hit! Exit price filled at ${formatP(triggerPrice)}.`;
+                banner.textContent = `Stop Loss Hit! Exit price filled at ${formatP(triggerPrice)}.`;
             } else {
-                banner.textContent = `⏰ Session Expired! Position closed at final candle price: ${formatP(triggerPrice)}.`;
+                banner.textContent = `Session Expired! Position closed at final candle price: ${formatP(triggerPrice)}.`;
             }
 
             let score = 50;
@@ -1493,18 +1658,18 @@
             if (direction === 'long' && entryPrice < sma) {
                 trendAlign = "Weak";
                 score -= 10;
-                mistakeMsg += "⚠️ <strong>Counter-Trend Entry:</strong> You entered a Long position while prices were trading below the short-term moving average. Wait for trend reversals before placing entry flags. ";
+                mistakeMsg += "<strong>Counter-Trend Entry:</strong> You entered a Long position while prices were trading below the short-term moving average. Wait for trend reversals before placing entry flags. ";
             } else if (direction === 'short' && entryPrice > sma) {
                 trendAlign = "Weak";
                 score -= 10;
-                mistakeMsg += "⚠️ <strong>Counter-Trend Entry:</strong> You entered a Short position while prices were trending upwards. Trade with the dominant trend for higher win rates. ";
+                mistakeMsg += "<strong>Counter-Trend Entry:</strong> You entered a Short position while prices were trending upwards. Trade with the dominant trend for higher win rates. ";
             }
 
             let rrCheck = "Good";
             if (ratio < 1.5) {
                 rrCheck = "Poor";
                 score -= 15;
-                mistakeMsg += "⚠️ <strong>Low Risk:Reward Ratio:</strong> Entering trades with R:R below 1.5 forces you to maintain win rates above 40% to survive. Look for higher targets. ";
+                mistakeMsg += "<strong>Low Risk:Reward Ratio:</strong> Entering trades with R:R below 1.5 forces you to maintain win rates above 40% to survive. Look for higher targets. ";
             } else if (ratio >= 2.5) {
                 rrCheck = "Excellent";
                 score += 10;
@@ -1514,13 +1679,13 @@
                 score += 15;
                 ratingStars = "★★★★★";
                 if (mistakeMsg === "") {
-                    mistakeMsg = "✅ <strong>Flawless Execution:</strong> Perfect trade sizing, trend alignment, and execution. Capital preserved and targets achieved.";
+                    mistakeMsg = "<strong>Flawless Execution:</strong> Perfect trade sizing, trend alignment, and execution. Capital preserved and targets achieved.";
                 }
             } else {
                 score -= 10;
                 ratingStars = "★★★☆☆";
                 if (mistakeMsg === "") {
-                    mistakeMsg = "ℹ️ <strong>Stop Out Triggered:</strong> Although the trade hit stop loss, your risk parameters were correct. Getting stopped out is a natural part of professional trading. Stay disciplined!";
+                    mistakeMsg = "<strong>Stop Out Triggered:</strong> Although the trade hit stop loss, your risk parameters were correct. Getting stopped out is a natural part of professional trading. Stay disciplined!";
                 }
             }
 
@@ -1584,7 +1749,7 @@
             const startBtn = document.getElementById('startReplayBtn');
             startBtn.disabled = true;
             startBtn.classList.remove('ready');
-            startBtn.textContent = '▶ Start Replay Challenge';
+            startBtn.textContent = 'Start Replay Challenge';
 
             updateSetupCard();
         }
@@ -1609,6 +1774,22 @@
                 `;
             }
             
+            // Load and dynamically sync live TradingView price widget
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            updateTradingViewTicker(savedTheme);
+            
+            // Initialize clock format and triggers
+            const clockFormat = localStorage.getItem('clockFormat') || '24h';
+            updateClockCheckmarks(clockFormat);
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            // Close dropdowns
+            document.addEventListener('click', () => {
+                const dropdown = document.getElementById('navClockDropdown');
+                if (dropdown) dropdown.style.display = 'none';
+            });
+
             window.addEventListener('resize', function() {
                 if (chart) chart.applyOptions({ width: chartEl.clientWidth });
             });
