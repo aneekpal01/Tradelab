@@ -650,9 +650,94 @@
             50% { opacity: 0.2; }
         }
 
-        /* Responsive clock style */
-        @media (max-width: 600px) {
-            #navClockWrapper { display: none !important; }
+        /* Responsive mobile layout styling optimizations */
+        .back-text-mobile {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 15px;
+            }
+            .logo {
+                font-size: 16px;
+            }
+            .back-text-desktop {
+                display: none;
+            }
+            .back-text-mobile {
+                display: inline;
+            }
+            .back-btn {
+                padding: 6px 10px;
+                font-size: 11.5px;
+            }
+            #navClockWrapper {
+                padding: 5px 8px;
+                font-size: 11.5px;
+                margin-right: 8px !important;
+            }
+            
+            .container {
+                padding: 10px 10px 40px 10px;
+            }
+
+            .controls-section {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                padding: 12px 16px;
+            }
+            .control-group {
+                width: 100%;
+            }
+            .load-btn {
+                grid-column: span 2;
+                margin-top: 5px;
+                width: 100%;
+            }
+            .live-indicator {
+                grid-column: span 2;
+                margin-left: 0 !important;
+                margin-top: 5px !important;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .center-layout {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .drawing-tools {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                gap: 8px;
+                padding: 10px 12px;
+            }
+            .drawing-tools::-webkit-scrollbar {
+                display: none;
+            }
+            .tool-btn {
+                flex: 0 0 auto;
+                padding: 6px 12px;
+                font-size: 11.5px;
+            }
+            .tools-label {
+                flex: 0 0 auto;
+                font-size: 11px;
+                margin-right: 4px;
+            }
+
+            #chart {
+                height: 340px !important;
+            }
+
+            .sidebar-widget {
+                padding: 16px;
+                border-radius: 12px;
+            }
         }
     </style>
 </head>
@@ -683,7 +768,7 @@
             </div>
         </div>
 
-        <a href="index.html" class="back-btn">← Back to Learning Dashboard</a>
+        <a href="index.html" class="back-btn">← <span class="back-text-desktop">Back to Learning Dashboard</span><span class="back-text-mobile">Dashboard</span></a>
     </nav>
 
     <!-- Live Price Ticker widget container (matching Home Page) -->
