@@ -823,13 +823,34 @@ section {
   font-weight: 700;
 }
 
-/* Options triple dot menu styles (Problem 3) */
+
+
+/* Options triple dot menu styles (Problem 3) - Unified Progress Card */
 .progress-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
   margin-top: 20px;
+  padding: 2px;
+  border-radius: 8px;
+  transition: all var(--t-btn) ease;
+  position: relative;
   width: 100%;
+}
+
+/* Locked state (Problem 3) */
+.progress-actions:has(.cert-btn.disabled) {
+  border: 1.5px dashed rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: #71717a;
+}
+
+/* Active state (Problem 3) */
+.progress-actions:has(.cert-btn.active) {
+  background: linear-gradient(90deg, #00ff9c 0%, #00d4ff 100%);
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 255, 156, 0.2);
 }
 
 .progress-menu-container {
@@ -837,12 +858,12 @@ section {
 }
 
 .progress-menu-btn {
-  background: transparent;
-  border: 1.5px dashed rgba(255, 255, 255, 0.15);
-  color: #71717a;
+  background: transparent !important;
+  border: none !important;
+  color: inherit !important;
   width: 38px;
-  height: 38px; /* matching cert-btn height exactly */
-  border-radius: 8px;
+  height: 38px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -851,12 +872,15 @@ section {
   font-weight: 700;
   transition: all 0.2s ease;
   outline: none;
+  box-shadow: none !important;
 }
 
 .progress-menu-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.progress-actions:has(.cert-btn.active) .progress-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
 }
 
 .progress-menu-dropdown {
@@ -5092,12 +5116,30 @@ body.loading #backToTop {
   z-index: 10005 !important; /* Keep above navbar and drawers */
 }
 
+
+
 .market-status-inner {
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.market-status-left-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 100%;
+}
+
+.market-status-right-section {
+  width: 250px; /* matches desktop sidebar width exactly */
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 /* Groups styling */
@@ -5108,14 +5150,14 @@ body.loading #backToTop {
 }
 
 .market-status-group.left {
-  flex: 1;
-  width: 33.333%;
-  justify-content: flex-start;
+  display: flex;
+  align-items: center;
 }
 
 .market-status-group.center {
-  flex: 1;
-  width: 33.333%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5133,7 +5175,7 @@ body.loading #backToTop {
   font-weight: 600;
   transition: all var(--t-hover) ease;
   cursor: pointer;
-  transform: translateX(-125px); /* Optically center relative to hero badge */
+  transform: none !important; /* Managed purely via CSS layout structure now! */
 }
 
 .clock-pill-content:hover {
@@ -5142,8 +5184,8 @@ body.loading #backToTop {
 }
 
 .market-status-group.right {
-  flex: 1;
-  width: 33.333%;
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: 16px;
 }
@@ -5446,22 +5488,19 @@ body.loading #backToTop {
   background: #f8fafc !important; /* Premium subtle gray background (Problem 4) */
   border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
-
-[data-theme="light"] .clock-time {
-  color: #0f172a !important;
+[data-theme="light"] .clock-pill-content {
+  background: #0f172a !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  color: #ffffff !important;
 }
 
-[data-theme="light"] .market-status-group.center {
-  background: #f1f5f9 !important;
-  border: 1px solid #e2e8f0 !important;
-  color: #0f172a !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+[data-theme="light"] .clock-pill-content .clock-time {
+  color: #ffffff !important;
 }
 
-[data-theme="light"] .market-status-group.center:hover {
-  background: #e2e8f0 !important;
+[data-theme="light"] .clock-pill-content:hover {
+  background: #1e293b !important;
 }
-
 /* Active session indicators text overrides - Light Mode (Fix 3) */
 [data-theme="light"] .session-status-text {
   color: #64748b !important; /* Inactive text */
@@ -7805,7 +7844,25 @@ body.loading #backToTop {
     pointer-events: auto;
   }
 
-  /* Reset clock translations on mobile (Fix 5) */
+  /* Reset clock and layout on mobile (Fix 5) */
+  .market-status-inner {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .market-status-left-section {
+    flex: 1;
+    justify-content: space-between;
+  }
+  .market-status-right-section {
+    width: auto !important; /* no longer matching desktop sidebar */
+    flex-shrink: 1;
+  }
+  .market-status-group.center {
+    position: static !important;
+    transform: none !important;
+  }
+
   .clock-pill-content {
     transform: none !important;
   }
@@ -8315,41 +8372,32 @@ body.loading #backToTop {
   display: none !important;
 }
 
-/* Redesigned Progress Section Actions (Fix 1, Fix 5) */
-.progress-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
+
 
 .cert-btn {
-  padding: 10px 20px;
+  background: transparent !important;
+  border: none !important;
+  color: inherit !important;
+  padding: 10px 14px;
   font-size: 13px;
   font-weight: 700;
-  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  flex: 1;
+  text-align: left;
   display: flex;
   align-items: center;
   gap: 6px;
+  box-shadow: none !important;
+  transition: all var(--t-btn) ease;
+  margin-top: 0 !important;
 }
 
 .cert-btn.disabled {
-  background: transparent;
-  border: 1.5px dashed rgba(255, 255, 255, 0.15); /* Dashed border for locked feel */
-  color: #71717a;
   cursor: not-allowed;
-  box-shadow: none !important;
 }
 
 .cert-btn.active {
-  background: linear-gradient(90deg, #00ff9c 0%, #00d4ff 100%);
-  border: none;
-  color: #000;
-  box-shadow: 0 0 15px rgba(0, 255, 156, 0.3);
+  color: #ffffff !important;
 }
 
 .reset-link-btn {
@@ -8373,35 +8421,24 @@ body.loading #backToTop {
   color: #64748b;
 }
 
-[data-theme="light"] .progress-actions {
-  border-top-color: #cbd5e1 !important;
-}
 
 
-
-[data-theme="light"] .cert-btn.disabled {
+[data-theme="light"] .progress-actions:has(.cert-btn.disabled) {
+  border: 1.5px dashed #cbd5e1 !important;
   background: #ffffff !important;
-  border: 1.5px dashed #cbd5e1 !important; /* Light mode dashed border */
   color: #94a3b8 !important;
 }
 
-[data-theme="light"] .cert-btn.active {
+[data-theme="light"] .progress-actions:has(.cert-btn.active) {
   background: linear-gradient(90deg, #0d9488 0%, #0ea5e9 100%) !important;
-  color: #ffffff !important;
   border: none !important;
+  color: #ffffff !important;
   box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2) !important;
 }
 
-[data-theme="light"] .progress-menu-btn {
-  background: #ffffff !important;
-  border: 1.5px dashed #cbd5e1 !important;
-  color: #94a3b8 !important;
-}
-
 [data-theme="light"] .progress-menu-btn:hover {
-  background: #f1f5f9 !important;
-  color: #0f172a !important;
-  border-color: #94a3b8 !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: inherit !important;
 }
 
 [data-theme="light"] .progress-menu-dropdown {
