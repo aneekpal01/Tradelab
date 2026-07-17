@@ -421,11 +421,20 @@ function changeClockFormat(e, format) {
   updateMarketStatus();
 }
 
-// Close clock dropdown on window clicks
+// Close dropdowns on window clicks
 document.addEventListener('click', () => {
   const dropdown = document.getElementById("clockDropdown");
   if (dropdown) dropdown.classList.remove("show");
+  
+  const progDropdown = document.getElementById("progressMenuDropdown");
+  if (progDropdown) progDropdown.classList.remove("show");
 });
+
+function toggleProgressMenu(e) {
+  e.stopPropagation();
+  const dropdown = document.getElementById("progressMenuDropdown");
+  if (dropdown) dropdown.classList.toggle("show");
+}
 
 // Initialize format checkmarks on window load
 window.addEventListener('load', () => {
@@ -567,8 +576,11 @@ function updateMarketStatus() {
     session.textContent = `Closes in ${countdownText.replace("Closes in ", "")}`;
     label.setAttribute('data-countdown', countdownText.replace("Closes in ", ""));
     
-    const nseDot = document.getElementById("nseDot");
-    if (nseDot) nseDot.className = "weather-dot green-dot";
+    const nseText = document.getElementById("nseStatusText");
+    if (nseText) {
+      nseText.innerHTML = "🟢 NSE";
+      nseText.classList.add("active");
+    }
   } else if (nseStatus === "pre") {
     dot.classList.add("pre");
     label.classList.add("pre");
@@ -576,8 +588,11 @@ function updateMarketStatus() {
     session.textContent = countdownText;
     label.setAttribute('data-countdown', countdownText.replace("Trading starts in ", ""));
     
-    const nseDot = document.getElementById("nseDot");
-    if (nseDot) nseDot.className = "weather-dot yellow-dot";
+    const nseText = document.getElementById("nseStatusText");
+    if (nseText) {
+      nseText.innerHTML = "🟡 NSE";
+      nseText.classList.add("active");
+    }
   } else if (isWeekend) {
     dot.classList.add("weekend");
     label.classList.add("weekend");
@@ -585,8 +600,11 @@ function updateMarketStatus() {
     session.textContent = countdownText;
     label.setAttribute('data-countdown', countdownText.replace("Opens Monday in ", ""));
     
-    const nseDot = document.getElementById("nseDot");
-    if (nseDot) nseDot.className = "weather-dot white-dot";
+    const nseText = document.getElementById("nseStatusText");
+    if (nseText) {
+      nseText.innerHTML = "NSE";
+      nseText.classList.remove("active");
+    }
   } else {
     dot.classList.add("closed");
     label.classList.add("closed");
@@ -594,8 +612,11 @@ function updateMarketStatus() {
     session.textContent = countdownText;
     label.setAttribute('data-countdown', countdownText.replace("Opens in ", ""));
     
-    const nseDot = document.getElementById("nseDot");
-    if (nseDot) nseDot.className = "weather-dot red-dot";
+    const nseText = document.getElementById("nseStatusText");
+    if (nseText) {
+      nseText.innerHTML = "NSE";
+      nseText.classList.remove("active");
+    }
   }
 
   // ── London Forex Session (Mon-Fri 1:30 PM - 10:30 PM IST) ──
@@ -606,12 +627,18 @@ function updateMarketStatus() {
     if (totalMins >= (londonStart - 30) && totalMins < londonStart) londonStatus = "pre";
     else if (totalMins >= londonStart && totalMins < londonEnd) londonStatus = "open";
   }
-  const londonDot = document.getElementById("londonDot");
-  if (londonDot) {
-    if (londonStatus === "open") londonDot.className = "weather-dot green-dot";
-    else if (londonStatus === "pre") londonDot.className = "weather-dot yellow-dot";
-    else if (isWeekend) londonDot.className = "weather-dot white-dot";
-    else londonDot.className = "weather-dot red-dot";
+  const londonText = document.getElementById("londonStatusText");
+  if (londonText) {
+    if (londonStatus === "open") {
+      londonText.innerHTML = "🟢 London";
+      londonText.classList.add("active");
+    } else if (londonStatus === "pre") {
+      londonText.innerHTML = "🟡 London";
+      londonText.classList.add("active");
+    } else {
+      londonText.innerHTML = "London";
+      londonText.classList.remove("active");
+    }
   }
 
   // ── New York Forex Session (Mon-Fri 6:30 PM - 1:30 AM IST) ──
@@ -620,12 +647,18 @@ function updateMarketStatus() {
     if (totalMins >= 18*60 && totalMins < 18*60+30) nyStatus = "pre";
     else if (totalMins >= 18*60+30 || totalMins < 1*60+30) nyStatus = "open";
   }
-  const nyDot = document.getElementById("nyDot");
-  if (nyDot) {
-    if (nyStatus === "open") nyDot.className = "weather-dot green-dot";
-    else if (nyStatus === "pre") nyDot.className = "weather-dot yellow-dot";
-    else if (isWeekend) nyDot.className = "weather-dot white-dot";
-    else nyDot.className = "weather-dot red-dot";
+  const nyText = document.getElementById("nyStatusText");
+  if (nyText) {
+    if (nyStatus === "open") {
+      nyText.innerHTML = "🟢 New York";
+      nyText.classList.add("active");
+    } else if (nyStatus === "pre") {
+      nyText.innerHTML = "🟡 New York";
+      nyText.classList.add("active");
+    } else {
+      nyText.innerHTML = "New York";
+      nyText.classList.remove("active");
+    }
   }
 
 }
