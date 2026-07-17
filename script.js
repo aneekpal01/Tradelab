@@ -987,10 +987,19 @@ if (document.readyState === 'loading') {
 // =============================================
 // TERMINAL NOTIFICATIONS DRAWER SYSTEM
 // =============================================
+// =============================================
+// TRADELAB INBOX & NEWS DRAWER SYSTEM
+// =============================================
 let notifications = JSON.parse(localStorage.getItem('terminalNotifications')) || [
   { id: 1, text: "BTCUSD crossed ₹5,200,000 target", read: false },
   { id: 2, text: "NSE India opened for regular trading session", read: false },
   { id: 3, text: "Lesson 'Learn Trendlines' unlocked!", read: false }
+];
+
+let newsFeed = JSON.parse(localStorage.getItem('terminalNewsFeed')) || [
+  { id: 1, text: "US Fed signals rate cuts in next meeting, global markets surge", read: false },
+  { id: 2, text: "SEBI introduces new margin limits for option trading indexes", read: false },
+  { id: 3, text: "Solana DEX volume surpasses Ethereum for third consecutive day", read: false }
 ];
 
 function initNotifications() {
@@ -1010,6 +1019,8 @@ function renderNotifications() {
   if (!contentDiv) return;
   
   const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadNewsCount = newsFeed.filter(n => !n.read).length;
+  
   const bellBtn = document.getElementById("alertIndicatorBtn");
   if (bellBtn) {
     const bellSpan = bellBtn.querySelector("span:first-child");
@@ -1018,37 +1029,73 @@ function renderNotifications() {
     }
   }
   
-  if (notifications.length === 0) {
+  const newsBtn = document.getElementById("newsIndicatorBtn");
+  if (newsBtn) {
+    const newsSpan = newsBtn.querySelector("span:first-child");
+    if (newsSpan) {
+      newsSpan.textContent = unreadNewsCount > 0 ? `📰 ${unreadNewsCount}` : "📰";
+    }
+  }
+  
+  if (notifications.length === 0 && newsFeed.length === 0) {
     contentDiv.innerHTML = `
       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60%; color: #8892b0; font-family: sans-serif; gap: 8px;">
         <span style="font-size: 32px;">📭</span>
-        <span style="font-size: 13px;">No new notifications</span>
+        <span style="font-size: 13px;">No new inbox updates</span>
       </div>
     `;
     return;
   }
   
-  let html = `<div style="display: flex; flex-direction: column; gap: 10px; font-family: sans-serif; height: 100%;">`;
+  let html = `<div style="display: flex; flex-direction: column; gap: 18px; font-family: sans-serif; height: 100%;">`;
   
-  notifications.forEach(n => {
-    const itemBg = n.read ? "rgba(255,255,255,0.01)" : "rgba(0, 255, 156, 0.03)";
-    const itemBorder = n.read ? "rgba(255,255,255,0.04)" : "rgba(0, 255, 156, 0.12)";
-    const textWeight = n.read ? "normal" : "600";
-    
-    html += `
-      <div class="notification-item" data-id="${n.id}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: ${itemBg}; border-radius: 8px; border: 1px solid ${itemBorder}; transition: all 0.2s ease;">
-        <div style="display: flex; flex-direction: column; gap: 2px; flex: 1; padding-right: 12px;">
-          <span class="notification-text" style="font-size: 12px; color: #eaeaea; font-weight: ${textWeight}; line-height: 1.45;">${n.text}</span>
+  // Section 1: Notifications
+  html += `<div>
+    <h4 style="margin: 0 0 10px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #00d4ff; font-weight: 700;">🚨 Price & Progress Updates</h4>`;
+  if (notifications.length === 0) {
+    html += `<div style="padding: 12px; text-align: center; color: #8892b0; font-size: 11px; background: rgba(255,255,255,0.01); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);">No active updates</div>`;
+  } else {
+    notifications.forEach(n => {
+      const itemBg = n.read ? "rgba(255,255,255,0.01)" : "rgba(0, 255, 156, 0.03)";
+      const itemBorder = n.read ? "rgba(255,255,255,0.04)" : "rgba(0, 255, 156, 0.12)";
+      const textWeight = n.read ? "normal" : "600";
+      
+      html += `
+        <div class="notification-item" data-id="${n.id}" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: ${itemBg}; border-radius: 8px; border: 1px solid ${itemBorder}; margin-bottom: 8px; transition: all 0.2s ease;">
+          <span class="notification-text" style="font-size: 12px; color: #eaeaea; font-weight: ${textWeight}; line-height: 1.45; flex: 1; padding-right: 12px;">${n.text}</span>
+          <button onclick="dismissNotification(${n.id}, event)" style="background: none; border: none; color: #71717a; font-size: 11px; cursor: pointer; transition: color 0.2s ease; padding: 4px;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#71717a'">Dismiss</button>
         </div>
-        <button onclick="dismissNotification(${n.id}, event)" style="background: none; border: none; color: #71717a; font-size: 11px; cursor: pointer; transition: color 0.2s ease; padding: 4px;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#71717a'">Dismiss</button>
-      </div>
-    `;
-  });
+      `;
+    });
+  }
+  html += `</div>`;
   
+  // Section 2: News Feed
+  html += `<div>
+    <h4 style="margin: 0 0 10px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #00ff9c; font-weight: 700;">📰 Top Market News</h4>`;
+  if (newsFeed.length === 0) {
+    html += `<div style="padding: 12px; text-align: center; color: #8892b0; font-size: 11px; background: rgba(255,255,255,0.01); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);">No headlines</div>`;
+  } else {
+    newsFeed.forEach(n => {
+      const itemBg = n.read ? "rgba(255,255,255,0.01)" : "rgba(0, 255, 156, 0.03)";
+      const itemBorder = n.read ? "rgba(255,255,255,0.04)" : "rgba(0, 255, 156, 0.12)";
+      const textWeight = n.read ? "normal" : "600";
+      
+      html += `
+        <div class="news-item" data-id="${n.id}" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: ${itemBg}; border-radius: 8px; border: 1px solid ${itemBorder}; margin-bottom: 8px; transition: all 0.2s ease;">
+          <span class="news-text" style="font-size: 12px; color: #eaeaea; font-weight: ${textWeight}; line-height: 1.45; flex: 1; padding-right: 12px;">${n.text}</span>
+          <button onclick="dismissNews(${n.id}, event)" style="background: none; border: none; color: #71717a; font-size: 11px; cursor: pointer; transition: color 0.2s ease; padding: 4px;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#71717a'">Dismiss</button>
+        </div>
+      `;
+    });
+  }
+  html += `</div>`;
+  
+  // Actions Footer
   html += `
     <div style="margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-between; gap: 10px;">
-      <button onclick="markAllNotificationsRead()" style="background: none; border: 1px solid rgba(255,255,255,0.1); color: #eaeaea; font-size: 11px; font-weight: 600; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; flex: 1; text-align: center;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='none'">✓ Mark all read</button>
-      <button onclick="clearAllNotifications()" style="background: none; border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 11px; font-weight: 600; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; flex: 1; text-align: center;" onmouseover="this.style.background='rgba(239, 68, 68, 0.05)'" onmouseout="this.style.background='none'">🗑 Clear All</button>
+      <button onclick="markAllInboxRead()" style="background: none; border: 1px solid rgba(255,255,255,0.1); color: #eaeaea; font-size: 11px; font-weight: 600; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; flex: 1; text-align: center;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='none'">✓ Mark all read</button>
+      <button onclick="clearAllInbox()" style="background: none; border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 11px; font-weight: 600; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; flex: 1; text-align: center;" onmouseover="this.style.background='rgba(239, 68, 68, 0.05)'" onmouseout="this.style.background='none'">🗑 Clear All</button>
     </div>
   `;
   
@@ -1063,15 +1110,26 @@ window.dismissNotification = function(id, event) {
   renderNotifications();
 };
 
-window.markAllNotificationsRead = function() {
-  notifications.forEach(n => n.read = true);
-  localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
+window.dismissNews = function(id, event) {
+  if (event) event.stopPropagation();
+  newsFeed = newsFeed.filter(n => n.id !== id);
+  localStorage.setItem('terminalNewsFeed', JSON.stringify(newsFeed));
   renderNotifications();
 };
 
-window.clearAllNotifications = function() {
-  notifications = [];
+window.markAllInboxRead = function() {
+  notifications.forEach(n => n.read = true);
+  newsFeed.forEach(n => n.read = true);
   localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
+  localStorage.setItem('terminalNewsFeed', JSON.stringify(newsFeed));
+  renderNotifications();
+};
+
+window.clearAllInbox = function() {
+  notifications = [];
+  newsFeed = [];
+  localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
+  localStorage.setItem('terminalNewsFeed', JSON.stringify(newsFeed));
   renderNotifications();
 };
 
