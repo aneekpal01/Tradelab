@@ -849,13 +849,16 @@
 
             chart.subscribeCrosshairMove(function(param) {
                 if (param.time) {
-                    var data = param.seriesPrices.get(candleSeries);
-                    if (data) {
-                        document.getElementById('oOpen').textContent = formatP(data.open);
-                        document.getElementById('oHigh').textContent = formatP(data.high);
-                        document.getElementById('oLow').textContent = formatP(data.low);
-                        document.getElementById('oClose').textContent = formatP(data.close);
-                        document.getElementById('coordinates').textContent = formatP(data.close) + ' | ' + new Date(param.time * 1000).toLocaleString();
+                    var pricesMap = param.seriesData || param.seriesPrices;
+                    if (pricesMap && typeof pricesMap.get === 'function') {
+                        var data = pricesMap.get(candleSeries);
+                        if (data) {
+                            document.getElementById('oOpen').textContent = formatP(data.open);
+                            document.getElementById('oHigh').textContent = formatP(data.high);
+                            document.getElementById('oLow').textContent = formatP(data.low);
+                            document.getElementById('oClose').textContent = formatP(data.close);
+                            document.getElementById('coordinates').textContent = formatP(data.close) + ' | ' + new Date(param.time * 1000).toLocaleString();
+                        }
                     }
                 }
             });
