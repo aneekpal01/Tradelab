@@ -20,6 +20,7 @@
             --accent-blue: #00d4ff;
             --accent-yellow: #ffb700;
             --accent-red: #ff4d4d;
+            --btn-glow: rgba(0, 212, 255, 0.15);
         }
 
         [data-theme="light"] {
@@ -33,6 +34,7 @@
             --accent-blue: #0071e3;
             --accent-yellow: #ea580c;
             --accent-red: #dc2626;
+            --btn-glow: rgba(0, 113, 227, 0.1);
         }
 
         * {
@@ -239,6 +241,7 @@
             background: rgba(0, 212, 255, 0.08);
             border-color: var(--accent-blue);
             color: var(--accent-blue);
+            box-shadow: 0 0 10px var(--btn-glow);
         }
 
         /* Custom marker buttons */
@@ -403,6 +406,8 @@
             border-radius: 16px;
             padding: 24px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            position: relative;
+            overflow: hidden;
         }
 
         .widget-title {
@@ -416,6 +421,55 @@
             padding-bottom: 8px;
         }
 
+        /* Segmented control for toggles */
+        .segmented-control {
+            display: flex;
+            background: var(--bg-primary);
+            padding: 3px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            width: 100%;
+        }
+        
+        .seg-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .seg-btn.active.long {
+            background: var(--accent-green);
+            color: #000;
+        }
+
+        .seg-btn.active.short {
+            background: var(--accent-red);
+            color: #fff;
+        }
+
+        /* Setup progress tracker bar */
+        .setup-progress-tracker {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .progress-step {
+            flex: 1;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            transition: background 0.3s ease;
+        }
+
         /* Setup Card details */
         .setup-row {
             display: flex;
@@ -423,6 +477,7 @@
             padding: 10px 0;
             border-bottom: 1px solid var(--border-color);
             font-size: 13px;
+            align-items: center;
         }
         .setup-row:last-child {
             border-bottom: none;
@@ -448,6 +503,22 @@
             font-size: 11.5px;
             line-height: 1.5;
             color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .verdict-box.badge-red {
+            background: rgba(255, 77, 77, 0.05);
+            border-left-color: var(--accent-red);
+        }
+
+        .verdict-box.badge-yellow {
+            background: rgba(255, 183, 0, 0.05);
+            border-left-color: var(--accent-yellow);
+        }
+
+        .verdict-box.badge-green {
+            background: rgba(0, 255, 156, 0.05);
+            border-left-color: var(--accent-green);
         }
 
         /* Replay Challenge Controls */
@@ -459,15 +530,15 @@
         }
 
         .replay-direction-select {
-            padding: 8px;
+            padding: 8px 12px;
             background: var(--bg-primary);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             color: var(--text-primary);
             font-size: 12.5px;
             font-weight: 600;
-            width: 100%;
             outline: none;
+            cursor: pointer;
         }
 
         .start-replay-btn {
@@ -502,6 +573,26 @@
             animation: pulse 1s infinite alternate;
             margin-top: 10px;
             display: none;
+        }
+
+        .replay-status-banner.badge-yellow {
+            background: rgba(255, 183, 0, 0.1);
+            color: var(--accent-yellow);
+            border: 1px solid rgba(255, 183, 0, 0.2);
+        }
+
+        .replay-status-banner.badge-green {
+            background: rgba(0, 255, 156, 0.1);
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 255, 156, 0.2);
+            animation: none;
+        }
+
+        .replay-status-banner.badge-red {
+            background: rgba(255, 77, 77, 0.1);
+            color: var(--accent-red);
+            border: 1px solid rgba(255, 77, 77, 0.2);
+            animation: none;
         }
 
         /* Setup Evaluation Rating Scorecard */
@@ -662,12 +753,23 @@
                 <div class="sidebar-widget">
                     <div class="widget-title">📍 Current Setup Card</div>
                     
-                    <div class="setup-row">
+                    <!-- Segmented Step Tracker (Refinement) -->
+                    <div class="setup-progress-tracker">
+                        <div class="progress-step" id="pStep1"></div>
+                        <div class="progress-step" id="pStep2"></div>
+                        <div class="progress-step" id="pStep3"></div>
+                    </div>
+
+                    <div id="stepInstruction" style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 16px; font-weight: 500; min-height: 48px; display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                        <span>📍</span> <span>Step 1: Click <strong>Mark Entry</strong> above, then click anywhere on the chart.</span>
+                    </div>
+                    
+                    <div class="setup-row" style="padding: 12px 0;">
                         <span class="setup-label">Direction Mode</span>
-                        <select id="tradeDirection" class="replay-direction-select" onchange="updateSetupCard()">
-                            <option value="long">🟢 LONG Setup</option>
-                            <option value="short">🔴 SHORT Setup</option>
-                        </select>
+                        <div class="segmented-control">
+                            <button id="dirLongBtn" class="seg-btn active long" onclick="setDirection('long')">🟢 Long</button>
+                            <button id="dirShortBtn" class="seg-btn" onclick="setDirection('short')">🔴 Short</button>
+                        </div>
                     </div>
 
                     <div class="setup-row">
@@ -688,6 +790,15 @@
                     <div class="setup-row">
                         <span class="setup-label">Risk : Reward Ratio</span>
                         <span class="setup-value" id="setupRR">--</span>
+                    </div>
+
+                    <div class="setup-row">
+                        <span class="setup-label">Replay Speed</span>
+                        <select id="replaySpeed" class="replay-direction-select" style="padding: 5px 8px; font-size: 11.5px; border-radius: 4px;" onchange="updateReplaySpeed()">
+                            <option value="500">🐌 Slow (0.5s)</option>
+                            <option value="250" selected>⚡ Normal (0.25s)</option>
+                            <option value="100">🚀 Fast (0.1s)</option>
+                        </select>
                     </div>
 
                     <!-- Verdict box -->
@@ -793,6 +904,7 @@
         var entryPrice = null;
         var stopLossPrice = null;
         var targetPrice = null;
+        var tradeDirection = 'long';
 
         var entryLine = null;
         var slLine = null;
@@ -864,6 +976,9 @@
             });
 
             chartEl.addEventListener('click', onChartClick);
+            
+            // Set initial step progress state
+            updateProgressTracker();
         }
 
         // Offline Random Walk Generator Fallback
@@ -965,6 +1080,7 @@
             }
 
             showLoading(false);
+            updateProgressTracker();
         }
 
         function setOnline(online) {
@@ -1026,6 +1142,22 @@
                 resistance: 'Resistance line'
             };
             document.getElementById('currentMode').textContent = names[mode] || mode;
+        }
+
+        // Handle Direction switch (Segmented controls)
+        function setDirection(dir) {
+            tradeDirection = dir;
+            const longBtn = document.getElementById('dirLongBtn');
+            const shortBtn = document.getElementById('dirShortBtn');
+            
+            if (dir === 'long') {
+                longBtn.className = 'seg-btn active long';
+                shortBtn.className = 'seg-btn';
+            } else {
+                longBtn.className = 'seg-btn';
+                shortBtn.className = 'seg-btn active short';
+            }
+            updateSetupCard();
         }
 
         // Handle clicks on lightweight chart
@@ -1116,6 +1248,67 @@
             }
         }
 
+        // Setup Card step progress controller
+        function updateProgressTracker() {
+            const step1 = document.getElementById('pStep1');
+            const step2 = document.getElementById('pStep2');
+            const step3 = document.getElementById('pStep3');
+            const instruction = document.getElementById('stepInstruction');
+
+            if (!step1 || !step2 || !step3 || !instruction) return;
+
+            const activeColor = 'var(--accent-blue)';
+            const completeColor = 'var(--accent-green)';
+            const inactiveColor = 'var(--border-color)';
+
+            // Reset segment styles
+            step1.style.background = inactiveColor;
+            step2.style.background = inactiveColor;
+            step3.style.background = inactiveColor;
+
+            if (replayRunning) {
+                step1.style.background = completeColor;
+                step2.style.background = completeColor;
+                step3.style.background = activeColor;
+                instruction.innerHTML = '<span>⏳</span> <span>Replay active... Watching candle feeds. Will stop on Target or Stop Loss hit.</span>';
+                return;
+            }
+
+            const hasEntry = entryPrice !== null;
+            const hasSL = stopLossPrice !== null;
+            const hasTP = targetPrice !== null;
+
+            const isCompleted = document.getElementById('startReplayBtn').disabled && document.getElementById('startReplayBtn').textContent === 'Challenge Completed';
+
+            if (isCompleted) {
+                step1.style.background = completeColor;
+                step2.style.background = completeColor;
+                step3.style.background = completeColor;
+                instruction.innerHTML = '<span>🏆</span> <span>Challenge completed! Check your Scorecard below for mistake analysis.</span>';
+                return;
+            }
+
+            if (!hasEntry) {
+                step1.style.background = activeColor;
+                instruction.innerHTML = '<span>📍</span> <span>Step 1: Click <strong>Mark Entry</strong> above, then click anywhere on the chart.</span>';
+            } else if (!hasSL || !hasTP) {
+                step1.style.background = completeColor;
+                step2.style.background = activeColor;
+                if (!hasSL && !hasTP) {
+                    instruction.innerHTML = '<span>🛑</span> <span>Step 2: Click <strong>Stop Loss</strong> & <strong>Target</strong> above, then click on the chart.</span>';
+                } else if (!hasSL) {
+                    instruction.innerHTML = '<span>🛑</span> <span>Step 2: Click <strong>Stop Loss</strong> above, then click on the chart below/above your entry.</span>';
+                } else {
+                    instruction.innerHTML = '<span>🎯</span> <span>Step 2: Click <strong>Target</strong> above, then click on the chart to set profit goal.</span>';
+                }
+            } else {
+                step1.style.background = completeColor;
+                step2.style.background = completeColor;
+                step3.style.background = activeColor;
+                instruction.innerHTML = '<span>⚡</span> <span>Step 3: Setup complete! Verify R:R and click <strong>Start Replay Challenge</strong> below.</span>';
+            }
+        }
+
         // Live calculation and Setup Card updates
         function updateSetupCard() {
             const entryVal = document.getElementById('setupEntry');
@@ -1124,7 +1317,7 @@
             const rrVal = document.getElementById('setupRR');
             const verdictBox = document.getElementById('setupVerdict');
             const startBtn = document.getElementById('startReplayBtn');
-            const direction = document.getElementById('tradeDirection').value;
+            const direction = tradeDirection;
 
             if (entryPrice) entryVal.textContent = formatP(entryPrice);
             else entryVal.textContent = "Not Marked";
@@ -1189,6 +1382,17 @@
                 startBtn.disabled = true;
                 startBtn.classList.remove('ready');
             }
+
+            updateProgressTracker();
+        }
+
+        // Live Replay speed adjustment
+        function updateReplaySpeed() {
+            if (replayRunning) {
+                clearInterval(replayTimer);
+                const speed = parseInt(document.getElementById('replaySpeed').value) || 250;
+                replayTimer = setInterval(playNextReplayCandle, speed);
+            }
         }
 
         // Replay Challenge Execution
@@ -1199,6 +1403,7 @@
                 replayRunning = false;
                 document.getElementById('startReplayBtn').textContent = '▶ Continue Replay';
                 document.getElementById('replayStatusBanner').style.display = 'none';
+                updateProgressTracker();
             } else {
                 document.getElementById('scorecardWidget').style.display = 'none';
                 
@@ -1210,7 +1415,9 @@
                 banner.className = 'replay-status-banner badge-yellow';
                 banner.textContent = 'Challenge running... Watching target feeds';
 
-                replayTimer = setInterval(playNextReplayCandle, 250);
+                const speed = parseInt(document.getElementById('replaySpeed').value) || 250;
+                replayTimer = setInterval(playNextReplayCandle, speed);
+                updateProgressTracker();
             }
         }
 
@@ -1226,7 +1433,7 @@
             document.getElementById('currentPrice').textContent = formatP(nextCandle.close);
             document.getElementById('dataInfo').textContent = 'Visible Candles: ' + visibleCandlesFeed.length;
 
-            const direction = document.getElementById('tradeDirection').value;
+            const direction = tradeDirection;
             const high = nextCandle.high;
             const low = nextCandle.low;
 
@@ -1270,7 +1477,7 @@
             let ratingStars = "★★★☆☆";
             let mistakeMsg = "";
             
-            const direction = document.getElementById('tradeDirection').value;
+            const direction = tradeDirection;
             const risk = Math.abs(entryPrice - stopLossPrice);
             const reward = Math.abs(targetPrice - entryPrice);
             const ratio = reward / risk;
@@ -1344,6 +1551,8 @@
 
             mistakeText.innerHTML = mistakeMsg;
             card.style.display = 'block';
+
+            updateProgressTracker();
         }
 
         // Clear all elements
@@ -1371,6 +1580,12 @@
             document.getElementById('scorecardWidget').style.display = 'none';
             document.getElementById('replayStatusBanner').style.display = 'none';
             
+            // Reset start button state
+            const startBtn = document.getElementById('startReplayBtn');
+            startBtn.disabled = true;
+            startBtn.classList.remove('ready');
+            startBtn.textContent = '▶ Start Replay Challenge';
+
             updateSetupCard();
         }
 
