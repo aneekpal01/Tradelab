@@ -577,10 +577,12 @@ function updateMarketStatus() {
     label.setAttribute('data-countdown', countdownText.replace("Closes in ", ""));
     
     const nseText = document.getElementById("nseStatusText");
+    const nseItem = document.getElementById("nseSessionItem");
     if (nseText) {
       nseText.innerHTML = "🟢 NSE";
       nseText.classList.add("active");
     }
+    if (nseItem) nseItem.classList.add("active");
   } else if (nseStatus === "pre") {
     dot.classList.add("pre");
     label.classList.add("pre");
@@ -589,10 +591,12 @@ function updateMarketStatus() {
     label.setAttribute('data-countdown', countdownText.replace("Trading starts in ", ""));
     
     const nseText = document.getElementById("nseStatusText");
+    const nseItem = document.getElementById("nseSessionItem");
     if (nseText) {
       nseText.innerHTML = "🟡 NSE";
       nseText.classList.add("active");
     }
+    if (nseItem) nseItem.classList.add("active");
   } else if (isWeekend) {
     dot.classList.add("weekend");
     label.classList.add("weekend");
@@ -601,10 +605,12 @@ function updateMarketStatus() {
     label.setAttribute('data-countdown', countdownText.replace("Opens Monday in ", ""));
     
     const nseText = document.getElementById("nseStatusText");
+    const nseItem = document.getElementById("nseSessionItem");
     if (nseText) {
       nseText.innerHTML = "NSE";
       nseText.classList.remove("active");
     }
+    if (nseItem) nseItem.classList.remove("active");
   } else {
     dot.classList.add("closed");
     label.classList.add("closed");
@@ -613,10 +619,12 @@ function updateMarketStatus() {
     label.setAttribute('data-countdown', countdownText.replace("Opens in ", ""));
     
     const nseText = document.getElementById("nseStatusText");
+    const nseItem = document.getElementById("nseSessionItem");
     if (nseText) {
       nseText.innerHTML = "NSE";
       nseText.classList.remove("active");
     }
+    if (nseItem) nseItem.classList.remove("active");
   }
 
   // ── London Forex Session (Mon-Fri 1:30 PM - 10:30 PM IST) ──
@@ -628,6 +636,7 @@ function updateMarketStatus() {
     else if (totalMins >= londonStart && totalMins < londonEnd) londonStatus = "open";
   }
   const londonText = document.getElementById("londonStatusText");
+  const londonItem = document.getElementById("londonSessionItem");
   if (londonText) {
     if (londonStatus === "open") {
       londonText.innerHTML = "🟢 London";
@@ -640,6 +649,13 @@ function updateMarketStatus() {
       londonText.classList.remove("active");
     }
   }
+  if (londonItem) {
+    if (londonStatus === "open" || londonStatus === "pre") {
+      londonItem.classList.add("active");
+    } else {
+      londonItem.classList.remove("active");
+    }
+  }
 
   // ── New York Forex Session (Mon-Fri 6:30 PM - 1:30 AM IST) ──
   let nyStatus = "closed";
@@ -648,6 +664,7 @@ function updateMarketStatus() {
     else if (totalMins >= 18*60+30 || totalMins < 1*60+30) nyStatus = "open";
   }
   const nyText = document.getElementById("nyStatusText");
+  const nyItem = document.getElementById("nySessionItem");
   if (nyText) {
     if (nyStatus === "open") {
       nyText.innerHTML = "🟢 New York";
@@ -659,6 +676,53 @@ function updateMarketStatus() {
       nyText.innerHTML = "New York";
       nyText.classList.remove("active");
     }
+  }
+  if (nyItem) {
+    if (nyStatus === "open" || nyStatus === "pre") {
+      nyItem.classList.add("active");
+    } else {
+      nyItem.classList.remove("active");
+    }
+  }
+
+  // Ensure Crypto is always active
+  const cryptoItem = document.getElementById("cryptoSessionItem");
+  if (cryptoItem) {
+    cryptoItem.classList.add("active");
+  }
+
+  // Update the summary tooltip content dynamically (Fix 2)
+  const tooltip = document.getElementById("sessionsSummaryTooltip");
+  if (tooltip) {
+    const nseIndicator = nseStatus === "open" ? "🟢" : (nseStatus === "pre" ? "🟡" : "🔴");
+    const londonIndicator = londonStatus === "open" ? "🟢" : (londonStatus === "pre" ? "🟡" : "🔴");
+    const nyIndicator = nyStatus === "open" ? "🟢" : (nyStatus === "pre" ? "🟡" : "🔴");
+    
+    const nseStatusUpper = nseStatus === "open" ? "Live" : (nseStatus === "pre" ? "Pre-Open" : "Closed");
+    const londonStatusUpper = londonStatus === "open" ? "Live" : (londonStatus === "pre" ? "Pre-Open" : "Closed");
+    const nyStatusUpper = nyStatus === "open" ? "Live" : (nyStatus === "pre" ? "Pre-Open" : "Closed");
+    
+    tooltip.innerHTML = `
+      <strong class="sessions-tooltip-header">Market Sessions Status</strong>
+      <div style="display: flex; flex-direction: column; gap: 6px; font-family: sans-serif;">
+        <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center;">
+          <span>${nseIndicator} NSE (India)</span>
+          <span style="font-weight: 600;">${nseStatusUpper}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center;">
+          <span>🟢 Crypto Markets</span>
+          <span style="font-weight: 600; color: #00ff9c;">Live</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center;">
+          <span>${londonIndicator} London Forex</span>
+          <span style="font-weight: 600;">${londonStatusUpper}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center;">
+          <span>${nyIndicator} New York Forex</span>
+          <span style="font-weight: 600;">${nyStatusUpper}</span>
+        </div>
+      </div>
+    `;
   }
 
 }
