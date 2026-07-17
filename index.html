@@ -106,36 +106,34 @@
           </div>
         </div>
       </div>
-      
-      <!-- RIGHT: Active sessions and News & Alerts -->
+        <!-- RIGHT: Active sessions and News & Alerts -->
       <div class="market-status-group right">
         <!-- Weather Style Sessions with Hovers -->
-        <div class="weather-sessions">
-          <span style="font-size: 12px; color: #475569; margin-right: -4px;">🌍</span>
-          <div class="weather-session-item tooltip-trigger" id="nseSessionItem">
+        <div class="weather-sessions tooltip-trigger">
+          <div class="weather-session-item" id="nseSessionItem">
             <span class="session-status-text" id="nseStatusText">NSE</span>
-            <span class="tooltip-text">NSE Session Hours<br>09:15–15:30 IST (Mon-Fri)</span>
           </div>
           
-          <div class="weather-session-item tooltip-trigger" id="cryptoSessionItem">
+          <div class="weather-session-item" id="cryptoSessionItem">
             <span class="session-status-text active" id="cryptoStatusText">🟢 Crypto</span>
-            <span class="tooltip-text">Crypto Market<br>24 Hours, 365 Days</span>
           </div>
           
-          <div class="weather-session-item tooltip-trigger" id="londonSessionItem">
+          <div class="weather-session-item" id="londonSessionItem">
             <span class="session-status-text" id="londonStatusText">London</span>
-            <span class="tooltip-text">London Session<br>08:00–17:00 GMT<br>(13:30–22:30 IST)</span>
           </div>
 
-          <div class="weather-session-item tooltip-trigger" id="nySessionItem">
+          <div class="weather-session-item" id="nySessionItem">
             <span class="session-status-text" id="nyStatusText">New York</span>
-            <span class="tooltip-text">New York Session<br>13:00–22:00 GMT<br>(18:30–01:30 IST)</span>
           </div>
+          
+          <!-- Single Tooltip for all sessions (Fix 2) -->
+          <span class="tooltip-text sessions-summary-tooltip" id="sessionsSummaryTooltip" style="width: 210px; font-family: sans-serif;">
+            Loading Sessions Status...
+          </span>
         </div>
 
-        <span class="status-divider-bar">|</span>
-        
-        <!-- Live Alerts & News indicators -->
+        <div class="status-divider-bar">|</div>
+
         <div class="interactive-icons">
           <div class="news-indicator tooltip-trigger" onclick="openAlertsDrawer()">
             <span>📰 3</span>
