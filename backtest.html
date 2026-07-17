@@ -205,6 +205,11 @@
             grid-template-columns: 1fr;
         }
 
+        .chart-container-block {
+            min-width: 0;
+            width: 100%;
+        }
+
         /* Drawing Tools Bar */
         .drawing-tools {
             display: flex;
@@ -842,9 +847,14 @@
 
                     <!-- Replay Challenge actions -->
                     <div class="replay-controls">
-                        <button class="start-replay-btn" id="startReplayBtn" onclick="toggleReplayChallenge()" disabled>
-                            Start Replay Challenge
-                        </button>
+                        <div style="display: flex; gap: 8px; width: 100%;">
+                            <button class="start-replay-btn" id="startReplayBtn" onclick="toggleReplayChallenge()" disabled style="flex: 2;">
+                                Start Replay Challenge
+                            </button>
+                            <button class="start-replay-btn" id="stopReplayBtn" onclick="stopAndResetReplay()" style="display: none; flex: 1; background: rgba(255, 77, 77, 0.08); border: 1px solid var(--accent-red); color: var(--accent-red); margin-top: 0;">
+                                Stop
+                            </button>
+                        </div>
                     </div>
 
                     <div class="replay-status-banner" id="replayStatusBanner">
@@ -1155,9 +1165,9 @@
             if (coin === 'XAUUSD') {
                 setOnline(false);
                 setTimeout(() => {
-                    var candles = generateDummyCandles(tf, 150);
+                    var candles = generateDummyCandles(tf, 300);
 
-                    var slicePoint = candles.length - 35;
+                    var slicePoint = candles.length - 100;
                     fullCandlesFeed = candles;
                     visibleCandlesFeed = candles.slice(0, slicePoint);
                     hiddenReplayQueue = candles.slice(slicePoint);
@@ -1174,7 +1184,7 @@
 
             try {
                 // Try fetching Binance API first
-                var url = 'https://api.binance.com/api/v3/klines?symbol=' + coin + '&interval=' + tf + '&limit=150';
+                var url = 'https://api.binance.com/api/v3/klines?symbol=' + coin + '&interval=' + tf + '&limit=300';
                 var response = await fetch(url);
                 if (!response.ok) throw new Error('Binance feed failed');
                 
@@ -1189,7 +1199,7 @@
                     };
                 });
 
-                var slicePoint = candles.length - 35;
+                var slicePoint = candles.length - 100;
                 fullCandlesFeed = candles;
                 visibleCandlesFeed = candles.slice(0, slicePoint);
                 hiddenReplayQueue = candles.slice(slicePoint);
@@ -1204,9 +1214,9 @@
                 setOnline(false);
                 
                 // Offline fallback (Guarantees charts load instantly)
-                var candles = generateDummyCandles(tf, 150);
+                var candles = generateDummyCandles(tf, 300);
 
-                var slicePoint = candles.length - 35;
+                var slicePoint = candles.length - 100;
                 fullCandlesFeed = candles;
                 visibleCandlesFeed = candles.slice(0, slicePoint);
                 hiddenReplayQueue = candles.slice(slicePoint);
@@ -1560,19 +1570,34 @@
             }
         }
 
+        // Replay Feed State Backup Arrays
+        var initialVisibleFeed = [];
+        var initialReplayQueue = [];
+
         // Replay Challenge Execution
         function toggleReplayChallenge() {
             if (replayRunning) {
+                // Pause Replay
                 clearInterval(replayTimer);
                 replayTimer = null;
                 replayRunning = false;
                 document.getElementById('startReplayBtn').textContent = 'Continue Replay';
-                document.getElementById('replayStatusBanner').style.display = 'none';
+                document.getElementById('replayStatusBanner').textContent = 'Challenge Paused';
+                document.getElementById('replayStatusBanner').className = 'replay-status-banner badge-yellow';
                 updateProgressTracker();
             } else {
+                // Save state on first run of this setup session
+                if (initialVisibleFeed.length === 0) {
+                    initialVisibleFeed = [...visibleCandlesFeed];
+                    initialReplayQueue = [...hiddenReplayQueue];
+                }
+
                 document.getElementById('scorecardWidget').style.display = 'none';
                 
                 replayRunning = true;
+                
+                // Show stop/reset actions
+                document.getElementById('stopReplayBtn').style.display = 'block';
                 document.getElementById('startReplayBtn').textContent = 'Pause Replay';
                 
                 const banner = document.getElementById('replayStatusBanner');
@@ -1584,6 +1609,41 @@
                 replayTimer = setInterval(playNextReplayCandle, speed);
                 updateProgressTracker();
             }
+        }
+
+        // Stop challenge and restore initial visible feed
+        function stopAndResetReplay() {
+            if (replayTimer) {
+                clearInterval(replayTimer);
+                replayTimer = null;
+            }
+            replayRunning = false;
+
+            // Restore starting candle data
+            if (initialVisibleFeed.length > 0) {
+                visibleCandlesFeed = [...initialVisibleFeed];
+                hiddenReplayQueue = [...initialReplayQueue];
+                candleSeries.setData(visibleCandlesFeed);
+                
+                var coin = document.getElementById('coinSelect').value;
+                updateTickerInfo(coin === 'XAUUSD' ? 'XAU/USD (Gold Simulated)' : coin.replace('USDT', '/USDT'), visibleCandlesFeed);
+            }
+
+            // Flush temporary state
+            initialVisibleFeed = [];
+            initialReplayQueue = [];
+
+            // Reset UI buttons
+            const startBtn = document.getElementById('startReplayBtn');
+            startBtn.disabled = false;
+            startBtn.classList.add('ready');
+            startBtn.textContent = 'Start Replay Challenge';
+
+            document.getElementById('stopReplayBtn').style.display = 'none';
+            document.getElementById('replayStatusBanner').style.display = 'none';
+            document.getElementById('scorecardWidget').style.display = 'none';
+
+            updateProgressTracker();
         }
 
         function playNextReplayCandle() {
@@ -1742,8 +1802,15 @@
 
             candleSeries.setMarkers([]);
             
+            // Clear temporary replay backups
+            initialVisibleFeed = [];
+            initialReplayQueue = [];
+
             document.getElementById('scorecardWidget').style.display = 'none';
             document.getElementById('replayStatusBanner').style.display = 'none';
+            if (document.getElementById('stopReplayBtn')) {
+                document.getElementById('stopReplayBtn').style.display = 'none';
+            }
             
             // Reset start button state
             const startBtn = document.getElementById('startReplayBtn');
