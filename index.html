@@ -2630,7 +2630,10 @@
   let initialX = 0, initialY = 0;
   let dragging = false;
 
+
+
   header.addEventListener("mousedown", (e) => {
+    if (window.innerWidth <= 768) return; // Disable drag on mobile
     dragging = true;
     startX = e.clientX;
     startY = e.clientY;
