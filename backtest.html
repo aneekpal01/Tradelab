@@ -744,12 +744,43 @@
         </div>
     </div>
 
+    <!-- Diagnostic Console Panel (Refinement 4) -->
+    <div id="debugConsole" style="display: none; background: rgba(0,0,0,0.92); border: 2px solid #ff4d4d; border-radius: 10px; padding: 20px; margin: 25px auto; max-width: 1200px; font-family: monospace; font-size: 12.5px; color: #ff4d4d; overflow-x: auto; box-shadow: 0 8px 30px rgba(0,0,0,0.5); z-index: 9999; position: relative;">
+        <strong style="font-size: 14.5px; display: block; margin-bottom: 8px;">⚠️ JavaScript Error Diagnostics:</strong>
+        <pre id="debugErrorText" style="white-space: pre-wrap; font-family: monospace; line-height: 1.5;"></pre>
+    </div>
+
     <script>
-        // Theme sync
+        // Synchronous error diagnostics tracker
+        window.addEventListener('error', function(e) {
+            var consoleEl = document.getElementById('debugConsole');
+            var textEl = document.getElementById('debugErrorText');
+            if (consoleEl && textEl) {
+                consoleEl.style.display = 'block';
+                textEl.textContent += `${e.message} at ${e.filename || 'script'}:${e.lineno}:${e.colno}\n`;
+            }
+        });
+
+        // Theme check wrapper
+        function getSafeTheme() {
+            try {
+                return localStorage.getItem('theme') || 'dark';
+            } catch (e) {
+                return 'dark'; // Fallback to dark if storage permissions are restricted
+            }
+        }
+
+        // Apply theme early
+        (function() {
+            const theme = getSafeTheme();
+            document.documentElement.setAttribute('data-theme', theme);
+            document.body.className = theme;
+        })();
+
         document.addEventListener('DOMContentLoaded', () => {
-            const currentTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', currentTheme);
-            document.body.className = currentTheme;
+            const theme = getSafeTheme();
+            document.documentElement.setAttribute('data-theme', theme);
+            document.body.className = theme;
         });
 
         // Global variables
@@ -778,14 +809,16 @@
 
         // Initialize Lightweight Chart
         function initChart() {
-            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            const theme = getSafeTheme();
+            const isLight = theme === 'light';
             const gridColor = isLight ? 'rgba(0, 0, 0, 0.04)' : '#1e2a3a';
             const bgThemeColor = isLight ? '#ffffff' : '#0f141b';
             const textColor = isLight ? '#475569' : '#c9d1d9';
 
             chart = LightweightCharts.createChart(chartEl, {
                 layout: {
-                    backgroundColor: bgThemeColor,
+                    background: { type: 'solid', color: bgThemeColor },
+                    backgroundColor: bgThemeColor, // v3 fallback compatibility
                     textColor: textColor,
                 },
                 grid: {
@@ -802,7 +835,7 @@
                     borderColor: gridColor,
                     timeVisible: true,
                 },
-                width: chartEl.clientWidth,
+                width: chartEl.clientWidth || 800,
                 height: 480
             });
 
@@ -1005,7 +1038,8 @@
             
             if (!price || isNaN(price)) return;
 
-            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            const theme = getSafeTheme();
+            const isLight = theme === 'light';
 
             // Mark Entry (📍 Entry)
             if (currentMode === 'entry') {
@@ -1345,11 +1379,15 @@
                 loadChartData();
             } catch (e) {
                 console.error("Simulation chart initialization failed:", e);
-                showLoading(false);
+                // Reveal error parameters in the loader panel
+                document.getElementById('loadingOverlay').classList.remove('hidden');
                 document.getElementById('loadingOverlayText').innerHTML = `
-                    <div style="padding: 10px; color: var(--accent-red);">
-                        <strong>⚠️ Charting engine failed to initialize</strong><br>
-                        Please check your network connection to unpkg.com and refresh the page.
+                    <div style="padding: 20px; color: var(--accent-red); text-align: center;">
+                        <strong style="font-size: 15px;">⚠️ Chart Engine Exception</strong><br>
+                        <p style="margin-top: 10px; color: var(--text-secondary); font-size: 12.5px;">
+                            ${e.message}<br>
+                            Please check your network and refresh the page.
+                        </p>
                     </div>
                 `;
             }
