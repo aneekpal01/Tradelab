@@ -105,6 +105,11 @@ body {
   color: #000;
 }
 
+body.loading {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
 /* ===== LOADING ANIMATION ===== */
 .loader-wrapper {
   position: fixed;
