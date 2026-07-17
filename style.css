@@ -5118,28 +5118,14 @@ body.loading #backToTop {
 
 
 
+
+
 .market-status-inner {
   max-width: 100%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.market-status-left-section {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  position: relative;
-  height: 100%;
-}
-
-.market-status-right-section {
-  width: 250px; /* matches desktop sidebar width exactly */
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
 }
 
 /* Groups styling */
@@ -5150,14 +5136,14 @@ body.loading #backToTop {
 }
 
 .market-status-group.left {
+  flex: 1;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .market-status-group.center {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5175,7 +5161,7 @@ body.loading #backToTop {
   font-weight: 600;
   transition: all var(--t-hover) ease;
   cursor: pointer;
-  transform: none !important; /* Managed purely via CSS layout structure now! */
+  transform: none !important;
 }
 
 .clock-pill-content:hover {
@@ -5184,6 +5170,7 @@ body.loading #backToTop {
 }
 
 .market-status-group.right {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -7844,27 +7831,10 @@ body.loading #backToTop {
     pointer-events: auto;
   }
 
-  /* Reset clock and layout on mobile (Fix 5) */
+  /* Responsive clock adjustments */
   .market-status-inner {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .market-status-left-section {
-    flex: 1;
-    justify-content: space-between;
-  }
-  .market-status-right-section {
-    width: auto !important; /* no longer matching desktop sidebar */
-    flex-shrink: 1;
-  }
-  .market-status-group.center {
-    position: static !important;
-    transform: none !important;
-  }
-
-  .clock-pill-content {
-    transform: none !important;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   /* Cascade delay animations for menu items (Fix 6) */
