@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <script>
-    // Force page to start at the top and disable browser layout scroll jumps
+    // Reset scroll restoration to manual to prevent browser layout scroll jumps
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    // Instantly force viewport to top on load
+    window.scrollTo(0, 0);
+    // If there is a hash in the URL, remove it on load to prevent scroll jumps
     if (window.location.hash) {
-      if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-      }
-      window.scrollTo(0, 0);
+      history.replaceState(null, null, window.location.pathname + window.location.search);
     }
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -2080,19 +2083,6 @@
       const loader = document.getElementById('loader');
       if (loader) loader.classList.add('hidden');
       document.body.classList.remove('loading');
-      
-      // Smoothly transition to hash element after loader disappears
-      const hash = window.location.hash;
-      if (hash) {
-        try {
-          const target = document.querySelector(hash);
-          if (target) {
-            setTimeout(() => {
-              target.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-          }
-        } catch(e) {}
-      }
     }
 
     window.addEventListener('load', () => setTimeout(hideLoader, 1500));
