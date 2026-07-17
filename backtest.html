@@ -1034,7 +1034,6 @@
             var x = e.clientX - rect.left;
             
             var price = candleSeries.coordinateToPrice(y);
-            var time = chart.timeScale().coordinateToTime(x);
             
             if (!price || isNaN(price)) return;
 
