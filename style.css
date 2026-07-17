@@ -5,7 +5,6 @@
   box-sizing: border-box;
   font-family: "Segoe UI", system-ui, sans-serif;
 }
-
 /* ===== DARK/LIGHT MODE VARIABLES ===== */
 :root {
   /* Dark Mode (Default) */
@@ -17,6 +16,12 @@
   --border-color: #1e2a3a;
   --accent-green: #00ff9c;
   --accent-blue: #00d4ff;
+  
+  /* Micro Polish Transitions (Fix 9) */
+  --t-hover: 180ms;
+  --t-btn: 200ms;
+  --t-dropdown: 260ms;
+  --t-drawer: 280ms;
 }
 
 [data-theme="light"] {
@@ -490,20 +495,31 @@ body.loading {
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
+
+
 /* Mobile Menu Overlay */
 .menu-overlay {
-  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0);
   z-index: 998;
+  opacity: 0;
+  pointer-events: none;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition: opacity var(--t-drawer) ease, backdrop-filter var(--t-drawer) ease, -webkit-backdrop-filter var(--t-drawer) ease;
+  display: block !important;
 }
 
 .menu-overlay.active {
-  display: block;
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Mobile Responsive Navbar */
@@ -5063,6 +5079,8 @@ body.loading #backToTop {
    MEDIUM WIN 1: MARKET STATUS BAR
 =============================================== */
 
+
+
 .market-status-bar {
   background: linear-gradient(90deg, #050d1a 0%, #071525 50%, #050d1a 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -5071,7 +5089,7 @@ body.loading #backToTop {
   font-family: 'Segoe UI', system-ui, sans-serif;
   position: sticky; /* Make it stick to top */
   top: 0;
-  z-index: 1001; /* Keep above navbar */
+  z-index: 10005 !important; /* Keep above navbar and drawers */
 }
 
 .market-status-inner {
@@ -5113,9 +5131,9 @@ body.loading #backToTop {
   border-radius: 30px;
   color: #eaeaea;
   font-weight: 600;
-  transition: all 0.2s ease;
+  transition: all var(--t-hover) ease;
   cursor: pointer;
-  transform: translateX(35px); /* Shift clock to right to align vertically with hero badge below */
+  transform: translateX(-125px); /* Optically center relative to hero badge */
 }
 
 .clock-pill-content:hover {
@@ -5200,6 +5218,7 @@ body.loading #backToTop {
 }
 
 /* Clock selector dropdown card */
+
 .clock-dropdown {
   position: absolute;
   top: 110%;
@@ -5212,17 +5231,18 @@ body.loading #backToTop {
   padding: 6px 0;
   width: 140px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  z-index: 10000;
+  z-index: 20000 !important; /* Keep above status bar and navbar top headers */
   text-align: left;
   
-  /* Transition setup */
+  /* Transition setup (Micro Polish timing var) */
   opacity: 0;
   transform: translateX(-50%) scale(0.96);
   transform-origin: top center;
   pointer-events: none;
-  transition: opacity 0.26s cubic-bezier(0.16, 1, 0.3, 1), transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity var(--t-dropdown) cubic-bezier(0.16, 1, 0.3, 1), transform var(--t-dropdown) cubic-bezier(0.16, 1, 0.3, 1);
   display: block !important;
 }
+
 .clock-dropdown.show {
   opacity: 1;
   transform: translateX(-50%) scale(1);
@@ -7750,30 +7770,66 @@ body.loading #backToTop {
 /* ---------- MOBILE: sidebar becomes an off-canvas drawer (slides
    in from the RIGHT, since the sidebar now lives on the right) ---------- */
 @media (max-width: 900px) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: auto;
-    width: 78%;
-    max-width: 250px;
-    height: 100vh;
-    height: 100dvh;
-    transform: translateX(100%);
-    opacity: 1;
-    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
-    z-index: 1000;
-  }
 
-  /* Closed by default on mobile — hamburger tap reveals it */
-  .sidebar.active {
-    transform: translateX(0);
-  }
 
   /* Neutralize the old off-canvas panel rules on .nav-links —
      the sidebar itself is now the sliding panel, so nav-links
      just sits inside it as a normal block list. Higher
      specificity than the original .nav-links rule so it wins. */
+  .sidebar {
+    position: fixed;
+    top: 75px; /* Float below sticky status bar and topbar headers */
+    right: 16px;
+    width: 250px;
+    height: auto;
+    max-height: calc(100vh - 95px);
+    border-radius: 12px;
+    background: rgba(17, 24, 39, 0.85) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    z-index: 10000;
+    padding: 20px 16px;
+    
+    /* Premium popup open/close transitions (Fix 6) */
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+    pointer-events: none;
+    transition: opacity var(--t-drawer) cubic-bezier(0.16, 1, 0.3, 1), transform var(--t-drawer) cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sidebar.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  /* Reset clock translations on mobile (Fix 5) */
+  .clock-pill-content {
+    transform: none !important;
+  }
+
+  /* Cascade delay animations for menu items (Fix 6) */
+  .sidebar .menu-item {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+    transition: opacity var(--t-dropdown) ease-out, transform var(--t-dropdown) ease-out;
+  }
+
+  .sidebar.active .menu-item {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .sidebar.active #menuLearn { transition-delay: 30ms; }
+  .sidebar.active #menuQuiz { transition-delay: 60ms; }
+  .sidebar.active #menuAIMentor { transition-delay: 90ms; }
+  .sidebar.active #menuBacktest { transition-delay: 120ms; }
+  .sidebar.active #menuCalculator { transition-delay: 150ms; }
+  .sidebar.active #menuFAQ { transition-delay: 180ms; }
+
+  /* Neutralize the old off-canvas panel rules on .nav-links — */
   .sidebar .nav-links {
     position: static;
     right: auto;
