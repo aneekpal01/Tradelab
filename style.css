@@ -813,6 +813,7 @@ section {
   align-items: center;
   gap: 12px;
   margin-top: 20px;
+  width: 100%;
 }
 
 .progress-menu-container {
@@ -820,11 +821,11 @@ section {
 }
 
 .progress-menu-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #9ca3af;
+  background: transparent;
+  border: 1.5px dashed rgba(255, 255, 255, 0.15);
+  color: #71717a;
   width: 38px;
-  height: 38px;
+  height: 38px; /* matching cert-btn height exactly */
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -837,27 +838,38 @@ section {
 }
 
 .progress-menu-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .progress-menu-dropdown {
-  display: none;
   position: absolute;
-  bottom: 115%;
+  bottom: 125%;
   right: 0;
-  background: #1f2937;
+  background: rgba(31, 41, 55, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   width: 140px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   z-index: 100;
   padding: 4px 0;
+  
+  /* Transition setup */
+  opacity: 0;
+  transform: scale(0.96);
+  transform-origin: bottom right;
+  pointer-events: none;
+  transition: opacity 0.26s cubic-bezier(0.16, 1, 0.3, 1), transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  display: block !important;
 }
 
 .progress-menu-dropdown.show {
-  display: block;
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
 }
 
 .progress-menu-item {
@@ -1386,37 +1398,31 @@ section {
 
 .advanced-separator-content {
   display: inline-block;
-  padding: 12px 30px;
-  font-size: 24px;
+  padding: 10px 24px;
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   color: #ffffff;
-  border-radius: 10px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 77, 77, 0.15),
-    rgba(0, 255, 165, 0.15)
-  );
-  border: 1px solid;
-  border-image-slice: 1;
-  border-image-source: linear-gradient(to right, #ff4d4d, #9c00ff);
-  box-shadow: 
-    0 0 15px rgba(255, 77, 77, 0.45),
-    0 0 30px rgba(156, 0, 255, 0.25);
+  border-radius: 30px; /* Fully rounded pill for premium look */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
 
 .advanced-separator-content:hover {
-  box-shadow: 
-    0 0 20px rgba(255, 77, 77, 0.7),
-    0 0 40px rgba(156, 0, 255, 0.4);
-  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
 }
 
 /* STEP 5A - LIQUIDITY HIGHLIGHT */
 .step-five-a {
-  border: 1px solid #00e5ff;
-  box-shadow: 0 0 25px rgba(0, 229, 255, 0.25);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-five-a .step-badge {
@@ -1426,8 +1432,8 @@ section {
 
 /* STEP 5A1 - LIQUIDITY PRO HIGHLIGHT */
 .step-five-a1 {
-  border: 1px solid #00bcd4;
-  box-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
+  border: 1px solid rgba(0, 188, 212, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-five-a1 .step-badge {
@@ -1437,8 +1443,8 @@ section {
 
 /* STEP 5A2 - SUPPLY & DEMAND */
 .step-five-a2 {
-  border: 1px solid #00bcd4;
-  box-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
+  border: 1px solid rgba(0, 188, 212, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-five-a2 .step-badge {
@@ -1448,8 +1454,8 @@ section {
 
 /* STEP 5B1 - SMART MONEY CONCEPT (SMC) */
 .step-five-b1 {
-  border: 1px solid #ff00ff;
-  box-shadow: 0 0 25px rgba(255, 0, 255, 0.25);
+  border: 1px solid rgba(255, 0, 255, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-five-b1 .step-badge {
@@ -1459,8 +1465,8 @@ section {
 
 /* STEP 5B2 - SMART MONEY CONCEPT (SMC) */
 .step-five-b2 {
-  border: 1px solid #ff00ff;
-  box-shadow: 0 0 25px rgba(255, 0, 255, 0.25);
+  border: 1px solid rgba(255, 0, 255, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-five-b2 .step-badge {
@@ -1470,8 +1476,8 @@ section {
 
 /* STEP 7A - PARTIAL BOOKING HIGHLIGHT */
 .step-seven-a {
-  border: 1px solid #ffd700;
-  box-shadow: 0 0 25px rgba(255, 215, 0, 0.25);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-seven-a .step-badge {
@@ -1481,8 +1487,8 @@ section {
 
 /* STEP 7B - TRAILING STOP-LOSS HIGHLIGHT */
 .step-seven-b {
-  border: 1px solid #ffa500;
-  box-shadow: 0 0 25px rgba(255, 165, 0, 0.25);
+  border: 1px solid rgba(255, 165, 0, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-seven-b .step-badge {
@@ -1492,8 +1498,8 @@ section {
 
 /* STEP 7C - BREAKEVEN LOGIC */
 .step-seven-c {
-  border: 1px solid #ffa500;
-  box-shadow: 0 0 25px rgba(255, 165, 0, 0.25);
+  border: 1px solid rgba(255, 165, 0, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-seven-c .step-badge {
@@ -1503,8 +1509,8 @@ section {
 
 /* STEP 7D - SCALING IN & SCALING OUT */
 .step-seven-d {
-  border: 1px solid #ffa500;
-  box-shadow: 0 0 25px rgba(255, 165, 0, 0.25);
+  border: 1px solid rgba(255, 165, 0, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-seven-d .step-badge {
@@ -1514,8 +1520,8 @@ section {
 
 /* STEP 8 - MULTI-TIMEFRAME ANALYSIS */
 .step-eight {
-  border: 1px solid #00bfa6;
-  box-shadow: 0 0 25px rgba(0, 191, 166, 0.25);
+  border: 1px solid rgba(0, 191, 166, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-eight .step-badge {
@@ -1525,8 +1531,8 @@ section {
 
 /* STEP 8A - TOP DOWN ANALYSIS */
 .step-eight-a {
-  border: 1px solid #00bfa6;
-  box-shadow: 0 0 25px rgba(0, 191, 166, 0.25);
+  border: 1px solid rgba(0, 191, 166, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-eight-a .step-badge {
@@ -1536,8 +1542,8 @@ section {
 
 /* STEP 8B - AVOID FALSE BREAKOUTS */
 .step-eight-b {
-  border: 1px solid #00bfa6;
-  box-shadow: 0 0 25px rgba(0, 191, 166, 0.25);
+  border: 1px solid rgba(0, 191, 166, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-eight-b .step-badge {
@@ -1547,8 +1553,8 @@ section {
 
 /* STEP 9 - BACKTESTING */
 .step-nine {
-  border: 1px solid #ff1744;
-  box-shadow: 0 0 25px rgba(255, 23, 68, 0.25);
+  border: 1px solid rgba(255, 23, 68, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-nine .step-badge {
@@ -1558,8 +1564,8 @@ section {
 
 /* STEP 10 - STRATEGY BUILDING */
 .step-ten {
-  border: 1px solid #ff9100;
-  box-shadow: 0 0 25px rgba(255, 145, 0, 0.25);
+  border: 1px solid rgba(255, 145, 0, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .step-ten .step-badge {
@@ -2417,28 +2423,11 @@ section {
   mix-blend-mode: screen;
 }
 
-/* ===== ADVANCED CONCEPTS BOX GLOW ===== */
+/* ===== ADVANCED CONCEPTS SEPARATOR CONTAINER ===== */
 .advanced-separator-container {
-  animation: advancedGlow 2s ease-in-out infinite;
-}
-
-@keyframes advancedGlow {
-  0%, 100% {
-    box-shadow: 
-      0 0 10px rgba(255, 0, 128, 0.5),
-      0 0 20px rgba(255, 0, 128, 0.3),
-      0 0 10px rgba(0, 255, 200, 0.5),
-      0 0 20px rgba(0, 255, 200, 0.3);
-  }
-  50% {
-    box-shadow: 
-      0 0 20px rgba(255, 0, 128, 0.8),
-      0 0 40px rgba(255, 0, 128, 0.5),
-      0 0 60px rgba(255, 0, 128, 0.3),
-      0 0 20px rgba(0, 255, 200, 0.8),
-      0 0 40px rgba(0, 255, 200, 0.5),
-      0 0 60px rgba(0, 255, 200, 0.3);
-  }
+  grid-column: 1 / -1;  /* Full width across grid */
+  text-align: center;
+  margin: 40px auto;
 }
 /* ===== NAV LOGO (IMPROVED SIZE & NORMAL LOOK) ===== */
 
@@ -5080,8 +5069,9 @@ body.loading #backToTop {
   padding: 6px 20px;
   font-size: 11.5px;
   font-family: 'Segoe UI', system-ui, sans-serif;
-  position: relative;
-  z-index: 998;
+  position: sticky; /* Make it stick to top */
+  top: 0;
+  z-index: 1001; /* Keep above navbar */
 }
 
 .market-status-inner {
@@ -5125,6 +5115,7 @@ body.loading #backToTop {
   font-weight: 600;
   transition: all 0.2s ease;
   cursor: pointer;
+  transform: translateX(35px); /* Shift clock to right to align vertically with hero badge below */
 }
 
 .clock-pill-content:hover {
@@ -5210,12 +5201,12 @@ body.loading #backToTop {
 
 /* Clock selector dropdown card */
 .clock-dropdown {
-  display: none;
   position: absolute;
   top: 110%;
   left: 50%;
-  transform: translateX(-50%) translateY(5px);
-  background: rgba(10, 15, 25, 0.95);
+  background: rgba(10, 15, 25, 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   padding: 6px 0;
@@ -5223,9 +5214,19 @@ body.loading #backToTop {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   z-index: 10000;
   text-align: left;
+  
+  /* Transition setup */
+  opacity: 0;
+  transform: translateX(-50%) scale(0.96);
+  transform-origin: top center;
+  pointer-events: none;
+  transition: opacity 0.26s cubic-bezier(0.16, 1, 0.3, 1), transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  display: block !important;
 }
 .clock-dropdown.show {
-  display: block;
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+  pointer-events: auto;
 }
 .clock-dropdown-item {
   padding: 8px 12px;
@@ -7719,6 +7720,8 @@ body.loading #backToTop {
   gap: 20px; /* Increased gap to allow circles to breathe */
 }
 
+
+
 /* ---------- TOP HEADER (slim bar above the page content) ---------- */
 .top-header {
   display: flex;
@@ -7727,8 +7730,8 @@ body.loading #backToTop {
   gap: 12px;
   padding: 14px 20px;
   position: sticky;
-  top: 0;
-  z-index: 990;
+  top: 29px; /* Sit immediately under the 29px status bar */
+  z-index: 1000;
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
   transition: background 0.3s ease, padding 0.3s ease;
@@ -8318,6 +8321,8 @@ body.loading #backToTop {
   border-top-color: #cbd5e1 !important;
 }
 
+
+
 [data-theme="light"] .cert-btn.disabled {
   background: #ffffff !important;
   border: 1.5px dashed #cbd5e1 !important; /* Light mode dashed border */
@@ -8329,6 +8334,30 @@ body.loading #backToTop {
   color: #ffffff !important;
   border: none !important;
   box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2) !important;
+}
+
+[data-theme="light"] .progress-menu-btn {
+  background: #ffffff !important;
+  border: 1.5px dashed #cbd5e1 !important;
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .progress-menu-btn:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+}
+
+[data-theme="light"] .progress-menu-dropdown {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .clock-dropdown {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05) !important;
 }
 
 [data-theme="light"] .reset-link-btn {
@@ -8380,5 +8409,19 @@ body.loading #backToTop {
 [data-theme="light"] .course-helper-card {
   background: rgba(0, 180, 216, 0.03) !important;
   border-color: rgba(0, 180, 216, 0.12) !important;
+}
+
+/* Bell bounce animation (satisfying metric notification) */
+@keyframes bellBounce {
+  0%, 100% { transform: rotate(0); }
+  15% { transform: rotate(-15deg); }
+  30% { transform: rotate(10deg); }
+  45% { transform: rotate(-10deg); }
+  60% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+}
+.bell-bounce {
+  animation: bellBounce 0.65s ease-in-out;
+  display: inline-block;
 }
 
