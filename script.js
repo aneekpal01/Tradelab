@@ -691,36 +691,113 @@ function updateMarketStatus() {
     cryptoItem.classList.add("active");
   }
 
-  // Update the summary tooltip content dynamically (Fix 2)
-  const tooltip = document.getElementById("sessionsSummaryTooltip");
-  if (tooltip) {
-    const nseIndicator = nseStatus === "open" ? "🟢" : (nseStatus === "pre" ? "🟡" : "🔴");
-    const londonIndicator = londonStatus === "open" ? "🟢" : (londonStatus === "pre" ? "🟡" : "🔴");
-    const nyIndicator = nyStatus === "open" ? "🟢" : (nyStatus === "pre" ? "🟡" : "🔴");
+  // Update individual tooltips dynamically (NSE, London, New York)
+  const nseTooltip = document.getElementById("nseTooltip");
+  if (nseTooltip) {
+    const statusText = nseStatus === "open" ? "Live" : (nseStatus === "pre" ? "Pre-Open" : "Closed");
+    const statusColor = nseStatus === "open" ? "#00ff9c" : (nseStatus === "pre" ? "#ffb700" : "#ff6b6b");
+    const statusIndicator = nseStatus === "open" ? "🟢" : (nseStatus === "pre" ? "🟡" : "🔴");
     
-    const nseStatusUpper = nseStatus === "open" ? "Live" : (nseStatus === "pre" ? "Pre-Open" : "Closed");
-    const londonStatusUpper = londonStatus === "open" ? "Live" : (londonStatus === "pre" ? "Pre-Open" : "Closed");
-    const nyStatusUpper = nyStatus === "open" ? "Live" : (nyStatus === "pre" ? "Pre-Open" : "Closed");
+    let timingRow = "";
+    if (nseStatus === "open") {
+      timingRow = `<div style="display: flex; justify-content: space-between;"><span>Closes in</span><span style="font-weight:600;">${countdownText.replace("Closes in ", "")}</span></div>`;
+    } else if (nseStatus === "pre") {
+      timingRow = `<div style="display: flex; justify-content: space-between;"><span>Opening in</span><span style="font-weight:600;">09:15 AM</span></div>`;
+    } else {
+      timingRow = `<div style="display: flex; justify-content: space-between;"><span>Opens in</span><span style="font-weight:600;">${countdownText.replace("Opens in ", "")}</span></div>`;
+    }
+
+    nseTooltip.innerHTML = `
+      <strong class="sessions-tooltip-header">${statusIndicator} NSE (India)</strong>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: flex; justify-content: space-between;"><span>Status</span><span style="font-weight:600; color:${statusColor};">${statusText}</span></div>
+        ${timingRow}
+        <div style="display: flex; justify-content: space-between;"><span>Opens</span><span style="font-weight:600;">09:15 AM IST</span></div>
+        <div style="display: flex; justify-content: space-between;"><span>Closes</span><span style="font-weight:600;">03:30 PM IST</span></div>
+        <div style="display: flex; justify-content: space-between;"><span>Pre-Open</span><span style="font-weight:600;">09:00 AM IST</span></div>
+      </div>
+    `;
+  }
+
+  // London Forex Session (Mon-Fri 1:30 PM - 10:30 PM IST)
+  let londonCountdown = "";
+  if (isWeekend) {
+    londonCountdown = "Opens Monday";
+  } else if (totalMins < londonStart) {
+    const diff = londonStart - totalMins;
+    londonCountdown = `${String(Math.floor(diff / 60)).padStart(2, '0')}h ${String(diff % 60).padStart(2, '0')}m`;
+  } else if (totalMins >= londonEnd) {
+    const diff = (24 * 60 - totalMins) + londonStart;
+    londonCountdown = `${String(Math.floor(diff / 60)).padStart(2, '0')}h ${String(diff % 60).padStart(2, '0')}m`;
+  }
+
+  const londonTooltip = document.getElementById("londonTooltip");
+  if (londonTooltip) {
+    const statusText = londonStatus === "open" ? "Live" : (londonStatus === "pre" ? "Pre-Open" : "Closed");
+    const statusColor = londonStatus === "open" ? "#00ff9c" : (londonStatus === "pre" ? "#ffb700" : "#ff6b6b");
+    const statusIndicator = londonStatus === "open" ? "🟢" : (londonStatus === "pre" ? "🟡" : "🔴");
     
-    tooltip.innerHTML = `
-      <strong class="sessions-tooltip-header">Market Sessions Status</strong>
-      <div style="display: flex; flex-direction: column; gap: 6px; font-family: sans-serif;">
-        <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center;">
-          <span>${nseIndicator} NSE (India)</span>
-          <span style="font-weight: 600;">${nseStatusUpper}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center;">
-          <span>🟢 Crypto Markets</span>
-          <span style="font-weight: 600; color: #00ff9c;">Live</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center;">
-          <span>${londonIndicator} London Forex</span>
-          <span style="font-weight: 600;">${londonStatusUpper}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; gap: 12px; align-items: center;">
-          <span>${nyIndicator} New York Forex</span>
-          <span style="font-weight: 600;">${nyStatusUpper}</span>
-        </div>
+    let timingRow = "";
+    if (londonStatus === "open") {
+      const diff = londonEnd - totalMins;
+      timingRow = `<div style="display: flex; justify-content: space-between;"><span>Closes in</span><span style="font-weight:600;">${String(Math.floor(diff / 60)).padStart(2, '0')}h ${String(diff % 60).padStart(2, '0')}m</span></div>`;
+    } else {
+      timingRow = `<div style="display: flex; justify-content: space-between;"><span>Opens in</span><span style="font-weight:600;">${londonCountdown}</span></div>`;
+    }
+
+    londonTooltip.innerHTML = `
+      <strong class="sessions-tooltip-header">${statusIndicator} London Forex</strong>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: flex; justify-content: space-between;"><span>Status</span><span style="font-weight:600; color:${statusColor};">${statusText}</span></div>
+        ${timingRow}
+        <div style="display: flex; justify-content: space-between;"><span>Session</span><span style="font-weight:600;">01:30 PM - 10:30 PM IST</span></div>
+      </div>
+    `;
+  }
+
+  // New York Forex Session (Mon-Fri 6:30 PM - 1:30 AM IST next day)
+  let nyCountdown = "";
+  if (isWeekend) {
+    nyCountdown = "Opens Monday";
+  } else {
+    if (nyStatus === "open") {
+      let diff = 0;
+      if (totalMins >= 18 * 60 + 30) {
+        diff = (24 * 60 - totalMins) + 90;
+      } else {
+        diff = 90 - totalMins;
+      }
+      nyCountdown = `${String(Math.floor(diff / 60)).padStart(2, '0')}h ${String(diff % 60).padStart(2, '0')}m`;
+    } else {
+      let diff = 0;
+      if (totalMins >= 90) {
+        diff = (18 * 60 + 30) - totalMins;
+      } else {
+        diff = 90 - totalMins; // fallback (already open if < 90)
+      }
+      nyCountdown = `${String(Math.floor(diff / 60)).padStart(2, '0')}h ${String(diff % 60).padStart(2, '0')}m`;
+    }
+  }
+
+  const nyTooltip = document.getElementById("nyTooltip");
+  if (nyTooltip) {
+    const statusText = nyStatus === "open" ? "Live" : (nyStatus === "pre" ? "Pre-Open" : "Closed");
+    const statusColor = nyStatus === "open" ? "#00ff9c" : (nyStatus === "pre" ? "#ffb700" : "#ff6b6b");
+    const statusIndicator = nyStatus === "open" ? "🟢" : (nyStatus === "pre" ? "🟡" : "🔴");
+    
+    let timingRow = "";
+    if (nyStatus === "open") {
+      timingRow = `<div style="display: flex; justify-content: space-between;"><span>Closes in</span><span style="font-weight:600;">${nyCountdown}</span></div>`;
+    } else {
+      timingRow = `<div style="display: flex; justify-content: space-between;"><span>Opens in</span><span style="font-weight:600;">${nyCountdown}</span></div>`;
+    }
+
+    nyTooltip.innerHTML = `
+      <strong class="sessions-tooltip-header">${statusIndicator} New York Forex</strong>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: flex; justify-content: space-between;"><span>Status</span><span style="font-weight:600; color:${statusColor};">${statusText}</span></div>
+        ${timingRow}
+        <div style="display: flex; justify-content: space-between;"><span>Session</span><span style="font-weight:600;">06:30 PM - 01:30 AM IST</span></div>
       </div>
     `;
   }
@@ -898,7 +975,120 @@ function animateCount(el, target, isPercent) {
 
 // Run after DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initStats);
+  document.addEventListener('DOMContentLoaded', () => {
+    initStats();
+    initNotifications();
+  });
 } else {
   initStats();
+  initNotifications();
 }
+
+// =============================================
+// TERMINAL NOTIFICATIONS DRAWER SYSTEM
+// =============================================
+let notifications = JSON.parse(localStorage.getItem('terminalNotifications')) || [
+  { id: 1, text: "BTCUSD crossed ₹5,200,000 target", read: false },
+  { id: 2, text: "NSE India opened for regular trading session", read: false },
+  { id: 3, text: "Lesson 'Learn Trendlines' unlocked!", read: false }
+];
+
+function initNotifications() {
+  renderNotifications();
+  
+  // Show welcome notification on very first session load
+  if (!sessionStorage.getItem('welcomeNotified')) {
+    setTimeout(() => {
+      addNotification("Welcome to TradeLab AI (Beta) - Offline Mode Active!");
+      sessionStorage.setItem('welcomeNotified', 'true');
+    }, 2000);
+  }
+}
+
+function renderNotifications() {
+  const contentDiv = document.getElementById("alertsPanelContent");
+  if (!contentDiv) return;
+  
+  const unreadCount = notifications.filter(n => !n.read).length;
+  const bellBtn = document.getElementById("alertIndicatorBtn");
+  if (bellBtn) {
+    const bellSpan = bellBtn.querySelector("span:first-child");
+    if (bellSpan) {
+      bellSpan.textContent = unreadCount > 0 ? `🔔 ${unreadCount}` : "🔔";
+    }
+  }
+  
+  if (notifications.length === 0) {
+    contentDiv.innerHTML = `
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60%; color: #8892b0; font-family: sans-serif; gap: 8px;">
+        <span style="font-size: 32px;">📭</span>
+        <span style="font-size: 13px;">No new notifications</span>
+      </div>
+    `;
+    return;
+  }
+  
+  let html = `<div style="display: flex; flex-direction: column; gap: 10px; font-family: sans-serif; height: 100%;">`;
+  
+  notifications.forEach(n => {
+    const itemBg = n.read ? "rgba(255,255,255,0.01)" : "rgba(0, 255, 156, 0.03)";
+    const itemBorder = n.read ? "rgba(255,255,255,0.04)" : "rgba(0, 255, 156, 0.12)";
+    const textWeight = n.read ? "normal" : "600";
+    
+    html += `
+      <div class="notification-item" data-id="${n.id}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: ${itemBg}; border-radius: 8px; border: 1px solid ${itemBorder}; transition: all 0.2s ease;">
+        <div style="display: flex; flex-direction: column; gap: 2px; flex: 1; padding-right: 12px;">
+          <span class="notification-text" style="font-size: 12px; color: #eaeaea; font-weight: ${textWeight}; line-height: 1.45;">${n.text}</span>
+        </div>
+        <button onclick="dismissNotification(${n.id}, event)" style="background: none; border: none; color: #71717a; font-size: 11px; cursor: pointer; transition: color 0.2s ease; padding: 4px;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#71717a'">Dismiss</button>
+      </div>
+    `;
+  });
+  
+  html += `
+    <div style="margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-between; gap: 10px;">
+      <button onclick="markAllNotificationsRead()" style="background: none; border: 1px solid rgba(255,255,255,0.1); color: #eaeaea; font-size: 11px; font-weight: 600; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; flex: 1; text-align: center;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='none'">✓ Mark all read</button>
+      <button onclick="clearAllNotifications()" style="background: none; border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 11px; font-weight: 600; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; flex: 1; text-align: center;" onmouseover="this.style.background='rgba(239, 68, 68, 0.05)'" onmouseout="this.style.background='none'">🗑 Clear All</button>
+    </div>
+  `;
+  
+  html += `</div>`;
+  contentDiv.innerHTML = html;
+}
+
+window.dismissNotification = function(id, event) {
+  if (event) event.stopPropagation();
+  notifications = notifications.filter(n => n.id !== id);
+  localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
+  renderNotifications();
+};
+
+window.markAllNotificationsRead = function() {
+  notifications.forEach(n => n.read = true);
+  localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
+  renderNotifications();
+};
+
+window.clearAllNotifications = function() {
+  notifications = [];
+  localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
+  renderNotifications();
+};
+
+window.addNotification = function(text) {
+  const newId = notifications.length > 0 ? Math.max(...notifications.map(n => n.id)) + 1 : 1;
+  notifications.unshift({ id: newId, text: text, read: false });
+  localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
+  renderNotifications();
+  
+  // Trigger bounce animation on the bell text span
+  const bellBtn = document.getElementById("alertIndicatorBtn");
+  if (bellBtn) {
+    const bellIcon = bellBtn.querySelector("span:first-child");
+    if (bellIcon) {
+      bellIcon.classList.remove("bell-bounce");
+      void bellIcon.offsetWidth; // Trigger reflow to restart animation
+      bellIcon.classList.add("bell-bounce");
+    }
+  }
+};
