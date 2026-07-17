@@ -90,12 +90,11 @@
         </div>
       </div>
       
-      <!-- CENTER: Indian Clock & Live Flag -->
+      <!-- CENTER: Indian Clock Pill -->
       <div class="market-status-group center" id="clockGroup" onclick="toggleClockDropdown(event)" style="position: relative; cursor: pointer;">
-        <span class="clock-icon">🕘</span>
-        <span class="flag-icon">🇮🇳</span>
-        <span class="clock-label">IST</span>
-        <span class="clock-time" id="marketTime">00:00:00</span>
+        <span class="clock-pill-content">
+          <span class="clock-icon">🕒</span> IST <span class="clock-time" id="marketTime">00:00:00</span>
+        </span>
         
         <!-- Dropdown Selector -->
         <div class="clock-dropdown" id="clockDropdown">
@@ -108,32 +107,28 @@
         </div>
       </div>
       
-      <!-- RIGHT: Weather style dots, active markers, News & Alerts -->
+      <!-- RIGHT: Active sessions and News & Alerts -->
       <div class="market-status-group right">
         <!-- Weather Style Sessions with Hovers -->
         <div class="weather-sessions">
           <span style="font-size: 12px; color: #475569; margin-right: -4px;">🌍</span>
           <div class="weather-session-item tooltip-trigger" id="nseSessionItem">
-            <span class="weather-dot" id="nseDot">●</span>
-            <span class="weather-name">NSE</span>
+            <span class="session-status-text" id="nseStatusText">NSE</span>
             <span class="tooltip-text">NSE Session Hours<br>09:15–15:30 IST (Mon-Fri)</span>
           </div>
           
           <div class="weather-session-item tooltip-trigger" id="cryptoSessionItem">
-            <span class="weather-dot green-dot">●</span>
-            <span class="weather-name">Crypto</span>
+            <span class="session-status-text active" id="cryptoStatusText">🟢 Crypto</span>
             <span class="tooltip-text">Crypto Market<br>24 Hours, 365 Days</span>
           </div>
           
           <div class="weather-session-item tooltip-trigger" id="londonSessionItem">
-            <span class="weather-dot" id="londonDot">●</span>
-            <span class="weather-name">London</span>
+            <span class="session-status-text" id="londonStatusText">London</span>
             <span class="tooltip-text">London Session<br>08:00–17:00 GMT<br>(13:30–22:30 IST)</span>
           </div>
 
           <div class="weather-session-item tooltip-trigger" id="nySessionItem">
-            <span class="weather-dot" id="nyDot">●</span>
-            <span class="weather-name">New York</span>
+            <span class="session-status-text" id="nyStatusText">New York</span>
             <span class="tooltip-text">New York Session<br>13:00–22:00 GMT<br>(18:30–01:30 IST)</span>
           </div>
         </div>
@@ -541,15 +536,34 @@
     <!-- Progress Tracker (Fix 1, Fix 5) -->
     <div class="progress-tracker">
       <div class="progress-info">
-        <span class="progress-text">Your Progress</span>
-        <span class="progress-count" id="progressCount">0/25 Completed</span>
+        <div>
+          <span class="progress-text">Learning Journey</span>
+          <div class="progress-next-lesson" id="progressNextLesson">Next: Loading...</div>
+        </div>
+        <span class="progress-count" id="progressCount">0 of 25 Lessons Completed</span>
       </div>
       <div class="progress-bar-container">
         <div class="progress-bar-fill" id="progressBar"></div>
       </div>
+      
+      <!-- Streaks and Estimated Completion widget (One Feature I'd Add) -->
+      <div class="progress-streak-section">
+        <span class="progress-streak-item">🔥 Current Streak: <strong id="progressStreakText">1 Day</strong></span>
+        <span class="progress-streak-item">📅 Est. Completion: <strong id="progressEstDays">25 Days Left</strong></span>
+      </div>
+
       <div class="progress-actions">
-        <button class="cert-btn disabled" id="progressCertBtn" onclick="tryGetCertificate()" disabled>🏆 Get Certificate</button>
-        <button class="reset-link-btn" onclick="resetProgress()">Reset Progress</button>
+        <button class="cert-btn disabled" id="progressCertBtn" onclick="tryGetCertificate()" disabled>🏆 Unlock at 100%</button>
+        
+        <!-- Options Triple Dot Menu (Problem 3) -->
+        <div class="progress-menu-container">
+          <button class="progress-menu-btn" onclick="toggleProgressMenu(event)" title="Options">⋮</button>
+          <div class="progress-menu-dropdown" id="progressMenuDropdown">
+            <div class="progress-menu-item" onclick="resetProgress()">
+              <span>🔄</span> Reset Progress
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -1806,7 +1820,61 @@
       if (pBar) pBar.style.width = percentage + '%';
       
       const pCount = document.getElementById('progressCount');
-      if (pCount) pCount.textContent = completed + '/' + TOTAL_VIDEOS + ' Completed';
+      if (pCount) {
+        pCount.textContent = `${completed} of ${TOTAL_VIDEOS} Lessons Completed (${Math.round(percentage)}%)`;
+      }
+
+      // Update next uncompleted lesson name (Biggest Improvement)
+      const cards = document.querySelectorAll('.learning-grid .learning-card');
+      let nextLessonTitle = "All Lessons Completed! 🎉";
+      for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        const btn = card.querySelector('.complete-btn');
+        if (btn) {
+          const onclickAttr = btn.getAttribute('onclick') || '';
+          const match = onclickAttr.match(/'([^']+)'/);
+          if (match && match[1] && !completedVideos.includes(match[1])) {
+            const titleEl = card.querySelector('h3');
+            if (titleEl) {
+              nextLessonTitle = titleEl.textContent.trim().replace(/^Step\s+\d+[A-Z]*\s*:\s*/i, '');
+            }
+            break;
+          }
+        }
+      }
+      const nextEl = document.getElementById('progressNextLesson');
+      if (nextEl) {
+        nextEl.textContent = completed === TOTAL_VIDEOS ? "All Lessons Completed! 🎉" : `Next: ${nextLessonTitle}`;
+      }
+
+      // Update Certificate Button text & classes (Problem 2)
+      const certBtn = document.getElementById('progressCertBtn');
+      if (certBtn) {
+        if (completed === TOTAL_VIDEOS) {
+          certBtn.disabled = false;
+          certBtn.classList.remove('disabled');
+          certBtn.classList.add('active');
+          certBtn.textContent = '🏆 Download Certificate';
+        } else {
+          certBtn.disabled = true;
+          certBtn.classList.add('disabled');
+          certBtn.classList.remove('active');
+          certBtn.textContent = '🏆 Unlock at 100%';
+        }
+      }
+
+      // Update streaks & days left (One Feature I'd Add)
+      const streak = parseInt(localStorage.getItem('visitStreak')) || 1;
+      const streakText = document.getElementById('progressStreakText');
+      if (streakText) {
+        streakText.textContent = `${streak} Day${streak > 1 ? 's' : ''}`;
+      }
+      
+      const estDays = document.getElementById('progressEstDays');
+      if (estDays) {
+        const remaining = TOTAL_VIDEOS - completed;
+        estDays.textContent = remaining === 0 ? "Completed! 🎉" : `${remaining} Day${remaining > 1 ? 's' : ''} Left`;
+      }
 
       const roundedPct = Math.round(percentage);
 
