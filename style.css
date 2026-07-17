@@ -6949,6 +6949,48 @@ body.loading #backToTop {
     display: flex !important;
   }
 
+  .mobile-tab-bar .tab-ai {
+    display: none !important; /* Hide Mentor from bottom tab bar */
+  }
+
+  /* Floating AI Button (Mobile Only) */
+  .mobile-ai-float-btn {
+    display: flex;
+    position: fixed;
+    bottom: 80px; /* Sits cleanly above the bottom tab bar */
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00ff9c, #00d4ff);
+    border: none;
+    color: #050914;
+    font-size: 22px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 9990; /* on top of page contents, below overlays */
+    box-shadow: 0 4px 16px rgba(0, 212, 255, 0.4);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, box-shadow 0.2s ease;
+  }
+
+  .mobile-ai-float-btn:active {
+    transform: scale(0.92);
+  }
+
+  /* Fade out float button when chatbox is open */
+  #aiChatBox.show ~ .mobile-ai-float-btn {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8) translateY(10px);
+  }
+
+  [data-theme="light"] .mobile-ai-float-btn {
+    background: linear-gradient(135deg, #0d9488, #0ea5e9);
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(13, 148, 136, 0.3);
+  }
+
   [data-theme="light"] .mobile-tab-bar {
     background: rgba(255, 255, 255, 0.97);
     border-top: 1px solid rgba(0, 145, 90, 0.15);
@@ -7813,110 +7855,203 @@ body.loading #backToTop {
 
 /* ---------- MOBILE: sidebar becomes an off-canvas drawer (slides
    in from the RIGHT, since the sidebar now lives on the right) ---------- */
+
+
 @media (max-width: 900px) {
 
-
-  /* Neutralize the old off-canvas panel rules on .nav-links —
-     the sidebar itself is now the sliding panel, so nav-links
-     just sits inside it as a normal block list. Higher
-     specificity than the original .nav-links rule so it wins. */
+  /* 1. Mobile Drawer Sizing & Structure */
   .sidebar {
-    position: fixed;
-    top: 75px; /* Float below sticky status bar and topbar headers */
-    right: 16px;
-    width: 250px;
-    height: auto;
-    max-height: calc(100vh - 95px);
-    border-radius: 12px;
-    background: rgba(17, 24, 39, 0.85) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    z-index: 10000;
-    padding: 20px 16px;
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    width: 82vw !important;
+    max-width: 310px !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-height: none !important;
+    border-radius: 16px 0 0 16px !important;
+    background: rgba(17, 24, 39, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: none !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5) !important;
+    z-index: 10000 !important;
+    padding: calc(20px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom)) !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
     
-    /* Premium popup open/close transitions (Fix 6) */
-    opacity: 0;
-    transform: translateY(-8px) scale(0.96);
+    /* 6. Drawer slide transition */
+    opacity: 0 !important;
+    transform: translateX(100%) !important;
     pointer-events: none;
-    transition: opacity var(--t-drawer) cubic-bezier(0.16, 1, 0.3, 1), transform var(--t-drawer) cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 260ms ease-out !important;
   }
 
   .sidebar.active {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    opacity: 1 !important;
+    transform: translateX(0) !important;
     pointer-events: auto;
   }
 
-  /* Responsive clock adjustments */
-  .market-status-inner {
-    flex-wrap: wrap;
-    gap: 8px;
+  /* 6. 8px Backdrop blur on active overlay */
+  .menu-overlay.active {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    background: rgba(0, 0, 0, 0.45) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    z-index: 999 !important;
   }
 
-  /* Cascade delay animations for menu items (Fix 6) */
+  /* 2. Compact Profile Card overrides */
+  .profile-card {
+    padding: 10px !important;
+    margin-bottom: 12px !important;
+    gap: 6px !important;
+  }
+
+  .profile-avatar {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 16px !important;
+  }
+
+  .profile-meta {
+    gap: 0px !important;
+  }
+
+  .profile-name {
+    font-size: 13px !important;
+  }
+
+  .profile-level {
+    font-size: 10px !important;
+  }
+
+  .profile-card-bottom {
+    gap: 4px !important;
+  }
+
+  .profile-streak-badge {
+    font-size: 9.5px !important;
+    padding: 2px 6px !important;
+  }
+
+  .profile-progress-pct {
+    font-size: 10px !important;
+  }
+
+  .profile-progress-track {
+    height: 4px !important;
+  }
+
+  /* 3. Continue Learning Card overrides */
+  .continue-card {
+    padding: 8px 10px !important;
+    margin-bottom: 12px !important;
+    gap: 4px !important;
+  }
+
+  .continue-card-header {
+    font-size: 9.5px !important;
+    gap: 4px !important;
+  }
+
+  .continue-play-icon {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .continue-card-title {
+    font-size: 12px !important;
+  }
+
+  .continue-card-meta {
+    font-size: 10px !important;
+  }
+
+  /* 4. Compact touch-friendly navigation buttons */
+  .sidebar .menu-groups {
+    gap: 12px !important;
+  }
+
+  .sidebar .menu-section {
+    gap: 4px !important;
+  }
+
+  .sidebar .menu-section-title {
+    font-size: 8.5px !important;
+    margin-left: 4px !important;
+    margin-bottom: 0px !important;
+  }
+
+  .sidebar .menu-list {
+    gap: 4px !important;
+  }
+
   .sidebar .menu-item {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.96);
-    transition: opacity var(--t-dropdown) ease-out, transform var(--t-dropdown) ease-out;
+    padding: 12px 14px !important; /* height is exactly 52-54px to satisfy >=44px */
+    font-size: 13.5px !important;
+    border-radius: 10px !important;
+    gap: 10px !important;
   }
 
-  .sidebar.active .menu-item {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  .sidebar .menu-icon-svg {
+    width: 16px !important;
+    height: 16px !important;
   }
 
-  .sidebar.active #menuLearn { transition-delay: 30ms; }
-  .sidebar.active #menuQuiz { transition-delay: 60ms; }
-  .sidebar.active #menuAIMentor { transition-delay: 90ms; }
-  .sidebar.active #menuBacktest { transition-delay: 120ms; }
-  .sidebar.active #menuCalculator { transition-delay: 150ms; }
-  .sidebar.active #menuFAQ { transition-delay: 180ms; }
-
-  /* Neutralize the old off-canvas panel rules on .nav-links — */
-  .sidebar .nav-links {
-    position: static;
-    right: auto;
-    width: 100%;
-    max-width: none;
-    height: auto;
-    flex-direction: column;
-    background: transparent;
-    border-left: none;
-    padding: 0;
-    box-shadow: none;
-    overflow-y: visible;
+  /* 7. Compact mobile status bar */
+  .market-status-bar {
+    padding-top: calc(3px + env(safe-area-inset-top)) !important;
+    padding-bottom: 3px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
   }
 
+  .market-status-inner {
+    gap: 4px !important;
+  }
+
+  /* Hide sessions indicators on mobile */
+  .market-status-bar .weather-sessions,
+  .market-status-bar .status-divider-bar {
+    display: none !important;
+  }
+
+  /* 8. Better Mobile Header overrides */
   .top-header {
-    padding: 12px 16px;
-    gap: 8px;
+    padding: 8px 12px !important;
+    gap: 4px !important;
+    height: auto !important;
   }
 
   .topbar-logo {
-    margin-left: 10px;
-    margin-top: 4px;
+    margin-left: 2px !important;
+    margin-top: 0 !important;
   }
 
   .topbar-logo-icon {
-    width: 40px;
-    height: 42px;
+    width: 32px !important;
+    height: 34px !important;
   }
 
   .topbar-logo span {
-    font-size: 19px;
+    font-size: 17px !important;
   }
 
   .header-right {
-    gap: 6px;
+    gap: 6px !important;
   }
 
   .topbar-user-btn,
   .top-header .hamburger,
   .nav-theme-toggle {
-    width: 34px;
-    height: 34px;
+    width: 36px !important; /* Touch target size friendly */
+    height: 36px !important;
   }
 
   .main-content {
