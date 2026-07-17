@@ -6931,6 +6931,24 @@ body.loading #backToTop {
     align-items: center;
   }
 
+  /* TradeLab AI Mobile UI/UX Overrides */
+  #aiChatBox {
+    position: fixed !important;
+    top: 75px !important;
+    bottom: 72px !important; /* sits cleanly above the mobile bottom tab bar */
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    z-index: 995 !important; /* sit below mobile overlay (999) and sidebar (10000) */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  #aiChatBox.show {
+    display: flex !important;
+  }
+
   [data-theme="light"] .mobile-tab-bar {
     background: rgba(255, 255, 255, 0.97);
     border-top: 1px solid rgba(0, 145, 90, 0.15);
@@ -8262,10 +8280,7 @@ body.loading #backToTop {
 
 /* Desktop Collapse Animation / Full Slide-Out (Checklist 1) */
 .sidebar-logo {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 12px;
+  display: none !important; /* Hide header close controls on sidebar globally */
 }
 
 .sidebar-close-btn {
