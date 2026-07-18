@@ -5105,6 +5105,8 @@ body.loading #backToTop {
 
 
 
+
+
 .market-status-bar {
   background: linear-gradient(90deg, #050d1a 0%, #071525 50%, #050d1a 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -5114,7 +5116,17 @@ body.loading #backToTop {
   position: sticky; /* Make it stick to top */
   top: 0;
   z-index: 10005 !important; /* Keep above navbar and drawers */
-  transition: opacity 260ms ease-in-out !important; /* Smooth fade when mobile drawer opens */
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 300ms ease-in-out, visibility 300ms ease-in-out !important;
+  transition-delay: 500ms !important; /* Delay fade-in until loader has completely faded out */
+}
+
+/* Hide status bar while loading screen is active */
+body.loading .market-status-bar {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition-delay: 0s !important; /* Instant hide during load */
 }
 
 .market-status-inner {
@@ -8064,9 +8076,10 @@ body.loading #backToTop {
   filter: brightness(1.08) !important;
 }
 
+
 /* Desktop Collapse Animation / Full Slide-Out (Checklist 1) */
 .sidebar-logo {
-  display: none !important; /* Hide header close controls on sidebar globally */
+  display: none; /* Hide close controls on desktop by default, overridden on mobile */
 }
 
 .sidebar-close-btn {
