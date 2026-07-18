@@ -7521,39 +7521,102 @@ body.loading #backToTop {
     height: 16px !important;
   }
 
-  /* 7. Compact mobile status bar */
+  /* 7. Dedicated mobile status bar responsive layout */
   .market-status-bar {
-    padding-top: calc(3px + env(safe-area-inset-top)) !important;
-    padding-bottom: 3px !important;
+    padding-top: calc(4px + env(safe-area-inset-top)) !important;
+    padding-bottom: 4px !important;
     padding-left: 12px !important;
     padding-right: 12px !important;
   }
 
   .market-status-inner {
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
-    gap: 4px !important;
+    gap: 8px !important;
   }
 
-  .status-sub-label {
-    display: none !important;
+  /* Left status layout: stack countdown below label to save horizontal width */
+  .market-status-group.left {
+    gap: 6px !important;
+  }
+
+  .status-text-block {
+    gap: 1px !important;
   }
 
   .status-main-label {
-    font-size: 11px !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
   }
 
   .status-main-label::after {
-    content: " • " attr(data-countdown);
+    display: none !important; /* Disable inline countdown */
   }
 
+  .status-sub-label {
+    display: block !important; /* Show countdown underneath */
+    font-size: 8.5px !important;
+    color: #8892b0 !important;
+    line-height: 1.1 !important;
+  }
+
+  .status-indicator-dot {
+    width: 6px !important;
+    height: 6px !important;
+  }
+
+  /* Center clock: compact clock pill */
   .clock-pill-content {
-    padding: 4px 10px !important;
-    font-size: 10.5px !important;
+    padding: 3px 8px !important;
+    font-size: 10px !important;
+    border-radius: 20px !important;
+    gap: 4px !important;
   }
 
-  .market-status-bar .weather-sessions,
+  /* Right side actions */
+  .market-status-group.right {
+    gap: 8px !important;
+  }
+
+  /* Hide session text names to save space, but keep colored status dots and tooltips active */
+  .market-status-bar .session-status-text {
+    display: none !important;
+  }
+
+  .weather-sessions {
+    gap: 6px !important;
+  }
+
+  .weather-session-item {
+    gap: 0 !important;
+    opacity: 0.55 !important;
+    display: flex !important;
+  }
+
+  .weather-session-item.active {
+    opacity: 1 !important;
+  }
+
+  .weather-dot {
+    font-size: 8px !important;
+  }
+
+  /* Hide vertical dividers on mobile */
   .market-status-bar .status-divider-bar {
     display: none !important;
+  }
+
+  .interactive-icons {
+    gap: 8px !important;
+  }
+
+  .news-indicator, .alert-indicator {
+    font-size: 12px !important; /* clear touchable emojis */
+    padding: 4px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
   }
 
   .top-header {
