@@ -7043,12 +7043,10 @@ body.loading .market-status-bar {
 
 .sidebar {
   order: 2;
-  width: 280px;
+  width: 250px;
   flex-shrink: 0;
-  position: fixed;
+  position: sticky;
   top: 0;
-  bottom: 0;
-  right: 0;
   height: 100vh;
   height: 100dvh;
   display: flex;
@@ -7057,12 +7055,8 @@ body.loading .market-status-bar {
   border-left: 1px solid rgba(255, 255, 255, 0.08);
   padding: 24px 16px;
   overflow-y: auto;
-  z-index: 10000; /* overlay above main content */
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
-  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), opacity 240ms cubic-bezier(0.22, 1, 0.36, 1), visibility 240ms cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease, border-color 0.3s ease;
+  z-index: 999;
+  transition: transform 0.35s ease, width 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
 .sidebar::-webkit-scrollbar {
@@ -8182,86 +8176,26 @@ body.loading .market-status-bar {
 [data-theme="light"] .sidebar-close-btn:hover {
   background: rgba(220, 38, 38, 0.08);
   color: #dc2626;
-
   border-color: rgba(220, 38, 38, 0.25);
 }
 
 @media (min-width: 901px) {
   .sidebar-logo {
-    display: none !important; /* Hide header controls on desktop sidebar */
-  }
-
-  /* Desktop Sidebar as a Pinned fixed overlay layer (Checklist 1) */
-  .sidebar {
-    position: fixed !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    right: 0 !important;
-    width: 280px !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    z-index: 10000 !important;
-    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.18) !important; /* Soft premium left shadow */
-    border-left: 1px solid rgba(255, 255, 255, 0.08) !important; /* Premium separating border */
-    background: rgba(17, 24, 39, 0.95) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    
-    /* Open state animation: subtle translateX + opacity fade */
-    opacity: 1 !important;
-    transform: translateX(0) !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), opacity 240ms cubic-bezier(0.22, 1, 0.36, 1), visibility 240ms cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease, border-color 0.3s ease !important;
+    display: none !important;
   }
   
-  /* Closed state: reverse smoothly, slightly faster than opening */
   .sidebar.active {
-    width: 280px !important; /* Keep width same so it doesn't shift layout contents */
-    min-width: 280px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-left: none !important;
     opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: translateX(10px) !important; /* micro translate (8-15px) for premium feel */
-    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms cubic-bezier(0.22, 1, 0.36, 1), visibility 200ms cubic-bezier(0.22, 1, 0.36, 1) !important;
-    border-left: 1px solid rgba(255, 255, 255, 0.04) !important;
-  }
-
-  /* Desktop Overlay styles (subtle focus shift 12% opacity) */
-  .menu-overlay {
-    display: block !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    background: rgba(0, 0, 0, 0.45) !important;
-    z-index: 9999 !important;
-    transition: opacity 200ms cubic-bezier(0.22, 1, 0.36, 1), backdrop-filter 200ms cubic-bezier(0.22, 1, 0.36, 1) !important;
-    backdrop-filter: blur(0px) !important;
-    -webkit-backdrop-filter: blur(0px) !important;
-  }
-
-  .menu-overlay.active {
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    background: rgba(0, 0, 0, 0.12) !important; /* subtle focus shift: 12% opacity */
-    backdrop-filter: blur(3px) !important; /* subtle focus shift backdrop blur */
-    -webkit-backdrop-filter: blur(3px) !important;
-    transition: opacity 240ms cubic-bezier(0.22, 1, 0.36, 1), backdrop-filter 240ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+    overflow: hidden !important;
   }
 }
 
-[data-theme="light"] .sidebar {
-  border-left: 1px solid rgba(0, 0, 0, 0.05) !important;
-  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.04) !important;
-}
-
-[data-theme="light"] .sidebar.active {
-  border-left: 1px solid rgba(0, 0, 0, 0.02) !important;
-}
-
-
-
+.card-meta-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
