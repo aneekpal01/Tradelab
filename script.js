@@ -185,16 +185,25 @@ function highlightActiveChip(key) {
   });
 }
 
+let isTogglingChat = false;
+
 // --- TOGGLE CHAT (OPEN / CLOSE WITH ANIMATION) ---
 function toggleChat() {
-  if (!chatContainer) return;
+  if (!chatContainer || isTogglingChat) return;
 
+  isTogglingChat = true;
   const isOpen = chatContainer.classList.contains("show");
+  const floatBtn = document.getElementById("ai-float-btn");
 
   if (isOpen) {
     chatContainer.classList.remove("show");
+    if (floatBtn) {
+      floatBtn.classList.remove("active");
+      floatBtn.innerHTML = "💬";
+    }
     setTimeout(() => {
       chatContainer.style.display = "none";
+      isTogglingChat = false;
     }, 300);
   } else {
     chatContainer.style.display = "flex";
@@ -202,11 +211,17 @@ function toggleChat() {
       chatContainer.classList.add("show");
       userInput?.focus();
       initChatWelcome();
+      setTimeout(() => {
+        isTogglingChat = false;
+      }, 300);
     });
+    if (floatBtn) {
+      floatBtn.classList.add("active");
+      floatBtn.innerHTML = "✕";
+    }
   }
 }
 
-// --- QUICK BUTTONS ---
 function sendQuickMsg(text) {
   if (!userInput) return;
   userInput.value = text;
@@ -302,32 +317,13 @@ function hideTyping() {
   if (t) t.style.display = "none";
 }
 
-const aiFloatBtn = document.getElementById("ai-float-btn");
-if (aiFloatBtn) {
-  aiFloatBtn.addEventListener("click", () => toggleChat());
-}
+
 
 
 window.addEventListener("load", () => {
   document.body.classList.remove("loading");
   startPlaceholderRotation();
 });
-
-// ===== CONNECT FLOATING AI BUTTON =====
-window.addEventListener("load", () => {
-  const aiBtn = document.getElementById("ai-float-btn");
-
-  if (!aiBtn) {
-    console.log("❌ Floating AI button NOT found");
-    return;
-  }
-
-  aiBtn.addEventListener("click", () => {
-    console.log("🤖 Floating AI clicked");
-    toggleChat();   // SAME function as navbar
-  });
-});
-
 
 // ===== AI MODE SWITCH =====
 function setAIMode(mode) {
