@@ -8176,6 +8176,7 @@ body.loading .market-status-bar {
 [data-theme="light"] .sidebar-close-btn:hover {
   background: rgba(220, 38, 38, 0.08);
   color: #dc2626;
+
   border-color: rgba(220, 38, 38, 0.25);
 }
 
@@ -8183,19 +8184,41 @@ body.loading .market-status-bar {
   .sidebar-logo {
     display: none !important;
   }
-  
+
+  /* Original sticky desktop sidebar architecture: adjust transitions to be fast and natural */
+  .sidebar {
+    transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1), padding 300ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease !important;
+  }
+
   .sidebar.active {
     width: 0 !important;
     min-width: 0 !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
     border-left: none !important;
+
     opacity: 0 !important;
     overflow: hidden !important;
   }
+
+  /* Prevent text compression or wrapping during the width animation */
+  .sidebar > * {
+    width: 218px !important; /* 250px width - 32px horizontal padding */
+    min-width: 218px !important;
+    flex-shrink: 0 !important;
+    opacity: 1;
+    /* When opening: opacity waits 80ms for width to expand first, then fades in over 180ms */
+    transition: opacity 180ms ease-out 80ms !important;
+  }
+
+  /* Fade out the sidebar content slightly before collapsing the width */
+  .sidebar.active > * {
+    opacity: 0 !important;
+    /* When closing: opacity fades out instantly in 100ms with no delay */
+    transition: opacity 100ms ease-out 0s !important;
+  }
 }
 
-.card-meta-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
