@@ -5114,7 +5114,9 @@ body.loading #backToTop {
   position: sticky; /* Make it stick to top */
   top: 0;
   z-index: 10005 !important; /* Keep above navbar and drawers */
+  transition: opacity 260ms ease-in-out !important; /* Smooth fade when mobile drawer opens */
 }
+
 .market-status-inner {
   max-width: 100%;
   margin: 0 auto;
@@ -7395,7 +7397,7 @@ body.loading #backToTop {
     border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
     box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5) !important;
     z-index: 10000 !important;
-    padding: calc(20px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom)) !important;
+    padding: calc(72px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom)) !important; /* Increased top padding to 72px for visual separation */
     box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
@@ -7411,6 +7413,59 @@ body.loading #backToTop {
     opacity: 1 !important;
     transform: translateX(0) !important;
     pointer-events: auto;
+  }
+
+  /* Fade out Market Status Bar when mobile sidebar is open */
+  body.sidebar-open .market-status-bar {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* Pinned Close Button overrides on Mobile Drawer */
+  .sidebar-logo {
+    display: block !important;
+    position: fixed !important; /* Pinned relative to the transformed drawer containing block */
+    top: calc(16px + env(safe-area-inset-top)) !important;
+    right: 16px !important;
+    z-index: 10010 !important;
+  }
+
+  .sidebar-close-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 44px !important; /* Touch target >= 44px */
+    height: 44px !important;
+    border-radius: 50% !important;
+    background: rgba(30, 41, 59, 0.7) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #9ca3af !important;
+    font-size: 16px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+    margin: 0 !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .sidebar-close-btn:hover {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #ef4444 !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+  }
+
+  [data-theme="light"] .sidebar-close-btn {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+    color: #4b5563 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  [data-theme="light"] .sidebar-close-btn:hover {
+    background: rgba(220, 38, 38, 0.08) !important;
+    color: #dc2626 !important;
+    border-color: rgba(220, 38, 38, 0.2) !important;
   }
 
   /* 6. 8px Backdrop blur on active overlay */
