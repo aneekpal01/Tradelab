@@ -510,18 +510,18 @@ body.loading {
   pointer-events: none;
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
-  transition: opacity var(--t-drawer) ease, backdrop-filter var(--t-drawer) ease, -webkit-backdrop-filter var(--t-drawer) ease;
+  transition: opacity 260ms cubic-bezier(0.32, 0, 0.67, 0), backdrop-filter 260ms cubic-bezier(0.32, 0, 0.67, 0), -webkit-backdrop-filter 260ms cubic-bezier(0.32, 0, 0.67, 0); /* acceleration curve when closing drawer */
   display: block !important;
 }
 
 .menu-overlay.active {
   opacity: 1;
   pointer-events: auto;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 300ms cubic-bezier(0.16, 1, 0.3, 1), -webkit-backdrop-filter 300ms cubic-bezier(0.16, 1, 0.3, 1); /* premium decelerated curve when opening drawer */
 }
-
 /* Mobile Responsive Navbar */
 @media (max-width: 900px) {
   .navbar {
@@ -3231,9 +3231,101 @@ section {
   transform: translateY(0) scale(1);
 }
 
+@keyframes floatBtnBreathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+.mobile-ai-float-btn {
+  display: flex !important;
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 50% !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  z-index: 9990 !important; /* on top of page contents, below overlays */
+  background: linear-gradient(135deg, rgba(0, 255, 156, 0.7), rgba(0, 212, 255, 0.7)) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #050914 !important;
+  font-size: 22px !important;
+  box-shadow: 0 4px 16px rgba(0, 212, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s, box-shadow 0.25s, color 0.25s !important;
+  animation: floatBtnBreathe 4.5s ease-in-out infinite;
+  overflow: hidden;
+}
+
+/* Hover: slight lift, scale, stronger shadow */
+.mobile-ai-float-btn:hover {
+  transform: translateY(-3px) scale(1.06) !important;
+  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  animation-play-state: paused !important; /* pause breathing on hover */
+}
+
+/* Subtle active state rotation + red swap when open */
+.mobile-ai-float-btn.active {
+  transform: rotate(90deg) !important;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.7), rgba(220, 38, 38, 0.7)) !important;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+
+/* Hover on active close state */
+.mobile-ai-float-btn.active:hover {
+  transform: rotate(90deg) translateY(-3px) scale(1.06) !important;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Ripple click effect container */
+.mobile-ai-float-btn::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  opacity: 0;
+  transform: scale(1);
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+.mobile-ai-float-btn:active::after {
+  transform: scale(0);
+  opacity: 1;
+  transition: 0s;
+}
+
+/* Light Theme Overrides */
+[data-theme="light"] .mobile-ai-float-btn {
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.7), rgba(14, 165, 233, 0.7)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 4px 16px rgba(13, 148, 136, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+[data-theme="light"] .mobile-ai-float-btn:hover {
+  box-shadow: 0 8px 24px rgba(13, 148, 136, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+[data-theme="light"] .mobile-ai-float-btn.active {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.7), rgba(185, 28, 28, 0.7)) !important;
+  box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .mobile-ai-float-btn.active:hover {
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
 #typing-indicator {
-  margin: 10px 0;
-  font-size: 13px;
   opacity: 0.8;
   color: #9ca3af;
 }
@@ -6484,42 +6576,9 @@ body.loading .market-status-bar {
     display: none !important; /* Hide Mentor from bottom tab bar */
   }
 
-  /* Floating AI Button (Mobile Only) */
   .mobile-ai-float-btn {
-    display: flex;
-    position: fixed;
-    bottom: 80px; /* Sits cleanly above the bottom tab bar */
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #00ff9c, #00d4ff);
-    border: none;
-    color: #050914;
-    font-size: 22px;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 9990; /* on top of page contents, below overlays */
-    box-shadow: 0 4px 16px rgba(0, 212, 255, 0.4);
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, box-shadow 0.2s ease;
-  }
-
-  .mobile-ai-float-btn:active {
-    transform: scale(0.92);
-  }
-
-  /* Fade out float button when chatbox is open */
-  #aiChatBox.show ~ .mobile-ai-float-btn {
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(0.8) translateY(10px);
-  }
-
-  [data-theme="light"] .mobile-ai-float-btn {
-    background: linear-gradient(135deg, #0d9488, #0ea5e9);
-    color: #ffffff;
-    box-shadow: 0 4px 16px rgba(13, 148, 136, 0.3);
+    bottom: 80px !important; /* Position above mobile bottom tab bar */
+    right: 20px !important;
   }
 
   [data-theme="light"] .mobile-tab-bar {
@@ -6995,10 +7054,13 @@ body.loading .market-status-bar {
   padding: 24px 16px;
   overflow-y: auto;
   z-index: 999;
-  transition: transform 0.35s ease, width 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), width 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 300ms ease-out, background 0.3s ease, border-color 0.3s ease;
 }
 
-.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
 .sidebar::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
@@ -7418,16 +7480,16 @@ body.loading .market-status-bar {
     opacity: 0 !important;
     transform: translateX(100%) !important;
     pointer-events: none;
-    transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 260ms ease-out !important;
+    transition: transform 260ms cubic-bezier(0.32, 0, 0.67, 0), opacity 260ms ease-in !important; /* smooth acceleration out when closing */
   }
 
   .sidebar.active {
     opacity: 1 !important;
     transform: translateX(0) !important;
     pointer-events: auto;
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 300ms ease-out !important; /* premium decelerated slide-in when opening */
   }
 
-  /* Fade out Market Status Bar when mobile sidebar is open */
   body.sidebar-open .market-status-bar {
     opacity: 0 !important;
     pointer-events: none !important;
@@ -8129,6 +8191,8 @@ body.loading .market-status-bar {
     border-left: none !important;
     opacity: 0 !important;
     overflow: hidden !important;
+    transform: translateX(100%) !important; /* Slide out to the right */
+    transition: transform 260ms cubic-bezier(0.32, 0, 0.67, 0), width 260ms cubic-bezier(0.32, 0, 0.67, 0), opacity 260ms ease-in !important;
   }
 }
 
