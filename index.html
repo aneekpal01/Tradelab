@@ -82,18 +82,62 @@
 
 
 
-  <!-- Alert & News Slide-out Panel (Premium Feature) -->
+  <!-- Alert & News Slide-out Panel (Premium Trading Intelligence Center) -->
   <div class="alerts-panel" id="alertsPanel">
     <div class="alerts-panel-header">
-
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-size: 18px;">🔔</span>
-        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: #ffffff;">TradeLab Inbox</h3>
+        <h3 id="alertsPanelTitle" style="margin: 0; font-size: 15px; font-weight: 700; color: #ffffff;">TradeLab Inbox</h3>
       </div>
-      <button onclick="closeAlertsDrawer()" class="close-panel-btn">✕</button>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <button onclick="refreshLiveNews()" class="inbox-btn-icon" title="Refresh Live News" style="color: #8892b0; font-size: 14px; background: none; border: none; cursor: pointer;">🔄</button>
+        <button onclick="closeAlertsDrawer()" class="close-panel-btn">✕</button>
+      </div>
     </div>
+
+    <!-- Sticky Tabs Filters -->
+    <div class="inbox-tabs-container">
+      <button class="inbox-tab active" onclick="setInboxTab('all', this)">All</button>
+      <button class="inbox-tab" onclick="setInboxTab('news', this)">News</button>
+      <button class="inbox-tab" onclick="setInboxTab('events', this)">Events</button>
+      <button class="inbox-tab" onclick="setInboxTab('alerts', this)">Alerts</button>
+      <button class="inbox-tab" onclick="setInboxTab('updates', this)">Updates</button>
+      <button class="inbox-tab" onclick="setInboxTab('saved', this)">Saved</button>
+    </div>
+
+    <!-- Search Box -->
+    <div class="inbox-search-wrapper">
+      <div class="inbox-search-box">
+        <span class="inbox-search-icon">🔍</span>
+        <input type="text" id="inboxSearch" class="inbox-search-input" placeholder="Search by company, symbol, topic..." oninput="handleInboxSearch(this.value)">
+      </div>
+    </div>
+
+    <!-- Dynamic Content Area -->
     <div class="alerts-panel-content" id="alertsPanelContent">
       <!-- Loaded dynamically via script.js -->
+    </div>
+
+    <!-- Redesigned Sticky Bottom Action Footer -->
+    <div class="inbox-footer">
+      <button onclick="markAllInboxRead()" class="inbox-btn-footer mark-read">
+        <span>✓</span> Mark Read
+      </button>
+      <button onclick="showClearInboxConfirm()" class="inbox-btn-footer clear-inbox">
+        <span>🗑</span> Clear Inbox
+      </button>
+    </div>
+
+    <!-- Premium Confirmation Overlay -->
+    <div class="inbox-confirm-overlay" id="inboxConfirmOverlay">
+      <div class="inbox-confirm-box">
+        <h4>Clear Inbox?</h4>
+        <p>Are you sure you want to clear all updates? This action cannot be undone.</p>
+        <div class="inbox-confirm-actions">
+          <button onclick="hideClearInboxConfirm()" class="btn-cancel">Cancel</button>
+          <button onclick="confirmClearAllInbox()" class="btn-confirm">Clear</button>
+        </div>
+      </div>
     </div>
   </div>
 
