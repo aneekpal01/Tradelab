@@ -2171,19 +2171,38 @@
   <script>
     function isDesktopView() {
       return window.matchMedia('(min-width: 901px)').matches;
-    }
+
+}
 
     function toggleMenu() {
       const sidebar = document.getElementById('sidebar');
       const hamburger = document.getElementById('hamburger');
       const overlay = document.getElementById('menuOverlay');
-      if (sidebar) sidebar.classList.toggle('active');
-      if (hamburger) hamburger.classList.toggle('active');
-      if (overlay) overlay.classList.toggle('active');
-      document.body.classList.toggle('sidebar-open');
+      
+      if (isDesktopView()) {
+        const willBeClosed = sidebar ? !sidebar.classList.contains('active') : false;
+        if (sidebar) sidebar.classList.toggle('active');
+        if (hamburger) hamburger.classList.toggle('active');
+        if (overlay) {
+          if (willBeClosed) {
+            overlay.classList.remove('active');
+          } else {
+            overlay.classList.add('active');
+          }
+        }
+        if (willBeClosed) {
+          document.body.classList.remove('sidebar-open');
+        } else {
+          document.body.classList.add('sidebar-open');
+        }
+      } else {
+        if (sidebar) sidebar.classList.toggle('active');
+        if (hamburger) hamburger.classList.toggle('active');
+        if (overlay) overlay.classList.toggle('active');
+        document.body.classList.toggle('sidebar-open');
+      }
     }
 
-    // Explicit close (✕ button / tapping the dark overlay) — always
     // ends up closed, on both mobile and desktop. NOTE: the .active
     // class means the OPPOSITE thing on each breakpoint (desktop:
     // .active = collapsed, mobile: .active = drawer open), so
