@@ -386,7 +386,11 @@ let nseTransitioning = false;
 
 function openAlertsDrawer() {
   const panel = document.getElementById("alertsPanel");
-  if (panel) panel.classList.add("show");
+  if (panel) {
+    panel.classList.add("show");
+    renderNotifications();
+    fetchLiveNews();
+  }
 }
 
 function closeAlertsDrawer() {
@@ -981,134 +985,250 @@ if (document.readyState === 'loading') {
 }
 
 // =============================================
-// TERMINAL NOTIFICATIONS DRAWER SYSTEM
-// =============================================
-// =============================================
-// TRADELAB INBOX & NEWS DRAWER SYSTEM
+// TRADELAB INBOX & NEWS INTELLIGENCE DRAWER SYSTEM
 // =============================================
 let notifications = JSON.parse(localStorage.getItem('terminalNotifications')) || [
-  { id: 1, text: "BTCUSD crossed ₹5,200,000 target", read: false },
-  { id: 2, text: "NSE India opened for regular trading session", read: false },
-  { id: 3, text: "Lesson 'Learn Trendlines' unlocked!", read: false }
+  { id: 101, text: "BTCUSD crossed ₹5,200,000 target", read: false, category: "Alerts", timestamp: new Date().getTime() - 600000 },
+  { id: 102, text: "NSE India opened for regular trading session", read: false, category: "Updates", timestamp: new Date().getTime() - 3600000 },
+  { id: 103, text: "Lesson 'Learn Trendlines' unlocked!", read: false, category: "Updates", timestamp: new Date().getTime() - 14400000 }
 ];
 
 let newsFeed = JSON.parse(localStorage.getItem('terminalNewsFeed')) || [
-  { id: 1, text: "US Fed signals rate cuts in next meeting, global markets surge", read: false },
-  { id: 2, text: "SEBI introduces new margin limits for option trading indexes", read: false },
-  { id: 3, text: "Solana DEX volume surpasses Ethereum for third consecutive day", read: false }
+  { id: 1, text: "US Fed signals rate cuts in next meeting, global markets surge", read: false, category: "Breaking", impact: "high", timestamp: new Date().getTime() - 120000, saved: false, link: "https://finance.yahoo.com" },
+  { id: 2, text: "SEBI introduces new margin limits for option trading indexes", read: false, category: "NSE", impact: "medium", timestamp: new Date().getTime() - 1800000, saved: false },
+  { id: 3, text: "Solana DEX volume surpasses Ethereum for third consecutive day", read: false, category: "Crypto", impact: "low", timestamp: new Date().getTime() - 7200000, saved: false }
 ];
+
+function getEventTimestamp(hoursOffset) {
+  return new Date().getTime() + hoursOffset * 60 * 60 * 1000;
+}
+
+let economicEvents = JSON.parse(localStorage.getItem('inboxEconomicEvents')) || [
+  { id: 201, title: "US FOMC Interest Rate Decision", time: "Upcoming Today", timestamp: getEventTimestamp(2.5), impact: "high", stars: 5, category: "FOMC", saved: false },
+  { id: 202, title: "RBI Monetary Policy Meeting Minutes", time: "Tomorrow, 10:00 AM", timestamp: getEventTimestamp(15.5), impact: "high", stars: 4, category: "RBI", saved: false },
+  { id: 203, title: "US Core CPI Inflation YoY", time: "In 2 days", timestamp: getEventTimestamp(42), impact: "high", stars: 5, category: "CPI", saved: false },
+  { id: 204, title: "India GDP Growth Rate Q1", time: "In 4 days", timestamp: getEventTimestamp(90), impact: "medium", stars: 3, category: "GDP", saved: false }
+];
+
+let marketSentiment = { status: "Bullish", confidence: 72, lastUpdated: new Date().getTime() };
+
+window.activeInboxTab = 'all';
+window.inboxSearchQuery = '';
+window.isFetchingNews = false;
 
 function initNotifications() {
   renderNotifications();
-  
-  // Show welcome notification on very first session load
   if (!sessionStorage.getItem('welcomeNotified')) {
     setTimeout(() => {
-      addNotification("Welcome to TradeLab AI (Beta) - Offline Mode Active!");
+      addNotification("Welcome to TradeLab AI (Beta) - Trading Intelligence Center Active!");
       sessionStorage.setItem('welcomeNotified', 'true');
     }, 2000);
   }
+  setInterval(() => {
+    const ap = document.getElementById("alertsPanel");
+    if (ap && ap.classList.contains("show")) renderNotifications();
+  }, 30000);
+}
+
+function getRelativeTimeString(ts) {
+  const diff = Date.now() - ts;
+  if (diff < 60000) return "Just now";
+  const m = Math.floor(diff / 60000);
+  if (m < 60) return m + "m ago";
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + "h ago";
+  return Math.floor(h / 24) + "d ago";
+}
+
+function getEventCountdown(ts) {
+  const diff = ts - Date.now();
+  if (diff <= 0) return "Started";
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  if (h > 24) return "In " + Math.floor(h / 24) + "d";
+  if (h > 0) return "In " + h + "h " + m + "m";
+  return "In " + m + "m";
+}
+
+function generateAISummary(news, events) {
+  const kw = [];
+  if (news && news.length > 0) {
+    news.slice(0, 3).forEach(n => {
+      const t = n.text.toUpperCase();
+      if (t.includes("FED")) kw.push("Fed Rate Action");
+      else if (t.includes("SEBI")) kw.push("SEBI rules");
+      else if (t.includes("SOLANA") || t.includes("SOL")) kw.push("Solana dex active");
+      else if (t.includes("BTC") || t.includes("BITCOIN")) kw.push("BTC rising");
+      else if (t.includes("GOLD")) kw.push("Gold weak");
+      else kw.push(n.text.split(" ").slice(0, 2).join(" "));
+    });
+  }
+  if (events && events.length > 0) {
+    events.slice(0, 2).forEach(ev => kw.push(ev.category + " event coming"));
+  }
+  if (kw.length === 0) kw.push("Bitcoin stable", "Markets mixed", "RBI meeting soon", "Volatility low");
+  const unique = [...new Set(kw)].slice(0, 4);
+  return '<div class="ai-summary-card"><div class="ai-summary-header"><span class="ai-summary-title">🤖 AI Market Summary</span><span class="ai-summary-pill">Latest</span></div><div class="ai-summary-list">' + unique.map(k => '<span class="ai-summary-item">💡 ' + k + '</span>').join('') + '</div></div>';
 }
 
 function renderNotifications() {
   const contentDiv = document.getElementById("alertsPanelContent");
   if (!contentDiv) return;
-  
-  const unreadCount = notifications.filter(n => !n.read).length;
-  const unreadNewsCount = newsFeed.filter(n => !n.read).length;
-  
-  const bellBtn = document.getElementById("alertIndicatorBtn");
-  if (bellBtn) {
-    const bellSpan = bellBtn.querySelector("span:first-child");
-    if (bellSpan) {
-      bellSpan.textContent = unreadCount > 0 ? `🔔 ${unreadCount}` : "🔔";
-    }
-  }
-  
-  const newsBtn = document.getElementById("newsIndicatorBtn");
-  if (newsBtn) {
-    const newsSpan = newsBtn.querySelector("span:first-child");
-    if (newsSpan) {
-      newsSpan.textContent = unreadNewsCount > 0 ? `📰 ${unreadNewsCount}` : "📰";
-    }
-  }
-  
-  if (notifications.length === 0 && newsFeed.length === 0) {
-    contentDiv.innerHTML = `
-      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60%; color: #8892b0; font-family: sans-serif; gap: 8px;">
-        <span style="font-size: 32px;">📭</span>
-        <span style="font-size: 13px;">No new inbox updates</span>
-      </div>
-    `;
+  const query = window.inboxSearchQuery;
+  const tab = window.activeInboxTab;
+
+  let filteredEvents = economicEvents.filter(ev => {
+    const ms = !query || ev.title.toLowerCase().includes(query) || ev.category.toLowerCase().includes(query);
+    const mt = (tab === 'all' || tab === 'events') || (tab === 'saved' && ev.saved);
+    return ms && mt;
+  });
+
+  let filteredNews = newsFeed.filter(n => {
+    const ms = !query || n.text.toLowerCase().includes(query) || (n.category && n.category.toLowerCase().includes(query));
+    let mt = false;
+    if (tab === 'all') mt = true;
+    else if (tab === 'news') mt = ['Breaking','NSE','Crypto','Market','Stocks'].includes(n.category);
+    else if (tab === 'saved') mt = n.saved;
+    return ms && mt;
+  });
+
+  let filteredNotifs = notifications.filter(n => {
+    const ms = !query || n.text.toLowerCase().includes(query) || (n.category && n.category.toLowerCase().includes(query));
+    let mt = false;
+    if (tab === 'all') mt = true;
+    else if (tab === 'alerts') mt = (n.category === 'Alerts');
+    else if (tab === 'updates') mt = (n.category === 'Updates');
+    return ms && mt;
+  });
+
+  // Update badges
+  const uc = notifications.filter(n => !n.read).length;
+  const nc = newsFeed.filter(n => !n.read).length;
+  const bb = document.getElementById("alertIndicatorBtn");
+  if (bb) { const s = bb.querySelector("span:first-child"); if (s) s.textContent = uc > 0 ? "🔔 " + uc : "🔔"; }
+  const nb = document.getElementById("newsIndicatorBtn");
+  if (nb) { const s = nb.querySelector("span:first-child"); if (s) s.textContent = nc > 0 ? "📰 " + nc : "📰"; }
+
+  if (filteredEvents.length === 0 && filteredNews.length === 0 && filteredNotifs.length === 0) {
+    contentDiv.innerHTML = '<div class="inbox-empty-state"><span class="inbox-empty-icon">🎉</span><span class="inbox-empty-title">You\'re all caught up!</span><span class="inbox-empty-text">No important market updates right now.<br>We\'ll notify you when something important happens.</span></div>';
     return;
   }
-  
-  let html = `<div style="display: flex; flex-direction: column; gap: 18px; font-family: sans-serif; height: 100%;">`;
-  
-  // Section 1: Notifications
-  html += `<div>
-    <h4 style="margin: 0 0 10px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #00d4ff; font-weight: 700;">🚨 Price & Progress Updates</h4>`;
-  if (notifications.length === 0) {
-    html += `<div style="padding: 12px; text-align: center; color: #8892b0; font-size: 11px; background: rgba(255,255,255,0.01); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);">No active updates</div>`;
-  } else {
-    notifications.forEach(n => {
-      const itemBg = n.read ? "rgba(255,255,255,0.01)" : "rgba(0, 255, 156, 0.03)";
-      const itemBorder = n.read ? "rgba(255,255,255,0.04)" : "rgba(0, 255, 156, 0.12)";
-      const textWeight = n.read ? "normal" : "600";
-      
-      html += `
-        <div class="notification-item" data-id="${n.id}" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: ${itemBg}; border-radius: 8px; border: 1px solid ${itemBorder}; margin-bottom: 8px; transition: all 0.2s ease;">
-          <span class="notification-text" style="font-size: 12px; color: #eaeaea; font-weight: ${textWeight}; line-height: 1.45; flex: 1; padding-right: 12px;">${n.text}</span>
-          <button onclick="dismissNotification(${n.id}, event)" style="background: none; border: none; color: #71717a; font-size: 11px; cursor: pointer; transition: color 0.2s ease; padding: 4px;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#71717a'">Dismiss</button>
-        </div>
-      `;
-    });
+
+  let html = '<div class="inbox-main-scroll">';
+
+  // Sentiment Card
+  if (tab === 'all' || tab === 'events') {
+    const sc = marketSentiment.status === "Bullish" ? "#00ff9c" : "#ff4d4d";
+    html += '<div class="sentiment-card"><div class="sentiment-left"><span class="sentiment-title">📊 Market Sentiment</span><span class="sentiment-value" style="color:' + sc + '"><span class="sentiment-dot" style="background:' + sc + ';box-shadow:0 0 8px ' + sc + '"></span>' + marketSentiment.status + '</span></div><div class="sentiment-right"><span class="sentiment-confidence">Confidence: ' + marketSentiment.confidence + '%</span><span class="sentiment-updated">Updated 5 min ago</span></div></div>';
   }
-  html += `</div>`;
-  
-  // Section 2: News Feed
-  html += `<div>
-    <h4 style="margin: 0 0 10px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #00ff9c; font-weight: 700;">📰 Top Market News</h4>`;
-  if (newsFeed.length === 0) {
-    html += `<div style="padding: 12px; text-align: center; color: #8892b0; font-size: 11px; background: rgba(255,255,255,0.01); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);">No headlines</div>`;
-  } else {
-    newsFeed.forEach(n => {
-      const itemBg = n.read ? "rgba(255,255,255,0.01)" : "rgba(0, 255, 156, 0.03)";
-      const itemBorder = n.read ? "rgba(255,255,255,0.04)" : "rgba(0, 255, 156, 0.12)";
-      const textWeight = n.read ? "normal" : "600";
-      
-      html += `
-        <div class="news-item" data-id="${n.id}" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: ${itemBg}; border-radius: 8px; border: 1px solid ${itemBorder}; margin-bottom: 8px; transition: all 0.2s ease;">
-          <span class="news-text" style="font-size: 12px; color: #eaeaea; font-weight: ${textWeight}; line-height: 1.45; flex: 1; padding-right: 12px;">${n.text}</span>
-          <button onclick="dismissNews(${n.id}, event)" style="background: none; border: none; color: #71717a; font-size: 11px; cursor: pointer; transition: color 0.2s ease; padding: 4px;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#71717a'">Dismiss</button>
-        </div>
-      `;
-    });
+
+  // AI Summary
+  if (tab === 'all' || tab === 'news') {
+    html += generateAISummary(filteredNews, filteredEvents);
   }
-  html += `</div>`;
-  
-  // Actions Footer
-  html += `
-    <div style="margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-between; gap: 10px;">
-      <button onclick="markAllInboxRead()" style="background: none; border: 1px solid rgba(255,255,255,0.1); color: #eaeaea; font-size: 11px; font-weight: 600; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; flex: 1; text-align: center;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='none'">✓ Mark all read</button>
-      <button onclick="clearAllInbox()" style="background: none; border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 11px; font-weight: 600; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; flex: 1; text-align: center;" onmouseover="this.style.background='rgba(239, 68, 68, 0.05)'" onmouseout="this.style.background='none'">🗑 Clear All</button>
-    </div>
-  `;
-  
-  html += `</div>`;
+
+  // Economic Calendar
+  if ((tab === 'all' || tab === 'events' || tab === 'saved') && filteredEvents.length > 0) {
+    html += '<div><h4 class="inbox-section-title">📅 Economic Calendar</h4>';
+    filteredEvents.forEach(ev => {
+      const cd = getEventCountdown(ev.timestamp);
+      const bk = ev.saved ? "★" : "☆";
+      const bc = ev.saved ? "inbox-btn-icon save-active" : "inbox-btn-icon";
+      const st = "★".repeat(ev.stars) + "☆".repeat(5 - ev.stars);
+      html += '<div class="calendar-event-card"><div class="event-header"><span class="event-title">' + ev.title + '</span><span class="event-badge ' + ev.impact + '">' + ev.impact + ' Impact</span></div><div class="event-footer"><div class="event-time-info"><span>⏰ ' + ev.time + '</span><span class="event-countdown">' + cd + '</span></div><div style="display:flex;align-items:center;gap:8px"><span class="event-stars" title="' + ev.stars + ' Star Impact">' + st + '</span><button onclick="toggleBookmarkEvent(' + ev.id + ',event)" class="' + bc + '" title="Bookmark">' + bk + '</button></div></div></div>';
+    });
+    html += '</div>';
+  }
+
+  // Combined news + notifications
+  let combined = [];
+  filteredNews.forEach(n => combined.push({ type:"news", id:n.id, text:n.text, read:n.read, category:n.category, impact:n.impact, timestamp:n.timestamp, saved:n.saved, link:n.link||null }));
+  filteredNotifs.forEach(n => combined.push({ type:"notification", id:n.id, text:n.text, read:n.read, category:n.category, impact:"low", timestamp:n.timestamp, saved:false, link:null }));
+  combined.sort((a, b) => b.timestamp - a.timestamp);
+
+  if (combined.length > 0) {
+    const lt = tab === 'saved' ? "⭐ Bookmarked Updates" : "🚨 Important updates & news";
+    html += '<div><h4 class="inbox-section-title">' + lt + '</h4>';
+    combined.forEach(item => {
+      const uc2 = item.read ? "" : " unread";
+      const pl = item.category === "Breaking" ? "🔥 Breaking" : item.category;
+      let pc = "low";
+      if (item.category === "Breaking") pc = "breaking";
+      else if (item.impact === "high") pc = "high-impact";
+      else if (item.category === "Alerts") pc = "medium";
+      const ts2 = getRelativeTimeString(item.timestamp);
+      const sc2 = item.saved ? "★" : "☆";
+      const sbc = item.saved ? "inbox-btn-icon save-active" : "inbox-btn-icon";
+      const bmk = item.type === "news" ? '<button onclick="toggleBookmarkNews(\'' + item.id + '\',event)" class="' + sbc + '" title="Bookmark">' + sc2 + '</button>' : "";
+      const rml = item.link ? '<a href="' + item.link + '" target="_blank" onclick="markInboxItemRead(\'' + item.id + '\',event)" class="inbox-card-link">Read More →</a>' : "";
+      html += '<div class="inbox-card' + uc2 + '" onclick="markInboxItemRead(\'' + item.id + '\',event)"><div class="inbox-card-meta"><div class="inbox-card-left"><span class="inbox-priority-tag ' + pc + '">' + pl + '</span></div><span class="inbox-card-time">' + ts2 + '</span></div><div class="inbox-card-body">' + item.text + '</div><div class="inbox-card-actions">' + rml + '<div class="inbox-card-right-actions">' + bmk + '<button onclick="dismissInboxItem(\'' + item.id + '\',event)" class="inbox-btn-icon dismiss-btn" title="Dismiss">✕</button></div></div></div>';
+    });
+    html += '</div>';
+  }
+
+  html += '</div>';
   contentDiv.innerHTML = html;
 }
 
-window.dismissNotification = function(id, event) {
-  if (event) event.stopPropagation();
-  notifications = notifications.filter(n => n.id !== id);
-  localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
+window.setInboxTab = function(tabName, btn) {
+  window.activeInboxTab = tabName;
+  document.querySelectorAll(".inbox-tab").forEach(t => t.classList.remove("active"));
+  if (btn) btn.classList.add("active");
   renderNotifications();
 };
 
-window.dismissNews = function(id, event) {
-  if (event) event.stopPropagation();
-  newsFeed = newsFeed.filter(n => n.id !== id);
+window.handleInboxSearch = function(val) {
+  window.inboxSearchQuery = val.toLowerCase().trim();
+  renderNotifications();
+};
+
+window.showClearInboxConfirm = function() {
+  const o = document.getElementById("inboxConfirmOverlay");
+  if (o) o.classList.add("show");
+};
+
+window.hideClearInboxConfirm = function() {
+  const o = document.getElementById("inboxConfirmOverlay");
+  if (o) o.classList.remove("show");
+};
+
+window.confirmClearAllInbox = function() {
+  notifications = [];
+  newsFeed = [];
+  localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
+  localStorage.setItem('terminalNewsFeed', JSON.stringify(newsFeed));
+  hideClearInboxConfirm();
+  renderNotifications();
+};
+
+window.toggleBookmarkNews = function(id, ev) {
+  if (ev) ev.stopPropagation();
+  newsFeed = newsFeed.map(n => { if (n.id == id) n.saved = !n.saved; return n; });
+  localStorage.setItem('terminalNewsFeed', JSON.stringify(newsFeed));
+  renderNotifications();
+};
+
+window.toggleBookmarkEvent = function(id, ev) {
+  if (ev) ev.stopPropagation();
+  economicEvents = economicEvents.map(e => { if (e.id == id) e.saved = !e.saved; return e; });
+  localStorage.setItem('inboxEconomicEvents', JSON.stringify(economicEvents));
+  renderNotifications();
+};
+
+window.markInboxItemRead = function(id, ev) {
+  if (ev) ev.stopPropagation();
+  notifications = notifications.map(n => { if (n.id == id) n.read = true; return n; });
+  newsFeed = newsFeed.map(n => { if (n.id == id) n.read = true; return n; });
+  localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
+  localStorage.setItem('terminalNewsFeed', JSON.stringify(newsFeed));
+  renderNotifications();
+};
+
+window.dismissInboxItem = function(id, ev) {
+  if (ev) ev.stopPropagation();
+  notifications = notifications.filter(n => n.id != id);
+  newsFeed = newsFeed.filter(n => n.id != id);
+  localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
   localStorage.setItem('terminalNewsFeed', JSON.stringify(newsFeed));
   renderNotifications();
 };
@@ -1121,28 +1241,51 @@ window.markAllInboxRead = function() {
   renderNotifications();
 };
 
-window.clearAllInbox = function() {
-  notifications = [];
-  newsFeed = [];
+window.addNotification = function(text) {
+  const nid = notifications.length > 0 ? Math.max(...notifications.map(n => n.id)) + 1 : 1;
+  notifications.unshift({ id: nid, text: text, read: false, category: "Alerts", timestamp: Date.now() });
   localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
-  localStorage.setItem('terminalNewsFeed', JSON.stringify(newsFeed));
   renderNotifications();
+  const bb2 = document.getElementById("alertIndicatorBtn");
+  if (bb2) { const bi = bb2.querySelector("span:first-child"); if (bi) { bi.classList.remove("bell-bounce"); void bi.offsetWidth; bi.classList.add("bell-bounce"); } }
 };
 
-window.addNotification = function(text) {
-  const newId = notifications.length > 0 ? Math.max(...notifications.map(n => n.id)) + 1 : 1;
-  notifications.unshift({ id: newId, text: text, read: false });
-  localStorage.setItem('terminalNotifications', JSON.stringify(notifications));
-  renderNotifications();
-  
-  // Trigger bounce animation on the bell text span
-  const bellBtn = document.getElementById("alertIndicatorBtn");
-  if (bellBtn) {
-    const bellIcon = bellBtn.querySelector("span:first-child");
-    if (bellIcon) {
-      bellIcon.classList.remove("bell-bounce");
-      void bellIcon.offsetWidth; // Trigger reflow to restart animation
-      bellIcon.classList.add("bell-bounce");
+// Newsdata.io live API integration
+async function fetchLiveNews() {
+  const apiKey = "pub_489b69bf8d9042209ddb68ccb2c9cc67";
+  const url = "https://newsdata.io/api/1/news?apikey=" + apiKey + "&q=crypto%20OR%20market%20OR%20finance%20OR%20stocks&language=en";
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.status === "success" && data.results) {
+      const fetched = data.results.slice(0, 10).map((art, i) => {
+        let cat = "Market";
+        const tu = art.title.toUpperCase();
+        if (tu.includes("FED") || tu.includes("RATE") || tu.includes("BREAKING") || tu.includes("SEBI") || tu.includes("RBI")) cat = "Breaking";
+        else if (tu.includes("BTC") || tu.includes("BITCOIN") || tu.includes("CRYPTO") || tu.includes("ETH") || tu.includes("SOLANA")) cat = "Crypto";
+        else if (tu.includes("STOCK") || tu.includes("NIFTY") || tu.includes("NSE") || tu.includes("SENSEX")) cat = "Stocks";
+        let imp = "medium";
+        if (cat === "Breaking" || tu.includes("SURGES") || tu.includes("CRASH") || tu.includes("SPIKES")) imp = "high";
+        return { id: "live-" + (art.article_id || i), text: art.title, read: false, category: cat, impact: imp, timestamp: art.pubDate ? new Date(art.pubDate).getTime() : Date.now(), saved: false, link: art.link || "#" };
+      });
+      let local = JSON.parse(localStorage.getItem('terminalNewsFeed')) || [];
+      const texts = new Set(local.map(n => n.text));
+      fetched.forEach(item => { if (!texts.has(item.text)) local.unshift(item); });
+      local = local.slice(0, 40);
+      newsFeed = local;
+      localStorage.setItem('terminalNewsFeed', JSON.stringify(newsFeed));
+      renderNotifications();
     }
-  }
+  } catch (err) { console.warn("Failed to fetch live news:", err); }
+}
+
+window.refreshLiveNews = async function() {
+  if (window.isFetchingNews) return;
+  window.isFetchingNews = true;
+  const icon = document.querySelector(".alerts-panel-header .inbox-btn-icon");
+  if (icon) { icon.style.transition = "transform 1s linear"; icon.style.transform = "rotate(360deg)"; }
+  await fetchLiveNews();
+  window.isFetchingNews = false;
+  if (icon) { icon.style.transform = "none"; icon.style.transition = "none"; }
 };
+
