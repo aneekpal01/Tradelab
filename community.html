@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TradeLab Community | Trading Learning Hub</title>
+  <meta name="description" content="TradeLab Community - Connect with traders, share Price Action & SMC chart setups, participate in weekly trading challenges, and master risk psychology.">
+  <link rel="icon" type="image/png" href="logox.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="community.css">
+</head>
+<body>
+
+  <!-- Ambient Glow Background Layer -->
+  <div class="bg-ambient"></div>
+
+  <!-- App Wrapper -->
+  <div class="community-app">
+
+    <!-- ====================================================================
+         TOP HEADER BAR
+         ==================================================================== -->
+    <header class="community-header">
+      <div class="header-left">
+        <button class="mobile-toggle-btn" onclick="toggleMobileChannels()" title="Toggle Channels Menu" aria-label="Toggle Channels">☰</button>
+        <a href="index.html" class="brand-logo-wrap" title="TradeLab Home">
+          <img src="logo.png" alt="TradeLab Logo" class="brand-logo-img">
+          <div class="brand-title-wrap">
+            <span class="brand-title">TradeLab <span class="brand-badge">Community</span></span>
+            <span class="brand-subtitle">Trading Learning Network</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Live Search -->
+      <div class="header-center">
+        <div class="search-bar-wrap">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="headerSearchInput" 
+            class="search-input" 
+            placeholder="Search channels, setups (#BTC, #SMC), questions, traders..."
+            oninput="handleSearch(this.value)"
+          >
+          <button class="search-clear-btn" id="searchClearBtn" onclick="handleSearch('')">✕</button>
+        </div>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-right">
+        <button class="btn-new-post" onclick="openCreatePostModal()" title="Create a new post or trade setup">
+          <span>+</span> <span>New Post</span>
+        </button>
+
+        <button class="icon-btn" onclick="toggleNotificationsDropdown()" title="Community Notifications">
+          <span>🔔</span>
+          <span class="badge-dot"></span>
+        </button>
+
+        <a href="index.html" class="nav-link-btn" title="Back to TradeLab Education Vault">
+          <span>🏠</span> <span>Home</span>
+        </a>
+
+        <!-- User Profile Quick Bar -->
+        <div class="user-profile-widget" onclick="openMemberModal(store.getUserProfile().name)" title="View your trader profile">
+          <div class="user-avatar-wrap">
+            <div class="user-avatar" id="topUserAvatar">👤</div>
+            <span class="status-dot online"></span>
+          </div>
+          <div class="user-meta">
+            <span class="user-name" id="topUserName">Aneek</span>
+            <span class="user-role-badge" id="topUserLevel">Level 1 Trader</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         3-COLUMN MAIN LAYOUT
+         ==================================================================== -->
+    <main class="community-layout">
+
+      <!-- ================================================================
+           LEFT COLUMN: CHANNELS NAVIGATION
+           ================================================================ -->
+      <aside class="sidebar-channels" id="sidebarChannels">
+        <!-- Hub Brand Card -->
+        <div class="channels-hub-card">
+          <div class="hub-info">
+            <span class="hub-icon">⚡</span>
+            <div>
+              <div class="hub-title">TradeLab Alpha</div>
+              <div class="hub-sub">Active Trader Hub</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Channels Scroll Area (Populated by community.js) -->
+        <div class="channels-scroll-area" id="channelsContainer">
+          <!-- Dynamic channel items inserted here -->
+        </div>
+
+        <!-- User Voice & Study Room Footer -->
+        <div class="channels-user-bar">
+          <div class="user-status-left">
+            <span style="font-size: 14px;">🔥</span>
+            <div style="display: flex; flex-direction: column;">
+              <span class="user-voice-status" id="userVoiceStreak">🔥 Day 2 Streak</span>
+              <span style="font-size: 10px; color: var(--text-muted);">TradeLab Member</span>
+            </div>
+          </div>
+          <a href="backtest.html" style="color: var(--text-secondary); text-decoration: none; font-size: 13px;" title="Backtester">🧪</a>
+        </div>
+      </aside>
+
+      <!-- ================================================================
+           CENTER COLUMN: MAIN COMMUNITY FEED
+           ================================================================ -->
+      <section class="main-feed-column">
+        <!-- Channel Top Bar -->
+        <div class="feed-header">
+          <div class="feed-header-left">
+            <h2 class="feed-channel-title" id="feedChannelTitle">💬 <span class="hash">#</span> general</h2>
+            <p class="feed-channel-desc" id="feedChannelDesc">General trading discussions, daily check-ins, and casual trader talk.</p>
+          </div>
+          <div class="feed-header-right">
+            <div class="feed-stat-pill">
+              <span class="dot"></span>
+              <span id="feedOnlineCount">142 online</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scrollable Feed Container -->
+        <div class="feed-scroll-container">
+
+          <!-- Filter Pills & Sort Row -->
+          <div class="feed-controls-bar">
+            <div class="filter-pills-wrap">
+              <button class="filter-pill active" onclick="setFeedFilter('all', this)">All Posts</button>
+              <button class="filter-pill" onclick="setFeedFilter('setups', this)">📊 Trade Setups</button>
+              <button class="filter-pill" onclick="setFeedFilter('discussions', this)">💬 Discussions</button>
+              <button class="filter-pill" onclick="setFeedFilter('questions', this)">❓ Questions</button>
+              <button class="filter-pill" onclick="setFeedFilter('saved', this)">★ Saved</button>
+            </div>
+
+            <div class="sort-select-wrap">
+              <span>Sort by:</span>
+              <select class="sort-select" onchange="handleSortChange(this.value)">
+                <option value="hot">🔥 Hot Discussions</option>
+                <option value="new">✨ Newest First</option>
+                <option value="top">🏆 Most Reacted</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Inline Post Composer Card -->
+          <div class="post-composer-card">
+            <div class="composer-top" onclick="openCreatePostModal()">
+              <div class="composer-avatar">👤</div>
+              <div class="composer-input-fake">
+                What are you learning today, Aneek? Share a setup, thought, or question...
+              </div>
+            </div>
+            <div class="composer-bottom-actions">
+              <div class="composer-action-chips">
+                <button class="composer-chip" onclick="openCreatePostModal('chart-lab'); document.getElementById('includeSetupToggle').checked = true; document.getElementById('setupFieldsArea').style.display = 'grid';">
+                  <span>📘</span> <span>Educational Analysis</span>
+                </button>
+                <button class="composer-chip" onclick="openCreatePostModal('chart-lab')">
+                  <span>📊</span> <span>Chart Lab</span>
+                </button>
+                <button class="composer-chip" onclick="openCreatePostModal('questions')">
+                  <span>❓</span> <span>Ask Question</span>
+                </button>
+                <button class="composer-chip" onclick="openCreatePostModal('psychology')">
+                  <span>🧠</span> <span>Psychology</span>
+                </button>
+              </div>
+              <button class="btn-new-post" style="padding: 6px 14px; font-size: 12.5px;" onclick="openCreatePostModal()">
+                Post ↗
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Posts Stream -->
+          <div id="postsList" style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Rendered by community.js -->
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================================================
+           RIGHT COLUMN: MEMBERS & COMMUNITY WIDGETS
+           ================================================================ -->
+      <aside class="sidebar-widgets">
+
+        <!-- Widget 1: Daily Market Sentiment Barometer -->
+        <div class="widget-card sentiment-poll-card">
+          <div class="widget-title">
+            <span>Market Sentiment</span>
+            <span style="color: var(--accent-green);">LIVE 🟢</span>
+          </div>
+          <div class="sentiment-poll-question">Where is BTC heading next 24 Hours?</div>
+          
+          <div class="sentiment-bar-track">
+            <div class="sentiment-bar-fill" id="sentimentBarFill" style="width: 64%;"></div>
+          </div>
+
+          <div class="sentiment-stats-row">
+            <span class="sentiment-bullish" id="sentimentBullishPct">64% Bullish</span>
+            <span class="sentiment-bearish" id="sentimentBearishPct">36% Bearish</span>
+          </div>
+
+          <div class="sentiment-actions">
+            <button class="btn-vote bull" onclick="voteBullish()">🐂 Bullish</button>
+            <button class="btn-vote bear" onclick="voteBearish()">🐻 Bearish</button>
+          </div>
+        </div>
+
+        <!-- Widget 2: Weekly Trading Challenge -->
+        <div class="widget-card challenge-widget-card">
+          <span class="challenge-badge">🎯 Weekly Challenge #12</span>
+          <h4 class="challenge-title">Spot a 1:3 R:R Trade Setup</h4>
+          <p class="challenge-desc">Post a live chart setup with clear invalidation, liquidity sweep confluence, and minimum 1:3 R:R.</p>
+          <button class="btn-join-challenge" onclick="openWeeklyChallengeSubmit()">Submit Entry ↗</button>
+        </div>
+
+        <!-- Widget 3: Online Members Directory -->
+        <div class="widget-card">
+          <div class="widget-title">
+            <span>Members</span>
+            <span style="font-size: 11px; color: var(--text-muted);">TradeLab Network</span>
+          </div>
+          <div id="membersListContainer">
+            <!-- Rendered by community.js -->
+          </div>
+        </div>
+
+        <!-- Widget 4: Quick Links to TradeLab Tools -->
+        <div class="widget-card" style="background: rgba(255,255,255,0.02);">
+          <div class="widget-title">
+            <span>Trading Tools</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <a href="backtest.html" class="channel-item" style="padding: 6px 10px;">
+              <span>🧪 Backtesting Center</span>
+              <span style="font-size: 11px; color: var(--accent-blue);">Open ↗</span>
+            </a>
+            <a href="calculator.html" class="channel-item" style="padding: 6px 10px;">
+              <span>🧮 Risk Calculator</span>
+              <span style="font-size: 11px; color: var(--accent-green);">Open ↗</span>
+            </a>
+            <a href="quiz.html" class="channel-item" style="padding: 6px 10px;">
+              <span>🎓 Trading Mastery Quiz</span>
+              <span style="font-size: 11px; color: var(--accent-purple);">Open ↗</span>
+            </a>
+          </div>
+        </div>
+
+      </aside>
+
+    </main>
+
+  </div>
+
+  <!-- ====================================================================
+       MODAL 1: CREATE POST MODAL WITH TRADE SETUP BUILDER
+       ==================================================================== -->
+  <div class="modal-overlay" id="createPostModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><span>✍️</span> <span>Create Community Post</span></h3>
+        <button class="modal-close-btn" onclick="closeModal('createPostModal')">✕</button>
+      </div>
+
+      <form id="createPostForm" onsubmit="handleCreatePostSubmit(event)">
+        <div class="modal-body">
+
+          <!-- Channel Selection -->
+          <div class="form-group">
+            <label class="form-label" for="postChannelSelect">Select Channel</label>
+            <select class="form-control" id="postChannelSelect">
+              <optgroup label="COMMUNITY">
+                <option value="general">💬 #general</option>
+                <option value="welcome">🏠 #welcome</option>
+                <option value="announcements">📢 #announcements</option>
+              </optgroup>
+              <optgroup label="LEARNING">
+                <option value="study-room">📚 #study-room</option>
+                <option value="psychology">🧠 #psychology</option>
+                <option value="questions">❓ #questions</option>
+              </optgroup>
+              <optgroup label="TRADING">
+                <option value="chart-lab">📊 #chart-lab</option>
+                <option value="market-talk">📈 #market-talk</option>
+                <option value="strategy-lab">💡 #strategy-lab</option>
+              </optgroup>
+              <optgroup label="EVENTS">
+                <option value="weekly-challenge">🎯 #weekly-challenge</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <!-- Post Text -->
+          <div class="form-group">
+            <label class="form-label" for="postContentInput">Your Thought / Analysis / Question</label>
+            <textarea 
+              class="form-control" 
+              id="postContentInput" 
+              placeholder="What are you seeing in the charts? Explain your thesis, key levels, or ask a question..."
+              required
+            ></textarea>
+          </div>
+
+          <!-- Tags -->
+          <div class="form-group">
+            <label class="form-label" for="postTagsInput">Tags (Comma separated)</label>
+            <input type="text" class="form-control" id="postTagsInput" placeholder="#BTC, #PriceAction, #SMC, #Setup">
+          </div>
+
+          <!-- Educational Chart Analysis Builder Box (Not a Signal) -->
+          <div class="setup-builder-box">
+            <div class="setup-builder-toggle">
+              <div>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-primary); display: block;">📘 Attach Educational Chart Analysis</span>
+                <span style="font-size: 11px; color: var(--accent-yellow);">⚠️ Educational discussion — not a trade signal.</span>
+              </div>
+              <input type="checkbox" id="includeSetupToggle" style="accent-color: var(--accent-green); width: 18px; height: 18px; cursor: pointer;">
+            </div>
+
+            <div class="setup-grid" id="setupFieldsArea" style="display: none;">
+              <div class="form-group">
+                <label class="form-label" for="setupAssetInput">Asset / Pair</label>
+                <input type="text" class="form-control" id="setupAssetInput" placeholder="e.g. BTCUSDT, EURUSD, NIFTY" value="BTCUSDT">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setupTimeframeInput">Timeframe</label>
+                <select class="form-control" id="setupTimeframeInput">
+                  <option value="15m" selected>15m (Intraday)</option>
+                  <option value="1H">1H (Hourly)</option>
+                  <option value="4H">4H (Swing)</option>
+                  <option value="1D">1D (Daily)</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="grid-column: span 2;">
+                <label class="form-label" for="setupModelInput">Setup Model</label>
+                <input type="text" class="form-control" id="setupModelInput" placeholder="e.g. Liquidity sweep + BOS, Order Block Mitigation" value="Liquidity sweep + BOS">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setupEntryInput">Entry</label>
+                <input type="text" class="form-control" id="setupEntryInput" placeholder="e.g. 104,250" value="104,250">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setupSlInput">Invalidation</label>
+                <input type="text" class="form-control" id="setupSlInput" placeholder="e.g. 103,800" value="103,800">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setupTpInput">Target</label>
+                <input type="text" class="form-control" id="setupTpInput" placeholder="e.g. 105,200" value="105,200">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setupRrInput">Risk : Reward</label>
+                <input type="text" class="form-control" id="setupRrInput" placeholder="e.g. 1 : 2.1" value="1 : 2.1">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-modal-cancel" onclick="closeModal('createPostModal')">Cancel</button>
+          <button type="submit" class="btn-modal-submit">Publish Post ↗</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 2: TRADER PROFILE PREVIEW MODAL
+       ==================================================================== -->
+  <div class="modal-overlay" id="memberModal">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title"><span>👤</span> <span>Trader Profile</span></h3>
+        <button class="modal-close-btn" onclick="closeModal('memberModal')">✕</button>
+      </div>
+      <div class="modal-body" id="memberModalBody">
+        <!-- Rendered by community.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Community Logic Script -->
+  <script src="community.js"></script>
+</body>
+</html>
