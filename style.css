@@ -8427,10 +8427,9 @@ body.sidebar-open .market-status-bar {
 .sidebar-logo {
   display: flex !important;
   align-items: center !important;
-  justify-content: space-between !important;
-  padding-bottom: 10px !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-  margin-bottom: 12px !important;
+  justify-content: flex-end !important;
+  padding-bottom: 6px !important;
+  margin-bottom: 10px !important;
   width: 100% !important;
 }
 
@@ -8890,10 +8889,10 @@ body.sidebar-open .market-status-bar {
     display: flex !important;
     position: static !important;
     align-items: center !important;
-    justify-content: space-between !important;
-    padding: 0 0 12px 0 !important;
-    margin-bottom: 12px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    justify-content: flex-end !important;
+    padding: 0 0 6px 0 !important;
+    margin-bottom: 10px !important;
+    border-bottom: none !important;
     width: 100% !important;
   }
 
