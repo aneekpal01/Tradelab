@@ -2219,10 +2219,6 @@
   </script>
 
   <script>
-    function isDesktopView() {
-      return window.matchMedia('(min-width: 901px)').matches;
-    }
-
     function toggleMenu() {
       const sidebar = document.getElementById('sidebar');
       const hamburger = document.getElementById('hamburger');
@@ -2233,30 +2229,17 @@
       document.body.classList.toggle('sidebar-open');
     }
 
-    // ends up closed, on both mobile and desktop. NOTE: the .active
-    // class means the OPPOSITE thing on each breakpoint (desktop:
-    // .active = collapsed, mobile: .active = drawer open), so
-    // "close" is add-active on desktop but remove-active on mobile.
     function closeMenu() {
       const sidebar = document.getElementById('sidebar');
       const hamburger = document.getElementById('hamburger');
       const overlay = document.getElementById('menuOverlay');
-      if (sidebar) {
-        if (isDesktopView()) {
-          sidebar.classList.add('active');
-        } else {
-          sidebar.classList.remove('active');
-        }
-      }
+      if (sidebar) sidebar.classList.remove('active');
       if (hamburger) hamburger.classList.remove('active');
       if (overlay) overlay.classList.remove('active');
       document.body.classList.remove('sidebar-open');
     }
 
-    // After tapping a nav link, only auto-close the MOBILE drawer —
-    // the persistent desktop sidebar should stay open while browsing.
     function closeMobileMenuAfterNav() {
-      if (isDesktopView()) return;
       closeMenu();
     }
 
