@@ -8424,8 +8424,10 @@ body.loading .market-status-bar {
 .sidebar-logo {
   display: flex !important;
   align-items: center !important;
-  justify-content: flex-end !important;
-  margin-bottom: 8px !important;
+  justify-content: space-between !important;
+  padding-bottom: 10px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  margin-bottom: 12px !important;
   width: 100% !important;
 }
 
@@ -8880,74 +8882,73 @@ body.loading .market-status-bar {
     pointer-events: none !important;
   }
 
-  /* Pinned Close Button overrides on Mobile Drawer */
+  /* Drawer Header */
   .sidebar-logo {
-    display: block !important;
-    position: fixed !important; /* Pinned relative to the transformed drawer containing block */
-    top: calc(16px + env(safe-area-inset-top)) !important;
-    right: 16px !important;
-    z-index: 10010 !important;
+    display: flex !important;
+    position: static !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 0 12px 0 !important;
+    margin-bottom: 12px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    width: 100% !important;
   }
 
   .sidebar-close-btn {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 44px !important; /* Touch target >= 44px */
-    height: 44px !important;
+    width: 32px !important;
+    height: 32px !important;
     border-radius: 50% !important;
-    background: rgba(30, 41, 59, 0.7) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     color: #9ca3af !important;
-    font-size: 16px !important;
+    font-size: 14px !important;
     cursor: pointer !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
     margin: 0 !important;
     transition: all 0.2s ease !important;
   }
 
   .sidebar-close-btn:hover {
-    background: rgba(239, 68, 68, 0.15) !important;
-    color: #ef4444 !important;
-    border-color: rgba(239, 68, 68, 0.3) !important;
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #ff6b6b !important;
+    border-color: #ef4444 !important;
   }
 
   [data-theme="light"] .sidebar-close-btn {
-    background: rgba(255, 255, 255, 0.8) !important;
-    border-color: rgba(0, 0, 0, 0.06) !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
     color: #4b5563 !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
   }
 
   [data-theme="light"] .sidebar-close-btn:hover {
-    background: rgba(220, 38, 38, 0.08) !important;
+    background: rgba(220, 38, 38, 0.1) !important;
     color: #dc2626 !important;
-    border-color: rgba(220, 38, 38, 0.2) !important;
+    border-color: rgba(220, 38, 38, 0.25) !important;
   }
 
-  /* 6. 8px Backdrop blur on active overlay */
+  /* Full Screen Backdrop Blur on Active Overlay */
   .menu-overlay.active {
     opacity: 1 !important;
     pointer-events: auto !important;
-    background: rgba(0, 0, 0, 0.45) !important;
+    background: rgba(0, 0, 0, 0.6) !important;
     backdrop-filter: blur(8px) !important;
     -webkit-backdrop-filter: blur(8px) !important;
-    z-index: 999 !important;
+    z-index: 9999 !important;
   }
 
-  /* 2. Compact Profile Card overrides */
+  /* Profile Card in Drawer */
   .profile-card {
-    padding: 10px !important;
+    padding: 12px !important;
     margin-bottom: 12px !important;
-    gap: 6px !important;
+    gap: 8px !important;
   }
 
   .profile-avatar {
-    width: 32px !important;
-    height: 32px !important;
-    font-size: 16px !important;
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 18px !important;
   }
 
   .profile-meta {
