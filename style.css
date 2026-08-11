@@ -9204,26 +9204,7 @@ body.sidebar-open .market-status-bar {
     box-sizing: border-box !important;
   }
 
-  .stats-cards-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
-    margin-top: 35px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
 
-  .stat-card {
-    padding: 12px 10px !important;
-    border-radius: 12px !important;
-  }
-
-  .stat-number {
-    font-size: 20px !important;
-  }
-
-  .stat-label {
-    font-size: 10.5px !important;
-  }
 
   section {
     padding: 50px 16px !important;
@@ -9591,82 +9572,86 @@ body.sidebar-open .market-status-bar {
 }
 
 /* =============================================================
-   HERO STATS CARDS GRID — Modern, Balanced, Responsive Layout
+   COMPACT & EQUAL-SIZE HERO STATS CARDS
 ============================================================= */
 .stats-cards-grid {
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
-  gap: 20px !important;
-  max-width: 1080px !important;
-  width: 100% !important;
-  margin: 45px auto 0 auto !important;
-  padding: 0 20px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  gap: 14px !important;
+  max-width: 860px !important;
+  width: auto !important;
+  margin: 32px auto 0 auto !important;
+  padding: 0 16px !important;
   box-sizing: border-box !important;
   position: relative !important;
   z-index: 1 !important;
 }
 
 .stat-card {
-  background: rgba(17, 24, 39, 0.75) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
+  flex: 1 1 180px !important;
+  max-width: 200px !important;
+  min-width: 160px !important;
+  background: rgba(17, 24, 39, 0.7) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 16px !important;
-  padding: 18px 16px !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
   display: flex !important;
   align-items: center !important;
-  gap: 14px !important;
+  gap: 12px !important;
   text-align: left !important;
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease, background 0.28s ease !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
-  width: 100% !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
   box-sizing: border-box !important;
 }
 
 .stat-card:hover {
-  transform: translateY(-4px) !important;
+  transform: translateY(-2px) !important;
   border-color: rgba(0, 255, 156, 0.4) !important;
-  box-shadow: 0 12px 30px rgba(0, 255, 156, 0.15), 0 0 20px rgba(0, 255, 156, 0.08) !important;
+  box-shadow: 0 8px 20px rgba(0, 255, 156, 0.12) !important;
   background: rgba(22, 31, 50, 0.85) !important;
 }
 
 .stat-card-icon {
-  font-size: 24px !important;
-  width: 46px !important;
-  height: 46px !important;
-  border-radius: 12px !important;
+  font-size: 18px !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 9px !important;
   background: rgba(0, 255, 156, 0.08) !important;
   border: 1px solid rgba(0, 255, 156, 0.2) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   flex-shrink: 0 !important;
-  transition: transform 0.3s ease, background 0.3s ease !important;
+  transition: transform 0.25s ease !important;
 }
 
 .stat-card:hover .stat-card-icon {
-  transform: scale(1.08) rotate(3deg) !important;
+  transform: scale(1.08) !important;
   background: rgba(0, 255, 156, 0.15) !important;
 }
 
 .stat-card-content {
   display: flex !important;
   flex-direction: column !important;
-  gap: 2px !important;
+  gap: 1px !important;
   min-width: 0 !important;
 }
 
 .stat-number {
-  font-size: 26px !important;
+  font-size: 18px !important;
   font-weight: 800 !important;
   color: #00ff9c !important;
-  line-height: 1.15 !important;
-  letter-spacing: -0.01em !important;
+  line-height: 1.2 !important;
   font-family: 'Barlow Condensed', 'Inter', sans-serif !important;
 }
 
 .stat-label {
-  font-size: 13px !important;
+  font-size: 11.5px !important;
   color: #9ca3af !important;
   font-weight: 500 !important;
   white-space: nowrap !important;
@@ -9675,12 +9660,12 @@ body.sidebar-open .market-status-bar {
 [data-theme="light"] .stat-card {
   background: #ffffff !important;
   border: 1px solid #e2e8f0 !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
 }
 
 [data-theme="light"] .stat-card:hover {
   border-color: #00915a !important;
-  box-shadow: 0 10px 25px rgba(0, 145, 90, 0.12) !important;
+  box-shadow: 0 6px 16px rgba(0, 145, 90, 0.1) !important;
 }
 
 [data-theme="light"] .stat-card-icon {
@@ -9696,41 +9681,36 @@ body.sidebar-open .market-status-bar {
   color: #64748b !important;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 720px) {
   .stats-cards-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 14px !important;
-    max-width: 620px !important;
-    margin-top: 35px !important;
-  }
-}
-
-@media (max-width: 540px) {
-  .stats-cards-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
-    max-width: 100% !important;
+    gap: 8px !important;
     margin-top: 25px !important;
-    padding: 0 8px !important;
+    padding: 0 10px !important;
+    max-width: 380px !important;
   }
 
   .stat-card {
-    padding: 12px 10px !important;
-    gap: 10px !important;
+    flex: 1 1 calc(50% - 6px) !important;
+    max-width: calc(50% - 4px) !important;
+    min-width: 130px !important;
+    padding: 8px 10px !important;
+    gap: 8px !important;
+    border-radius: 10px !important;
   }
 
   .stat-card-icon {
-    width: 36px !important;
-    height: 36px !important;
-    font-size: 18px !important;
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 15px !important;
+    border-radius: 7px !important;
   }
 
   .stat-number {
-    font-size: 20px !important;
+    font-size: 16px !important;
   }
 
   .stat-label {
-    font-size: 11px !important;
+    font-size: 10px !important;
   }
 }
 
