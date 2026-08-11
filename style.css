@@ -5714,20 +5714,23 @@ body.loading #backToTop {
   padding: 6px 20px;
   font-size: 11.5px;
   font-family: 'Segoe UI', system-ui, sans-serif;
-  position: sticky; /* Make it stick to top */
+  position: sticky;
   top: 0;
-  z-index: 10005 !important; /* Keep above navbar and drawers */
+  z-index: 995 !important;
   opacity: 1;
   visibility: visible;
-  transition: opacity 300ms ease-in-out, visibility 300ms ease-in-out !important;
-  transition-delay: 500ms !important; /* Delay fade-in until loader has completely faded out */
+  transform: translateY(0);
+  transition: opacity 250ms ease, visibility 250ms ease, transform 250ms ease, background 0.3s ease !important;
 }
 
-/* Hide status bar while loading screen is active */
-body.loading .market-status-bar {
+/* Hide status bar while loading screen is active or sidebar menu is open */
+body.loading .market-status-bar,
+body.sidebar-open .market-status-bar {
   opacity: 0 !important;
   visibility: hidden !important;
-  transition-delay: 0s !important; /* Instant hide during load */
+  pointer-events: none !important;
+  transform: translateY(-100%) !important;
+  transition-delay: 0s !important;
 }
 
 .market-status-inner {
